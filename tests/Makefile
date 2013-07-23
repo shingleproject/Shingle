@@ -65,7 +65,7 @@ datacheck:
 		false; }
 
 data:
-	@echo 'Downloading RTopo dataset for tests (note 743MB).'
+	@echo 'Downloading the RTopo dataset for tests (note 743MB).'
 	@curl 'http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc' -o ../RTopo105b_50S.nc
 
 testcases:
