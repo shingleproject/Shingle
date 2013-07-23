@@ -43,13 +43,12 @@ Test suite
 ==========
 
 Currently there are six tests in the test suite:
-  tests
-  ├── amundsen_sea
-  ├── antarctica_all
-  ├── antarctica_main_landmass
-  ├── antarctica_main_landmass_30s
-  ├── filchner-ronne
-  └── filchner-ronne_iceshelf
+  ─ amundsen_sea
+  ─ antarctica_all
+  ─ antarctica_main_landmass
+  ─ antarctica_main_landmass_30s
+  ─ filchner-ronne
+  ─ filchner-ronne_iceshelf
 
 Dataset
 =======
