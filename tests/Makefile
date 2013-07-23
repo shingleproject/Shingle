@@ -23,7 +23,7 @@
 
 DATASET=../RTopo105b_50S.nc
 
-SCRIPT=../teisen.py
+SCRIPT=../shingle.py
 
 EXAMPLES=antarctica_main_landmass filchner-ronne antarctica_all filchner-ronne_iceshelf amundsen_sea antarctica_main_landmass_30s
 
@@ -71,11 +71,11 @@ datacheck:
 
 data:
 	@echo 'Downloading the RTopo dataset for the tests (note 743MB).'
-	@curl 'http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc' -o ../RTopo105b_50S.nc
+	@curl 'http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc' -o $(DATASET)
 
 datalink:
 	@echo 'Creating a link to the RTopo dataset at ~/dataset/rtopo/RTopo105b_50S.nc'
-	@ln -s ~/dataset/rtopo/RTopo105b_50S.nc ../RTopo105b_50S.nc
+	@ln -s ~/dataset/rtopo/RTopo105b_50S.nc $(DATASET)
 
 testcases:
 	@$(foreach var,$(EXAMPLES), $(MAKE) -s all$(var);)
