@@ -7,6 +7,9 @@ For further information and updates, please contact the author Dr Adam S. Candy 
 
 ------------------------------------------------------------
 
+Outline
+-------
+
 A new meshing approach for realistic domains.
   
 This code generates boundary representations with elemernt identifications from arbitrary geophysical fields.  It was originally used  mask to generate a boundary along the coastlines and grounding line* (which is not positioned at a constant depth).  The code is easily applied to boundaries along depth contours and to work with other NetCDF sources.
@@ -17,8 +20,10 @@ The dependencies are all Python modules (e.g. GMT is not required).
 
  * which involves a neat trick with modulo arithmetic to keep calculation time down significantly.
   
-Supported features:
-  - Define boundaries from NetCDF (currently restricted to the RTopo mask - trivial to extend),
+Supported features
+------------------
+
+  - Define boundaries from NetCDF,
   - Regions defined by arbitrary functions of longitude and latitude (given on the command line),
   - Simpler definition of regions by boxes (such as 'longmin:longmax,latmin:longmax'),
   - Define included paths by Gmsh ID number (useful to include or exclude  specific islands/land masses),
@@ -31,29 +36,28 @@ Supported features:
   - Command line used is saved in the Gmsh .geo file for reference,
   - Option to generate the ACC average track line (and then to refine the mesh to this).
   
-
 Other updates
+-------------
+
   - Consistent use of dx_default,
   - The Antarctica main example contour can now be meshed (uses dx=10 in the parallel creation now),
   - Renamed the variables associated with the inclusion of the ice shelf ocean cavities to be more intuitive.
 
-------------------------------------------------------------
-
 Test suite
-==========
+----------
 
 Currently there are six tests in the test suite:
-  ─ amundsen_sea
-  ─ antarctica_all
-  ─ antarctica_main_landmass
-  ─ antarctica_main_landmass_30s
-  ─ filchner-ronne
-  ─ filchner-ronne_iceshelf
+  - amundsen_sea
+  - antarctica_all
+  - antarctica_main_landmass
+  - antarctica_main_landmass_30s
+  - filchner-ronne
+  - filchner-ronne_iceshelf
 
-Dataset
-=======
+Datasets
+--------
 
-The above tests use the RTopo dataset, described in detail at: http://doi.pangaea.de/10.1594/PANGAEA.741917
+The above tests use the RTopo dataset, described in detail at: http://doi.pangaea.de/10.1594/PANGAEA.741917 .
 
 Timmermann, R et al. (2010): Antarctic ice sheet topography, cavity geometry, and global bathymetry (RTopo 1.0.5-beta). doi:10.1594/PANGAEA.741917,
 Supplement to: Timmermann, Ralph; Le Brocq, Anne M; Deen, Tara J; Domack, Eugene W; Dutrieux, Pierre; Galton-Fenzi, Ben; Hellmer, Hartmut H; Humbert, Angelika; Jansen, Daniela; Jenkins, Adrian; Lambrecht, Astrid; Makinson, Keith; Niederjasper, Fred; Nitsche, Frank-Oliver; Nøst, Ole Anders; Smedsrud, Lars Henrik; Smith, Walter (2010): A consistent dataset of Antarctic ice sheet topography, cavity geometry, and global bathymetry. Earth System Science Data, 2(2), 261-273, doi:10.5194/essd-2-261-2010
