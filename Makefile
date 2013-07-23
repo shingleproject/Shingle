@@ -24,5 +24,5 @@
 default: test
 
 test:
-	@make -s -C examples
+	@make -s -C tests
 
