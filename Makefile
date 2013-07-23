@@ -27,5 +27,5 @@ test:
 	@make -s -C tests
 
 data:
-	@make -s -C data
+	@make -s -C tests data
 

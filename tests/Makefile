@@ -65,7 +65,7 @@ datacheck:
 		false; }
 
 data:
-	@curl -s 'http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc' -o ../RTopo105b_50S.nc
+	@curl 'http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc' -o ../RTopo105b_50S.nc
 
 testcases:
 	@$(foreach var,$(EXAMPLES), $(MAKE) -s all$(var);)
