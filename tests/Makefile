@@ -23,7 +23,7 @@
 
 DATASET=../RTopo105b_50S.nc
 
-SCRIPT=../boundary_representation_generator.py
+SCRIPT=../teisen.py
 
 EXAMPLES=antarctica_main_landmass filchner-ronne antarctica_all filchner-ronne_iceshelf amundsen_sea antarctica_main_landmass_30s
 
