@@ -1,5 +1,5 @@
 汀線 Teisen
-==============
+===========
 
 Generation of boundary representation from arbitrary geophysical fields.
 
@@ -36,3 +36,26 @@ Other updates
   - Consistent use of dx_default,
   - The Antarctica main example contour can now be meshed (uses dx=10 in the parallel creation now),
   - Renamed the variables associated with the inclusion of the ice shelf ocean cavities to be more intuitive.
+
+------------------------------------------------------------
+
+Test suite
+==========
+
+Currently there are six tests in the test suite:
+  tests
+  ├── amundsen_sea
+  ├── antarctica_all
+  ├── antarctica_main_landmass
+  ├── antarctica_main_landmass_30s
+  ├── filchner-ronne
+  └── filchner-ronne_iceshelf
+
+Dataset
+=======
+
+The above tests use the RTopo dataset, described in detail at: http://doi.pangaea.de/10.1594/PANGAEA.741917
+
+Timmermann, R et al. (2010): Antarctic ice sheet topography, cavity geometry, and global bathymetry (RTopo 1.0.5-beta). doi:10.1594/PANGAEA.741917,
+Supplement to: Timmermann, Ralph; Le Brocq, Anne M; Deen, Tara J; Domack, Eugene W; Dutrieux, Pierre; Galton-Fenzi, Ben; Hellmer, Hartmut H; Humbert, Angelika; Jansen, Daniela; Jenkins, Adrian; Lambrecht, Astrid; Makinson, Keith; Niederjasper, Fred; Nitsche, Frank-Oliver; Nøst, Ole Anders; Smedsrud, Lars Henrik; Smith, Walter (2010): A consistent dataset of Antarctic ice sheet topography, cavity geometry, and global bathymetry. Earth System Science Data, 2(2), 261-273, doi:10.5194/essd-2-261-2010
+
