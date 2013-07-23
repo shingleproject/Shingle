@@ -35,7 +35,15 @@ Supported features
   - Option to extend domain in latitude on open boundaries (e.g. for sponge regions, or large open regions in the open ocean),
   - Command line used is saved in the Gmsh .geo file for reference,
   - Option to generate the ACC average track line (and then to refine the mesh to this).
-  
+
+Development version
+-------------------
+
+A development version of the code also has:
+  - Caching of contours (which can save a lot of processing time)
+  - Graphical output of contouring stage, to aid in contour selection
+
+
 Other updates
 -------------
 
