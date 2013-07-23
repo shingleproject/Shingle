@@ -1,0 +1,9 @@
+Source netCDF located at ../RTopo105b_50S.nc
+Output to filchner-ronne_iceshelf/shorelines.geo
+Boundaries restricted to [1]
+Region defined by ((latitude <= -83) and (((longitude >= -85.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0)) or ((longitude >= -64.0) and (longitude <= -30.0) and (latitude >= -89.0) and (latitude <= -70.0)) or ((longitude >= -30.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0))))
+Including iceshelf ocean cavities
+Paths found: 348
+Path 1 points 317/59599 area 23814.8 (required closing in 2 parts of the path)
+Open boundaries   (id 4): 2
+Closed boundaries (id 3): 1
