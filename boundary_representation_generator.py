@@ -115,7 +115,6 @@ def usage():
  -bounding_latitude latitude | Latitude of boundary to close the domain
  -bl latitude                | Short form of -bounding_latitude
  -exclude_iceshelves         | Excludes iceshelf ocean cavities from mesh (default behaviour includes region)
- -smooth_data degree         | Smoothes boundaries
  -no                         | Do not include open boundaries
  -lat latitude               | Latitude to extent open domain to
  -s scenario                 | Select scenario (in development)
@@ -161,8 +160,6 @@ class arguments:
   verbose = True
   debug = False
   bounding_lat = -50.0
-  smooth_data = False
-  smooth_degree = 100
   include_iceshelf_ocean_cavities = True
   #call = ' '.join(argv)
   call = ''
@@ -184,9 +181,6 @@ while (len(argv) > 0):
   elif (argument == '-a'): arguments.minarea = float(argv.pop(0).rstrip())
   elif (argument == '-bounding_latitude'): arguments.bounding_lat =float(argv.pop(0).rstrip())
   elif (argument == '-bl'): arguments.bounding_lat = float(argv.pop(0).rstrip())
-  elif (argument == '-smooth_data'):
-    arguments.smooth_degree = int(argv.pop(0).rstrip())
-    arguments.smooth_data = True
   elif (argument == '-no'): arguments.open = False
   elif (argument == '-exclude_ice_shelves'): arguments.include_iceshelf_ocean_cavities = False
   elif (argument == '-v'): arguments.verbose = True
@@ -232,22 +226,6 @@ Point ( IP + 1 ) = { 0, 0, %(earth_radius)g };
 PolarSphere ( IS + 0 ) = { IP, IP + 1 };
 
 ''' % { 'earth_radius': earth_radius }
-
-def smoothGaussian(list,degree,strippedXs=False):
-  list = list.tolist()
-  window=degree*2-1
-  weight=array([1.0]*window)
-  weightGauss=[]
-  for i in range(window):
-    i=i-degree+1
-    frac=i/float(window)
-    gauss=1/(exp((4*(frac))**2))
-    weightGauss.append(gauss)
-  weight=array(weightGauss)*weight
-  smoothed=[0.0]*(len(list)-window)
-  for i in range(len(smoothed)):
-    smoothed[i]=sum(array(list[i:i+window])*weight)/sum(weight)
-  return array(smoothed)
 
 def gmsh_footer(loopstart, loopend):
   output.write( '''
@@ -516,12 +494,6 @@ def output_boundaries(index, filename, paths=None, minarea=0, region='True', dx=
 
   for num in pathids:
     xy=pathall[num-1].vertices
-    if arguments.smooth_data:
-      x = smoothGaussian(xy[:,0], degree=arguments.smooth_degree)
-      y = smoothGaussian(xy[:,1], degree=arguments.smooth_degree)
-      xy = zeros([len(x),2])
-      xy[:,0] = x
-      xy[:,1] = y
     index = array_to_gmsh_points(num, index, xy, minarea, region, dx, latitude_max)
   #for i in range(-85, 0, 5):
   #  indexend += 1
