@@ -59,12 +59,13 @@ datacheck:
 		echo "Please download from"; \
 		echo "  http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc"; \
 		echo "and place in the root folder."; \
-		echo "Alternatively, use the make directive 'datadownload', i.e."; \
-		echo "  make datadownload"; \
+		echo "Alternatively, use the make directive 'data', i.e."; \
+		echo "  make data"; \
 		echo ""; \
 		false; }
 
 data:
+	@echo 'Downloading RTopo dataset for tests (note 743MB).'
 	@curl 'http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc' -o ../RTopo105b_50S.nc
 
 testcases:
