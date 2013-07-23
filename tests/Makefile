@@ -64,7 +64,7 @@ datacheck:
 		echo ""; \
 		false; }
 
-datadownload:
+data:
 	@curl -s 'http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc' -o ../RTopo105b_50S.nc
 
 testcases:

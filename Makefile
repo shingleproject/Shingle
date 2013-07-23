@@ -26,6 +26,6 @@ default: test
 test:
 	@make -s -C tests
 
-datadownload:
-	@make -s -C datadownload
+data:
+	@make -s -C data
 
