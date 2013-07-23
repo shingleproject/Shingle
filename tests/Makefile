@@ -37,7 +37,9 @@ ECHO=echo
 
 #### main
 
-test:
+default:	test
+
+test: 
 	@echo "  TEST ALL"
 	@make -s clean
 	@make -s testcases
@@ -47,9 +49,23 @@ build:
 	@make -s clean
 	@make -s buildcases
 
-clean:
+clean: datacheck
 	@echo "  CLEAN ALL"
 	@$(foreach var,$(EXAMPLES), $(MAKE) -s clean$(var);)
+
+datacheck:
+	@test -s $(DATASET) || { \
+	  echo "Dataset '$(DATASET)' not present."; \
+		echo "Please download from"; \
+		echo "  http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc"; \
+		echo "and place in the root folder."; \
+		echo "Alternatively, use the make directive 'datadownload', i.e."; \
+		echo "  make datadownload"; \
+		echo ""; \
+		false; }
+
+datadownload:
+	@curl -s 'http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc' -o ../RTopo105b_50S.nc
 
 testcases:
 	@$(foreach var,$(EXAMPLES), $(MAKE) -s all$(var);)
