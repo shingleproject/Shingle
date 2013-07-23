@@ -29,3 +29,6 @@ test:
 data:
 	@make -s -C tests data
 
+datalink:
+	@make -s -C tests datalink
+

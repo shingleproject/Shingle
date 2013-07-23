@@ -55,18 +55,27 @@ clean: datacheck
 
 datacheck:
 	@test -s $(DATASET) || { \
+		echo ""; \
 	  echo "Dataset '$(DATASET)' not present."; \
 		echo "Please download from"; \
 		echo "  http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc"; \
 		echo "and place in the root folder."; \
-		echo "Alternatively, use the make directive 'data', i.e."; \
+		echo ""; \
+		echo "Alternatively, download using the make directive 'data', i.e."; \
 		echo "  make data"; \
+		echo ""; \
+		echo "Also, the directive 'datalink' is setup to create a symbolic link to the dataset at ~/dataset/rtopo/RTopo105b_50S.nc using"; \
+		echo "  make datalink"; \
 		echo ""; \
 		false; }
 
 data:
 	@echo 'Downloading the RTopo dataset for the tests (note 743MB).'
 	@curl 'http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc' -o ../RTopo105b_50S.nc
+
+datalink:
+	@echo 'Creating a link to the RTopo dataset at ~/dataset/rtopo/RTopo105b_50S.nc'
+	@ln -s ~/dataset/rtopo/RTopo105b_50S.nc ../RTopo105b_50S.nc
 
 testcases:
 	@$(foreach var,$(EXAMPLES), $(MAKE) -s all$(var);)
