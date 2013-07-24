@@ -43,6 +43,7 @@ test:
 	@echo "  TEST ALL"
 	@make -s clean
 	@make -s testcases
+	$(ECHO) "  ALL TESTS: $(green)PASS$(end)"
 
 build:
 	@echo "  BUILD ALL (no testing)"
