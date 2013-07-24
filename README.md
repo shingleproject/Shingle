@@ -7,6 +7,8 @@ For further information and updates, please contact the author Dr Adam S. Candy 
 
 ------------------------------------------------------------
 
+![Shingle](./data/shingle.png?raw=true "Shingle")
+
 Outline
 -------
 
