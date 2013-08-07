@@ -23,7 +23,7 @@ The dependencies are all Python modules (e.g. GMT is not required).
 Supported features
 ------------------
 
-  - Define boundaries from NetCDF,
+  - Generate boundary representation from raw raster input (e.g. a NetCDF data file),
   - Regions defined by arbitrary functions of longitude and latitude (given on the command line),
   - Simpler definition of regions by boxes (such as 'longmin:longmax,latmin:longmax'),
   - Define included paths by Gmsh ID number (useful to include or exclude  specific islands/land masses),
@@ -34,7 +34,9 @@ Supported features
   - Exclude smaller islands - restricted by a given minimum area,
   - Option to extend domain in latitude on open boundaries (e.g. for sponge regions, or large open regions in the open ocean),
   - Command line used is saved in the Gmsh .geo file for reference,
+  - Projection type (e.g. options to generate a mesh to UTM coordinates, 
   - Option to generate the ACC average track line (and then to refine the mesh to this).
+  - Ice shelf inclusion options
 
 Development version
 -------------------
