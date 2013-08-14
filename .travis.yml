@@ -6,6 +6,6 @@ python:
 install:
   - pip install numpy
   - pip install matplotlib
-  - pip install ScientificPython
+  - pip install scipy
 # command to run tests
 script: make testwithdatadownload
