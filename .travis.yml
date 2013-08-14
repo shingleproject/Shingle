@@ -4,6 +4,8 @@ python:
   
 # command to install dependencies
 install:
-
+  - pip install numpy
+  - pip install matplotlib
+  - pip install ScientificPython
 # command to run tests
 script: make testwithdatadownload
