@@ -26,7 +26,7 @@ import sys
 import shutil
 import math
 
-from Scientific.IO import NetCDF
+from scipy.io import NetCDF
 import matplotlib
 matplotlib.use('Agg')
 from pylab import contour
