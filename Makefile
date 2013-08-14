@@ -31,6 +31,6 @@ data:
 datalink:
 	@make -s -C tests datalink
 
-testwithdownload:
-	@make download
+testwithdatadownload:
+	@make data
 	@make test
