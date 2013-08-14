@@ -3,6 +3,8 @@ Shingle
 
 Generation of boundary representation from arbitrary geophysical fields.
 
+[![Build Status](https://secure.travis-ci.org/adamcandy/Shingle.png)](http://travis-ci.org/adamcandy/Shingle)
+
 For further information and updates, please contact the author Dr Adam S. Candy at adam.candy@imperial.ac.uk.
 
 ![Shingle](./data/shingle.png?raw=true "Shingle")
