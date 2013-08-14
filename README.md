@@ -78,3 +78,4 @@ Timmermann, R et al. (2010): Antarctic ice sheet topography, cavity geometry, an
 Supplement to: Timmermann, Ralph; Le Brocq, Anne M; Deen, Tara J; Domack, Eugene W; Dutrieux, Pierre; Galton-Fenzi, Ben; Hellmer, Hartmut H; Humbert, Angelika; Jansen, Daniela; Jenkins, Adrian; Lambrecht, Astrid; Makinson, Keith; Niederjasper, Fred; Nitsche, Frank-Oliver; Nøst, Ole Anders; Smedsrud, Lars Henrik; Smith, Walter (2010): A consistent dataset of Antarctic ice sheet topography, cavity geometry, and global bathymetry. Earth System Science Data, 2(2), 261-273, doi:10.5194/essd-2-261-2010
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/5494cf3263af78dea92487d951d530a8 "githalytics.com")](http://githalytics.com/adamcandy/Shingle)
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/adamcandy/shingle/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
