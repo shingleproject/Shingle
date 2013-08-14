@@ -38,10 +38,6 @@ ECHO=echo
 
 default:	test
 
-testwithdownload:
-	@make download
-	@make test
-
 test: 
 	@echo "  TEST ALL"
 	@make -s clean
@@ -80,6 +76,11 @@ data:
 datalink:
 	@echo 'Creating a link to the RTopo dataset at ~/dataset/rtopo/RTopo105b_50S.nc'
 	@ln -s ~/dataset/rtopo/RTopo105b_50S.nc $(DATASET)
+
+testwithdownload:
+	@make data
+	@make test
+
 
 testcases:
 	@$(foreach var,$(EXAMPLES), $(MAKE) -s all$(var);)
