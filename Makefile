@@ -1,4 +1,3 @@
-
 ##########################################################################
 #  
 #  Generation of boundary representation from arbitrary geophysical
@@ -32,3 +31,6 @@ data:
 datalink:
 	@make -s -C tests datalink
 
+testwithdownload:
+	@make download
+	@make test
