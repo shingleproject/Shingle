@@ -81,6 +81,7 @@ testwithdatadownload:
 	@make data
 	@make test
 
+.PHONY: data datalink testwithdatadownload datacheck
 
 testcases:
 	@$(foreach var,$(EXAMPLES), $(MAKE) -s all$(var);)
