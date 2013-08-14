@@ -76,16 +76,20 @@ datacheck:
 		echo ""; \
 		false; }
 
-data:
-	@echo 'Downloading the RTopo dataset for the tests (note 743MB).'
-	@curl 'http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc' -o $(DATASET)
-
 datalink:
 	@echo 'Creating a link to the RTopo dataset at ~/dataset/rtopo/RTopo105b_50S.nc'
 	@ln -s ~/dataset/rtopo/RTopo105b_50S.nc $(DATASET)
 
+data:
+	@echo 'Downloading the RTopo dataset for the tests (note 743MB).'
+	@curl 'http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc' -o $(DATASET)
+
+datatimeout:
+	@echo 'Downloading the RTopo dataset for the tests (note 743MB).'
+	@curl -m 180 'http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc' -o $(DATASET)
+
 testwithdatadownload:
-	@make data
+	@make datatimeout
 	@make test
 
 .PHONY: data datalink testwithdatadownload datacheck

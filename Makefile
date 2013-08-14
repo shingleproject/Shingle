@@ -32,8 +32,7 @@ datalink:
 	@make -s -C tests datalink
 
 testwithdatadownload:
-	@make data
-	@make test
+	@make -s -C tests testwithdatadownload
 	
 .PHONY: test data datalink testwithdatadownload
 
