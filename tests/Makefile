@@ -1,4 +1,3 @@
-
 ##########################################################################
 #  
 #  Generation of boundary representation from arbitrary geophysical
@@ -38,6 +37,10 @@ ECHO=echo
 #### main
 
 default:	test
+
+testwithdownload:
+	@make download
+	@make test
 
 test: 
 	@echo "  TEST ALL"
