@@ -86,7 +86,7 @@ data:
 
 datatimeout:
 	@echo 'Downloading the RTopo dataset for the tests (note 743MB).'
-	@curl -m 180 'http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc' -o $(DATASET)
+	@curl -m 240 'http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc' -o $(DATASET)
 
 testwithdatadownload:
 	@make datatimeout
