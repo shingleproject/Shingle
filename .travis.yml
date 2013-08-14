@@ -6,4 +6,4 @@ python:
 install:
 
 # command to run tests
-script: make test 
+script: make testwithdownload
