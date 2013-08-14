@@ -7,6 +7,8 @@ For further information and updates, please contact the author Dr Adam S. Candy 
 
 ![Shingle](./data/shingle.png?raw=true "Shingle")
 
+Outline web page: [http://adamcandy.github.io/Shingle](http://adamcandy.github.io/Shingle "Shingle")
+
 Build status
 ------------
 
@@ -15,9 +17,8 @@ Build status
 Example geophysical domains
 ---------------------------
 
-
 A selection of geophysical domains where Shingle has been applied to generate the boundary representation.
-This description is then meshed using <a href="http://geuz.org/gmsh">Gmsh</a>.
+This description is then meshed using [Gmsh](http://geuz.org/gmsh "Gmsh").
 
 ![Shingle examples](./data/shingleexamples.jpg?raw=true "Shingle examples")
 
@@ -81,7 +82,7 @@ Currently there are six tests in the test suite:
 Datasets
 --------
 
-The above tests use the RTopo dataset, described in detail at: http://doi.pangaea.de/10.1594/PANGAEA.741917 .
+The above tests use the RTopo dataset, described in detail at: [http://doi.pangaea.de/10.1594/PANGAEA.741917](http://doi.pangaea.de/10.1594/PANGAEA.741917 "RTopo").
 
 Timmermann, R et al. (2010): Antarctic ice sheet topography, cavity geometry, and global bathymetry (RTopo 1.0.5-beta). doi:10.1594/PANGAEA.741917,
 Supplement to: Timmermann, Ralph; Le Brocq, Anne M; Deen, Tara J; Domack, Eugene W; Dutrieux, Pierre; Galton-Fenzi, Ben; Hellmer, Hartmut H; Humbert, Angelika; Jansen, Daniela; Jenkins, Adrian; Lambrecht, Astrid; Makinson, Keith; Niederjasper, Fred; Nitsche, Frank-Oliver; Nøst, Ole Anders; Smedsrud, Lars Henrik; Smith, Walter (2010): A consistent dataset of Antarctic ice sheet topography, cavity geometry, and global bathymetry. Earth System Science Data, 2(2), 261-273, doi:10.5194/essd-2-261-2010
