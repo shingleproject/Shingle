@@ -46,6 +46,8 @@ default:	test
 test: 
 	@echo "  TEST ALL"
 	@make -s clean
+	@make -s allcases
+	$(ECHO) "  SUMMARY:"
 	@make -s testcases
 	$(ECHO) "  ALL TESTS: $(green)PASS$(end)"
 
@@ -88,14 +90,19 @@ testwithdatadownload:
 
 .PHONY: data datalink testwithdatadownload datacheck
 
-testcases:
-	@$(foreach var,$(EXAMPLES), $(MAKE) -s all$(var);)
+allcases:
+	@$(foreach var, $(EXAMPLES), $(MAKE) -s all$(var);)
 
 buildcases:
-	@$(foreach var,$(EXAMPLES), $(MAKE) -s build$(var);)
+	@$(MAKE) -s $(foreach var, $(EXAMPLES), build$(var))
 
 updatevalid:
 	@$(foreach var,$(EXAMPLES), cat $(var)/shorelines.geo > valid/$(var)/shorelines.geo;)
+
+testcases:
+	@$(MAKE) -s $(foreach var, $(EXAMPLES), test$(var))
+
+.PHONY: allcases buildcases testcases
 
 default: test
 
