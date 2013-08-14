@@ -34,3 +34,6 @@ datalink:
 testwithdatadownload:
 	@make data
 	@make test
+	
+.PHONY: test data datalink testwithdatadownload
+
