@@ -31,8 +31,13 @@ red=\033[0;31m
 blue=\033[0;34m
 end=\033[0m
 
-#ECHO=echo -e
-ECHO=echo
+#green=
+#red=
+#blue=
+#end=
+
+ECHO=echo -e
+#ECHO=echo
 
 #### main
 

@@ -4,6 +4,6 @@ python:
 virtualenv:
   system_site_packages: true
 before_install:
- - sudo apt-get install -qq python-numpy python-scipy python-matplotlib
+ - sudo apt-get install -qq python-numpy python-scientific python-matplotlib
 #install:
 script: make testwithdatadownload

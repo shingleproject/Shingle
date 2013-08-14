@@ -26,7 +26,7 @@ import sys
 import shutil
 import math
 
-from scipy.io import netcdf
+from Scientific.IO import NetCDF
 import matplotlib
 matplotlib.use('Agg')
 from pylab import contour
@@ -262,7 +262,7 @@ def project(location):
   return [ x, y ]
 
 def read_rtopo(filename):
-  file = netcdf.netcdf_file(filename, 'r')
+  file = NetCDF.NetCDFFile(filename, 'r')
   #variableNames = fileN.variables.keys() 
   lon = file.variables['lon'][:] 
   lat = file.variables['lat'][:] 
