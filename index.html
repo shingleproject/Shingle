@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Shingle by adamcandy</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Shingle</h1>
+        <p>Generation of boundary representation from arbitrary geophysical fields.</p>
+
+        <p class="view"><a href="https://github.com/adamcandy/Shingle">View the Project on GitHub <small>adamcandy/Shingle</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/adamcandy/Shingle/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/adamcandy/Shingle/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/adamcandy/Shingle">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="shingle" class="anchor" href="#shingle"><span class="octicon octicon-link"></span></a>Shingle</h1>
+
+<p>Generation of boundary representation from arbitrary geophysical fields.</p>
+
+<p>For further information and updates, please contact the author Dr Adam S. Candy at <a href="mailto:adam.candy@imperial.ac.uk">adam.candy@imperial.ac.uk</a>.</p>
+
+<p><img src="./data/shingle.png?raw=true" alt="Shingle" title="Shingle"></p>
+
+<h2>
+<a name="build-status" class="anchor" href="#build-status"><span class="octicon octicon-link"></span></a>Build status</h2>
+
+<p><a href="http://travis-ci.org/adamcandy/Shingle"><img src="https://secure.travis-ci.org/adamcandy/Shingle.png" alt="Build Status"></a></p>
+
+<h2>
+<a name="outline" class="anchor" href="#outline"><span class="octicon octicon-link"></span></a>Outline</h2>
+
+<p>A new meshing approach for realistic domains.</p>
+
+<p>This code generates boundary representations with elemernt identifications from arbitrary geophysical fields.  It was originally used  mask to generate a boundary along the coastlines and grounding line* (which is not positioned at a constant depth).  The code is easily applied to boundaries along depth contours and to work with other NetCDF sources.</p>
+
+<p>The new approach uses contouring routines (as opposed to the GSHHS Gmsh plugin, or a GMT approach).  It would be useful to test this new code on a wide range of regions - particularly to check the contouring routines are behaving satisfactorily.  It works very well in the Antarctic region (including the region inside ice shelf cavities). </p>
+
+<p>The dependencies are all Python modules (e.g. GMT is not required).</p>
+
+<ul>
+<li>which involves a neat trick with modulo arithmetic to keep calculation time down significantly.</li>
+</ul><h2>
+<a name="supported-features" class="anchor" href="#supported-features"><span class="octicon octicon-link"></span></a>Supported features</h2>
+
+<ul>
+<li>Generate boundary representation from raw raster input (e.g. a NetCDF data file),</li>
+<li>Regions defined by arbitrary functions of longitude and latitude (given on the command line),</li>
+<li>Simpler definition of regions by boxes (such as 'longmin:longmax,latmin:longmax'),</li>
+<li>Define included paths by Gmsh ID number (useful to include or exclude  specific islands/land masses),</li>
+<li>Deals with multiple open boundaries,</li>
+<li>Islands and boundaries split by the global boundary are treated,</li>
+<li>Automatically closes boundaries with parallels and meridians (with a prescribed length step),</li>
+<li>Applies different boundary IDs on open and closed boundaries,</li>
+<li>Exclude smaller islands - restricted by a given minimum area,</li>
+<li>Option to extend domain in latitude on open boundaries (e.g. for sponge regions, or large open regions in the open ocean),</li>
+<li>Command line used is saved in the Gmsh .geo file for reference,</li>
+<li>Projection type (e.g. options to generate a mesh to UTM coordinates, </li>
+<li>Option to generate the ACC average track line (and then to refine the mesh to this).</li>
+<li>Ice shelf inclusion options</li>
+</ul><h2>
+<a name="development-version" class="anchor" href="#development-version"><span class="octicon octicon-link"></span></a>Development version</h2>
+
+<p>A development version of the code also has:</p>
+
+<ul>
+<li>Caching of contours (which can save a lot of processing time)</li>
+<li>Graphical output of contouring stage, to aid in contour selection</li>
+</ul><h2>
+<a name="other-updates" class="anchor" href="#other-updates"><span class="octicon octicon-link"></span></a>Other updates</h2>
+
+<ul>
+<li>Consistent use of dx_default,</li>
+<li>The Antarctica main example contour can now be meshed (uses dx=10 in the parallel creation now),</li>
+<li>Renamed the variables associated with the inclusion of the ice shelf ocean cavities to be more intuitive.</li>
+</ul><h2>
+<a name="test-suite" class="anchor" href="#test-suite"><span class="octicon octicon-link"></span></a>Test suite</h2>
+
+<p>Currently there are six tests in the test suite:</p>
+
+<ul>
+<li>amundsen_sea</li>
+<li>antarctica_all</li>
+<li>antarctica_main_landmass</li>
+<li>antarctica_main_landmass_30s</li>
+<li>filchner-ronne</li>
+<li>filchner-ronne_iceshelf</li>
+</ul><h2>
+<a name="datasets" class="anchor" href="#datasets"><span class="octicon octicon-link"></span></a>Datasets</h2>
+
+<p>The above tests use the RTopo dataset, described in detail at: <a href="http://doi.pangaea.de/10.1594/PANGAEA.741917">http://doi.pangaea.de/10.1594/PANGAEA.741917</a> .</p>
+
+<p>Timmermann, R et al. (2010): Antarctic ice sheet topography, cavity geometry, and global bathymetry (RTopo 1.0.5-beta). doi:10.1594/PANGAEA.741917,
+Supplement to: Timmermann, Ralph; Le Brocq, Anne M; Deen, Tara J; Domack, Eugene W; Dutrieux, Pierre; Galton-Fenzi, Ben; Hellmer, Hartmut H; Humbert, Angelika; Jansen, Daniela; Jenkins, Adrian; Lambrecht, Astrid; Makinson, Keith; Niederjasper, Fred; Nitsche, Frank-Oliver; Nøst, Ole Anders; Smedsrud, Lars Henrik; Smith, Walter (2010): A consistent dataset of Antarctic ice sheet topography, cavity geometry, and global bathymetry. Earth System Science Data, 2(2), 261-273, doi:10.5194/essd-2-261-2010</p>
+
+<p><a href="http://githalytics.com/adamcandy/Shingle"><img src="https://cruel-carlota.pagodabox.com/5494cf3263af78dea92487d951d530a8" alt="githalytics.com alpha" title="githalytics.com"></a>
+<a href="https://bitdeli.com/free" title="Bitdeli Badge"><img src="https://d2weczhvl823v0.cloudfront.net/adamcandy/shingle/trend.png" alt="Bitdeli Badge"></a></p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/adamcandy">adamcandy</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
