@@ -7,6 +7,9 @@ For further information and updates, please contact the author Dr Adam S. Candy 
 
 ![Shingle](./data/shingle.png?raw=true "Shingle")
 
+Build status
+------------
+
 [![Build Status](https://secure.travis-ci.org/adamcandy/Shingle.png)](http://travis-ci.org/adamcandy/Shingle)
 
 Outline
