@@ -12,6 +12,15 @@ Build status
 
 [![Build Status](https://secure.travis-ci.org/adamcandy/Shingle.png)](http://travis-ci.org/adamcandy/Shingle)
 
+Example geophysical domains
+---------------------------
+
+
+A selection of geophysical domains where Shingle has been applied to generate the boundary representation.
+This description is then meshed using <a href="http://geuz.org/gmsh">Gmsh</a>.
+
+![Shingle examples](./data/shingleexamples.jpg?raw=true "Shingle examples")
+
 Outline
 -------
 
