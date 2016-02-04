@@ -1,0 +1,24 @@
+diff -Naur spud/Makefile.in spud_fx/Makefile.in
+--- spud/Makefile.in	2016-02-04 23:20:57.000000000 +0100
++++ spud_fx/Makefile.in	2016-02-04 23:17:45.000000000 +0100
+@@ -29,6 +29,8 @@
+ FC      = @FC@
+ FCFLAGS = -Iinclude @CPPFLAGS@ @FCFLAGS@
+ 
++CC     = @CC@
++
+ CXX     = @CXX@
+ CXXFLAGS= -Iinclude @CPPFLAGS@ @CXXFLAGS@
+ 
+@@ -95,9 +97,9 @@
+ install-diamond:
+ 	cd diamond;	python setup.py install --prefix=$(DESTDIR)@prefix@; cd ..
+ 
+-install-pyspud:
++install-pyspud: libspud.la
+ ifeq ($(origin BUILDING_DEBIAN),undefined)
+-	cd python; python setup.py install --prefix=$(DESTDIR)@prefix@; cd ..
++	cd python; CC=$(CC) python setup.py install --prefix=$(DESTDIR)@prefix@; cd ..
+ else
+ 	cd python; for python in $(shell pyversions -r); do $$python setup.py install --prefix=$(DESTDIR)@prefix@ --install-layout=deb; done; cd ..
+ endif
