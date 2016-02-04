@@ -1,22 +1,29 @@
 // Arguments:  -f filchner-ronne/shorelines.geo -n ../RTopo105b_50S.nc -no -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0 -lat -65.0
 // Source netCDF located at ../RTopo105b_50S.nc
 // Output to filchner-ronne/shorelines.geo
+// Projection type cartesian
 // Region defined by ((longitude >= -85.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0)) or ((longitude >= -64.0) and (longitude <= -30.0) and (latitude >= -89.0) and (latitude <= -70.0)) or ((longitude >= -30.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0))
 // Extending region to meet parallel on latitude -65.0
-// 
 // Including iceshelf ocean cavities
 // Paths found: 348
 
+// == Header ======================================================
 IP = newp;
 IL = newl;
 ILL = newll;
 IS = news;
 IFI = newf;
+
 Point ( IP + 0 ) = { 0, 0, 0 };
 Point ( IP + 1 ) = { 0, 0, 6.37101e+06 };
 PolarSphere ( IS + 0 ) = { IP, IP + 1 };
+Delete { Point{ IP + 0}; }
+Delete { Point{ IP + 1}; }
+// Paths that cross the date line: 
+// Merged paths that cross the date line: 
+// Paths found valid: 348, including 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255 256 257 258 259 260 261 262 263 264 265 266 267 268 269 270 271 272 273 274 275 276 277 278 279 280 281 282 283 284 285 286 287 288 289 290 291 292 293 294 295 296 297 298 299 300 301 302 303 304 305 306 307 308 309 310 311 312 313 314 315 316 317 318 319 320 321 322 323 324 325 326 327 328 329 330 331 332 333 334 335 336 337 338 339 340 341 342 343 344 345 346 347 348
 
-// Ice-Land mass number 1
+// == Ice-Land mass number 1 ======================================
 // Path 1 points 12324/59599 area 1.7181e+07 (required closing in 2 parts of the path)
 Point ( IP + 2 ) = { -7.39948092, 2.69319080, 0.00000000 };
 Point ( IP + 3 ) = { -7.39869738, 2.69534258, 0.00000000 };
@@ -12345,8 +12352,6 @@ Point ( IP + 12324 ) = { -2.65051368, 5.01653069, 0.00000000 };
 LoopStart0 = IP + 2;
 LoopEnd0 = IP + 12324;
 BSpline ( IL + 0 ) = { IP + 2 : IP + 12324 };
-Physical Line( 3 ) = { IL + 0 };
-
 // Closing path with parallels and merdians, from (-62.15833282, -70.00000000) to  (-20.00000000, -75.52499771)
 // Drawing meridian to max latitude index 12324 at -62.158333.2, -70.000000.2 (to match -65.000000.2)
 Point ( IP + 12325 ) = { -2.63520813, 4.98931872, 0.00000000 };
@@ -12929,17 +12934,18 @@ Point ( IP + 12899 ) = { -7.33544847, 2.66988490, 0.00000000 };
 LoopStart1 = IP + 12324;
 LoopEnd1 = IP + 12899;
 BSpline ( IL + 1 ) = { IP + 12324 : IP + 12899, IP + 2 };
-Physical Line( 4 ) = { IL + 1 };
-
 Line Loop( ILL + 0 ) = { IL + 0, IL + 1 };
 // **** END end of loop False12323/12323True
-// Ice-Land mass number 2
+
+// == Ice-Land mass number 2 ======================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 3
+
+// == Ice-Land mass number 3 ======================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 4
+
+// == Ice-Land mass number 4 ======================================
 // Path 4 points 1204/1205 area 85846.4 (required closing in 2 parts of the path)
 Point ( IP + 12900 ) = { -6.08003430, 11.09008953, 0.00000000 };
 Point ( IP + 12901 ) = { -6.08326071, 11.08832007, 0.00000000 };
@@ -14148,10 +14154,9 @@ Point ( IP + 14103 ) = { -6.07280006, 11.08071610, 0.00000000 };
 LoopStart2 = IP + 12900;
 LoopEnd2 = IP + 14103;
 BSpline ( IL + 2 ) = { IP + 12900 : IP + 14103, IP + 12900 };
-Physical Line( 3 ) = { IL + 2 };
-
 Line Loop( ILL + 1 ) = { IL + 2 };
-// Ice-Land mass number 5
+
+// == Ice-Land mass number 5 ======================================
 // Path 5 points 2192/2193 area 372732 (required closing in 2 parts of the path)
 Point ( IP + 14104 ) = { -7.57228847, 10.04268551, 0.00000000 };
 Point ( IP + 14105 ) = { -7.57520873, 10.04048294, 0.00000000 };
@@ -16348,10 +16353,9 @@ Point ( IP + 16295 ) = { -7.56386694, 10.03455291, 0.00000000 };
 LoopStart3 = IP + 14104;
 LoopEnd3 = IP + 16295;
 BSpline ( IL + 3 ) = { IP + 14104 : IP + 16295, IP + 14104 };
-Physical Line( 3 ) = { IL + 3 };
-
 Line Loop( ILL + 2 ) = { IL + 3 };
-// Ice-Land mass number 6
+
+// == Ice-Land mass number 6 ======================================
 // Path 6 points 564/565 area 23435.8 (required closing in 2 parts of the path)
 Point ( IP + 16296 ) = { -4.63362594, 10.52241007, 0.00000000 };
 Point ( IP + 16297 ) = { -4.63668584, 10.52106209, 0.00000000 };
@@ -16920,13 +16924,13 @@ Point ( IP + 16859 ) = { -4.62819707, 10.51422849, 0.00000000 };
 LoopStart4 = IP + 16296;
 LoopEnd4 = IP + 16859;
 BSpline ( IL + 4 ) = { IP + 16296 : IP + 16859, IP + 16296 };
-Physical Line( 3 ) = { IL + 4 };
-
 Line Loop( ILL + 3 ) = { IL + 4 };
-// Ice-Land mass number 7
+
+// == Ice-Land mass number 7 ======================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 8
+
+// == Ice-Land mass number 8 ======================================
 // Path 8 points 834/835 area 16929.5 (required closing in 2 parts of the path)
 Point ( IP + 16860 ) = { -3.70065054, 10.46966789, 0.00000000 };
 Point ( IP + 16861 ) = { -3.70369515, 10.46859123, 0.00000000 };
@@ -17765,10 +17769,9 @@ Point ( IP + 17693 ) = { -3.69611780, 10.46168753, 0.00000000 };
 LoopStart5 = IP + 16860;
 LoopEnd5 = IP + 17693;
 BSpline ( IL + 5 ) = { IP + 16860 : IP + 17693, IP + 16860 };
-Physical Line( 3 ) = { IL + 5 };
-
 Line Loop( ILL + 4 ) = { IL + 5 };
-// Ice-Land mass number 9
+
+// == Ice-Land mass number 9 ======================================
 // Path 9 points 350/351 area 976.81 (required closing in 2 parts of the path)
 Point ( IP + 17694 ) = { -8.77026488, 6.19438674, 0.00000000 };
 Point ( IP + 17695 ) = { -8.77206759, 6.19183360, 0.00000000 };
@@ -18123,10 +18126,9 @@ Point ( IP + 18043 ) = { -8.76246118, 6.19078497, 0.00000000 };
 LoopStart6 = IP + 17694;
 LoopEnd6 = IP + 18043;
 BSpline ( IL + 6 ) = { IP + 17694 : IP + 18043, IP + 17694 };
-Physical Line( 3 ) = { IL + 6 };
-
 Line Loop( ILL + 5 ) = { IL + 6 };
-// Ice-Land mass number 10
+
+// == Ice-Land mass number 10 =====================================
 // Path 10 points 148/149 area 556.475 (required closing in 2 parts of the path)
 Point ( IP + 18044 ) = { -4.07015022, 9.89943676, 0.00000000 };
 Point ( IP + 18045 ) = { -4.07303029, 9.89825213, 0.00000000 };
@@ -18279,142 +18281,185 @@ Point ( IP + 18191 ) = { -4.06551787, 9.89225963, 0.00000000 };
 LoopStart7 = IP + 18044;
 LoopEnd7 = IP + 18191;
 BSpline ( IL + 7 ) = { IP + 18044 : IP + 18191, IP + 18044 };
-Physical Line( 3 ) = { IL + 7 };
-
 Line Loop( ILL + 6 ) = { IL + 7 };
-// Ice-Land mass number 11
+
+// == Ice-Land mass number 11 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 12
+
+// == Ice-Land mass number 12 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 13
+
+// == Ice-Land mass number 13 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 14
+
+// == Ice-Land mass number 14 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 15
+
+// == Ice-Land mass number 15 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 16
+
+// == Ice-Land mass number 16 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 17
+
+// == Ice-Land mass number 17 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 18
+
+// == Ice-Land mass number 18 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 19
+
+// == Ice-Land mass number 19 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 20
+
+// == Ice-Land mass number 20 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 21
+
+// == Ice-Land mass number 21 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 22
+
+// == Ice-Land mass number 22 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 23
+
+// == Ice-Land mass number 23 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 24
+
+// == Ice-Land mass number 24 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 25
+
+// == Ice-Land mass number 25 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 26
+
+// == Ice-Land mass number 26 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 27
+
+// == Ice-Land mass number 27 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 28
+
+// == Ice-Land mass number 28 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 29
+
+// == Ice-Land mass number 29 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 30
+
+// == Ice-Land mass number 30 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 31
+
+// == Ice-Land mass number 31 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 32
+
+// == Ice-Land mass number 32 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 33
+
+// == Ice-Land mass number 33 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 34
+
+// == Ice-Land mass number 34 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 35
+
+// == Ice-Land mass number 35 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 36
+
+// == Ice-Land mass number 36 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 37
+
+// == Ice-Land mass number 37 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 38
+
+// == Ice-Land mass number 38 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 39
+
+// == Ice-Land mass number 39 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 40
+
+// == Ice-Land mass number 40 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 41
+
+// == Ice-Land mass number 41 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 42
+
+// == Ice-Land mass number 42 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 43
+
+// == Ice-Land mass number 43 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 44
+
+// == Ice-Land mass number 44 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 45
+
+// == Ice-Land mass number 45 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 46
+
+// == Ice-Land mass number 46 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 47
+
+// == Ice-Land mass number 47 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 48
+
+// == Ice-Land mass number 48 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 49
+
+// == Ice-Land mass number 49 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 50
+
+// == Ice-Land mass number 50 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 51
+
+// == Ice-Land mass number 51 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 52
+
+// == Ice-Land mass number 52 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 53
+
+// == Ice-Land mass number 53 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 54
+
+// == Ice-Land mass number 54 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 55
+
+// == Ice-Land mass number 55 =====================================
 // Path 55 points 68/69 area 134.925 (required closing in 2 parts of the path)
 Point ( IP + 18192 ) = { -2.91729741, 5.23060191, 0.00000000 };
 Point ( IP + 18193 ) = { -2.91881843, 5.22975329, 0.00000000 };
@@ -18487,13 +18532,13 @@ Point ( IP + 18259 ) = { -2.91523105, 5.22868492, 0.00000000 };
 LoopStart8 = IP + 18192;
 LoopEnd8 = IP + 18259;
 BSpline ( IL + 8 ) = { IP + 18192 : IP + 18259, IP + 18192 };
-Physical Line( 3 ) = { IL + 8 };
-
 Line Loop( ILL + 7 ) = { IL + 8 };
-// Ice-Land mass number 56
+
+// == Ice-Land mass number 56 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 57
+
+// == Ice-Land mass number 57 =====================================
 // Path 57 points 92/93 area 134.49 (required closing in 2 parts of the path)
 Point ( IP + 18260 ) = { -2.87043293, 5.13603563, 0.00000000 };
 Point ( IP + 18261 ) = { -2.87192714, 5.13520026, 0.00000000 };
@@ -18590,892 +18635,1185 @@ Point ( IP + 18351 ) = { -2.86842301, 5.13419219, 0.00000000 };
 LoopStart9 = IP + 18260;
 LoopEnd9 = IP + 18351;
 BSpline ( IL + 9 ) = { IP + 18260 : IP + 18351, IP + 18260 };
-Physical Line( 3 ) = { IL + 9 };
-
 Line Loop( ILL + 8 ) = { IL + 9 };
-// Ice-Land mass number 58
+
+// == Ice-Land mass number 58 =====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 59
+// == Ice-Land mass number 59 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 60
+
+// == Ice-Land mass number 60 =====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 61
+// == Ice-Land mass number 61 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 62
+
+// == Ice-Land mass number 62 =====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 63
+// == Ice-Land mass number 63 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 64
+
+// == Ice-Land mass number 64 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 65
+
+// == Ice-Land mass number 65 =====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 66
+// == Ice-Land mass number 66 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 67
+
+// == Ice-Land mass number 67 =====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 68
+// == Ice-Land mass number 68 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 69
+
+// == Ice-Land mass number 69 =====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 70
+// == Ice-Land mass number 70 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 71
+
+// == Ice-Land mass number 71 =====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 72
+// == Ice-Land mass number 72 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 73
+
+// == Ice-Land mass number 73 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 74
+
+// == Ice-Land mass number 74 =====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 75
+// == Ice-Land mass number 75 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 76
+
+// == Ice-Land mass number 76 =====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 77
+// == Ice-Land mass number 77 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 78
+
+// == Ice-Land mass number 78 =====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 79
+// == Ice-Land mass number 79 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 80
+
+// == Ice-Land mass number 80 =====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 81
+// == Ice-Land mass number 81 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 82
+
+// == Ice-Land mass number 82 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 83
+
+// == Ice-Land mass number 83 =====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 84
+// == Ice-Land mass number 84 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 85
+
+// == Ice-Land mass number 85 =====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 86
+// == Ice-Land mass number 86 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 87
+
+// == Ice-Land mass number 87 =====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 88
+// == Ice-Land mass number 88 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 89
+
+// == Ice-Land mass number 89 =====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 90
+// == Ice-Land mass number 90 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 91
+
+// == Ice-Land mass number 91 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 92
+
+// == Ice-Land mass number 92 =====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 93
+// == Ice-Land mass number 93 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 94
+
+// == Ice-Land mass number 94 =====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 95
+// == Ice-Land mass number 95 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 96
+
+// == Ice-Land mass number 96 =====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 97
+// == Ice-Land mass number 97 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 98
+
+// == Ice-Land mass number 98 =====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 99
+// == Ice-Land mass number 99 =====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 100
+
+// == Ice-Land mass number 100 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 101
+
+// == Ice-Land mass number 101 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 102
+// == Ice-Land mass number 102 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 103
+
+// == Ice-Land mass number 103 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 104
+// == Ice-Land mass number 104 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 105
+
+// == Ice-Land mass number 105 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 106
+// == Ice-Land mass number 106 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 107
+
+// == Ice-Land mass number 107 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 108
+// == Ice-Land mass number 108 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 109
+
+// == Ice-Land mass number 109 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 110
+
+// == Ice-Land mass number 110 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 111
+// == Ice-Land mass number 111 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 112
+
+// == Ice-Land mass number 112 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 113
+// == Ice-Land mass number 113 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 114
+
+// == Ice-Land mass number 114 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 115
+// == Ice-Land mass number 115 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 116
+
+// == Ice-Land mass number 116 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 117
+// == Ice-Land mass number 117 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 118
+
+// == Ice-Land mass number 118 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 119
+
+// == Ice-Land mass number 119 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 120
+// == Ice-Land mass number 120 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 121
+
+// == Ice-Land mass number 121 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 122
+// == Ice-Land mass number 122 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 123
+
+// == Ice-Land mass number 123 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 124
+// == Ice-Land mass number 124 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 125
+
+// == Ice-Land mass number 125 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 126
+// == Ice-Land mass number 126 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 127
+
+// == Ice-Land mass number 127 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 128
+
+// == Ice-Land mass number 128 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 129
+// == Ice-Land mass number 129 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 130
+
+// == Ice-Land mass number 130 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 131
+// == Ice-Land mass number 131 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 132
+
+// == Ice-Land mass number 132 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 133
+// == Ice-Land mass number 133 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 134
+
+// == Ice-Land mass number 134 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 135
+// == Ice-Land mass number 135 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 136
+
+// == Ice-Land mass number 136 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 137
+
+// == Ice-Land mass number 137 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 138
+// == Ice-Land mass number 138 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 139
+
+// == Ice-Land mass number 139 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 140
+// == Ice-Land mass number 140 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 141
+
+// == Ice-Land mass number 141 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 142
+// == Ice-Land mass number 142 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 143
+
+// == Ice-Land mass number 143 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 144
+// == Ice-Land mass number 144 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 145
+
+// == Ice-Land mass number 145 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 146
+
+// == Ice-Land mass number 146 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 147
+// == Ice-Land mass number 147 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 148
+
+// == Ice-Land mass number 148 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 149
+// == Ice-Land mass number 149 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 150
+
+// == Ice-Land mass number 150 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 151
+// == Ice-Land mass number 151 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 152
+
+// == Ice-Land mass number 152 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 153
+// == Ice-Land mass number 153 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 154
+
+// == Ice-Land mass number 154 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 155
+
+// == Ice-Land mass number 155 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 156
+// == Ice-Land mass number 156 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 157
+
+// == Ice-Land mass number 157 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 158
+// == Ice-Land mass number 158 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 159
+
+// == Ice-Land mass number 159 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 160
+// == Ice-Land mass number 160 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 161
+
+// == Ice-Land mass number 161 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 162
+// == Ice-Land mass number 162 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 163
+
+// == Ice-Land mass number 163 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 164
+
+// == Ice-Land mass number 164 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 165
+// == Ice-Land mass number 165 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 166
+
+// == Ice-Land mass number 166 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 167
+// == Ice-Land mass number 167 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 168
+
+// == Ice-Land mass number 168 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 169
+// == Ice-Land mass number 169 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 170
+
+// == Ice-Land mass number 170 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 171
+// == Ice-Land mass number 171 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 172
+
+// == Ice-Land mass number 172 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 173
+
+// == Ice-Land mass number 173 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 174
+// == Ice-Land mass number 174 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 175
+
+// == Ice-Land mass number 175 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 176
+// == Ice-Land mass number 176 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 177
+
+// == Ice-Land mass number 177 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 178
+// == Ice-Land mass number 178 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 179
+
+// == Ice-Land mass number 179 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 180
+// == Ice-Land mass number 180 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 181
+
+// == Ice-Land mass number 181 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 182
+
+// == Ice-Land mass number 182 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 183
+// == Ice-Land mass number 183 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 184
+
+// == Ice-Land mass number 184 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 185
+// == Ice-Land mass number 185 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 186
+
+// == Ice-Land mass number 186 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 187
+// == Ice-Land mass number 187 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 188
+
+// == Ice-Land mass number 188 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 189
+// == Ice-Land mass number 189 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 190
+
+// == Ice-Land mass number 190 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 191
+
+// == Ice-Land mass number 191 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 192
+// == Ice-Land mass number 192 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 193
+
+// == Ice-Land mass number 193 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 194
+// == Ice-Land mass number 194 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 195
+
+// == Ice-Land mass number 195 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 196
+
+// == Ice-Land mass number 196 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 197
+// == Ice-Land mass number 197 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 198
+
+// == Ice-Land mass number 198 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 199
+// == Ice-Land mass number 199 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 200
+
+// == Ice-Land mass number 200 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 201
+
+// == Ice-Land mass number 201 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 202
+// == Ice-Land mass number 202 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 203
+
+// == Ice-Land mass number 203 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 204
+// == Ice-Land mass number 204 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 205
+
+// == Ice-Land mass number 205 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 206
+// == Ice-Land mass number 206 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 207
+
+// == Ice-Land mass number 207 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 208
+// == Ice-Land mass number 208 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 209
+
+// == Ice-Land mass number 209 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 210
+
+// == Ice-Land mass number 210 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 211
+// == Ice-Land mass number 211 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 212
+
+// == Ice-Land mass number 212 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 213
+// == Ice-Land mass number 213 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 214
+
+// == Ice-Land mass number 214 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 215
+// == Ice-Land mass number 215 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 216
+
+// == Ice-Land mass number 216 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 217
+// == Ice-Land mass number 217 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 218
+
+// == Ice-Land mass number 218 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 219
+
+// == Ice-Land mass number 219 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 220
+// == Ice-Land mass number 220 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 221
+
+// == Ice-Land mass number 221 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 222
+// == Ice-Land mass number 222 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 223
+
+// == Ice-Land mass number 223 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 224
+// == Ice-Land mass number 224 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 225
+
+// == Ice-Land mass number 225 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 226
+// == Ice-Land mass number 226 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 227
+
+// == Ice-Land mass number 227 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 228
+
+// == Ice-Land mass number 228 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 229
+// == Ice-Land mass number 229 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 230
+
+// == Ice-Land mass number 230 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 231
+// == Ice-Land mass number 231 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 232
+
+// == Ice-Land mass number 232 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 233
+// == Ice-Land mass number 233 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 234
+
+// == Ice-Land mass number 234 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 235
+// == Ice-Land mass number 235 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 236
+
+// == Ice-Land mass number 236 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 237
+
+// == Ice-Land mass number 237 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 238
+// == Ice-Land mass number 238 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 239
+
+// == Ice-Land mass number 239 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 240
+// == Ice-Land mass number 240 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 241
+
+// == Ice-Land mass number 241 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 242
+// == Ice-Land mass number 242 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 243
+
+// == Ice-Land mass number 243 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 244
+// == Ice-Land mass number 244 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 245
+
+// == Ice-Land mass number 245 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 246
+
+// == Ice-Land mass number 246 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 247
+// == Ice-Land mass number 247 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 248
+
+// == Ice-Land mass number 248 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 249
+// == Ice-Land mass number 249 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 250
+
+// == Ice-Land mass number 250 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 251
+// == Ice-Land mass number 251 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 252
+
+// == Ice-Land mass number 252 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 253
+// == Ice-Land mass number 253 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 254
+
+// == Ice-Land mass number 254 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 255
+
+// == Ice-Land mass number 255 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 256
+// == Ice-Land mass number 256 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 257
+
+// == Ice-Land mass number 257 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 258
+// == Ice-Land mass number 258 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 259
+
+// == Ice-Land mass number 259 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 260
+// == Ice-Land mass number 260 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 261
+
+// == Ice-Land mass number 261 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 262
+// == Ice-Land mass number 262 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 263
+
+// == Ice-Land mass number 263 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 264
+
+// == Ice-Land mass number 264 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 265
+// == Ice-Land mass number 265 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 266
+
+// == Ice-Land mass number 266 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 267
+// == Ice-Land mass number 267 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 268
+
+// == Ice-Land mass number 268 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 269
+
+// == Ice-Land mass number 269 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 270
+// == Ice-Land mass number 270 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 271
+
+// == Ice-Land mass number 271 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 272
+// == Ice-Land mass number 272 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 273
+
+// == Ice-Land mass number 273 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 274
+
+// == Ice-Land mass number 274 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 275
+// == Ice-Land mass number 275 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 276
+
+// == Ice-Land mass number 276 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 277
+// == Ice-Land mass number 277 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 278
+
+// == Ice-Land mass number 278 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 279
+// == Ice-Land mass number 279 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 280
+
+// == Ice-Land mass number 280 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 281
+// == Ice-Land mass number 281 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 282
+
+// == Ice-Land mass number 282 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 283
+
+// == Ice-Land mass number 283 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 284
+// == Ice-Land mass number 284 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 285
+
+// == Ice-Land mass number 285 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 286
+// == Ice-Land mass number 286 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 287
+
+// == Ice-Land mass number 287 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 288
+// == Ice-Land mass number 288 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 289
+
+// == Ice-Land mass number 289 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 290
+// == Ice-Land mass number 290 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 291
+
+// == Ice-Land mass number 291 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 292
+
+// == Ice-Land mass number 292 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 293
+// == Ice-Land mass number 293 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 294
+
+// == Ice-Land mass number 294 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 295
+// == Ice-Land mass number 295 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 296
+
+// == Ice-Land mass number 296 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 297
+// == Ice-Land mass number 297 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 298
+
+// == Ice-Land mass number 298 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 299
+// == Ice-Land mass number 299 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 300
+
+// == Ice-Land mass number 300 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 301
+
+// == Ice-Land mass number 301 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 302
+// == Ice-Land mass number 302 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 303
+
+// == Ice-Land mass number 303 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 304
+// == Ice-Land mass number 304 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 305
+
+// == Ice-Land mass number 305 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 306
+// == Ice-Land mass number 306 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 307
+
+// == Ice-Land mass number 307 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 308
+// == Ice-Land mass number 308 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 309
+
+// == Ice-Land mass number 309 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 310
+
+// == Ice-Land mass number 310 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 311
+// == Ice-Land mass number 311 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 312
+
+// == Ice-Land mass number 312 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 313
+// == Ice-Land mass number 313 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 314
+
+// == Ice-Land mass number 314 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 315
+// == Ice-Land mass number 315 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 316
+
+// == Ice-Land mass number 316 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 317
+// == Ice-Land mass number 317 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 318
+
+// == Ice-Land mass number 318 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 319
+
+// == Ice-Land mass number 319 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 320
+// == Ice-Land mass number 320 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 321
+
+// == Ice-Land mass number 321 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 322
+// == Ice-Land mass number 322 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 323
+
+// == Ice-Land mass number 323 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 324
+// == Ice-Land mass number 324 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 325
+
+// == Ice-Land mass number 325 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 326
+// == Ice-Land mass number 326 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 327
+
+// == Ice-Land mass number 327 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 328
+
+// == Ice-Land mass number 328 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 329
+// == Ice-Land mass number 329 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 330
+
+// == Ice-Land mass number 330 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 331
+// == Ice-Land mass number 331 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 332
+
+// == Ice-Land mass number 332 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 333
+// == Ice-Land mass number 333 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 334
+
+// == Ice-Land mass number 334 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 335
+// == Ice-Land mass number 335 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 336
+
+// == Ice-Land mass number 336 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 337
+
+// == Ice-Land mass number 337 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 338
+// == Ice-Land mass number 338 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 339
+
+// == Ice-Land mass number 339 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 340
+// == Ice-Land mass number 340 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 341
+
+// == Ice-Land mass number 341 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 342
+
+// == Ice-Land mass number 342 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 343
+// == Ice-Land mass number 343 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 344
+
+// == Ice-Land mass number 344 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 345
+// == Ice-Land mass number 345 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 346
+
+// == Ice-Land mass number 346 ====================================
 //   Skipped (no points found in region)
 
-// Ice-Land mass number 347
+
+// == Ice-Land mass number 347 ====================================
 //   Skipped (no points found in region)
+
 
-// Ice-Land mass number 348
+// == Ice-Land mass number 348 ====================================
 //   Skipped (no points found in region)
 
 
-Delete { Point{1}; }
-Delete { Point{2}; }
+// == Physical entities ===========================================
+Physical Line( 3 ) = { IL + 0, IL + 2, IL + 3, IL + 4, IL + 5, IL + 6, IL + 7, IL + 8, IL + 9 };
+Physical Line( 4 ) = { IL + 1 };
 // Open boundaries   (id 4): 2
 // Closed boundaries (id 3): 1 3 4 5 6 7 8 9 10
-
 Plane Surface( 10 ) = { ILL + 0, ILL + 1, ILL + 2, ILL + 3, ILL + 4, ILL + 5, ILL + 6, ILL + 7, ILL + 8 };
 Physical Surface( 10 ) = { 10 };
+// == End of contour definitions ==================================
+
+// == Field definitions ===========================================
 
 Printf("Assigning characteristic mesh sizes...");
+
 // Field[ IFI + 1] = Attractor;
 // Field[ IFI + 1].EdgesList = { 999999, IL + 0, IL + 2, IL + 3, IL + 4, IL + 5, IL + 6, IL + 7, IL + 8, IL + 9 };
 // Field [ IFI + 1 ].NNodesByEdge = 5e4;
@@ -19488,12 +19826,62 @@ Printf("Assigning characteristic mesh sizes...");
 // Field[ IFI + 2].LcMax = 2e5;
 //
 // Background Field = IFI + 2;
-// Dont extent the elements sizes from the boundary inside the domain
-//Mesh.CharacteristicLengthExtendFromBoundary = 0;
 
 Field[ IFI + 1] = MathEval;
 Field[ IFI + 1].F = "1.0E5";
+
+Field[ IFI + 2 ] = Attractor;
+//Field[ IFI + 2 ].EdgesList = { 999999, IL + 0, IL + 2, IL + 3, IL + 4, IL + 5, IL + 6, IL + 7, IL + 8, IL + 9 };
+Field[ IFI + 2 ].EdgesList = { IL + 0, IL + 2, IL + 3, IL + 4, IL + 5, IL + 6, IL + 7, IL + 8, IL + 9 };
+//Field[ IFI + 2 ].NNodesByEdge = 5e4;
+Field[ IFI + 2 ].NNodesByEdge = 20000;
+
+// Field[ IFI + 3] = Threshold;
+// Field[ IFI + 3].DistMax = 2e6;
+// Field[ IFI + 3].DistMin = 3e4;
+// Field[ IFI + 3].IField = IFI + 2;
+// Field[ IFI + 3].LcMin = 5e4;
+// Field[ IFI + 3].LcMax = 2e5;
+// 
+// // Filchner-Ronne:
+// Field[ IFI + 4] = Threshold;
+// Field[ IFI + 4].DistMax = 5e5;
+// Field[ IFI + 4].DistMin = 3e4;
+// Field[ IFI + 4].IField = IFI + 2;
+// Field[ IFI + 4].LcMin = 2e4;
+// Field[ IFI + 4].LcMax = 5e5;
+// 
+// // Amundsen 
+// Field[ IFI + 5] = Threshold;
+// Field[ IFI + 5].DistMax = 5e5;
+// Field[ IFI + 5].DistMin = 8e4;
+// Field[ IFI + 5].IField = IFI + 2;
+// Field[ IFI + 5].LcMin = 2e4;
+// Field[ IFI + 5].LcMax = 5e5;
+
+// Global
+// Field[ IFI + 6 ] = Threshold;
+// Field[ IFI + 6 ].DistMax = 1000000;
+// Field[ IFI + 6 ].DistMin = 1000;
+// Field[ IFI + 6 ].IField = IFI + 2;
+// Field[ IFI + 6 ].LcMin = 80000;
+// Field[ IFI + 6 ].LcMax = 200000;
+
+// Northsea
+Field[ IFI + 7 ] = Threshold;
+Field[ IFI + 7 ].IField = IFI + 2;
+Field[ IFI + 7 ].DistMax = 100000;
+Field[ IFI + 7 ].DistMin = 1000;
+Field[ IFI + 7 ].LcMin = 5000;
+Field[ IFI + 7 ].LcMax = 20000;
+Field[ IFI + 7 ].Sigmoid = 0;
+
+// Dont extent the elements sizes from the boundary inside the domain
+//Mesh.CharacteristicLengthExtendFromBoundary = 0;
+
 Background Field = IFI + 1;
+
+// == Physical entities ===========================================
 
 //Set some options for better png output
 General.Color.Background = {255,255,255};

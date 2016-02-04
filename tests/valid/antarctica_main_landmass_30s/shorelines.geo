@@ -1,23 +1,30 @@
 // Arguments:  -f antarctica_main_landmass_30s/shorelines.geo -n ../RTopo105b_50S.nc -r 'latitude <= -60.0' -p 1 -dx 10 -exclude_ice_shelves -bl -30
 // Source netCDF located at ../RTopo105b_50S.nc
 // Output to antarctica_main_landmass_30s/shorelines.geo
+// Projection type cartesian
 // Boundaries restricted to [1]
 // Region defined by latitude <= -60.0
 // Open contours closed with a line formed by points spaced 10 degrees apart
-// 
 // Excluding iceshelf ocean cavities
 // Paths found: 269
 
+// == Header ======================================================
 IP = newp;
 IL = newl;
 ILL = newll;
 IS = news;
 IFI = newf;
+
 Point ( IP + 0 ) = { 0, 0, 0 };
 Point ( IP + 1 ) = { 0, 0, 6.37101e+06 };
 PolarSphere ( IS + 0 ) = { IP, IP + 1 };
+Delete { Point{ IP + 0}; }
+Delete { Point{ IP + 1}; }
+// Paths that cross the date line: 
+// Merged paths that cross the date line: 
+// Paths found valid: 1, including 1
 
-// Ice-Land mass number 1
+// == Ice-Land mass number 1 ======================================
 // Path 1 points 38488/38489 area 2.44976e+08 (required closing in 2 parts of the path)
 Point ( IP + 2 ) = { 9.40253226, -0.00000000, 0.00000000 };
 Point ( IP + 3 ) = { 9.40903991, -0.00136816, 0.00000000 };
@@ -38510,14 +38517,8 @@ Point ( IP + 38489 ) = { 9.40253186, 0.00273442, 0.00000000 };
 LoopStart0 = IP + 2;
 LoopEnd0 = IP + 38489;
 BSpline ( IL + 0 ) = { IP + 2 : IP + 38489, IP + 2 };
-Physical Line( 3 ) = { IL + 0 };
-
 Line Loop( ILL + 0 ) = { IL + 0 };
-
-Delete { Point{1}; }
-Delete { Point{2}; }
 // Closing path with parallels and merdians, from (-1.00000000, -30.00000000) to  (179.00000000, -30.00000000)
-// Drawing meridian to max latitude index 38489 at -1.000000.2, -30.000000.2 (to match -30.000000.2)
 // Drawing parallel index 38489 at -1.000000.2 (to match 179.000000.2), -30.000000.2
 Point ( IP + 38490 ) = { -1.71072639, -0.27095244, 0.00000000 };
 Point ( IP + 38491 ) = { -1.63768621, -0.56390058, 0.00000000 };
@@ -38537,7 +38538,6 @@ Point ( IP + 38504 ) = { 1.48465732, -0.89207211, 0.00000000 };
 Point ( IP + 38505 ) = { 1.61700873, -0.62071150, 0.00000000 };
 Point ( IP + 38506 ) = { 1.70022816, -0.33049087, 0.00000000 };
 // Closing path with parallels and merdians, from (-179.00000000, -30.00000000) to  (1.00000000, -30.00000000)
-// Drawing meridian to max latitude index 38506 at -179.000000.2, -30.000000.2 (to match -30.000000.2)
 // Drawing parallel index 38506 at -179.000000.2 (to match 1.000000.2), -30.000000.2
 Point ( IP + 38507 ) = { 1.70022816, 0.33049087, 0.00000000 };
 Point ( IP + 38508 ) = { 1.61700873, 0.62071150, 0.00000000 };
@@ -38559,16 +38559,21 @@ Point ( IP + 38523 ) = { -1.71072639, 0.27095244, 0.00000000 };
 LoopStart1 = IP + 38490;
 LoopEnd1 = IP + 38523;
 BSpline ( IL + 1 ) = { IP + 38490 : IP + 38523, IP + 38490 };
-Physical Line( 4 ) = { IL + 1 };
-
 Line Loop( ILL + 1 ) = { IL + 1 };
+
+// == Physical entities ===========================================
+Physical Line( 3 ) = { IL + 0 };
+Physical Line( 4 ) = { IL + 1 };
 // Open boundaries   (id 4): 2
 // Closed boundaries (id 3): 1
-
 Plane Surface( 10 ) = { ILL + 0, ILL + 1 };
 Physical Surface( 10 ) = { 10 };
+// == End of contour definitions ==================================
+
+// == Field definitions ===========================================
 
 Printf("Assigning characteristic mesh sizes...");
+
 // Field[ IFI + 1] = Attractor;
 // Field[ IFI + 1].EdgesList = { 999999, IL + 0 };
 // Field [ IFI + 1 ].NNodesByEdge = 5e4;
@@ -38581,12 +38586,62 @@ Printf("Assigning characteristic mesh sizes...");
 // Field[ IFI + 2].LcMax = 2e5;
 //
 // Background Field = IFI + 2;
-// Dont extent the elements sizes from the boundary inside the domain
-//Mesh.CharacteristicLengthExtendFromBoundary = 0;
 
 Field[ IFI + 1] = MathEval;
 Field[ IFI + 1].F = "1.0E5";
+
+Field[ IFI + 2 ] = Attractor;
+//Field[ IFI + 2 ].EdgesList = { 999999, IL + 0 };
+Field[ IFI + 2 ].EdgesList = { IL + 0 };
+//Field[ IFI + 2 ].NNodesByEdge = 5e4;
+Field[ IFI + 2 ].NNodesByEdge = 20000;
+
+// Field[ IFI + 3] = Threshold;
+// Field[ IFI + 3].DistMax = 2e6;
+// Field[ IFI + 3].DistMin = 3e4;
+// Field[ IFI + 3].IField = IFI + 2;
+// Field[ IFI + 3].LcMin = 5e4;
+// Field[ IFI + 3].LcMax = 2e5;
+// 
+// // Filchner-Ronne:
+// Field[ IFI + 4] = Threshold;
+// Field[ IFI + 4].DistMax = 5e5;
+// Field[ IFI + 4].DistMin = 3e4;
+// Field[ IFI + 4].IField = IFI + 2;
+// Field[ IFI + 4].LcMin = 2e4;
+// Field[ IFI + 4].LcMax = 5e5;
+// 
+// // Amundsen 
+// Field[ IFI + 5] = Threshold;
+// Field[ IFI + 5].DistMax = 5e5;
+// Field[ IFI + 5].DistMin = 8e4;
+// Field[ IFI + 5].IField = IFI + 2;
+// Field[ IFI + 5].LcMin = 2e4;
+// Field[ IFI + 5].LcMax = 5e5;
+
+// Global
+// Field[ IFI + 6 ] = Threshold;
+// Field[ IFI + 6 ].DistMax = 1000000;
+// Field[ IFI + 6 ].DistMin = 1000;
+// Field[ IFI + 6 ].IField = IFI + 2;
+// Field[ IFI + 6 ].LcMin = 80000;
+// Field[ IFI + 6 ].LcMax = 200000;
+
+// Northsea
+Field[ IFI + 7 ] = Threshold;
+Field[ IFI + 7 ].IField = IFI + 2;
+Field[ IFI + 7 ].DistMax = 100000;
+Field[ IFI + 7 ].DistMin = 1000;
+Field[ IFI + 7 ].LcMin = 5000;
+Field[ IFI + 7 ].LcMax = 20000;
+Field[ IFI + 7 ].Sigmoid = 0;
+
+// Dont extent the elements sizes from the boundary inside the domain
+//Mesh.CharacteristicLengthExtendFromBoundary = 0;
+
 Background Field = IFI + 1;
+
+// == Physical entities ===========================================
 
 //Set some options for better png output
 General.Color.Background = {255,255,255};

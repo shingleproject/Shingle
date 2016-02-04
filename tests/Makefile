@@ -119,6 +119,7 @@ test%: %
 	else \
 		$(ECHO) "    $(red)FAIL$(end)"; \
 		echo "Examine valid/$</shorelines.geo $</shorelines.geo"; \
+		echo "vim -d tests/{valid/,}$</shorelines.geo"; \
 		exit 1; \
 	fi
 
