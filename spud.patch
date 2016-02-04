@@ -1,6 +1,6 @@
-diff -Naur spud/Makefile.in spud_fx/Makefile.in
---- spud/Makefile.in	2016-02-04 23:20:57.000000000 +0100
-+++ spud_fx/Makefile.in	2016-02-04 23:17:45.000000000 +0100
+diff -Naur spud/Makefile.in spud_patched/Makefile.in
+--- spud/Makefile.in	2016-02-05 00:46:24.000000000 +0100
++++ spud_patched/Makefile.in	2016-02-05 00:34:15.000000000 +0100
 @@ -29,6 +29,8 @@
  FC      = @FC@
  FCFLAGS = -Iinclude @CPPFLAGS@ @FCFLAGS@
@@ -22,3 +22,16 @@ diff -Naur spud/Makefile.in spud_fx/Makefile.in
  else
  	cd python; for python in $(shell pyversions -r); do $$python setup.py install --prefix=$(DESTDIR)@prefix@ --install-layout=deb; done; cd ..
  endif
+diff -Naur spud/python/setup.py spud_patched/python/setup.py
+--- spud/python/setup.py	2016-02-05 00:46:24.000000000 +0100
++++ spud_patched/python/setup.py	2016-02-05 00:44:20.000000000 +0100
+@@ -1,7 +1,8 @@
+ from distutils.core import setup, Extension
+ import os.path
+ 
+-module1 = Extension('libspud', sources = ['libspud.c'], libraries=["spud"], library_dirs=[os.path.abspath("..")], include_dirs=[os.path.abspath("../include")])
++module1 = Extension('libspud', sources = ['libspud.c'], libraries=["spud"], library_dirs=[os.path.abspath("..")], include_dirs=[os.path.abspath("../include")],
++             extra_link_args=['-flat_namespace', '-lstdc++'])
+ 
+ setup (name = 'libspud',
+        version = '1.1.3',
