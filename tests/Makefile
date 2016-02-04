@@ -78,7 +78,7 @@ datacheck:
 
 datalink:
 	@echo 'Creating a link to the RTopo dataset at ~/dataset/rtopo/RTopo105b_50S.nc'
-	@ln -s ~/dataset/rtopo/RTopo105b_50S.nc $(DATASET)
+	@ln -s ~/tmp/dataset/rtopo/RTopo105b_50S.nc $(DATASET)
 
 data:
 	@echo 'Downloading the RTopo dataset for the tests (note 743MB).'
