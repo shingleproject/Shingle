@@ -36,8 +36,8 @@ end=\033[0m
 #blue=
 #end=
 
-ECHO=echo -e
-#ECHO=echo
+#ECHO=echo -e
+ECHO=echo
 
 #### main
 
