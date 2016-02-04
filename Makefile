@@ -36,3 +36,26 @@ testwithdatadownload:
 	
 .PHONY: test data datalink testwithdatadownload
 
+
+clean:
+	@rm -f ./libspud.so
+	@make -C spud clean
+
+
+spudpatch:
+	@patch -p0 < spud.patch
+
+libspud.so:
+	@cd spud; ./configure; cd ..
+	@DESTDIR=. make -C spud install-pyspud
+	@cp spud/python/usr/local/lib/python*/site-packages/libspud.so .
+
+
+
+
+
+lib/libspud.a:
+	@echo '    MKDIR lib'; mkdir -p lib
+	@echo '    MAKE libspud'; $(MAKE) -C libspud
+
+
