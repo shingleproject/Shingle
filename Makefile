@@ -38,8 +38,12 @@ testwithdatadownload:
 
 
 clean:
+	@echo 'CLEAN tests'
+	@make -s -C tests clean
+	@echo 'CLEAN libs'
 	@rm -f ./libspud.so
-	@make -C spud clean
+	@echo 'CLEAN spud'
+	@make -s -C spud clean
 
 
 spudpatch:
