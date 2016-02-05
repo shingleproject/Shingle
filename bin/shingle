@@ -8,7 +8,7 @@ shingle_path = os.path.join(os.path.realpath(os.path.dirname(__file__)), os.path
 sys.path.insert(0, shingle_path)
 
 import shingle
-from shingle import prime
+from shingle import Prime
 
 
 if __name__ == "__main__":
