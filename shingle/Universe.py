@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 ##########################################################################
 #  
 #  Generation of boundary representation from arbitrary geophysical
@@ -20,50 +22,16 @@
 #  
 ##########################################################################
 
-default: test
 
-test:
-	@make -s -C tests
-
-data:
-	@make -s -C tests data
-
-datalink:
-	@make -s -C tests datalink
-
-testwithdatadownload:
-	@make -s -C tests testwithdatadownload
-	
-.PHONY: test data datalink testwithdatadownload
-
-
-clean:
-	@echo 'CLEAN tests'
-	@make -s -C tests clean
-	@echo 'CLEAN libs'
-	@rm -f ./libspud.so
-	@echo 'CLEAN spud'
-	@make -s -C spud clean
-
-
-spudpatch:
-	@patch -p0 < spud.patch
-
-libspud.so:
-	@make -C spud install-pyspud
-	@cp lib/python*/site-packages/libspud.so lib/
-	@cp spud/bin/spud-preprocess bin/
-
-schema: bin/spud-preprocess
-  @echo "Rebuilding schema shingle_options.rng"
-	@./bin/spud-preprocess schemas/shingle_options.rnc
-
-
-
-
-
-lib/libspud.a:
-	@echo '    MKDIR lib'; mkdir -p lib
-	@echo '    MAKE libspud'; $(MAKE) -C libspud
-
-
+class universe():
+  #### IMPORT START
+  earth_radius = 6.37101e+06
+  dx_default = 0.1
+  #fileid = 'G'
+  fileid = ''
+  compound = False
+  #compound = True
+  more_bsplines = False
+  # Interestingly, if the following is true, gmsh generates a nice mesh, but complains (rightly so) on multiple definitions of a physical line id.  If false, the mesh contains extra 1d elements, which need parsing out!
+  physical_lines_separate = False
+  #### IMPORT END

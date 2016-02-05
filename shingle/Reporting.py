@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 ##########################################################################
 #  
 #  Generation of boundary representation from arbitrary geophysical
@@ -20,50 +22,13 @@
 #  
 ##########################################################################
 
-default: test
 
-test:
-	@make -s -C tests
+def printv(text, include = True):
+  if (arguments.verbose):
+    print text
+  if include:
+    gmsh_comment(text)
 
-data:
-	@make -s -C tests data
-
-datalink:
-	@make -s -C tests datalink
-
-testwithdatadownload:
-	@make -s -C tests testwithdatadownload
-	
-.PHONY: test data datalink testwithdatadownload
-
-
-clean:
-	@echo 'CLEAN tests'
-	@make -s -C tests clean
-	@echo 'CLEAN libs'
-	@rm -f ./libspud.so
-	@echo 'CLEAN spud'
-	@make -s -C spud clean
-
-
-spudpatch:
-	@patch -p0 < spud.patch
-
-libspud.so:
-	@make -C spud install-pyspud
-	@cp lib/python*/site-packages/libspud.so lib/
-	@cp spud/bin/spud-preprocess bin/
-
-schema: bin/spud-preprocess
-  @echo "Rebuilding schema shingle_options.rng"
-	@./bin/spud-preprocess schemas/shingle_options.rnc
-
-
-
-
-
-lib/libspud.a:
-	@echo '    MKDIR lib'; mkdir -p lib
-	@echo '    MAKE libspud'; $(MAKE) -C libspud
-
-
+def printvv(text):
+  if (arguments.debug):
+    print text

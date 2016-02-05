@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 ##########################################################################
 #  
 #  Generation of boundary representation from arbitrary geophysical
@@ -20,50 +22,15 @@
 #  
 ##########################################################################
 
-default: test
+def gmsh_comment(comment, newline=False):
+  if newline:
+    output.write('\n')
+  if (len(comment) > 0):
+    output.write( '// ' + comment + '\n')
 
-test:
-	@make -s -C tests
+def gmsh_out(comment):
+  output.write( comment + '\n')
 
-data:
-	@make -s -C tests data
-
-datalink:
-	@make -s -C tests datalink
-
-testwithdatadownload:
-	@make -s -C tests testwithdatadownload
-	
-.PHONY: test data datalink testwithdatadownload
-
-
-clean:
-	@echo 'CLEAN tests'
-	@make -s -C tests clean
-	@echo 'CLEAN libs'
-	@rm -f ./libspud.so
-	@echo 'CLEAN spud'
-	@make -s -C spud clean
-
-
-spudpatch:
-	@patch -p0 < spud.patch
-
-libspud.so:
-	@make -C spud install-pyspud
-	@cp lib/python*/site-packages/libspud.so lib/
-	@cp spud/bin/spud-preprocess bin/
-
-schema: bin/spud-preprocess
-  @echo "Rebuilding schema shingle_options.rng"
-	@./bin/spud-preprocess schemas/shingle_options.rnc
-
-
-
-
-
-lib/libspud.a:
-	@echo '    MKDIR lib'; mkdir -p lib
-	@echo '    MAKE libspud'; $(MAKE) -C libspud
-
-
+def gmsh_section(title):
+  line = '='
+  gmsh_comment('%s %s %s' % ( line * 2, title, line * (60 - len(title))), True)

@@ -27,7 +27,11 @@ import shutil
 import math
 import os.path
 
-import libspud
+import Spud
+#import libspud
+
+#libspud.load_options('test.flml')
+#libspud.print_options()
 
 from Scientific.IO import NetCDF
 #### IMPORT START
@@ -43,297 +47,20 @@ from numpy import zeros, array, append, arange, exp, size, concatenate, ceil, as
 
 #contour = matplotlib.pyplot.contour
 
-# TODO
-# Add repo version number/release in geo header
-#
-# Calculate area in right projection
-# Add region selection function
-# Ensure all islands selected
-# Identify Open boundaries differently
-# Export command line to geo file
-# If nearby, down't clode with parallel
+from Mathematical import norm, normalise
+from Universe import universe
 
-#### IMPORT START
-earth_radius = 6.37101e+06
-dx_default = 0.1
-#fileid = 'G'
-fileid = ''
-compound = False
-#compound = True
-more_bsplines = False
-# Interestingly, if the following is true, gmsh generates a nice mesh, but complains (rightly so) on multiple definitions of a physical line id.  If false, the mesh contains extra 1d elements, which need parsing out!
-physical_lines_separate = False
-#### IMPORT END
+from Reporting import printv, printvv
 
+from GeoOutput import gmsh_comment, gmsh_out, gmsh_section
 
-def printv(text, include = True):
-  if (arguments.verbose):
-    print text
-  if include:
-    gmsh_comment(text)
+from StringOperations import expand_boxes
 
-def printvv(text):
-  if (arguments.debug):
-    print text
-
-def gmsh_comment(comment, newline=False):
-  if newline:
-    output.write('\n')
-  if (len(comment) > 0):
-    output.write( '// ' + comment + '\n')
-
-def gmsh_out(comment):
-  output.write( comment + '\n')
-
-def gmsh_section(title):
-  line = '='
-  gmsh_comment('%s %s %s' % ( line * 2, title, line * (60 - len(title))), True)
-
-def norm(r):
-  return math.sqrt(r[0]**2 + r[1]**2)
-
-def normalise(r):
-  return r/norm(r)
-
-def expand_boxes(region, boxes):
-  def error():
-    print 'Error in argument for -b.'
-    sys.exit(1)
-
-  def build_function(function, requireand, axis, comparison, number):
-    if (len(number) > 0):
-      function = '%s%s(%s %s %s)' % (function, requireand, axis, comparison, number)
-      requireand = ' and '
-    return [function, requireand]
-
-  #re.sub(pattern, repl, string,
-  #((latitude >= -89.0) and (latitude <=-65.0) and (longitude >= -64.0) and (longitude <= -20.0))'
-  if (len(boxes) > 0):
-    function = ''
-    requireor = ''
-    for box in boxes:
-      longlat = box.split(',')
-      if (len(longlat) != 2): error()
-
-      long = longlat[0].split(':')
-      lat = longlat[1].split(':')
-      if ((len(long) != 2) and (len(lat) != 2)): error()
-      
-      function_box = ''
-      requireand = ''
-      if (len(long) == 2):
-        [function_box, requireand] = build_function(function_box, requireand, 'longitude', '>=', long[0])
-        [function_box, requireand] = build_function(function_box, requireand, 'longitude', '<=', long[1])
-      if (len(lat) == 2):
-        [function_box, requireand] = build_function(function_box, requireand, 'latitude',  '>=', lat[0])
-        [function_box, requireand] = build_function(function_box, requireand, 'latitude',  '<=', lat[1])
-
-      if (len(function_box) > 0):
-        function = '%s%s(%s)' % (function, requireor, function_box)
-        requireor = ' or '
-  
-    if (len(function) > 0):
-      if (region is not 'True'):
-        region = '((%s) and (%s))' % (region, function)
-      else:
-        region = function
-
-  return region
-
-def pig_sponge(index, indexa, indexb, a, b):
-
-  print indexa, indexb
-  if indexa != 722:
-    return index
-
-  #a = array([ 256.07473195, -75.13382975 ])
-  #b = array([ 258.63485727, -74.21467892 ])
-
-  #print project([-70.2052,42.0822], type='proj_cartesian')
-  if (True):
-    pa = project(a, type='proj_cartesian')
-    pb = project(b, type='proj_cartesian')
-    pv = normalise(pb - pa)
-
-    ppv = pv.copy()
-    ppv[1] =  -pv[0]
-    ppv[0] =  pv[1]
-
-
-    distice = 15000
-    pai = pa + distice * ppv
-    pbi = pb + distice * ppv
-    ai = project(pai, type='proj_cartesian_inverse')
-    bi = project(pbi, type='proj_cartesian_inverse')
-
-
-    dist = 30000
-    pad = pai + dist * ppv
-    pbd = pbi + dist * ppv
-
-    ad = project(pad, type='proj_cartesian_inverse')
-    bd = project(pbd, type='proj_cartesian_inverse')
-
-  else:
-    dist = - 0.4
-    v = normalise(b - a)
-    proj = v.copy()
-    proj[1] = v[0]
-    proj[0] = v[1]
-    ad = a + dist * proj
-    bd = b + dist * proj
-
-  #index = 722
-
-  #def gmsh_loop(index, loopstartpoint, last, open,  cachephysical):
-
-  indexstore = index
-
-  ldx = arguments.dx / 10.0
-  #ldx = 5000
-
-  index = close_path(b, bi, index, ldx, None, proj='horizontal')
-  index.point += 1
-  gmsh_format_point(index.point, project(bi), 0.0)
-  index = gmsh_loop(index, indexb, False, True, False)
-  indexbi = index.point
-
-  index = close_path(bi, ai, index, ldx, None, proj='horizontal')
-  index.point += 1
-  gmsh_format_point(index.point, project(ai), 0.0)
-  index = gmsh_loop(index, indexbi, False, True, False)
-  indexai = index.point
-
-  index = close_path(ai, a, index, ldx, None, proj='horizontal')
-  index = gmsh_loop(index, indexa, True, True, False)
-
-
-  index = close_path(ai, ad, index, ldx, None, proj='horizontal')
-  index.point += 1
-  gmsh_format_point(index.point, project(ad), 0.0)
-  gmsh_out("// Change here!  'IPG + 7420 :' -> 'IPG + 722, IPG + 7421 :'")
-  index = gmsh_loop(index, indexai, False, True, False)
-  indexad = index.point
-
-  index = close_path(ad, bd, index, ldx, None, proj='horizontal')
-  index.point += 1
-  gmsh_format_point(index.point, project(bd), 0.0)
-  index = gmsh_loop(index, indexad, False, True, False)
-
-  index = close_path(bd, bi, index, ldx, None, proj='horizontal')
-  index = gmsh_loop(index, indexai, False, True, False)
+from specific.Pig import pig_sponge
 
 
 
-
-
-  gmsh_out("// To the above add ', IPG + 7366 };")
-  gmsh_out('Line Loop ( ILLG + 11 ) = { IPG + 8, IPG + 9, IPG + 10, IPG + 7 };')
-  gmsh_out('Plane Surface( 11 ) = { ILLG + 11 };')
-  gmsh_out('Physical Surface( 11 ) = { 11 };')
-  gmsh_out('// Remember to remove internal boundary!')
-
-
-
-
-
-
-
-  return index
-
-
-  #start = 7366
-  #count = start
-  #for i in range(100):
-  #  di = (i+1) * 0.01
-  #  print di
-  #  a = project(a + di * dist * proj)
-  #  count = count + 1
-  #  gmsh_out('Point ( IPG + ' + str(count) + ' ) = { ' + str(a[0]) + ', ' + str(a[1]) + ', 0.0 };')
-  #gmsh_out('Line Loop ( 1001 ) = { IPG + start : IPG + count };')
-  #aend = count
-  #
-  #start = 7366
-  #count = start
-  #for i in range(100):
-  #  di = (i+1) * 0.01
-  #  print di
-  #  a = project(a + di * dist * proj)
-  #  count = count + 1
-  #  gmsh_out('Point ( IPG + ' + str(count) + ' ) = { ' + str(a[0]) + ', ' + str(a[1]) + ', 0.0 };')
-  #gmsh_out('Line Loop ( 1001 ) = { IPG + start : IPG + count };')
-  #aend = count
-
-  #start = count
-  #for i in range(100):
-  #  di = (i+1) * 0.01
-  #  print di
-  #  a = project(a + di * dist * proj)
-  #  count = count + 1
-  #  gmsh_out('Point ( IPG + ' + str(count) + ' ) = { ' + str(a[0]) + ', ' + str(a[1]) + ', 0.0 };')
-  #gmsh_out('Line ( 1001 ) = { IPG + start : IPG + count };')
-
-  #gmsh_out('Point ( IPG + 7368 ) = { ' + str(b[0]) + ', ' + str(b[1]) + ', 0.0 };')
-  #gmsh_out('Line Loop ( ILLG + 6 ) = { ILG + 6, 1000 };')
-
-  #  b = project(b + dist * proj)
-
-  #gmsh_out('Line ( 1000 ) = { IPG + 7366, IPG + 722 };')
-  #gmsh_out('Line ( 1002 ) = { IPG + 7367, IPG + 7368 };')
-  #gmsh_out('Line ( 1003 ) = { IPG + 7368, IPG + 722 };')
-  #gmsh_out('Line Loop ( ILLG + 7 ) = { -1000, 1001, 1002, 1003 };')
-
-
-def usage(unknown = None):
-  if unknown:
-    print 'Unknown option ' + unknown
-  print '''Usage for %(cmdname)s
- %(cmdname)s [options]
-- Options ---------------------\ 
-   -n filename                 | Input netCDF file
-   -f filename                 | Output Gmsh file
-   -p path1 (path2)..          | Specify paths to include
-   -pn path1 (path2)..         | Specify paths to exclude
-   -r function                 | Function specifying region of interest
-   -b box1 (box2)..            | Boxes with regions of interest
-   -a minarea                  | Minimum area of islands
-   -dx dist                    | Distance of steps when drawing parallels and meridians (currently in degrees - need to project)
-   -m projection               | Projection type (default 'cartesian', 'longlat')
-   -bounding_latitude latitude | Latitude of boundary to close the domain
-   -bl latitude                | Short form of -bounding_latitude
-   -t type                     | Contour type (default: iceshelfcavity) icesheet gsds
-   -c                          | Force cache refresh
-   -exclude_iceshelves         | Excludes iceshelf ocean cavities from mesh (default behaviour includes region)
-   -smooth_data degree         | Smoothes boundaries
-   -no                         | Do not include open boundaries
-   -mesh                       | Mesh geometry
-   -lat latitude               | Latitude to extend open domain to
-   -s scenario                 | Select scenario (in development)
-   -plot                       | Plot contour before geo generation 
-   -el                         | Element length (default 1.0E5)
-   -metric                     | Generate background metric based on bathymetry
-                               |______________________________________________
-   -v                          | Verbose
-   -vv                         | Very verbose (debugging)
-   -q                          | Quiet
-   -h                          | Help
-                               \_____________________________________________
-Example usage:
-Include only the main Antarctic mass (path 1), and only parts which lie below 60S
-  rtopo_mask_to_stereographic.py -r 'latitude <= -60.0' -p 1
-Filchner-Ronne extended out to the 65S parallel
-  rtopo_mask_to_stereographic.py -no -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0 -lat '-65.0'
-Antarctica, everything below the 60S parallel, coarse approximation to open boundary
-  rtopo_mask_to_stereographic.py -dx 2 -r 'latitude <= -60'
-Small region close to the Filcher-Ronne ice shelf
-  rtopo_mask_to_stereographic.py -no -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0 -p 1 -r 'latitude <= -83'
-Amundsen Sea
-  rtopo_mask_to_stereographic.py -no -b -130.0:-85.0,-85.0:-60.0 -lat -64.0
-
-Small islands, single out, or group with -p
-  312, 314
-  79 - an island on 90W 68S''' % { 'cmdname': os.path.       basename(sys.argv[0]) }
-  sys.exit(1)
+from Usage import usage
 
 def gmsh_header():
   gmsh_section('Header')
@@ -989,7 +716,7 @@ Line Loop( ILL%(fileid)s + %(loop)i ) = { %(loopnumbers)s };''' % { 'loop':index
 
 
 
-def output_boundaries(index, filename, paths=None, minarea=0, region='True', dx=dx_default, latitude_max=None):
+def output_boundaries(index, filename, paths=None, minarea=0, region='True', dx=universe.dx_default, latitude_max=None):
   import pickle
   #try:
   #  picklefile = open(arguments.picklefile, 'rb')
@@ -1765,70 +1492,116 @@ def generatemetric(sourcefile, outputfilename = 'metric.pos', fieldname = 'z', m
 
   metric.close()
 
-class index:
-  point = 0
-  path = 0
-  contour = []
-  contournodes= []
-  open = []
-  skipped = []
-  start = 0
-  pathsinloop = []
-  physicalgroup = []
-  loop = 0
-  loops = []
-  physicalcontour = []
-  physicalopen = []
-
-class boundary:
-  contour = 3
-  open    = 4
-  surface = 9
 
 
 
-#def scenario(name):
-#  filcher_ronne = argument
 
-argv = sys.argv[1:]
-class arguments:
-  input  = '/d/dataset/rtopo/RTopo105b_50S.nc'
-  #picklefile = '/d/dataset/rtopo/rtopo.pkl'
-  picklefile = ''
-  #output = './stereographic_projection.geo'
-  output = './shorelines.geo'
-  boundaries = []
-  boundariestoexclude = []
-  region = 'True'
-  box = []
-  minarea = 0
-  dx = dx_default
-  extendtolatitude = None
-  open = True
-  verbose = True
-  debug = False
-  bounding_lat = -50.0
-  smooth_data = False
-  smooth_degree = 100
-  include_iceshelf_ocean_cavities = True
-  projection = 'cartesian'
-  contourtype = 'iceshelfcavity'
-  plotcontour = False
-  #call = ' '.join(argv)
-  call = ''
-  cache = False
-  closewithparallels = False
-  elementlength = '1.0E5'
-  generatemesh = False
-  generatemetric = False
-  for arg in argv:
-    if ' ' in arg:
-      call = call + ' \'' + arg + '\''
-    else:
-      call = call + ' ' + arg
+
+
+
+
+
+#### IMPORT START
+earth_radius = 6.37101e+06
+dx_default = 0.1
+#fileid = 'G'
+fileid = ''
+compound = False
+#compound = True
+more_bsplines = False
+# Interestingly, if the following is true, gmsh generates a nice mesh, but complains (rightly so) on multiple definitions of a physical line id.  If false, the mesh contains extra 1d elements, which need parsing out!
+physical_lines_separate = False
+#### IMPORT END
 
 
 def main():
+
+  # TODO
+  # Add repo version number/release in geo header
+  #
+  # Calculate area in right projection
+  # Add region selection function
+  # Ensure all islands selected
+  # Identify Open boundaries differently
+  # Export command line to geo file
+  # If nearby, down't clode with parallel
+
+  #### IMPORT START
+  earth_radius = 6.37101e+06
+  dx_default = 0.1
+  #fileid = 'G'
+  fileid = ''
+  compound = False
+  #compound = True
+  more_bsplines = False
+  # Interestingly, if the following is true, gmsh generates a nice mesh, but complains (rightly so) on multiple definitions of a physical line id.  If false, the mesh contains extra 1d elements, which need parsing out!
+  physical_lines_separate = False
+  #### IMPORT END
+
+
+  class index:
+    point = 0
+    path = 0
+    contour = []
+    contournodes= []
+    open = []
+    skipped = []
+    start = 0
+    pathsinloop = []
+    physicalgroup = []
+    loop = 0
+    loops = []
+    physicalcontour = []
+    physicalopen = []
+
+  class boundary:
+    contour = 3
+    open    = 4
+    surface = 9
+
+
+
+  #def scenario(name):
+  #  filcher_ronne = argument
+
+  argv = sys.argv[1:]
+  class arguments:
+    input  = '/d/dataset/rtopo/RTopo105b_50S.nc'
+    #picklefile = '/d/dataset/rtopo/rtopo.pkl'
+    picklefile = ''
+    #output = './stereographic_projection.geo'
+    output = './shorelines.geo'
+    boundaries = []
+    boundariestoexclude = []
+    region = 'True'
+    box = []
+    minarea = 0
+    dx = dx_default
+    extendtolatitude = None
+    open = True
+    verbose = True
+    debug = False
+    bounding_lat = -50.0
+    smooth_data = False
+    smooth_degree = 100
+    include_iceshelf_ocean_cavities = True
+    projection = 'cartesian'
+    contourtype = 'iceshelfcavity'
+    plotcontour = False
+    #call = ' '.join(argv)
+    call = ''
+    cache = False
+    closewithparallels = False
+    elementlength = '1.0E5'
+    generatemesh = False
+    generatemetric = False
+    for arg in argv:
+      if ' ' in arg:
+        call = call + ' \'' + arg + '\''
+      else:
+        call = call + ' ' + arg
+
+
   while (len(argv) > 0):
     argument = argv.pop(0).rstrip()
     if   (argument == '-h'): usage()
