@@ -40,8 +40,10 @@ testwithdatadownload:
 clean:
 	@echo 'CLEAN tests'
 	@make -s -C tests clean
-	@echo 'CLEAN libs'
-	@rm -f ./libspud.so
+	@echo 'CLEAN bin'
+	@rm -f ./bin/spud-preprocess
+	@echo 'CLEAN lib'
+	@rm -rf ./lib
 	@echo 'CLEAN spud'
 	@make -s -C spud clean
 
@@ -49,13 +51,16 @@ clean:
 spudpatch:
 	@patch -p0 < spud.patch
 
-libspud.so:
+lib/libspud.so:
 	@make -C spud install-pyspud
 	@cp lib/python*/site-packages/libspud.so lib/
+
+bin/spud-preprocess: lib/libspud.so
 	@cp spud/bin/spud-preprocess bin/
+	@chmod a+x ./bin/spud-preprocess
 
 schema: bin/spud-preprocess
-  @echo "Rebuilding schema shingle_options.rng"
+	@echo "Rebuilding schema shingle_options.rng"
 	@./bin/spud-preprocess schemas/shingle_options.rnc
 
 
