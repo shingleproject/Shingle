@@ -12,5 +12,5 @@ from shingle import Prime
 
 
 if __name__ == "__main__":
-  prime.main()
+  Prime.main()
 
