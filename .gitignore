@@ -4,4 +4,6 @@ libspud.so
 *.pkl
 spud/
 bin/spud-preprocess
+lib
+ref
 
