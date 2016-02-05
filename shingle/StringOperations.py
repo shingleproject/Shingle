@@ -22,6 +22,30 @@
 #  
 ##########################################################################
 
+def list_to_comma_separated(numbers, prefix='', add=0):
+  requirecomma = False
+  string = ''
+  for number in numbers:
+    if (requirecomma):
+      string += ', '
+    else:
+      requirecomma = True
+    string += prefix
+    string += str(number + add)
+  return string
+
+def list_to_space_separated(numbers, prefix='', add=0):
+  requirespace = False
+  string = ''
+  for number in numbers:
+    if (requirespace):
+      string += ' '
+    else:
+      requirespace = True
+    string += prefix
+    string += str(number + add)
+  return string
+
 def expand_boxes(region, boxes):
   def error():
     print 'Error in argument for -b.'

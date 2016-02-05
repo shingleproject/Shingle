@@ -72,7 +72,7 @@ def pig_sponge(index, indexa, indexb, a, b):
 
   indexstore = index
 
-  ldx = arguments.dx / 10.0
+  ldx = universe.dx / 10.0
   #ldx = 5000
 
   index = close_path(b, bi, index, ldx, None, proj='horizontal')

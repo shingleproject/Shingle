@@ -22,6 +22,9 @@
 #  
 ##########################################################################
 
+import sys
+import os
+
 def usage(unknown = None):
   if unknown:
     print 'Unknown option ' + unknown

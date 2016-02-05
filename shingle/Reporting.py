@@ -22,13 +22,60 @@
 #  
 ##########################################################################
 
+from Universe import universe, colour
 
-def printv(text, include = True):
-  if (arguments.verbose):
-    print text
-  if include:
-    gmsh_comment(text)
+
+#def printv(text, include = True):
+#  if (universe.verbose):
+#    print text
+#  if include:
+#    gmsh_comment(text)
 
 def printvv(text):
-  if (arguments.debug):
+  if (universe.debug):
     print text
+
+# def report(string, forced=False, noreturn=False, debug=False, routine=False):
+#   # routine messages do not get added to consecutive reports, cauing error on multiple reports
+#   if debug and not universe.debug: return
+#   if (not debug and not routine):
+#     # Only change report lines for non-debug messages
+#     universe.reportline += 1
+#     # Don't include debug messages in repo commits
+#     universe.reportcache = universe.reportcache + string + os.linesep
+#   if (universe.verbose or forced):
+#     if logging():
+#       if noreturn:
+#         universe.bufferreturned = False
+#       else:
+#         string = string + os.linesep
+#         if not universe.bufferreturned:
+#           string = os.linesep + string
+#           universe.bufferreturned = True
+#       f = open(universe.log, 'ab')
+#       # Can cause trouble!
+#       f.write(string.encode('utf-8'))
+#       f.close()
+#     else:
+#       if noreturn:
+#         universe.bufferreturned = False
+#         sys.stdout.write(string.encode('utf-8'))
+#         sys.stdout.flush()
+#       else: 
+#         if not universe.bufferreturned:
+#           print ''.encode('utf-8')
+#           universe.bufferreturned = True
+#         print string.encode('utf-8')
+# 
+
+def error(string, fatal=False):
+ stringexit = ''
+ if fatal:
+   stringexit = ' [FATAL ERROR, exiting]'
+ report("%(redbright)sERROR:%(end)s %(red)s%(string)s%(end)s%(redbright)s%(stringexit)s%(end)s", var = {'string':string, 'stringexit':stringexit}, forced=True)
+ if len(universe.errors) > 0:
+   universe.errors = universe.errors + os.linesep
+ universe.errors = universe.errors + string + stringexit
+ if fatal:
+   sys.exit(1)
+

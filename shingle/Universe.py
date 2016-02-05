@@ -22,16 +22,79 @@
 #  
 ##########################################################################
 
+colour = {
+  'red', None,
+  'green', None,
+  'blue', None,
+  'cyan', None,
+  'magenta', None,
+  'brightred', None,
+  'brightgreen', None,
+  'brightmagenta', None,
+  'brightyellow', None,
+  'brightcyan', None,
+  'yellow', None,
+  'bred', None,
+  'bcyan', None,
+  'bblue', None,
+  'bmagenta', None,
+  'byellow', None,
+  'bgreen', None,
+  'bwhite', None,
+  'grey', None,
+  'fred', None,
+  'end', None,
+}
 
 class universe():
+  verbose = None
+  debug = None
+  
+  reportcache = None
+  reportline = None
+
+  logfile = None
+
+  # Arguments
+  input  = None
+  picklefile = None
+  output = None
+  boundaries = None
+  boundariestoexclude = None
+  region = None
+  box = None
+  minarea = None
+  dx = None
+  extendtolatitude = None
+  open = None
+  bounding_lat = None
+  smooth_data = None
+  smooth_degree = None
+  include_iceshelf_ocean_cavities = None
+  projection = None
+  contourtype = None
+  plotcontour = None
+  #call = None
+  call = None
+  cache = None
+  closewithparallels = None
+  elementlength = None
+  generatemesh = None
+  generatemetric = None
+
   #### IMPORT START
-  earth_radius = 6.37101e+06
-  dx_default = 0.1
+  earth_radius = None
+  dx_default = None
   #fileid = 'G'
-  fileid = ''
-  compound = False
+  fileid = None
+  compound = None
   #compound = True
-  more_bsplines = False
+  more_bsplines = None
   # Interestingly, if the following is true, gmsh generates a nice mesh, but complains (rightly so) on multiple definitions of a physical line id.  If false, the mesh contains extra 1d elements, which need parsing out!
-  physical_lines_separate = False
+  physical_lines_separate = None
   #### IMPORT END
+  
+
+
+
+

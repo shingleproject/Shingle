@@ -2,3 +2,6 @@ mv tests to test
 pytest?
 trang
 sort schema
+
+option to use raw numbers in field counters for clarity?
+

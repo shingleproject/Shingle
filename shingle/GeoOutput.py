@@ -22,15 +22,3 @@
 #  
 ##########################################################################
 
-def gmsh_comment(comment, newline=False):
-  if newline:
-    output.write('\n')
-  if (len(comment) > 0):
-    output.write( '// ' + comment + '\n')
-
-def gmsh_out(comment):
-  output.write( comment + '\n')
-
-def gmsh_section(title):
-  line = '='
-  gmsh_comment('%s %s %s' % ( line * 2, title, line * (60 - len(title))), True)

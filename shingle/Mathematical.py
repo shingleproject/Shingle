@@ -30,3 +30,34 @@ def norm(r):
 def normalise(r):
   return r/norm(r)
 
+def smoothGaussian(list,degree,strippedXs=False):
+  list = list.tolist()
+  window=degree*2-1
+  weight=array([1.0]*window)
+  weightGauss=[]
+  for i in range(window):
+    i=i-degree+1
+    frac=i/float(window)
+    gauss=1/(exp((4*(frac))**2))
+    weightGauss.append(gauss)
+  weight=array(weightGauss)*weight
+  smoothed=[0.0]*(len(list)-window)
+  for i in range(len(smoothed)):
+    smoothed[i]=sum(array(list[i:i+window])*weight)/sum(weight)
+  return array(smoothed)
+
+def area_enclosed(p):
+  #origin = [min(p[:,0]), min(p[:,1])]
+  #print origin
+  if (False):
+    pp = zeros([size(p), 2], float)
+    for i in range(size(p,0)):
+      pp[i] = project(p[i], 'hammer')
+      print i, p[i], pp[i]
+  else:
+    pp = p
+  return 0.5 * abs(sum(x0*y1 - x1*y0 for ((x0, y0), (x1, y1)) in segments(pp)))
+
+def segments(p):
+  return zip(p, p[1:] + [p[0]])
+
