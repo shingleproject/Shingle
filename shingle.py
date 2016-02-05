@@ -27,6 +27,8 @@ import shutil
 import math
 import os.path
 
+import libspud
+
 from Scientific.IO import NetCDF
 #### IMPORT START
 import matplotlib
@@ -282,35 +284,40 @@ def pig_sponge(index, indexa, indexb, a, b):
   #gmsh_out('Line Loop ( ILLG + 7 ) = { -1000, 1001, 1002, 1003 };')
 
 
-def usage():
-  print '''
- -n filename                 | Input netCDF file
- -f filename                 | Output Gmsh file
- -p path1 (path2)..          | Specify paths to include
- -pn path1 (path2)..         | Specify paths to exclude
- -r function                 | Function specifying region of interest
- -b box1 (box2)..            | Boxes with regions of interest
- -a minarea                  | Minimum area of islands
- -dx dist                    | Distance of steps when drawing parallels and meridians (currently in degrees - need to project)
- -m projection               | Projection type (default 'cartesian', 'longlat')
- -bounding_latitude latitude | Latitude of boundary to close the domain
- -bl latitude                | Short form of -bounding_latitude
- -t type                     | Contour type (default: iceshelfcavity) icesheet gsds
- -c                          | Force cache refresh
- -exclude_iceshelves         | Excludes iceshelf ocean cavities from mesh (default behaviour includes region)
- -smooth_data degree         | Smoothes boundaries
- -no                         | Do not include open boundaries
- -mesh                       | Mesh geometry
- -lat latitude               | Latitude to extend open domain to
- -s scenario                 | Select scenario (in development)
- -plot                       | Plot contour before geo generation 
- -el                         | Element length (default 1.0E5)
- -metric                     | Generate background metric based on bathymetry
- -v                          | Verbose
- -vv                         | Very verbose (debugging)
- -q                          | Quiet
- -h                          | Help
-------------------------------------------------------------
+def usage(unknown = None):
+  if unknown:
+    print 'Unknown option ' + unknown
+  print '''Usage for %(cmdname)s
+ %(cmdname)s [options]
+- Options ---------------------\ 
+   -n filename                 | Input netCDF file
+   -f filename                 | Output Gmsh file
+   -p path1 (path2)..          | Specify paths to include
+   -pn path1 (path2)..         | Specify paths to exclude
+   -r function                 | Function specifying region of interest
+   -b box1 (box2)..            | Boxes with regions of interest
+   -a minarea                  | Minimum area of islands
+   -dx dist                    | Distance of steps when drawing parallels and meridians (currently in degrees - need to project)
+   -m projection               | Projection type (default 'cartesian', 'longlat')
+   -bounding_latitude latitude | Latitude of boundary to close the domain
+   -bl latitude                | Short form of -bounding_latitude
+   -t type                     | Contour type (default: iceshelfcavity) icesheet gsds
+   -c                          | Force cache refresh
+   -exclude_iceshelves         | Excludes iceshelf ocean cavities from mesh (default behaviour includes region)
+   -smooth_data degree         | Smoothes boundaries
+   -no                         | Do not include open boundaries
+   -mesh                       | Mesh geometry
+   -lat latitude               | Latitude to extend open domain to
+   -s scenario                 | Select scenario (in development)
+   -plot                       | Plot contour before geo generation 
+   -el                         | Element length (default 1.0E5)
+   -metric                     | Generate background metric based on bathymetry
+                               |______________________________________________
+   -v                          | Verbose
+   -vv                         | Very verbose (debugging)
+   -q                          | Quiet
+   -h                          | Help
+                               \_____________________________________________
 Example usage:
 Include only the main Antarctic mass (path 1), and only parts which lie below 60S
   rtopo_mask_to_stereographic.py -r 'latitude <= -60.0' -p 1
@@ -325,10 +332,8 @@ Amundsen Sea
 
 Small islands, single out, or group with -p
   312, 314
-  79 - an island on 90W 68S
-'''
-  sys.exit(0)
-
+  79 - an island on 90W 68S''' % { 'cmdname': os.path.       basename(sys.argv[0]) }
+  sys.exit(1)
 
 def gmsh_header():
   gmsh_section('Header')
