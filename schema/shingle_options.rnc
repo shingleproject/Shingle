@@ -1,0 +1,35 @@
+include "spud_base.rnc"
+
+start =
+   (
+      ## The root node of the options dictionary.
+      element shingle_options {
+         comment,
+         ## Model output files are named according to the simulation
+         ## name, e.g. [simulation_name]_0.vtu. Non-standard
+         ## characters in the simulation name should be avoided.
+         element initialisation_name {
+            anystring
+         },
+         ## Option problem_type does not change the tree.  It is just used for options checking.
+         element problem_type {
+            element string_value {
+               # Lines is a hint to the gui about the size of the text box.
+               # It is not an enforced limit on string length.
+               attribute lines { "1" },
+               ( "oceans" | "geophysical" | "surface_geoid" | "stokes" )
+            },
+            comment
+         },
+         geometry,
+         ## Input/output options
+         element io {
+            ## Format for dump files. Only vtk for now.
+            element dump_format {
+               element string_value{
+                  "vtk"
+               }
+            },
+         },
+      }
+   )      
