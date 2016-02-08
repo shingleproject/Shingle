@@ -1,5 +1,7 @@
 include "spud_base.rnc"
 
+include "mesh_options.rnc"
+
 start =
    (
       ## The root node of the options dictionary.

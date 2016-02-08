@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<shingle_options>
+  <initialisation_name>
+    <string_value lines="1">Filchner-Ronne</string_value>
+  </initialisation_name>
+  <problem_type>
+    <string_value lines="1">ocean_ice_shelf</string_value>
+  </problem_type>
+  <geometry>
+    <dimension>
+      <integer_value rank="0">2</integer_value>
+    </dimension>
+    <mesh name="CoordinateMesh">
+      <from_file file_name="RTopo.nc">
+        <format name="triangle"/>
+        <stat>
+          <include_in_stat/>
+        </stat>
+      </from_file>
+    </mesh>
+    <quadrature>
+      <degree>
+        <integer_value rank="0">3</integer_value>
+      </degree>
+    </quadrature>
+  </geometry>
+  <io>
+    <dump_format>
+      <string_value>vtk</string_value>
+    </dump_format>
+  </io>
+</shingle_options>
