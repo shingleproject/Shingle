@@ -236,7 +236,6 @@ def array_to_gmsh_points(rep, num, index, location, minarea, region, dx, latitud
    
   # 0=old, 1=new
   behaviour=0
-  print dx
 
   if behaviour == 1:
     for point in range(validnumber):
@@ -273,7 +272,6 @@ def array_to_gmsh_points(rep, num, index, location, minarea, region, dx, latitud
     for point in range(validnumber):
       #longitude = validlocation[point,0]
       #latitude  = validlocation[point,1]
-      print 'dxx', dx
 
       if ((close[point]) and (point == validnumber - 1) and (not (compare_points(validlocation[point], validlocation[0], dx)))):
         rep.gmsh_comment('**** END ' + str(point) + '/' + str(validnumber-1) + str(close[point]))

@@ -24,6 +24,12 @@
 
 from Universe import universe, colour
 
+def report(text, debug = False):
+  # Link to rep.report
+  if debug and not universe.debug:
+    return
+  if (universe.verbose):
+    print text
 
 #def printv(text, include = True):
 #  if (universe.verbose):

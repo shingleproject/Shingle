@@ -24,7 +24,7 @@
 
 from Universe import universe
 
-def generate_mesh(infile):
+def generate_mesh_plain(infile):
   if (not universe.generatemesh):
     return
   import subprocess, re
@@ -43,7 +43,7 @@ def generate_mesh(infile):
   print('Mesh generation complete, try: ' + command + ' ' + outfile)
   print('  note, might require parsing')
 
-def generate_mesh2(infile):
+def generate_mesh_with_poll(infile):
   if (not universe.generatemesh):
     return
   import subprocess, re
@@ -63,3 +63,13 @@ def generate_mesh2(infile):
   outfile = re.sub(r"\.geo$", ".msh", infile)
   print('Mesh generation complete, try: ' + command + ' ' + outfile)
   print('  note, might require parsing')
+
+
+
+def generate_mesh(infile, interactive=True):
+  if interactive:
+    generate_mesh_with_poll(infile)
+  else:
+    generate_mesh_plain(infile)
+
+

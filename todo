@@ -8,3 +8,16 @@ option to use raw numbers in field counters for clarity?
 data -> resources?
 add datasets folder?
 
+
+
+
+  # TODO
+  # Add repo version number/release in geo header
+  #
+  # Calculate area in right projection
+  # Add region selection function
+  # Ensure all islands selected
+  # Identify Open boundaries differently
+  # Export command line to geo file
+  # If nearby, down't clode with parallel
+

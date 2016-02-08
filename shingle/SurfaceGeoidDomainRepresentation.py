@@ -48,7 +48,7 @@ class SurfaceGeoidDomainRepresentation(object):
     self.filehandle = None
     # For now, use universal definitions:
     # Later to go in shml
-    self.earth_radius = universe.earth_radius
+    self.planet_radius = universe.planet_radius
     self.fileid = universe.fileid
 
   class index:
@@ -78,13 +78,16 @@ class SurfaceGeoidDomainRepresentation(object):
     self.filehandle.close()
 
   def report(self, text, include = True, debug = False):
-    print debug, universe.debug
     if debug and not universe.debug:
       return
     if (universe.verbose):
       print text
     if include:
       self.gmsh_comment(text)
+
+  def reportSkipped(self):
+    if len(self.index.skipped) > 0:
+      rep.report('Skipped (because no point on the boundary appeared in the required region, or area enclosed by the boundary was too small):\n'+' '.join(rep.index.skipped))
 
   def gmsh_comment(self, comment, newline=False):
     if newline:
@@ -124,9 +127,9 @@ IFI%(fileid)s = newf;
 ''' % { 'fileid':self.fileid, 'edgeindex':edgeindex }
     header_polar = '''
 Point ( IP%(fileid)s + 0 ) = { 0, 0, 0 };
-Point ( IP%(fileid)s + 1 ) = { 0, 0, %(earth_radius)g };
+Point ( IP%(fileid)s + 1 ) = { 0, 0, %(planet_radius)g };
 PolarSphere ( IS%(fileid)s + 0 ) = { IP%(fileid)s, IP%(fileid)s + 1 };
-''' % { 'earth_radius': self.earth_radius, 'fileid': self.fileid }
+''' % { 'planet_radius': self.planet_radius, 'fileid': self.fileid }
     
     if (universe.projection not in ['longlat','proj_cartesian'] ):
       header = header + header_polar
@@ -533,6 +536,9 @@ Call DrawParallel;
 
 
   def output_open_boundaries(self):
+    if not universe.open:
+      return
+
     index = self.index
     boundary = self.boundary
 

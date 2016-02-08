@@ -83,7 +83,7 @@ class universe():
   generatemetric = None
 
   #### IMPORT START
-  earth_radius = None
+  planet_radius = None
   dx_default = None
   #fileid = 'G'
   fileid = None

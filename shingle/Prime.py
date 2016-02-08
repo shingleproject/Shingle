@@ -60,7 +60,7 @@ from Import import read_rtopo, read_raster, read_shape, read_paths
 from Projection import project
 from Projection import longitude_diff, point_diff, point_diff_cartesian, compare_points, p2
 
-from MeshGeneration import generate_mesh, generate_mesh2
+from MeshGeneration import generate_mesh
 from MetricGeneration import generatemetric
 
 from RepresentationTools import array_to_gmsh_points
@@ -70,102 +70,18 @@ from StringOperations import list_to_comma_separated, list_to_space_separated
 from Usage import usage
 
 
-from SurfaceGeoidDomainRepresentation import SurfaceGeoidDomainRepresentation
-
-
-
-# #### IMPORT START
-# earth_radius = 6.37101e+06
-# dx_default = 0.1
-# #fileid = 'G'
-# fileid = ''
-# compound = False
-# #compound = True
-# more_bsplines = False
-# # Interestingly, if the following is true, gmsh generates a nice mesh, but complains (rightly so) on multiple definitions of a physical line id.  If false, the mesh contains extra 1d elements, which need parsing out!
-# physical_lines_separate = False
-# #### IMPORT END
 
 
 def main():
 
   from Universe import universe
-  from Support import globalsInit
-
-  # TODO
-  # Add repo version number/release in geo header
-  #
-  # Calculate area in right projection
-  # Add region selection function
-  # Ensure all islands selected
-  # Identify Open boundaries differently
-  # Export command line to geo file
-  # If nearby, down't clode with parallel
-
-  #   #### IMPORT START
-  #   earth_radius = 6.37101e+06
-  #   dx_default = 0.1
-  #   #fileid = 'G'
-  #   fileid = ''
-  #   compound = False
-  #   #compound = True
-  #   more_bsplines = False
-  #   # Interestingly, if the following is true, gmsh generates a nice mesh, but complains (rightly so) on multiple definitions of a physical line id.  If false, the mesh contains extra 1d elements, which need parsing out!
-  #   physical_lines_separate = False
-  #   #### IMPORT END
+  from Support import globalsInit, ReadArguments
+  from SurfaceGeoidDomainRepresentation import SurfaceGeoidDomainRepresentation
 
 
-
-
-
-  #def scenario(name):
-  #  filcher_ronne = argument
-
-  argv = sys.argv[1:]
-  globalsInit(argv)
-
-
-  while (len(argv) > 0):
-    argument = argv.pop(0).rstrip()
-    if   (argument == '-h'): usage()
-    elif (argument == '-s'): universe.scenario = str(argv.pop(0).rstrip()); universe=scenario(universe.scenario)
-    elif (argument == '-n'): universe.input  = argv.pop(0).rstrip()
-    elif (argument == '-f'): universe.output = argv.pop(0).rstrip()
-    elif (argument == '-t'): universe.contourtype = argv.pop(0).rstrip()
-    elif (argument == '-r'): universe.region = argv.pop(0).rstrip()
-    elif (argument == '-m'): universe.projection = argv.pop(0).rstrip()
-    elif (argument == '-dx'): universe.dx = float(argv.pop(0).rstrip())
-    elif (argument == '-lat'): universe.extendtolatitude = float(argv.pop(0).rstrip()); universe.closewithparallels = True
-    elif (argument == '-a'): universe.minarea = float(argv.pop(0).rstrip())
-    elif (argument == '-bounding_latitude'): universe.bounding_lat =float(argv.pop(0).rstrip())
-    elif (argument == '-bl'): universe.bounding_lat = float(argv.pop(0).rstrip())
-    elif (argument == '-smooth_data'):
-      universe.smooth_degree = int(argv.pop(0).rstrip())
-      universe.smooth_data = True
-    elif (argument == '-no'): universe.open = False
-    elif (argument == '-exclude_ice_shelves'): universe.include_iceshelf_ocean_cavities = False
-    elif (argument == '-c'): universe.cache = True
-    elif (argument == '-plot'): universe.plotcontour = True
-    elif (argument == '-mesh'): universe.generatemesh = True
-    elif (argument == '-m'): universe.projection = argv.pop(0).rstrip()
-    elif (argument == '-el'): universe.elementlength = argv.pop(0).rstrip()
-    elif (argument == '-metric'): universe.generatemetric = True
-    elif (argument == '-v'): universe.verbose = True
-    elif (argument == '-vv'): universe.verbose = True; universe.debug = True; 
-    elif (argument == '-q'): universe.verbose = False
-    elif (argument == '-p'):
-      while ((len(argv) > 0) and (argv[0][0] != '-')):
-        universe.boundaries.append(int(argv.pop(0).rstrip()))
-    elif (argument == '-pn'):
-      while ((len(argv) > 0) and (argv[0][0] != '-')):
-        universe.boundariestoexclude.append(int(argv.pop(0).rstrip()))
-    elif (argument == '-b'):
-      while ((len(argv) > 0) and ((argv[0][0] != '-') or ( (argv[0][0] == '-') and (argv[0][1].isdigit()) ))):
-        universe.box.append(argv.pop(0).rstrip())
-
-  universe.region = expand_boxes(universe.region, universe.box)
-
-  print universe.dx,  universe.dx_default
+  globalsInit()
+  ReadArguments()
+  
 
 
   if (universe.generatemetric):
@@ -175,8 +91,6 @@ def main():
 
   rep = SurfaceGeoidDomainRepresentation()
 
-  #source = file(universe.input,'r')
-  #output = file(universe.output,'w')
   rep.filehandleOpen(universe.output)
 
   rep.gmsh_comment('Arguments: ' + universe.call)
@@ -201,13 +115,8 @@ def main():
 
   rep.gmsh_comment('')
 
-
-
-
   rep.output_boundaries(filename=universe.input, paths=universe.boundaries, minarea=universe.minarea, region=universe.region, dx=universe.dx, latitude_max=universe.extendtolatitude)
-
-  if (universe.open):
-    rep.output_open_boundaries()
+  rep.output_open_boundaries()
   rep.output_surfaces()
 
   #from specific.AntarcticCircumpolarCurrent import draw_acc
@@ -217,11 +126,8 @@ def main():
 
   rep.output_fields()
 
-
-  if (len(rep.index.skipped) > 0):
-    rep.report('Skipped (because no point on the boundary appeared in the required region, or area enclosed by the boundary was too small):\n'+' '.join(rep.index.skipped))
+  rep.reportSkipped()
   rep.filehandleClose()
-  #output.close()
 
-  generate_mesh2(universe.output)
+  generate_mesh(universe.output)
 

@@ -31,8 +31,79 @@
 ##########################################################################
 
 from Universe import universe
+from Reporting import report
+from StringOperations import expand_boxes
 
-def globalsInit(args):
+class ReadArguments(object):
+  
+  def __init__(self):
+    from sys import argv
+    self.arguments = argv[1:]
+    self.saveCall()
+    self.legacy = False
+    self.Read()
+
+  def saveCall(self):
+    call = ''
+    for argument in self.arguments:
+      if ' ' in argument:
+        call = call + ' \'' + argument + '\''
+      else:
+        call = call + ' ' + argument
+    universe.call = call
+
+  def NextArgument(self, ):
+    return self.arguments.pop(0).rstrip()
+
+  def Read(self):
+    while (len(self.arguments) > 0):
+      argument = self.NextArgument()
+      if   (argument == '-h'): usage()
+      elif (argument == '-n'): universe.input  = self.NextArgument(); print universe.input
+      elif (argument == '-f'): universe.output = self.NextArgument(); print universe.output
+      elif (argument == '-l'): self.legacy = True; report('Including legacy command line options')
+      if self.legacy:
+        self.ReadLegacy()
+
+    universe.region = expand_boxes(universe.region, universe.box)
+
+  def ReadLegacy(argument):
+    if (argument == '-s'): universe.scenario = str(self.NextArgument()); universe=scenario(universe.scenario)
+    elif (argument == '-t'): universe.contourtype = self.NextArgument()
+    elif (argument == '-r'): universe.region = self.NextArgument()
+    elif (argument == '-m'): universe.projection = self.NextArgument()
+    elif (argument == '-dx'): universe.dx = float(self.NextArgument())
+    elif (argument == '-lat'): universe.extendtolatitude = float(self.NextArgument()); universe.closewithparallels = True
+    elif (argument == '-a'): universe.minarea = float(self.NextArgument())
+    elif (argument == '-bounding_latitude'): universe.bounding_lat =float(self.NextArgument())
+    elif (argument == '-bl'): universe.bounding_lat = float(self.NextArgument())
+    elif (argument == '-smooth_data'):
+      universe.smooth_degree = int(self.NextArgument())
+      universe.smooth_data = True
+    elif (argument == '-no'): universe.open = False
+    elif (argument == '-exclude_ice_shelves'): universe.include_iceshelf_ocean_cavities = False
+    elif (argument == '-c'): universe.cache = True
+    elif (argument == '-plot'): universe.plotcontour = True
+    elif (argument == '-mesh'): universe.generatemesh = True
+    elif (argument == '-m'): universe.projection = self.NextArgument()
+    elif (argument == '-el'): universe.elementlength = self.NextArgument()
+    elif (argument == '-metric'): universe.generatemetric = True
+    elif (argument == '-v'): universe.verbose = True
+    elif (argument == '-vv'): universe.verbose = True; universe.debug = True; 
+    elif (argument == '-q'): universe.verbose = False
+    elif (argument == '-p'):
+      while ((len(argv) > 0) and (argv[0][0] != '-')):
+        universe.boundaries.append(int(self.NextArgument()))
+    elif (argument == '-pn'):
+      while ((len(argv) > 0) and (argv[0][0] != '-')):
+        universe.boundariestoexclude.append(int(self.NextArgument()))
+    elif (argument == '-b'):
+      while ((len(argv) > 0) and ((argv[0][0] != '-') or ( (argv[0][0] == '-') and (argv[0][1].isdigit()) ))):
+        universe.box.append(self.NextArgument())
+
+def globalsInit():
+  import os
+
   debug = False
   # Config file ('~/.gaia') format:
   # [general]
@@ -46,12 +117,6 @@ def globalsInit(args):
   # [backup]
   # location = ~/path/to/calendar/backup/folder/,~/path/to/second/calendar/folder/
 
-  universe.call = '' 
-  for arg in args:
-    if ' ' in arg:
-      universe.call = universe.call + ' \'' + arg + '\''
-    else:
-      universe.call = universe.call + ' ' + arg
 
   universe.verbose = True
   universe.debug = False
@@ -60,7 +125,7 @@ def globalsInit(args):
   universe.reportline = 0
 
   #### IMPORT START
-  universe.earth_radius = 6.37101e+06
+  universe.planet_radius = 6.37101e+06
   universe.dx_default = 0.1
   #fileid = 'G'
   universe.fileid = ''
@@ -71,7 +136,7 @@ def globalsInit(args):
   universe.physical_lines_separate = False
   #### IMPORT END
 
-  universe.input  = '/d/dataset/rtopo/RTopo105b_50S.nc'
+  universe.input  = os.path.expanduser('~/tmp/dataset/rtopo/RTopo105b_50S.nc')
   #picklefile = '/d/dataset/rtopo/rtopo.pkl'
   universe.picklefile = ''
   #output = './stereographic_projection.geo'

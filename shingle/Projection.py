@@ -139,8 +139,8 @@ def project(location, type=None):
     latitude_rad  = math.radians(latitude)
     # Changed sign in x formulae - need to check
     m = math.sqrt(1 + cos(latitude_rad) * cos(longitude_rad / 2.0))
-    x = earth_radius * ( 2 * math.sqrt(2) * cos(latitude_rad) * sin(longitude_rad / 2.0) ) / m
-    y = earth_radius * (     math.sqrt(2) * sin(latitude_rad) ) / m
+    x = planet_radius * ( 2 * math.sqrt(2) * cos(latitude_rad) * sin(longitude_rad / 2.0) ) / m
+    y = planet_radius * (     math.sqrt(2) * sin(latitude_rad) ) / m
     return array([ x, y ])
   elif (type == 'longlat' ):
     return location
