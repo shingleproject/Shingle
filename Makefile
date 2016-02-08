@@ -66,9 +66,9 @@ lib/libspud.so:
 
 # ------------------------------------------------------------------------
 
-schema: schema/shingle_options.rng
+schema: schema/shingle_options.rng .FORCE
 
-schema/shingle_options.rng: tool/spud-preprocess
+schema/shingle_options.rng: tool/spud-preprocess .FORCE
 	@echo "Rebuilding schema shingle_options.rng"
 	@./tool/spud-preprocess schema/shingle_options.rnc
 
@@ -77,6 +77,8 @@ tool/spud-preprocess: lib/libspud.so
 	@cp spud/bin/spud-preprocess tool/
 	@chmod a+x ./tool/spud-preprocess
 	@sed -i 's/\.\.\/share\/spud/schema/' ./tool/spud-preprocess
+
+.FORCE: 
 
 # ------------------------------------------------------------------------
 

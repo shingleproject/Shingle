@@ -32,6 +32,40 @@ start =
                   "vtk"
                }
             }
+         },
+         element test {
+            ## Test structure
+            element node_number {
+              attribute name { "Node number" },
+              element tolerance {
+                integer
+              }
+            },
+            element element_number {
+              attribute name { "Element number" },
+              element tolerance {
+                integer
+              }
+            },
+            element surface_geoid_area {
+              # Check correct in spherical projection
+              attribute name { "Surface Geoid Area" },
+              element tolerance {
+                real
+              }
+            }?,
+            element edge_node_number {
+              attribute name { "Edge node number" },
+              element tolerance {
+                integer
+              }
+            },
+            element element_circumsphere {
+              attribute name { "Element circumsphere range" },
+              element tolerance {
+                integer
+              }
+            }?
          }
       }
    )      
