@@ -20,7 +20,24 @@
 #  
 ##########################################################################
 
-default: test
+default: bin/shingle
+
+bin/shingle: src/shingle lib/libspud.so
+	@cp src/shingle bin/shingle
+
+clean:
+	@echo 'CLEAN test'
+	@make -s -C test clean
+	@echo 'CLEAN tool'
+	@rm -f ./tool/spud-preprocess
+	@echo 'CLEAN lib'
+	@rm -rf ./lib
+	@echo 'CLEAN spud'
+	@make -s -C spud clean
+	@echo 'CLEAN schema'
+	@rm -f schema/shingle_options.rng
+
+# ------------------------------------------------------------------------
 
 test:
 	@make -s -C test
@@ -36,43 +53,33 @@ testwithdatadownload:
 	
 .PHONY: test data datalink testwithdatadownload
 
+# ------------------------------------------------------------------------
 
-clean:
-	@echo 'CLEAN test'
-	@make -s -C test clean
-	@echo 'CLEAN bin'
-	@rm -f ./bin/spud-preprocess
-	@echo 'CLEAN lib'
-	@rm -rf ./lib
-	@echo 'CLEAN spud'
-	@make -s -C spud clean
-
-
-spudpatch:
-	@patch -p0 < spud.patch
-
-spud: lib/libspud.so bin/spud-preprocess
+spud: lib/libspud.so tool/spud-preprocess
 libspud: lib/libspud.so
 
 lib/libspud.so:
+	@mkdir -p lib
 	@make -C spud install-pyspud
 	@cp lib/python*/site-packages/libspud.so lib/
 
-bin/spud-preprocess: lib/libspud.so
+# ------------------------------------------------------------------------
+
+schema: schema/shingle_options.rng
+
+schema/shingle_options.rng: tool/spud-preprocess
+	@echo "Rebuilding schema shingle_options.rng"
+	@./tool/spud-preprocess schema/shingle_options.rnc
+
+tool/spud-preprocess: lib/libspud.so
 	@mkdir -p ./tool
 	@cp spud/bin/spud-preprocess tool/
 	@chmod a+x ./tool/spud-preprocess
+	@sed -i 's/\.\.\/share\/spud/schema/' ./tool/spud-preprocess
 
-schema: bin/spud-preprocess
-	@echo "Rebuilding schema shingle_options.rng"
-	@./tool/spud-preprocess schemas/shingle_options.rnc
+# ------------------------------------------------------------------------
 
-
-
-
-
-lib/libspud.a:
-	@echo '    MKDIR lib'; mkdir -p lib
-	@echo '    MAKE libspud'; $(MAKE) -C libspud
+spudpatch:
+	@patch -p0 < spud.patch
 
 

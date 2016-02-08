@@ -21,7 +21,7 @@ start =
             },
             comment
          },
-         geometry,
+         #geometry,
          ## Input/output options
          element io {
             ## Format for dump files. Only vtk for now.
@@ -29,7 +29,7 @@ start =
                element string_value{
                   "vtk"
                }
-            },
-         },
+            }
+         }
       }
    )      
