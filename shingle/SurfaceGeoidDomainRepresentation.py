@@ -37,6 +37,7 @@
 # output_fields
 
 from Universe import universe
+from Reporting import error
 from Import import read_paths
 from StringOperations import list_to_comma_separated, list_to_space_separated
 from RepresentationTools import draw_parallel_explicit
@@ -105,7 +106,7 @@ class SurfaceGeoidDomainRepresentation(object):
   def CheckSource(self):
     from os.path import isfile
     if not isfile(self.contoursource):
-      error('Source netCDF ' + self.contourcource + ' not found!', fatal=True)
+      error('Source netCDF ' + self.contoursource + ' not found!', fatal=True)
 
   def GetCacheLocation(self):
     if self.cachefile is None:

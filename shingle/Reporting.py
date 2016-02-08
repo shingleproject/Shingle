@@ -24,22 +24,82 @@
 
 from Universe import universe, colour
 
-def report(text, debug = False):
+colours_pretty = {
+  'red':'\033[0;31m',
+  'green':'\033[0;32m',
+  'blue':'\033[0;34m',
+  'cyan':'\033[0;36m',
+  'magenta':'\033[0;35m',
+  'brightred':'\033[1;31m',
+  'brightgreen':'\033[1;32m',
+  'brightmagenta':'\033[1;35m',
+  'brightyellow':'\033[1;33m',
+  'brightcyan':'\033[1;36m',
+  'yellow':'\033[0;33m',
+  'bred':'\033[7;31m',
+  'bcyan':'\033[7;36m',
+  'bblue':'\033[7;34m',
+  'bmagenta':'\033[7;35m',
+  'byellow':'\033[7;33;40m',
+  'bgreen':'\033[7;32m',
+  'bwhite':'\033[7;37m',
+  'grey':'\033[1;30m',
+  'fred':'\033[5;31m',
+  'end':'\033[0m'
+}
+
+colours_plain = {}
+for colour in colours_pretty.keys():
+  colours_plain[colour] = ''
+
+def merge(*dict_args):
+    '''
+    Given any number of dicts, shallow copy and merge into a new dict,
+    precedence goes to key value pairs in latter dicts.
+    '''
+    result = {}
+    for dictionary in dict_args:
+        result.update(dictionary)
+    return result
+
+def addcolour(dic, colourful = True):
+    result = {}
+    if colourful:
+      result.update(colours_pretty)
+    else:
+      result.update(colours_plain)
+    result.update(dic)
+    return result
+
+def report(text, var = {}, debug = False, force = False, colourful = True):
   # Link to rep.report
+  # Option to send to log file instead - independent of terminal verbosity
   if debug and not universe.debug:
     return
-  if (universe.verbose):
+  if universe.verbose or force:
+    print(text % addcolour(var, colourful = colourful))
+
+def error(text, var = {}, fatal=False):
+  suffix = ''
+  if fatal:
+    suffix = '%(brightred)s  [FATAL]%(end)s'
+  report('%(brightred)sERROR:%(end)s %(red)s' + text + '%(end)s' + suffix, var=var, force=True)
+  if fatal:
+    from sys import exit
+    exit(1)
+
+
+def printvv(text):
+  if (universe.debug):
     print text
+
+
 
 #def printv(text, include = True):
 #  if (universe.verbose):
 #    print text
 #  if include:
 #    gmsh_comment(text)
-
-def printvv(text):
-  if (universe.debug):
-    print text
 
 # def report(string, forced=False, noreturn=False, debug=False, routine=False):
 #   # routine messages do not get added to consecutive reports, cauing error on multiple reports
@@ -73,15 +133,4 @@ def printvv(text):
 #           universe.bufferreturned = True
 #         print string.encode('utf-8')
 # 
-
-def error(string, fatal=False):
- stringexit = ''
- if fatal:
-   stringexit = ' [FATAL ERROR, exiting]'
- report("%(redbright)sERROR:%(end)s %(red)s%(string)s%(end)s%(redbright)s%(stringexit)s%(end)s", var = {'string':string, 'stringexit':stringexit}, forced=True)
- if len(universe.errors) > 0:
-   universe.errors = universe.errors + os.linesep
- universe.errors = universe.errors + string + stringexit
- if fatal:
-   sys.exit(1)
 
