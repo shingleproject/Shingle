@@ -47,9 +47,9 @@ test:
 	@echo "  TEST ALL"
 	@make -s clean
 	@make -s allcases
-	$(ECHO) "  SUMMARY:"
+	@$(ECHO) "  SUMMARY:"
 	@make -s testcases
-	$(ECHO) "  ALL TESTS: $(green)PASS$(end)"
+	@$(ECHO) "  ALL TESTS: $(green)PASS$(end)"
 
 build:
 	@echo "  BUILD ALL (no testing)"
@@ -154,7 +154,7 @@ antarctica_main_landmass_30s/shorelines.geo:
 
 # Filchner-Ronne extended out to the 65S parallel
 filchner-ronne/shorelines.geo:
-	$(SCRIPT) -l -f $@ -n $(DATASET) -no -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0 -lat '-65.0' > $(dir $@)/mesh.log
+	@$(SCRIPT) -l -f $@ -n $(DATASET) -no -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0 -lat '-65.0' > $(dir $@)/mesh.log
 
 # Antarctica, everything below the 60S parallel, coarse approximation to open boundary
 antarctica_all/shorelines.geo:
