@@ -39,8 +39,9 @@ class ReadArguments(object):
   def __init__(self):
     from sys import argv
     self.arguments = argv[1:]
-    self.saveCall()
+    self.argument = None
     self.legacy = False
+    self.saveCall()
     self.Read()
 
   def saveCall(self):
@@ -56,49 +57,52 @@ class ReadArguments(object):
     return self.arguments.pop(0).rstrip()
 
   def Read(self):
+    from Universe import universe
     while (len(self.arguments) > 0):
-      argument = self.NextArgument()
-      if   (argument == '-h'): usage()
-      elif (argument == '-n'): universe.input  = self.NextArgument(); print universe.input
-      elif (argument == '-f'): universe.output = self.NextArgument(); print universe.output
-      elif (argument == '-l'): self.legacy = True; report('Including legacy command line options')
-      if self.legacy:
-        self.ReadLegacy()
+      self.argument = self.NextArgument()
+      if   (self.argument == '-h'): usage()
+      elif (self.argument == '-n'): universe.input  = self.NextArgument(); print universe.input
+      elif (self.argument == '-f'): universe.output = self.NextArgument(); print universe.output
+      elif (self.argument == '-l'): self.legacy = True; report('Including legacy command line options')
+      else: self.ReadLegacy()
 
     universe.region = expand_boxes(universe.region, universe.box)
 
-  def ReadLegacy(argument):
-    if (argument == '-s'): universe.scenario = str(self.NextArgument()); universe=scenario(universe.scenario)
-    elif (argument == '-t'): universe.contourtype = self.NextArgument()
-    elif (argument == '-r'): universe.region = self.NextArgument()
-    elif (argument == '-m'): universe.projection = self.NextArgument()
-    elif (argument == '-dx'): universe.dx = float(self.NextArgument())
-    elif (argument == '-lat'): universe.extendtolatitude = float(self.NextArgument()); universe.closewithparallels = True
-    elif (argument == '-a'): universe.minarea = float(self.NextArgument())
-    elif (argument == '-bounding_latitude'): universe.bounding_lat =float(self.NextArgument())
-    elif (argument == '-bl'): universe.bounding_lat = float(self.NextArgument())
-    elif (argument == '-smooth_data'):
+
+  def ReadLegacy(self):
+    from Universe import universe
+    if not self.legacy: return
+    if (self.argument == '-s'): universe.scenario = str(self.NextArgument()); universe=scenario(universe.scenario)
+    elif (self.argument == '-t'): universe.contourtype = self.NextArgument()
+    elif (self.argument == '-r'): universe.region = self.NextArgument()
+    elif (self.argument == '-m'): universe.projection = self.NextArgument()
+    elif (self.argument == '-dx'): universe.dx = float(self.NextArgument())
+    elif (self.argument == '-lat'): universe.extendtolatitude = float(self.NextArgument()); universe.closewithparallels = True
+    elif (self.argument == '-a'): universe.minarea = float(self.NextArgument())
+    elif (self.argument == '-bounding_latitude'): universe.bounding_lat =float(self.NextArgument())
+    elif (self.argument == '-bl'): universe.bounding_lat = float(self.NextArgument())
+    elif (self.argument == '-smooth_data'):
       universe.smooth_degree = int(self.NextArgument())
       universe.smooth_data = True
-    elif (argument == '-no'): universe.open = False
-    elif (argument == '-exclude_ice_shelves'): universe.include_iceshelf_ocean_cavities = False
-    elif (argument == '-c'): universe.cache = True
-    elif (argument == '-plot'): universe.plotcontour = True
-    elif (argument == '-mesh'): universe.generatemesh = True
-    elif (argument == '-m'): universe.projection = self.NextArgument()
-    elif (argument == '-el'): universe.elementlength = self.NextArgument()
-    elif (argument == '-metric'): universe.generatemetric = True
-    elif (argument == '-v'): universe.verbose = True
-    elif (argument == '-vv'): universe.verbose = True; universe.debug = True; 
-    elif (argument == '-q'): universe.verbose = False
-    elif (argument == '-p'):
-      while ((len(argv) > 0) and (argv[0][0] != '-')):
+    elif (self.argument == '-no'): universe.open = False
+    elif (self.argument == '-exclude_ice_shelves'): universe.include_iceshelf_ocean_cavities = False
+    elif (self.argument == '-c'): universe.cache = True
+    elif (self.argument == '-plot'): universe.plotcontour = True
+    elif (self.argument == '-mesh'): universe.generatemesh = True
+    elif (self.argument == '-m'): universe.projection = self.NextArgument()
+    elif (self.argument == '-el'): universe.elementlength = self.NextArgument()
+    elif (self.argument == '-metric'): universe.generatemetric = True
+    elif (self.argument == '-v'): universe.verbose = True
+    elif (self.argument == '-vv'): universe.verbose = True; universe.debug = True; 
+    elif (self.argument == '-q'): universe.verbose = False
+    elif (self.argument == '-p'):
+      while ((len(self.arguments) > 0) and (self.arguments[0][0] != '-')):
         universe.boundaries.append(int(self.NextArgument()))
-    elif (argument == '-pn'):
-      while ((len(argv) > 0) and (argv[0][0] != '-')):
+    elif (self.argument == '-pn'):
+      while ((len(self.arguments) > 0) and (self.arguments[0][0] != '-')):
         universe.boundariestoexclude.append(int(self.NextArgument()))
-    elif (argument == '-b'):
-      while ((len(argv) > 0) and ((argv[0][0] != '-') or ( (argv[0][0] == '-') and (argv[0][1].isdigit()) ))):
+    elif (self.argument == '-b'):
+      while ((len(self.arguments) > 0) and ((self.arguments[0][0] != '-') or ( (self.arguments[0][0] == '-') and (self.arguments[0][1].isdigit()) ))):
         universe.box.append(self.NextArgument())
 
 def globalsInit():

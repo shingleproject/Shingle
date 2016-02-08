@@ -51,6 +51,9 @@ clean:
 spudpatch:
 	@patch -p0 < spud.patch
 
+spud: lib/libspud.so
+libspud: lib/libspud.so
+
 lib/libspud.so:
 	@make -C spud install-pyspud
 	@cp lib/python*/site-packages/libspud.so lib/

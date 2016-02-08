@@ -51,7 +51,6 @@ from Mathematical import norm, normalise, smoothGaussian, area_enclosed, segment
 from Reporting import printvv
 
 
-from StringOperations import expand_boxes
 
 from specific.Pig import pig_sponge
 
