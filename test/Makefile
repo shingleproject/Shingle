@@ -20,7 +20,8 @@
 #  
 ##########################################################################
 
-DATASET=../RTopo105b_50S.nc
+DATADIR=../dataset
+DATASET=../dataset/RTopo105b_50S.nc
 
 SCRIPT=../bin/shingle
 
@@ -60,6 +61,9 @@ clean:
 	@echo "  CLEAN ALL"
 	@$(foreach var,$(EXAMPLES), $(MAKE) -s clean$(var);)
 
+datafolder:
+	@mkdir -p $(DATADIR)
+
 datacheck:
 	@test -s $(DATASET) || { \
 		echo ""; \
@@ -76,15 +80,15 @@ datacheck:
 		echo ""; \
 		false; }
 
-datalink:
+datalink: datafolder
 	@echo 'Creating a link to the RTopo dataset at ~/dataset/rtopo/RTopo105b_50S.nc'
 	@ln -s ~/tmp/dataset/rtopo/RTopo105b_50S.nc $(DATASET)
 
-data:
+data: datafolder
 	@echo 'Downloading the RTopo dataset for the tests (note 743MB).'
 	@curl 'http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc' -o $(DATASET)
 
-datatimeout:
+datatimeout: datafolder
 	@echo 'Downloading the RTopo dataset for the tests (note 743MB).'
 	@curl -m 240 'http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc' -o $(DATASET)
 
