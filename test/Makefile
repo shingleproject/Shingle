@@ -56,7 +56,7 @@ build:
 	@make -s clean
 	@make -s buildcases
 
-clean: datacheck
+clean: 
 	@echo "  CLEAN ALL"
 	@$(foreach var,$(EXAMPLES), $(MAKE) -s clean$(var);)
 
@@ -114,7 +114,7 @@ default: test
 
 test%: %
 	@$(ECHO) "    TEST $(blue)$*$(end)"
-	@if ./diff_exclude_header valid/$</shorelines.geo $</shorelines.geo; then \
+	@if ../tool/diff_exclude_header valid/$</shorelines.geo $</shorelines.geo; then \
 		$(ECHO) "    $(green)PASS$(end)"; \
 	else \
 		$(ECHO) "    $(red)FAIL$(end)"; \

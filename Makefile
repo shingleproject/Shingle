@@ -23,23 +23,23 @@
 default: test
 
 test:
-	@make -s -C tests
+	@make -s -C test
 
 data:
-	@make -s -C tests data
+	@make -s -C test data
 
 datalink:
-	@make -s -C tests datalink
+	@make -s -C test datalink
 
 testwithdatadownload:
-	@make -s -C tests testwithdatadownload
+	@make -s -C test testwithdatadownload
 	
 .PHONY: test data datalink testwithdatadownload
 
 
 clean:
-	@echo 'CLEAN tests'
-	@make -s -C tests clean
+	@echo 'CLEAN test'
+	@make -s -C test clean
 	@echo 'CLEAN bin'
 	@rm -f ./bin/spud-preprocess
 	@echo 'CLEAN lib'
@@ -59,13 +59,13 @@ lib/libspud.so:
 	@cp lib/python*/site-packages/libspud.so lib/
 
 bin/spud-preprocess: lib/libspud.so
-	@mkdir -p ./tools
-	@cp spud/bin/spud-preprocess tools/
-	@chmod a+x ./tools/spud-preprocess
+	@mkdir -p ./tool
+	@cp spud/bin/spud-preprocess tool/
+	@chmod a+x ./tool/spud-preprocess
 
 schema: bin/spud-preprocess
 	@echo "Rebuilding schema shingle_options.rng"
-	@./tools/spud-preprocess schemas/shingle_options.rnc
+	@./tool/spud-preprocess schemas/shingle_options.rnc
 
 
 
