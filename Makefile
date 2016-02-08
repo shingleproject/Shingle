@@ -30,13 +30,13 @@ clean:
 	@echo 'CLEAN test'
 	@make -s -C test clean
 	@echo 'CLEAN tool'
-	@rm -f ./tool/spud-preprocess
+	@rm -f tool/spud-preprocess
 	@echo 'CLEAN lib'
-	@rm -rf ./lib
+	@rm -rf lib
 	@echo 'CLEAN spud'
 	@make -s -C spud clean
-	@echo 'CLEAN schema'
-	@rm -f schema/shingle_options.rng
+	@echo 'CLEAN bin'
+	@rm -rf bin
 
 # ------------------------------------------------------------------------
 
