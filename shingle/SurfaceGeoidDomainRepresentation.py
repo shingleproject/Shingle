@@ -43,13 +43,26 @@ from RepresentationTools import draw_parallel_explicit
 
 class SurfaceGeoidDomainRepresentation(object):
 
-  def __init__(self, name='surfaceGeoidDomainRepresentation'):
+  _cacheFiletype = '.shc'
+
+  def __init__(self, name='surfaceGeoidDomainRepresentation', output=None):
     self.output = ''
     self.filehandle = None
     # For now, use universal definitions:
     # Later to go in shml
     self.planet_radius = universe.planet_radius
     self.fileid = universe.fileid
+    self.contoursource = None
+    self.cache = universe.cache
+    self.cachefile = None 
+    self.outputfile = universe.output
+
+
+    self.paths = None
+    self.minarea = 0.0
+    self.region = 'True'
+    self.dx = universe.dx_default
+    self.latitude_max = None
 
   class index:
     point = 0
@@ -71,7 +84,47 @@ class SurfaceGeoidDomainRepresentation(object):
     open    = 4
     surface = 9
 
-  def filehandleOpen(self, filename):
+  def SetContourSource(self, filename):
+    self.contoursource = filename
+
+  def SetPaths(self, paths):
+    self.paths = paths
+
+  def SetMinArea(self, area):
+    self.minarea = area
+
+  def SetRegion(self, regions):
+    self.region = regions
+
+  def SetSpacing(self, dx):
+    self.dx = dx
+
+  def SetMaximumLatitude(self, latitude):
+    self.latitude_max = latitude
+
+  def CheckSource(self):
+    from os.path import isfile
+    if not isfile(self.contoursource):
+      error('Source netCDF ' + self.contourcource + ' not found!', fatal=True)
+
+  def GetCacheLocation(self):
+    if self.cachefile is None:
+      from os.path import splitext
+      base, extension = splitext(self.contoursource)
+      self.cachefile = base + '_' + extension.lstrip('.') + '_' + universe.contourtype + self._cacheFiletype
+
+  def CheckCache(self):
+    self.GetCacheLocation()
+    if not self.isCachePresent():
+      self.report('Contour cache ' + self.cachefile + ' not found, forcing generation.')
+      self.cache = True
+
+  def isCachePresent(self):
+    from os.path import isfile
+    return isfile(self.cachefile)
+
+  def filehandleOpen(self):
+    filename = self.outputfile
     self.filehandle = file(filename,'w')
 
   def filehandleClose(self):
@@ -87,7 +140,26 @@ class SurfaceGeoidDomainRepresentation(object):
 
   def reportSkipped(self):
     if len(self.index.skipped) > 0:
-      rep.report('Skipped (because no point on the boundary appeared in the required region, or area enclosed by the boundary was too small):\n'+' '.join(rep.index.skipped))
+      self.report('Skipped (because no point on the boundary appeared in the required region, or area enclosed by the boundary was too small):\n'+' '.join(rep.index.skipped))
+
+  def AppendArguments(self):
+    self.gmsh_comment('Arguments: ' + universe.call)
+
+  def AppendParameters(self):
+    self.report('Source netCDF located at ' + self.contoursource)
+    self.report('Output to ' + universe.output)
+    self.report('Projection type ' + universe.projection)
+    if len(universe.boundaries) > 0:
+      self.report('Boundaries restricted to ' + str(universe.boundaries))
+    if universe.region is not 'True':
+      self.report('Region defined by ' + str(universe.region))
+    if universe.dx != universe.dx_default:
+      self.report('Open contours closed with a line formed by points spaced %(dx)g degrees apart' % {'dx':universe.dx} )
+    if universe.extendtolatitude is not None:
+      self.report('Extending region to meet parallel on latitude ' + str(universe.extendtolatitude))
+
+    self.gmsh_comment('')
+
 
   def gmsh_comment(self, comment, newline=False):
     if newline:
@@ -239,7 +311,7 @@ Line Loop( ILL%(fileid)s + %(loop)i ) = { %(loopnumbers)s };''' % { 'loop':index
 
 
 
-  def output_boundaries(self, filename, paths=None, minarea=0, region='True', dx=universe.dx_default, latitude_max=None):
+  def output_boundaries(self):
     import pickle
     import os
     from numpy import zeros
@@ -257,20 +329,27 @@ Line Loop( ILL%(fileid)s + %(loop)i ) = { %(loopnumbers)s };''' % { 'loop':index
     #  pickle.dump(pathall, picklefile)
     #  picklefile.close()
 
+    filename = self.contoursource
+    paths = self.paths
+    minarea = self.minarea
+    region = self.region
+    dx = self.dx
+    latitude_max = self.latitude_max
 
-    if universe.cache and os.path.exists(universe.picklefile):
-      picklefile = open(universe.picklefile, 'rb')
-      self.report('Cache file found: ' + universe.picklefile)
-      pathall = pickle.load(picklefile)
-      picklefile.close()
+
+    if self.cache and os.path.exists(self.cachefile):
+      cachefile = open(self.cachefile, 'rb')
+      self.report('Cache file found: ' + self.cachefile)
+      pathall = pickle.load(cachefile)
+      cachefile.close()
     else:
       self.report('Generating contours', include = False)
       pathall = read_paths(self, filename)
-      if universe.cache:
-        self.report('Saving contours to: ' + universe.picklefile + ' for the future!')
-        picklefile = open(universe.picklefile, 'wb')
-        pickle.dump(pathall, picklefile)
-        picklefile.close()
+      if self.cache:
+        self.report('Saving contours to: ' + self.cachefile + ' for the future!')
+        cachefile = open(self.cachefile, 'wb')
+        pickle.dump(pathall, cachefile)
+        cachefile.close()
 
     self.report('Paths found: ' + str(len(pathall)))
     self.gmsh_header()
@@ -679,6 +758,37 @@ General.RotationX = 180;
 General.RotationY = 0;
 General.RotationZ = 270;
 ''')
+
+  def Generate(self):
+#   from specific.Pig import pig_sponge
+
+    self.SetContourSource(universe.input)
+    self.CheckSource()
+    
+    self.SetPaths(universe.boundaries)
+    self.SetMinArea(universe.minarea)
+    self.SetRegion(universe.region)
+    self.SetSpacing(universe.dx)
+    self.SetMaximumLatitude(universe.extendtolatitude)
+
+    self.filehandleOpen()
+    self.CheckCache()
+    self.AppendArguments()
+    self.AppendParameters()
+
+    self.output_boundaries()
+    self.output_open_boundaries()
+    self.output_surfaces()
+
+    #from specific.AntarcticCircumpolarCurrent import draw_acc
+    #index = draw_acc(index, boundary, universe.dx)
+
+    self.gmsh_section('End of contour definitions')
+
+    self.output_fields()
+
+    self.reportSkipped()
+    self.filehandleClose()
 
 
 

@@ -105,7 +105,7 @@ class ReadArguments(object):
       while ((len(self.arguments) > 0) and ((self.arguments[0][0] != '-') or ( (self.arguments[0][0] == '-') and (self.arguments[0][1].isdigit()) ))):
         universe.box.append(self.NextArgument())
 
-def globalsInit():
+def InitialiseGlobals():
   import os
 
   debug = False
@@ -141,7 +141,6 @@ def globalsInit():
   #### IMPORT END
 
   universe.input  = os.path.expanduser('~/tmp/dataset/rtopo/RTopo105b_50S.nc')
-  #picklefile = '/d/dataset/rtopo/rtopo.pkl'
   universe.picklefile = ''
   #output = './stereographic_projection.geo'
   universe.output = './shorelines.geo'

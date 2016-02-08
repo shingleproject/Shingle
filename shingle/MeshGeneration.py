@@ -24,52 +24,58 @@
 
 from Universe import universe
 
-def generate_mesh_plain(infile):
-  if (not universe.generatemesh):
-    return
-  import subprocess, re
-  command = 'gmsh'
-  commandfull = command + ' -2 ' + infile
-  print('Mesh generation, using ' + commandfull)
-  p = subprocess.Popen(commandfull , shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-  #f = open(tempfile, 'w')
-  #f.write(str(p.pid))
-  #f.close()
-  for line in p.stdout.readlines():
-    print line,
-  retval = p.wait()
+class Mesh(object):
 
-  outfile = re.sub(r"\.geo$", ".msh", infile)
-  print('Mesh generation complete, try: ' + command + ' ' + outfile)
-  print('  note, might require parsing')
+  def __init__(self, source = None, output = None, interactive = True):
+    self.source = source
+    self.interactive = interactive
+    # Output file name not implemented yet
+    self.output = output
 
-def generate_mesh_with_poll(infile):
-  if (not universe.generatemesh):
-    return
-  import subprocess, re
-  command = 'gmsh'
-  commandfull = command + ' -v 1 -2 ' + infile
-  print('Mesh generation, using ' + commandfull)
-  process = subprocess.Popen(
-    commandfull, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-  )
-  while True:
-    out = process.stdout.read(1)
-    if out == '' and process.poll() != None:
-      break
-    if out != '':
-      sys.stdout.write(out)
-      sys.stdout.flush()
-  outfile = re.sub(r"\.geo$", ".msh", infile)
-  print('Mesh generation complete, try: ' + command + ' ' + outfile)
-  print('  note, might require parsing')
+  def GeneratePlain(self):
+    infile = self.source
+    import subprocess, re
+    command = 'gmsh'
+    commandfull = command + ' -2 ' + infile
+    print('Mesh generation, using ' + commandfull)
+    p = subprocess.Popen(commandfull , shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    #f = open(tempfile, 'w')
+    #f.write(str(p.pid))
+    #f.close()
+    for line in p.stdout.readlines():
+      print line,
+    retval = p.wait()
 
+    outfile = re.sub(r"\.geo$", ".msh", infile)
+    print('Mesh generation complete, try: ' + command + ' ' + outfile)
+    print('  note, might require parsing')
 
+  def GenerateWithPoll(self):
+    infile = self.source
+    import subprocess, re
+    command = 'gmsh'
+    commandfull = command + ' -v 1 -2 ' + infile
+    print('Mesh generation, using ' + commandfull)
+    process = subprocess.Popen(
+      commandfull, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
+    while True:
+      out = process.stdout.read(1)
+      if out == '' and process.poll() != None:
+        break
+      if out != '':
+        sys.stdout.write(out)
+        sys.stdout.flush()
+    outfile = re.sub(r"\.geo$", ".msh", infile)
+    print('Mesh generation complete, try: ' + command + ' ' + outfile)
+    print('  note, might require parsing')
 
-def generate_mesh(infile, interactive=True):
-  if interactive:
-    generate_mesh_with_poll(infile)
-  else:
-    generate_mesh_plain(infile)
+  def Generate(self):
+    if (not universe.generatemesh):
+      return
+    if self.interactive:
+      generate_mesh_with_poll(infile)
+    else:
+      generate_mesh_plain(infile)
 
 
