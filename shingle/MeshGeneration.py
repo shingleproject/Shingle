@@ -22,7 +22,7 @@
 #  
 ##########################################################################
 
-
+from Universe import universe
 
 def generate_mesh(infile):
   if (not universe.generatemesh):

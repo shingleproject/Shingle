@@ -102,38 +102,19 @@ def main():
   # Export command line to geo file
   # If nearby, down't clode with parallel
 
-  #### IMPORT START
-  earth_radius = 6.37101e+06
-  dx_default = 0.1
-  #fileid = 'G'
-  fileid = ''
-  compound = False
-  #compound = True
-  more_bsplines = False
-  # Interestingly, if the following is true, gmsh generates a nice mesh, but complains (rightly so) on multiple definitions of a physical line id.  If false, the mesh contains extra 1d elements, which need parsing out!
-  physical_lines_separate = False
-  #### IMPORT END
+  #   #### IMPORT START
+  #   earth_radius = 6.37101e+06
+  #   dx_default = 0.1
+  #   #fileid = 'G'
+  #   fileid = ''
+  #   compound = False
+  #   #compound = True
+  #   more_bsplines = False
+  #   # Interestingly, if the following is true, gmsh generates a nice mesh, but complains (rightly so) on multiple definitions of a physical line id.  If false, the mesh contains extra 1d elements, which need parsing out!
+  #   physical_lines_separate = False
+  #   #### IMPORT END
 
 
-  class index:
-    point = 0
-    path = 0
-    contour = []
-    contournodes= []
-    open = []
-    skipped = []
-    start = 0
-    pathsinloop = []
-    physicalgroup = []
-    loop = 0
-    loops = []
-    physicalcontour = []
-    physicalopen = []
-
-  class boundary:
-    contour = 3
-    open    = 4
-    surface = 9
 
 
 
@@ -223,21 +204,22 @@ def main():
 
 
 
-  index = rep.output_boundaries(index, filename=universe.input, paths=universe.boundaries, minarea=universe.minarea, region=universe.region, dx=universe.dx, latitude_max=universe.extendtolatitude)
+  rep.output_boundaries(filename=universe.input, paths=universe.boundaries, minarea=universe.minarea, region=universe.region, dx=universe.dx, latitude_max=universe.extendtolatitude)
 
-  if (universe.open): index = rep.output_open_boundaries(index, boundary, universe.dx)
-  rep.output_surfaces(index, boundary)
+  if (universe.open):
+    rep.output_open_boundaries()
+  rep.output_surfaces()
 
-  from specific.AntarcticCircumpolarCurrent import draw_acc
+  #from specific.AntarcticCircumpolarCurrent import draw_acc
   #index = draw_acc(index, boundary, universe.dx)
 
   rep.gmsh_section('End of contour definitions')
 
-  rep.output_fields(index,boundary)
+  rep.output_fields()
 
 
-  if (len(index.skipped) > 0):
-    rep.report('Skipped (because no point on the boundary appeared in the required region, or area enclosed by the boundary was too small):\n'+' '.join(index.skipped))
+  if (len(rep.index.skipped) > 0):
+    rep.report('Skipped (because no point on the boundary appeared in the required region, or area enclosed by the boundary was too small):\n'+' '.join(rep.index.skipped))
   rep.filehandleClose()
   #output.close()
 

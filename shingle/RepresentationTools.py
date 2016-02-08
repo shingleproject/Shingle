@@ -22,11 +22,90 @@
 #  
 ##########################################################################
 
+from Universe import universe
+from Projection import compare_points, project
+from Mathematical import area_enclosed
 
+def draw_parallel_explicit(rep, start, end, index, latitude_max, dx):
+  from Projection import longitude_diff
 
+  #print start, end, index.point
+  # Note start is actual start - 1
+  if (latitude_max is None):
+    latitude_max = max(start[1], end[1])
+  else:
+    latitude_max = max(latitude_max, start[1], end[1])
+  current = start 
+  tolerance = dx * 0.6
+   
+  if (compare_points(current, end, dx)):
+    rep.gmsh_comment('Points already close enough, no need to draw parallels and meridians after all')
+    return index
+  else:
+    rep.gmsh_comment('Closing path with parallels and merdians, from (%.8f, %.8f) to  (%.8f, %.8f)' % ( start[0], start[1], end[0], end[1] ) )
+  
+  loopstart = index
+  if (current[1] != latitude_max):
+    rep.gmsh_comment('Drawing meridian to max latitude index %s at %f.2, %f.2 (to match %f.2)' % (index.point, current[0], current[1], latitude_max))
+  while (current[1] != latitude_max):
+    if (current[1] < latitude_max):
+      current[1] = current[1] + dx
+    else:
+      current[1] = current[1] - dx
+    if (abs(current[1] - latitude_max) < tolerance): current[1] = latitude_max
+    if (compare_points(current, end, dx)): return index
+    index.point += 1
+    # vv
+    rep.report('Drawing meridian to max latitude index %s at %f.2, %f.2 (to match %f.2)' % (index.point, current[0], current[1], latitude_max))
+    loc = project(current)
+    rep.gmsh_format_point(index.point, loc, 0.0)
+  if universe.more_bsplines:
+    index = rep.gmsh_loop(index, loopstart, False, True, True)
 
+    loopstart = index
+  if (current[0] != end[0]):
+    rep.gmsh_comment('Drawing parallel index %s at %f.2 (to match %f.2), %f.2' % (index.point, current[0], end[0], current[1]))
+  while (current[0] != end[0]):
+    if (longitude_diff(current[0], end[0]) < 0):
+      current[0] = current[0] + dx
+    else:
+      current[0] = current[0] - dx
+    #if (abs(current[0] - end[0]) < tolerance): current[0] = end[0]
+    if (abs(longitude_diff(current[0], end[0])) < tolerance): current[0] = end[0]
+
+    if (compare_points(current, end, dx)): return index
+    index.point += 1
+    # vv
+    rep.report('Drawing parallel index %s at %f.2 (to match %f.2), %f.2' % (index.point, current[0], end[0], current[1]))
+    loc = project(current)
+    rep.gmsh_format_point(index.point, loc, 0.0)
+  if universe.more_bsplines:
+    index = rep.gmsh_loop(index, loopstart, False, True, True)
+
+    loopstart = index
+  if (current[1] != end[1]):
+    rep.gmsh_comment('Drawing meridian to end index %s at %f.2, %f.2 (to match %f.2)' % (index.point, current[0], current[1], end[1]))
+  while (current[1] != end[1]):
+    if (current[1] < end[1]):
+      current[1] = current[1] + dx
+    else:
+      current[1] = current[1] - dx
+    if (abs(current[1] - end[1]) < tolerance): current[1] = end[1]
+    if (compare_points(current, end, dx)): return index
+    index.point += 1
+    # vv
+    rep.report('Drawing meridian to end index %s at %f.2, %f.2 (to match %f.2)' % (index.point, current[0], current[1], end[1]))
+    loc = project(current)
+    rep.gmsh_format_point(index.point, loc, 0.0)
+  index = rep.gmsh_loop(index, loopstart, True, True, False)
+  
+  rep.gmsh_comment( 'Closed path with parallels and merdians, from (%.8f, %.8f) to  (%.8f, %.8f)' % ( start[0], start[1], end[0], end[1] ) )
+
+  return index
 
 def array_to_gmsh_points(rep, num, index, location, minarea, region, dx, latitude_max):
+  from numpy import zeros
+  
   def check_point_required(region, location):
     import math
     # make all definitions of the math module available to the function
@@ -67,7 +146,8 @@ def array_to_gmsh_points(rep, num, index, location, minarea, region, dx, latitud
     #print latitude, valid[point]
     
   if (loopend is None):
-    printvv('Path %i skipped (no points found in region)' % ( num ))
+    # vv
+    rep.report('Path %i skipped (no points found in region)' % ( num ))
     rep.gmsh_comment('  Skipped (no points found in region)\n')
     return index
 
@@ -75,7 +155,8 @@ def array_to_gmsh_points(rep, num, index, location, minarea, region, dx, latitud
   #print num, (abs(location[loopstart, 0] - location[loopend, 0]) < 2 * dlongitude), (abs(location[loopstart, 1] - location[loopend, 1]) > 2 * dlatitude)
   
   if ( (abs(location[loopstart, 0] - location[loopend, 0]) < 2 * dlongitude) and (abs(location[loopstart, 1] - location[loopend, 1]) > 2 * dlatitude) ):
-    printvv('Path %i skipped (island crossing meridian - code needs modification to include)' % ( num ))
+    # vv
+    rep.report('Path %i skipped (island crossing meridian - code needs modification to include)' % ( num ))
     rep.gmsh_comment('  Skipped (island crossing meridian - code needs modification to include)\n')
     return index
 
@@ -120,7 +201,8 @@ def array_to_gmsh_points(rep, num, index, location, minarea, region, dx, latitud
       
   area = area_enclosed(validlocation)
   if (area < minarea):
-    printvv('Path %i skipped (area too small)' % ( num ))
+    # vv
+    rep.report('Path %i skipped (area too small)' % ( num ))
     rep.gmsh_comment('  Skipped (area too small)\n')
     return index
 
@@ -196,14 +278,14 @@ def array_to_gmsh_points(rep, num, index, location, minarea, region, dx, latitud
       if ((close[point]) and (point == validnumber - 1) and (not (compare_points(validlocation[point], validlocation[0], dx)))):
         rep.gmsh_comment('**** END ' + str(point) + '/' + str(validnumber-1) + str(close[point]))
         index = rep.gmsh_loop(index, loopstartpoint, False, False, True)
-        index = draw_parallel_explicit(validlocation[point], validlocation[0], index, latitude_max, dx)
+        index = draw_parallel_explicit(rep, validlocation[point], validlocation[0], index, latitude_max, dx)
         index = rep.gmsh_loop(index, loopstartpoint, True, True, True)
         rep.gmsh_comment('**** END end of loop ' + str(closelast) + str(point) + '/' + str(validnumber-1) + str(close[point]))
       elif ((close[point]) and (point > 0) and (not (compare_points(validlocation[point], validlocation[0], dx)))):
         rep.gmsh_comment('**** NOT END ' + str(point) + '/' + str(validnumber-1) + str(close[point]))
         rep.gmsh_comment(str(validlocation[point,:]) + str(validlocation[point,:]))
         index = rep.gmsh_loop(index, loopstartpoint, False, False, True)
-        index = draw_parallel_explicit(validlocation[point - 1], validlocation[point], index, latitude_max, dx)
+        index = draw_parallel_explicit(rep, validlocation[point - 1], validlocation[point], index, latitude_max, dx)
         index = rep.gmsh_loop(index, loopstartpoint, False, True, True)
         rep.gmsh_comment('**** NOT END end of loop ' + str(point) + '/' + str(validnumber-1) + str(close[point]))
       else:

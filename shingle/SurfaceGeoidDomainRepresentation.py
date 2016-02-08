@@ -38,6 +38,8 @@
 
 from Universe import universe
 from Import import read_paths
+from StringOperations import list_to_comma_separated, list_to_space_separated
+
 
 class SurfaceGeoidDomainRepresentation(object):
 
@@ -48,6 +50,26 @@ class SurfaceGeoidDomainRepresentation(object):
     # Later to go in shml
     self.earth_radius = universe.earth_radius
     self.fileid = universe.fileid
+
+  class index:
+    point = 0
+    path = 0
+    contour = []
+    contournodes= []
+    open = []
+    skipped = []
+    start = 0
+    pathsinloop = []
+    physicalgroup = []
+    loop = 0
+    loops = []
+    physicalcontour = []
+    physicalopen = []
+
+  class boundary:
+    contour = 3
+    open    = 4
+    surface = 9
 
   def filehandleOpen(self, filename):
     self.filehandle = file(filename,'w')
@@ -143,12 +165,12 @@ class SurfaceGeoidDomainRepresentation(object):
     if (open):
       index.open.append(index.path)
       type = 'open'
-      boundaryid = boundary.open
+      boundaryid = self.boundary.open
       index.physicalopen.append(index.path)
     else:
       index.contour.append(index.path)
       type = 'contour'
-      boundaryid = boundary.contour
+      boundaryid = self.boundary.contour
       index.physicalcontour.append(index.path)
 
     index.pathsinloop.append(index.path)
@@ -159,7 +181,7 @@ class SurfaceGeoidDomainRepresentation(object):
   LoopEnd%(loopnumber)i = IP + %(pointend)i;
   ''' % { 'pointstart':index.start, 'pointend':index.point, 'loopnumber':index.path, 'loopstartpoint':closure, 'type':type, 'boundaryid':boundaryid } )
     
-    if not compound:
+    if not universe.compound:
       self.filehandle.write( '''BSpline ( IL%(fileid)s + %(loopnumber)i ) = { IP%(fileid)s + %(pointstart)i : IP%(fileid)s + %(pointend)i%(loopstartpoint)s };''' % { 'pointstart':index.start, 'pointend':index.point, 'loopnumber':index.path, 'loopstartpoint':closure, 'type':type, 'boundaryid':boundaryid, 'fileid':self.fileid } )
 
     index.physicalgroup.append(index.path)
@@ -179,7 +201,7 @@ class SurfaceGeoidDomainRepresentation(object):
 
     compoundpoints = False
     if (last):
-      if compound:
+      if universe.compound:
         for i in range(index.start, index.point+1):
           if i == index.point:
             end = index.start
@@ -194,7 +216,7 @@ class SurfaceGeoidDomainRepresentation(object):
 
       else:
         self.filehandle.write( '''
-  Line Loop( ILL%(fileid)s + %(loop)i ) = { %(loopnumbers)s };''' % { 'loop':index.loop, 'fileid':fileid, 'loopnumbers':list_to_comma_separated(index.pathsinloop, prefix = 'IL%(fileid)s + ' % { 'fileid':self.fileid }) } )
+  Line Loop( ILL%(fileid)s + %(loop)i ) = { %(loopnumbers)s };''' % { 'loop':index.loop, 'fileid':self.fileid, 'loopnumbers':list_to_comma_separated(index.pathsinloop, prefix = 'IL%(fileid)s + ' % { 'fileid':self.fileid }) } )
       index.loops.append(index.loop)
       index.loop += 1
       index.pathsinloop = []
@@ -206,13 +228,14 @@ class SurfaceGeoidDomainRepresentation(object):
     index.start = index.point
     return index
 
-    self.report('Closed boundaries (id %i): %s' % (boundary.contour, list_to_space_separated(index.contour, add=1)))
-    self.report('Open boundaries   (id %i): %s' % (boundary.open, list_to_space_separated(index.open, add=1)))
+    self.report('Closed boundaries (id %i): %s' % (self.boundary.contour, list_to_space_separated(self.index.contour, add=1)))
+    self.report('Open boundaries   (id %i): %s' % (self.boundary.open, list_to_space_separated(self.index.open, add=1)))
 
 
 
-  def output_boundaries(self, index, filename, paths=None, minarea=0, region='True', dx=universe.dx_default, latitude_max=None):
+  def output_boundaries(self, filename, paths=None, minarea=0, region='True', dx=universe.dx_default, latitude_max=None):
     import pickle
+    import os
     from numpy import zeros
     from Mathematical import area_enclosed
     from RepresentationTools import array_to_gmsh_points
@@ -247,7 +270,7 @@ class SurfaceGeoidDomainRepresentation(object):
     self.gmsh_header()
     splinenumber = 0
     indexbase = 1
-    index.point = indexbase
+    self.index.point = indexbase
 
     ends = zeros([len(pathall),4])
     for num in range(len(pathall)):
@@ -388,7 +411,7 @@ class SurfaceGeoidDomainRepresentation(object):
       if (pathall[num-1] == None):
         continue
       xy=pathall[num-1].vertices
-      index = array_to_gmsh_points(self, num, index, xy, minarea, region, dx, latitude_max)
+      self.index = array_to_gmsh_points(self, num, self.index, xy, minarea, region, dx, latitude_max)
 
 
     #for i in range(-85, 0, 5):
@@ -398,7 +421,7 @@ class SurfaceGeoidDomainRepresentation(object):
     #  indexend += 1
     #  self.filehandle.write( self.gmsh_format_point(indexend, project(45, i), 0) )
     #self.gmsh_remove_projection_points()
-    return index
+    #return index
 
   def define_point(self, name, location):
     # location [long, lat]
@@ -505,123 +528,59 @@ class SurfaceGeoidDomainRepresentation(object):
     #print index
     return index
 
-  def draw_parallel_explicit(self, start, end, index, latitude_max, dx):
 
-    #print start, end, index.point
-    # Note start is actual start - 1
-    if (latitude_max is None):
-      latitude_max = max(start[1], end[1])
-    else:
-      latitude_max = max(latitude_max, start[1], end[1])
-    current = start 
-    tolerance = dx * 0.6
-     
-    if (compare_points(current, end, dx)):
-      self.gmsh_comment('Points already close enough, no need to draw parallels and meridians after all')
-      return index
-    else:
-      self.gmsh_comment('Closing path with parallels and merdians, from (%.8f, %.8f) to  (%.8f, %.8f)' % ( start[0], start[1], end[0], end[1] ) )
-    
-    loopstart = index
-    if (current[1] != latitude_max):
-      self.gmsh_comment('Drawing meridian to max latitude index %s at %f.2, %f.2 (to match %f.2)' % (index.point, current[0], current[1], latitude_max))
-    while (current[1] != latitude_max):
-      if (current[1] < latitude_max):
-        current[1] = current[1] + dx
-      else:
-        current[1] = current[1] - dx
-      if (abs(current[1] - latitude_max) < tolerance): current[1] = latitude_max
-      if (compare_points(current, end, dx)): return index
-      index.point += 1
-      printvv('Drawing meridian to max latitude index %s at %f.2, %f.2 (to match %f.2)' % (index.point, current[0], current[1], latitude_max))
-      loc = project(current)
-      self.gmsh_format_point(index.point, loc, 0.0)
-    if more_bsplines:
-      index = self.gmsh_loop(index, loopstart, False, True, True)
+  def output_open_boundaries(self):
+    index = self.index
+    boundary = self.boundary
 
-      loopstart = index
-    if (current[0] != end[0]):
-      self.gmsh_comment('Drawing parallel index %s at %f.2 (to match %f.2), %f.2' % (index.point, current[0], end[0], current[1]))
-    while (current[0] != end[0]):
-      if (longitude_diff(current[0], end[0]) < 0):
-        current[0] = current[0] + dx
-      else:
-        current[0] = current[0] - dx
-      #if (abs(current[0] - end[0]) < tolerance): current[0] = end[0]
-      if (abs(longitude_diff(current[0], end[0])) < tolerance): current[0] = end[0]
-
-      if (compare_points(current, end, dx)): return index
-      index.point += 1
-      printvv('Drawing parallel index %s at %f.2 (to match %f.2), %f.2' % (index.point, current[0], end[0], current[1]))
-      loc = project(current)
-      self.gmsh_format_point(index.point, loc, 0.0)
-    if more_bsplines:
-      index = self.gmsh_loop(index, loopstart, False, True, True)
-
-      loopstart = index
-    if (current[1] != end[1]):
-      self.gmsh_comment('Drawing meridian to end index %s at %f.2, %f.2 (to match %f.2)' % (index.point, current[0], current[1], end[1]))
-    while (current[1] != end[1]):
-      if (current[1] < end[1]):
-        current[1] = current[1] + dx
-      else:
-        current[1] = current[1] - dx
-      if (abs(current[1] - end[1]) < tolerance): current[1] = end[1]
-      if (compare_points(current, end, dx)): return index
-      index.point += 1
-      printvv('Drawing meridian to end index %s at %f.2, %f.2 (to match %f.2)' % (index.point, current[0], current[1], end[1]))
-      loc = project(current)
-      self.gmsh_format_point(index.point, loc, 0.0)
-    index = self.gmsh_loop(index, loopstart, True, True, False)
-    
-    self.gmsh_comment( 'Closed path with parallels and merdians, from (%.8f, %.8f) to  (%.8f, %.8f)' % ( start[0], start[1], end[0], end[1] ) )
-
-    return index
-
-  def output_open_boundaries(self, index, boundary, dx):
+    dx = universe.dx
     parallel = universe.bounding_lat
     index.start = index.point + 1
     loopstartpoint = index.start
-    index = self.draw_parallel_explicit([   -1.0, parallel], [ 179.0, parallel], index, None, dx)
-    index = self.draw_parallel_explicit([-179.0,  parallel], [   1.0, parallel], index, None, dx)
+    index = self.draw_parallel_explicit(self, [   -1.0, parallel], [ 179.0, parallel], index, None, dx)
+    index = self.draw_parallel_explicit(self, [-179.0,  parallel], [   1.0, parallel], index, None, dx)
     
     index = self.gmsh_loop(index, loopstartpoint, True, True, False)
 
-    return index
 
-  def output_surfaces(self, index, boundary):
+  def output_surfaces(self):
+    index = self.index
+    boundary = self.boundary
 
     self.gmsh_section('Physical entities')
 
 
-    if physical_lines_separate:
+    if universe.physical_lines_separate:
       for l in index.physicalcontour:
-        self.filehandle.write( '''Physical Line( %(boundaryid)i ) = { %(loopnumbers)s };''' % { 'boundaryid':boundary.contour, 'loopnumbers':list_to_comma_separated([l], prefix = 'IL%(fileid)s + ' % { 'fileid':self.fileid } ) } )
+        self.filehandle.write( '''Physical Line( %(boundaryid)i ) = { %(loopnumbers)s };''' % { 'boundaryid':self.boundary.contour, 'loopnumbers':list_to_comma_separated([l], prefix = 'IL%(fileid)s + ' % { 'fileid':self.fileid } ) } )
         self.filehandle.write( '''\n''' )
     else: 
-      self.filehandle.write( '''Physical Line( %(boundaryid)i ) = { %(loopnumbers)s };''' % { 'boundaryid':boundary.contour, 'loopnumbers':list_to_comma_separated(index.physicalcontour, prefix = 'IL%(fileid)s + ' % { 'fileid':self.fileid } ) } )
+      self.filehandle.write( '''Physical Line( %(boundaryid)i ) = { %(loopnumbers)s };''' % { 'boundaryid':self.boundary.contour, 'loopnumbers':list_to_comma_separated(index.physicalcontour, prefix = 'IL%(fileid)s + ' % { 'fileid':self.fileid } ) } )
       self.filehandle.write( '''\n''' )
 
-    self.filehandle.write( '''Physical Line( %(boundaryid)i ) = { %(loopnumbers)s };''' % { 'boundaryid':boundary.open, 'loopnumbers':list_to_comma_separated(index.physicalopen, prefix = 'IL%(fileid)s + ' % { 'fileid':self.fileid } ) } )
+    self.filehandle.write( '''Physical Line( %(boundaryid)i ) = { %(loopnumbers)s };''' % { 'boundaryid':self.boundary.open, 'loopnumbers':list_to_comma_separated(index.physicalopen, prefix = 'IL%(fileid)s + ' % { 'fileid':self.fileid } ) } )
     self.filehandle.write( '''\n''' )
 
 
-    self.report('Open boundaries   (id %i): %s' % (boundary.open, list_to_space_separated(index.open, add=1)))
-    self.report('Closed boundaries (id %i): %s' % (boundary.contour, list_to_space_separated(index.contour, add=1)))
+    self.report('Open boundaries   (id %i): %s' % (self.boundary.open, list_to_space_separated(index.open, add=1)))
+    self.report('Closed boundaries (id %i): %s' % (self.boundary.contour, list_to_space_separated(index.contour, add=1)))
     boundary_list = list_to_comma_separated(index.contour + index.open)
   #//Line Loop( ILL + %(loopnumber)i ) = { %(boundary_list)s };
   #//Plane Surface( %(surface)i ) = { ILL + %(loopnumber)i };
     if (len(index.loops) > 0):
       self.filehandle.write('''Plane Surface( %(surface)i ) = { %(boundary_list)s };
-  Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'loopnumber':index.path, 'surface':boundary.surface + 1, 'boundary_list':list_to_comma_separated(index.loops, prefix = 'ILL%(fileid)s + ' % { 'fileid':self.fileid } ) } )
+  Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'loopnumber':index.path, 'surface':self.boundary.surface + 1, 'boundary_list':list_to_comma_separated(index.loops, prefix = 'ILL%(fileid)s + ' % { 'fileid':self.fileid } ) } )
     else:
       self.report('Warning: Unable to define surface - may need to define Line Loops?')
 
 
 
-  def output_fields(self, index, boundary):
+  def output_fields(self):
+    index = self.index
+    boundary = self.boundary
+
     self.gmsh_section('Field definitions')
-    if compound:
+    if universe.compound:
       edgeindex = ''
     else:
       edgeindex = ''

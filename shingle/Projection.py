@@ -22,6 +22,9 @@
 #  
 ##########################################################################
 
+from Universe import universe
+import math
+from numpy import array
 
 def longitude_diff(a,b):
   diff = a - b
