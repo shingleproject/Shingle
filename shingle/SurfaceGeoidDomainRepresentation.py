@@ -39,7 +39,7 @@
 from Universe import universe
 from Import import read_paths
 from StringOperations import list_to_comma_separated, list_to_space_separated
-
+from RepresentationTools import draw_parallel_explicit
 
 class SurfaceGeoidDomainRepresentation(object):
 
@@ -460,7 +460,7 @@ Call DrawParallel;
     #print start, end
     #print p2(start), p2(end)
     if (universe.closewithparallels):
-      return self.draw_parallel_explicit(start, end, index, latitude_max, dx)
+      return draw_parallel_explicit(start, end, index, latitude_max, dx)
     current = start.copy()
     tolerance = dx * 0.6
     diffinit = point_diff(end, current)
@@ -540,8 +540,8 @@ Call DrawParallel;
     parallel = universe.bounding_lat
     index.start = index.point + 1
     loopstartpoint = index.start
-    index = self.draw_parallel_explicit(self, [   -1.0, parallel], [ 179.0, parallel], index, None, dx)
-    index = self.draw_parallel_explicit(self, [-179.0,  parallel], [   1.0, parallel], index, None, dx)
+    index = draw_parallel_explicit(self, [   -1.0, parallel], [ 179.0, parallel], index, None, dx)
+    index = draw_parallel_explicit(self, [-179.0,  parallel], [   1.0, parallel], index, None, dx)
     
     index = self.gmsh_loop(index, loopstartpoint, True, True, False)
 
