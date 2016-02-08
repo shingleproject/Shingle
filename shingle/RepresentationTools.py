@@ -56,7 +56,7 @@ def draw_parallel_explicit(rep, start, end, index, latitude_max, dx):
     if (compare_points(current, end, dx)): return index
     index.point += 1
     # vv
-    rep.report('Drawing meridian to max latitude index %s at %f.2, %f.2 (to match %f.2)' % (index.point, current[0], current[1], latitude_max))
+    rep.report('Drawing meridian to max latitude index %s at %f.2, %f.2 (to match %f.2)' % (index.point, current[0], current[1], latitude_max), debug=True)
     loc = project(current)
     rep.gmsh_format_point(index.point, loc, 0.0)
   if universe.more_bsplines:
@@ -76,7 +76,7 @@ def draw_parallel_explicit(rep, start, end, index, latitude_max, dx):
     if (compare_points(current, end, dx)): return index
     index.point += 1
     # vv
-    rep.report('Drawing parallel index %s at %f.2 (to match %f.2), %f.2' % (index.point, current[0], end[0], current[1]))
+    rep.report('Drawing parallel index %s at %f.2 (to match %f.2), %f.2' % (index.point, current[0], end[0], current[1]), debug=True)
     loc = project(current)
     rep.gmsh_format_point(index.point, loc, 0.0)
   if universe.more_bsplines:
@@ -94,7 +94,7 @@ def draw_parallel_explicit(rep, start, end, index, latitude_max, dx):
     if (compare_points(current, end, dx)): return index
     index.point += 1
     # vv
-    rep.report('Drawing meridian to end index %s at %f.2, %f.2 (to match %f.2)' % (index.point, current[0], current[1], end[1]))
+    rep.report('Drawing meridian to end index %s at %f.2, %f.2 (to match %f.2)' % (index.point, current[0], current[1], end[1]), debug=True)
     loc = project(current)
     rep.gmsh_format_point(index.point, loc, 0.0)
   index = rep.gmsh_loop(index, loopstart, True, True, False)
@@ -147,7 +147,7 @@ def array_to_gmsh_points(rep, num, index, location, minarea, region, dx, latitud
     
   if (loopend is None):
     # vv
-    rep.report('Path %i skipped (no points found in region)' % ( num ))
+    rep.report('Path %i skipped (no points found in region)' % ( num ), debug=True)
     rep.gmsh_comment('  Skipped (no points found in region)\n')
     return index
 
@@ -156,7 +156,7 @@ def array_to_gmsh_points(rep, num, index, location, minarea, region, dx, latitud
   
   if ( (abs(location[loopstart, 0] - location[loopend, 0]) < 2 * dlongitude) and (abs(location[loopstart, 1] - location[loopend, 1]) > 2 * dlatitude) ):
     # vv
-    rep.report('Path %i skipped (island crossing meridian - code needs modification to include)' % ( num ))
+    rep.report('Path %i skipped (island crossing meridian - code needs modification to include)' % ( num ), debug=True)
     rep.gmsh_comment('  Skipped (island crossing meridian - code needs modification to include)\n')
     return index
 
@@ -202,7 +202,7 @@ def array_to_gmsh_points(rep, num, index, location, minarea, region, dx, latitud
   area = area_enclosed(validlocation)
   if (area < minarea):
     # vv
-    rep.report('Path %i skipped (area too small)' % ( num ))
+    rep.report('Path %i skipped (area too small)' % ( num ), debug=True)
     rep.gmsh_comment('  Skipped (area too small)\n')
     return index
 

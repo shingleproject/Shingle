@@ -58,7 +58,6 @@ def globalsInit(args):
   
   universe.reportcache = ''
   universe.reportline = 0
-  universe.call = ''
 
   #### IMPORT START
   universe.earth_radius = 6.37101e+06

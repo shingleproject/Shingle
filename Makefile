@@ -56,12 +56,13 @@ lib/libspud.so:
 	@cp lib/python*/site-packages/libspud.so lib/
 
 bin/spud-preprocess: lib/libspud.so
-	@cp spud/bin/spud-preprocess bin/
-	@chmod a+x ./bin/spud-preprocess
+	@mkdir -p ./tools
+	@cp spud/bin/spud-preprocess tools/
+	@chmod a+x ./tools/spud-preprocess
 
 schema: bin/spud-preprocess
 	@echo "Rebuilding schema shingle_options.rng"
-	@./bin/spud-preprocess schemas/shingle_options.rnc
+	@./tools/spud-preprocess schemas/shingle_options.rnc
 
 
 

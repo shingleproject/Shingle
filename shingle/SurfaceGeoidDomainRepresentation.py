@@ -77,7 +77,10 @@ class SurfaceGeoidDomainRepresentation(object):
   def filehandleClose(self):
     self.filehandle.close()
 
-  def report(self, text, include = True):
+  def report(self, text, include = True, debug = False):
+    print debug, universe.debug
+    if debug and not universe.debug:
+      return
     if (universe.verbose):
       print text
     if include:
@@ -105,25 +108,25 @@ class SurfaceGeoidDomainRepresentation(object):
       edgeindex = ''
     if not universe.compound:
       header = '''\
-  IP%(fileid)s = newp;
-  IL%(fileid)s = newl;
-  ILL%(fileid)s = newll;
-  IS%(fileid)s = news;
-  IFI%(fileid)s = newf;
-  ''' % { 'fileid':self.fileid, 'edgeindex':edgeindex }
+IP%(fileid)s = newp;
+IL%(fileid)s = newl;
+ILL%(fileid)s = newll;
+IS%(fileid)s = news;
+IFI%(fileid)s = newf;
+''' % { 'fileid':self.fileid, 'edgeindex':edgeindex }
     else:
       header = '''\
-  IP%(fileid)s = 0;
-  IL%(fileid)s = 0%(edgeindex)s;
-  ILL%(fileid)s = 0;
-  IS%(fileid)s = news;
-  IFI%(fileid)s = newf;
-  ''' % { 'fileid':self.fileid, 'edgeindex':edgeindex }
+IP%(fileid)s = 0;
+IL%(fileid)s = 0%(edgeindex)s;
+ILL%(fileid)s = 0;
+IS%(fileid)s = news;
+IFI%(fileid)s = newf;
+''' % { 'fileid':self.fileid, 'edgeindex':edgeindex }
     header_polar = '''
-  Point ( IP%(fileid)s + 0 ) = { 0, 0, 0 };
-  Point ( IP%(fileid)s + 1 ) = { 0, 0, %(earth_radius)g };
-  PolarSphere ( IS%(fileid)s + 0 ) = { IP%(fileid)s, IP%(fileid)s + 1 };
-  ''' % { 'earth_radius': self.earth_radius, 'fileid': self.fileid }
+Point ( IP%(fileid)s + 0 ) = { 0, 0, 0 };
+Point ( IP%(fileid)s + 1 ) = { 0, 0, %(earth_radius)g };
+PolarSphere ( IS%(fileid)s + 0 ) = { IP%(fileid)s, IP%(fileid)s + 1 };
+''' % { 'earth_radius': self.earth_radius, 'fileid': self.fileid }
     
     if (universe.projection not in ['longlat','proj_cartesian'] ):
       header = header + header_polar
@@ -134,16 +137,16 @@ class SurfaceGeoidDomainRepresentation(object):
   def gmsh_footer(self, loopstart, loopend):
     # Note used?
     self.filehandle.write( '''
-  Field [ IFI%(fileid)s + 0 ]  = Attractor;
-  Field [ IFI%(fileid)s + 0 ].NodesList  = { IP + %(loopstart)i : IP + %(loopend)i };
-  ''' % { 'loopstart':loopstart, 'loopend':loopend, 'fileid':self.fileid } )
+Field [ IFI%(fileid)s + 0 ]  = Attractor;
+Field [ IFI%(fileid)s + 0 ].NodesList  = { IP + %(loopstart)i : IP + %(loopend)i };
+''' % { 'loopstart':loopstart, 'loopend':loopend, 'fileid':self.fileid } )
 
   def gmsh_remove_projection_points(self):
     if universe.projection == 'longlat':
       return
     self.filehandle.write( '''Delete { Point{ IP%(fileid)s + 0}; }
-  Delete { Point{ IP%(fileid)s + 1}; }
-  ''' % { 'fileid':self.fileid } )
+Delete { Point{ IP%(fileid)s + 1}; }
+''' % { 'fileid':self.fileid } )
 
 
   def gmsh_format_point(self, index, loc, z):
@@ -178,8 +181,8 @@ class SurfaceGeoidDomainRepresentation(object):
   #//Line Loop( ILL + %(loopnumber)i ) = { IL + %(loopnumber)i };
   #// Identified as a %(type)s path
     self.filehandle.write( '''LoopStart%(loopnumber)i = IP + %(pointstart)i;
-  LoopEnd%(loopnumber)i = IP + %(pointend)i;
-  ''' % { 'pointstart':index.start, 'pointend':index.point, 'loopnumber':index.path, 'loopstartpoint':closure, 'type':type, 'boundaryid':boundaryid } )
+LoopEnd%(loopnumber)i = IP + %(pointend)i;
+''' % { 'pointstart':index.start, 'pointend':index.point, 'loopnumber':index.path, 'loopstartpoint':closure, 'type':type, 'boundaryid':boundaryid } )
     
     if not universe.compound:
       self.filehandle.write( '''BSpline ( IL%(fileid)s + %(loopnumber)i ) = { IP%(fileid)s + %(pointstart)i : IP%(fileid)s + %(pointend)i%(loopstartpoint)s };''' % { 'pointstart':index.start, 'pointend':index.point, 'loopnumber':index.path, 'loopstartpoint':closure, 'type':type, 'boundaryid':boundaryid, 'fileid':self.fileid } )
@@ -208,21 +211,21 @@ class SurfaceGeoidDomainRepresentation(object):
           else:
             end = i + 1
           self.filehandle.write( '''Line ( ILL%(fileid)s + %(loopnumber)i + 100000 ) = { IP%(fileid)s + %(pointstart)i, IP%(fileid)s + %(pointend)i };
-  ''' % { 'pointstart':i, 'pointend':end, 'loopnumber':i, 'fileid':self.fileid } )
+''' % { 'pointstart':i, 'pointend':end, 'loopnumber':i, 'fileid':self.fileid } )
         self.filehandle.write( '''Compound Line ( IL%(fileid)s + %(loopnumber)i ) = { ILL%(fileid)s + %(pointstart)i + 100000 : ILL%(fileid)s + %(pointend)i + 100000 };
-    ''' % { 'pointstart':index.start, 'pointend':index.point, 'loopnumber':index.loop, 'fileid':self.fileid } )
+''' % { 'pointstart':index.start, 'pointend':index.point, 'loopnumber':index.loop, 'fileid':self.fileid } )
         self.filehandle.write( '''
-  Line Loop( ILL%(fileid)s + %(loop)i ) = { IL%(fileid)s + %(loopnumber)i};''' % { 'loop':index.loop, 'fileid':self.fileid, 'loopnumber': index.loop } )
+Line Loop( ILL%(fileid)s + %(loop)i ) = { IL%(fileid)s + %(loopnumber)i};''' % { 'loop':index.loop, 'fileid':self.fileid, 'loopnumber': index.loop } )
 
       else:
         self.filehandle.write( '''
-  Line Loop( ILL%(fileid)s + %(loop)i ) = { %(loopnumbers)s };''' % { 'loop':index.loop, 'fileid':self.fileid, 'loopnumbers':list_to_comma_separated(index.pathsinloop, prefix = 'IL%(fileid)s + ' % { 'fileid':self.fileid }) } )
+Line Loop( ILL%(fileid)s + %(loop)i ) = { %(loopnumbers)s };''' % { 'loop':index.loop, 'fileid':self.fileid, 'loopnumbers':list_to_comma_separated(index.pathsinloop, prefix = 'IL%(fileid)s + ' % { 'fileid':self.fileid }) } )
       index.loops.append(index.loop)
       index.loop += 1
       index.pathsinloop = []
     
     self.filehandle.write( '''
-  ''' )
+''' )
 
     index.path +=1
     index.start = index.point
@@ -426,28 +429,28 @@ class SurfaceGeoidDomainRepresentation(object):
   def define_point(self, name, location):
     # location [long, lat]
     self.filehandle.write('''
-  //Point %(name)s is located at, %(longitude).2f deg, %(latitude).2f deg.
-  Point_%(name)s_longitude_rad = (%(longitude)f + (00/60))*(Pi/180);
-  Point_%(name)s_latitude_rad  = (%(latitude)f + (00/60))*(Pi/180);
-  Point_%(name)s_stereographic_y = Cos(Point_%(name)s_longitude_rad)*Cos(Point_%(name)s_latitude_rad)  / ( 1 + Sin(Point_%(name)s_latitude_rad) );
-  Point_%(name)s_stereographic_x = Cos(Point_%(name)s_latitude_rad) *Sin(Point_%(name)s_longitude_rad) / ( 1 + Sin(Point_%(name)s_latitude_rad) );
-  ''' % { 'name':name, 'longitude':location[0], 'latitude':location[1] } )
+//Point %(name)s is located at, %(longitude).2f deg, %(latitude).2f deg.
+Point_%(name)s_longitude_rad = (%(longitude)f + (00/60))*(Pi/180);
+Point_%(name)s_latitude_rad  = (%(latitude)f + (00/60))*(Pi/180);
+Point_%(name)s_stereographic_y = Cos(Point_%(name)s_longitude_rad)*Cos(Point_%(name)s_latitude_rad)  / ( 1 + Sin(Point_%(name)s_latitude_rad) );
+Point_%(name)s_stereographic_x = Cos(Point_%(name)s_latitude_rad) *Sin(Point_%(name)s_longitude_rad) / ( 1 + Sin(Point_%(name)s_latitude_rad) );
+''' % { 'name':name, 'longitude':location[0], 'latitude':location[1] } )
 
   def draw_parallel(self, startn, endn, start, end, points=200):
     startp = project(start)
     endp = project(end)
     
     self.filehandle.write('''
-  pointsOnParallel = %(points)i;
-  parallelSectionStartingX = %(start_x)g;
-  parallelSectionStartingY = %(start_y)g;
-  firstPointOnParallel = IP + %(start_n)i;
-  parallelSectionEndingX = %(end_x)g;
-  parallelSectionEndingY = %(end_y)g;
-  lastPointOnParallel = IP + %(end_n)i;
-  newParallelID = IL + 10100;
-  Call DrawParallel;
-  ''' % { 'start_x':startp[0], 'start_y':startp[1], 'end_x':endp[0], 'end_y':endp[1], 'start_n':startn, 'end_n':endn, 'points':points })
+pointsOnParallel = %(points)i;
+parallelSectionStartingX = %(start_x)g;
+parallelSectionStartingY = %(start_y)g;
+firstPointOnParallel = IP + %(start_n)i;
+parallelSectionEndingX = %(end_x)g;
+parallelSectionEndingY = %(end_y)g;
+lastPointOnParallel = IP + %(end_n)i;
+newParallelID = IL + 10100;
+Call DrawParallel;
+''' % { 'start_x':startp[0], 'start_y':startp[1], 'end_x':endp[0], 'end_y':endp[1], 'start_n':startn, 'end_n':endn, 'points':points })
 
 
 
@@ -569,7 +572,7 @@ class SurfaceGeoidDomainRepresentation(object):
   #//Plane Surface( %(surface)i ) = { ILL + %(loopnumber)i };
     if (len(index.loops) > 0):
       self.filehandle.write('''Plane Surface( %(surface)i ) = { %(boundary_list)s };
-  Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'loopnumber':index.path, 'surface':self.boundary.surface + 1, 'boundary_list':list_to_comma_separated(index.loops, prefix = 'ILL%(fileid)s + ' % { 'fileid':self.fileid } ) } )
+Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'loopnumber':index.path, 'surface':self.boundary.surface + 1, 'boundary_list':list_to_comma_separated(index.loops, prefix = 'ILL%(fileid)s + ' % { 'fileid':self.fileid } ) } )
     else:
       self.report('Warning: Unable to define surface - may need to define Line Loops?')
 
@@ -586,90 +589,90 @@ class SurfaceGeoidDomainRepresentation(object):
       edgeindex = ''
     if (index.contour is not None):
       self.filehandle.write('''
-  Printf("Assigning characteristic mesh sizes...");
+Printf("Assigning characteristic mesh sizes...");
 
-  // Field[ IFI + 1] = Attractor;
-  // Field[ IFI + 1].EdgesList = { 999999, %(boundary_list)s };
-  // Field [ IFI + 1 ].NNodesByEdge = 5e4;
-  // 
-  // Field[ IFI + 2] = Threshold;
-  // Field[ IFI + 2].DistMax = 2e6;
-  // Field[ IFI + 2].DistMin = 3e4;
-  // Field[ IFI + 2].IField = IFI + 1;
-  // Field[ IFI + 2].LcMin = 5e4;
-  // Field[ IFI + 2].LcMax = 2e5;
-  //
-  // Background Field = IFI + 2;
+// Field[ IFI + 1] = Attractor;
+// Field[ IFI + 1].EdgesList = { 999999, %(boundary_list)s };
+// Field [ IFI + 1 ].NNodesByEdge = 5e4;
+// 
+// Field[ IFI + 2] = Threshold;
+// Field[ IFI + 2].DistMax = 2e6;
+// Field[ IFI + 2].DistMin = 3e4;
+// Field[ IFI + 2].IField = IFI + 1;
+// Field[ IFI + 2].LcMin = 5e4;
+// Field[ IFI + 2].LcMax = 2e5;
+//
+// Background Field = IFI + 2;
 
-  Field[ IFI%(fileid)s + 1] = MathEval;
-  Field[ IFI%(fileid)s + 1].F = "%(elementlength)s";
+Field[ IFI%(fileid)s + 1] = MathEval;
+Field[ IFI%(fileid)s + 1].F = "%(elementlength)s";
 
-  Field[ IFI%(fileid)s + 2 ] = Attractor;
-  //Field[ IFI%(fileid)s + 2 ].EdgesList = { 999999, %(boundary_list)s };
-  Field[ IFI%(fileid)s + 2 ].EdgesList = { %(boundary_list)s };
-  //Field[ IFI%(fileid)s + 2 ].NNodesByEdge = 5e4;
-  Field[ IFI%(fileid)s + 2 ].NNodesByEdge = 20000;
+Field[ IFI%(fileid)s + 2 ] = Attractor;
+//Field[ IFI%(fileid)s + 2 ].EdgesList = { 999999, %(boundary_list)s };
+Field[ IFI%(fileid)s + 2 ].EdgesList = { %(boundary_list)s };
+//Field[ IFI%(fileid)s + 2 ].NNodesByEdge = 5e4;
+Field[ IFI%(fileid)s + 2 ].NNodesByEdge = 20000;
 
-  // Field[ IFI%(fileid)s + 3] = Threshold;
-  // Field[ IFI%(fileid)s + 3].DistMax = 2e6;
-  // Field[ IFI%(fileid)s + 3].DistMin = 3e4;
-  // Field[ IFI%(fileid)s + 3].IField = IFI%(fileid)s + 2;
-  // Field[ IFI%(fileid)s + 3].LcMin = 5e4;
-  // Field[ IFI%(fileid)s + 3].LcMax = 2e5;
-  // 
-  // // Filchner-Ronne:
-  // Field[ IFI%(fileid)s + 4] = Threshold;
-  // Field[ IFI%(fileid)s + 4].DistMax = 5e5;
-  // Field[ IFI%(fileid)s + 4].DistMin = 3e4;
-  // Field[ IFI%(fileid)s + 4].IField = IFI%(fileid)s + 2;
-  // Field[ IFI%(fileid)s + 4].LcMin = 2e4;
-  // Field[ IFI%(fileid)s + 4].LcMax = 5e5;
-  // 
-  // // Amundsen 
-  // Field[ IFI%(fileid)s + 5] = Threshold;
-  // Field[ IFI%(fileid)s + 5].DistMax = 5e5;
-  // Field[ IFI%(fileid)s + 5].DistMin = 8e4;
-  // Field[ IFI%(fileid)s + 5].IField = IFI%(fileid)s + 2;
-  // Field[ IFI%(fileid)s + 5].LcMin = 2e4;
-  // Field[ IFI%(fileid)s + 5].LcMax = 5e5;
+// Field[ IFI%(fileid)s + 3] = Threshold;
+// Field[ IFI%(fileid)s + 3].DistMax = 2e6;
+// Field[ IFI%(fileid)s + 3].DistMin = 3e4;
+// Field[ IFI%(fileid)s + 3].IField = IFI%(fileid)s + 2;
+// Field[ IFI%(fileid)s + 3].LcMin = 5e4;
+// Field[ IFI%(fileid)s + 3].LcMax = 2e5;
+// 
+// // Filchner-Ronne:
+// Field[ IFI%(fileid)s + 4] = Threshold;
+// Field[ IFI%(fileid)s + 4].DistMax = 5e5;
+// Field[ IFI%(fileid)s + 4].DistMin = 3e4;
+// Field[ IFI%(fileid)s + 4].IField = IFI%(fileid)s + 2;
+// Field[ IFI%(fileid)s + 4].LcMin = 2e4;
+// Field[ IFI%(fileid)s + 4].LcMax = 5e5;
+// 
+// // Amundsen 
+// Field[ IFI%(fileid)s + 5] = Threshold;
+// Field[ IFI%(fileid)s + 5].DistMax = 5e5;
+// Field[ IFI%(fileid)s + 5].DistMin = 8e4;
+// Field[ IFI%(fileid)s + 5].IField = IFI%(fileid)s + 2;
+// Field[ IFI%(fileid)s + 5].LcMin = 2e4;
+// Field[ IFI%(fileid)s + 5].LcMax = 5e5;
 
-  // Global
-  // Field[ IFI%(fileid)s + 6 ] = Threshold;
-  // Field[ IFI%(fileid)s + 6 ].DistMax = 1000000;
-  // Field[ IFI%(fileid)s + 6 ].DistMin = 1000;
-  // Field[ IFI%(fileid)s + 6 ].IField = IFI%(fileid)s + 2;
-  // Field[ IFI%(fileid)s + 6 ].LcMin = 80000;
-  // Field[ IFI%(fileid)s + 6 ].LcMax = 200000;
+// Global
+// Field[ IFI%(fileid)s + 6 ] = Threshold;
+// Field[ IFI%(fileid)s + 6 ].DistMax = 1000000;
+// Field[ IFI%(fileid)s + 6 ].DistMin = 1000;
+// Field[ IFI%(fileid)s + 6 ].IField = IFI%(fileid)s + 2;
+// Field[ IFI%(fileid)s + 6 ].LcMin = 80000;
+// Field[ IFI%(fileid)s + 6 ].LcMax = 200000;
 
-  // Northsea
-  Field[ IFI%(fileid)s + 7 ] = Threshold;
-  Field[ IFI%(fileid)s + 7 ].IField = IFI%(fileid)s + 2;
-  Field[ IFI%(fileid)s + 7 ].DistMax = 100000;
-  Field[ IFI%(fileid)s + 7 ].DistMin = 1000;
-  Field[ IFI%(fileid)s + 7 ].LcMin = 5000;
-  Field[ IFI%(fileid)s + 7 ].LcMax = 20000;
-  Field[ IFI%(fileid)s + 7 ].Sigmoid = 0;
+// Northsea
+Field[ IFI%(fileid)s + 7 ] = Threshold;
+Field[ IFI%(fileid)s + 7 ].IField = IFI%(fileid)s + 2;
+Field[ IFI%(fileid)s + 7 ].DistMax = 100000;
+Field[ IFI%(fileid)s + 7 ].DistMin = 1000;
+Field[ IFI%(fileid)s + 7 ].LcMin = 5000;
+Field[ IFI%(fileid)s + 7 ].LcMax = 20000;
+Field[ IFI%(fileid)s + 7 ].Sigmoid = 0;
 
-  // Dont extent the elements sizes from the boundary inside the domain
-  //Mesh.CharacteristicLengthExtendFromBoundary = 0;
+// Dont extent the elements sizes from the boundary inside the domain
+//Mesh.CharacteristicLengthExtendFromBoundary = 0;
 
-  Background Field = IFI%(fileid)s + 1;
-  ''' % { 'boundary_list':list_to_comma_separated(index.contour, prefix = 'IL%(fileid)s + %(edgeindex)s' % {'fileid':self.fileid, 'edgeindex':edgeindex}), 'elementlength':universe.elementlength, 'fileid':self.fileid } )
+Background Field = IFI%(fileid)s + 1;
+''' % { 'boundary_list':list_to_comma_separated(index.contour, prefix = 'IL%(fileid)s + %(edgeindex)s' % {'fileid':self.fileid, 'edgeindex':edgeindex}), 'elementlength':universe.elementlength, 'fileid':self.fileid } )
 
     self.gmsh_section('Physical entities')
 
     self.filehandle.write('''
-  //Set some options for better png output
-  General.Color.Background = {255,255,255};
-  General.Color.BackgroundGradient = {255,255,255};
-  General.Color.Foreground = Black;
-  Mesh.Color.Lines = {0,0,0};
+//Set some options for better png output
+General.Color.Background = {255,255,255};
+General.Color.BackgroundGradient = {255,255,255};
+General.Color.Foreground = Black;
+Mesh.Color.Lines = {0,0,0};
 
-  General.Trackball = 0 ;
-  General.RotationX = 180;
-  General.RotationY = 0;
-  General.RotationZ = 270;
-  ''')
+General.Trackball = 0 ;
+General.RotationX = 180;
+General.RotationY = 0;
+General.RotationZ = 270;
+''')
 
 
 
