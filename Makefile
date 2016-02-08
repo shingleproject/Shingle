@@ -51,7 +51,7 @@ clean:
 spudpatch:
 	@patch -p0 < spud.patch
 
-spud: lib/libspud.so
+spud: lib/libspud.so bin/spud-preprocess
 libspud: lib/libspud.so
 
 lib/libspud.so:
