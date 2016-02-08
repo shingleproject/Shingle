@@ -2,8 +2,9 @@ RTopo105b_50S.nc
 libspud.so
 *.pyc
 *.pkl
+*.shc
 spud/
-bin/spud-preprocess
+tool/spud-preprocess
 lib
 ref
 

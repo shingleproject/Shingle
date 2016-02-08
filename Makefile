@@ -23,6 +23,7 @@
 default: bin/shingle
 
 bin/shingle: src/shingle lib/libspud.so
+	@mkdir -p bin
 	@cp src/shingle bin/shingle
 
 clean:
