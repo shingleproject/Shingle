@@ -52,7 +52,7 @@ datalink:
 testwithdatadownload:
 	@make -s -C test testwithdatadownload
 	
-.PHONY: test data datalink testwithdatadownload
+.PHONY: test data datalink testwithdatadownload schema
 
 # ------------------------------------------------------------------------
 
@@ -83,4 +83,6 @@ tool/spud-preprocess: lib/libspud.so
 spudpatch:
 	@patch -p0 < spud.patch
 
+
+# ./spud/diamond/bin/diamond -s schema/shingle_options.rng test/test.shml
 

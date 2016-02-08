@@ -17,11 +17,11 @@ start =
                # Lines is a hint to the gui about the size of the text box.
                # It is not an enforced limit on string length.
                attribute lines { "1" },
-               ( "oceans" | "geophysical" | "surface_geoid" | "stokes" )
+               ( "oceans" | "ocean_ice_shelf" | "geophysical" | "surface_geoid" | "stokes" )
             },
             comment
          },
-         #geometry,
+         geometry,
          ## Input/output options
          element io {
             ## Format for dump files. Only vtk for now.
@@ -33,3 +33,135 @@ start =
          }
       }
    )      
+
+
+geometry = 
+   (
+      ## Options dealing with the specification of geometry
+      element geometry {
+         ## Dimension of the problem.
+         ## <b>This can only be set once</b>
+         element dimension {
+            element integer_value {
+               attribute rank {"0"},
+               ("3"|"2"|"1")
+            }
+         },
+         ## The position mesh
+         element mesh {
+            attribute name { "CoordinateMesh" },
+            mesh_info
+         },
+         ## The velocity mesh
+         element mesh {
+            attribute name { "VelocityMesh" },
+            mesh_info
+         }?,
+         ## The pressure mesh
+         element mesh {
+            attribute name { "PressureMesh" },
+            mesh_info
+         }?,
+         element mesh {
+            attribute name { xsd:string },
+            mesh_info,
+            element exclude_from_mesh_adaptivity{empty}?
+         }*,
+         ## Quadrature
+         element quadrature {
+            ## Quadrature degree
+            ## 
+            ## note: this specifies the degree of quadrature,
+            ## not the number of gauss points
+            element degree {
+               integer
+            },
+            ## Surface quadrature degree
+            ## 
+            ## note: this specifies the degree of surface
+            ## quadrature not the number of surface gauss points
+            element surface_degree {
+               integer
+            }?,
+            ## Sets the degree of quadrature on each quadrilateral
+            ## face of the control volume. 
+            ##
+            ## Defaults to 1 if
+            ## unselected which is the same as pre-new options
+            ## behaviour.
+            element controlvolume_surface_degree {
+               integer
+            }?,
+            ## Select which family of quadrature rules to use.
+            ## The default is family_cools.
+            ## family_wandzura allows for degree up to 30
+            ## on triangular meshes.
+            ## family_grundmann_moeller allows for degree up to
+            ## 29 on simplicial meshes in arbitrary dimension.
+            element quadrature_family {
+               element string_value {
+                  ( "family_cools" | "family_grundmann_moeller" | "family_wandzura" ) 
+               }
+            }?
+         },
+         ## This causes the change of variables associated with each element in 
+         ## the mesh to be stored rather than calculated every time it is used. 
+         ## This should speed up computations at a cost of some memory. 
+         ## 
+         ## The cache is automatically regenerated after mesh movement or 
+         ## adaptivity and is automatically disabled for non-linear positions fields.
+         element disable_geometric_data_cache {
+            empty
+         }?,
+         ## Options specifying that the problem is on the surface of the sphere.
+         element spherical_earth {
+            (
+               element linear_mapping {
+                  empty
+               }|
+               ## Enabling this option approximates the curvature of the Earth as an
+               ## nth degree polynomial, where n is the polynomial degree of the coordinate mesh.
+               element superparametric_mapping {
+                  empty
+               }
+            )
+         }?,
+         ## Options specifying the top surface and bottom of the domain
+         ## used in various ocean calculations.
+         element ocean_boundaries {
+            ## Specify the surface ids that make up the top of the domain,
+            ## i.e. the free surface or rigid lid.
+            element top_surface_ids {
+               integer_vector
+            },
+            ## Specify the surface ids that make up the bottom.
+            element bottom_surface_ids {
+               integer_vector
+            },
+            ## Diagnostic field giving the distance to the top surface.
+            element scalar_field {
+               attribute rank { "0" },
+               attribute name { "DistanceToTop" },
+               element diagnostic {
+                  internal_algorithm,
+                  element mesh {
+                     attribute name {  "CoordinateMesh" }
+                  },
+                  diagnostic_scalar_field
+               }
+            },
+            ## Diagnostic field giving the distance to ocean bottom.
+            element scalar_field {
+               attribute rank { "0" },
+               attribute name { "DistanceToBottom" },
+               element diagnostic {
+                  internal_algorithm,
+                  element mesh {
+                     attribute name {  "CoordinateMesh" }
+                  },
+                  diagnostic_scalar_field
+               }
+            }
+         }?
+      }
+   )
