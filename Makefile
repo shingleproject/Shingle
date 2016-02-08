@@ -45,7 +45,7 @@ clean:
 	@echo 'CLEAN lib'
 	@rm -rf ./lib
 	@echo 'CLEAN spud'
-	@make -s -C spud clean
+	@make -s -C spud distclean
 
 
 spudpatch:
