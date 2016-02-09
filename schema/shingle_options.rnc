@@ -559,6 +559,9 @@ test_real =
       }?
     }|
     ## Range
+    ##
+    ## Note one can use this option to specify a lower or upper 
+    ## bound, as well as specifying a complete range.
     element range {
       ## Minimum
       element minimum {
@@ -643,12 +646,21 @@ verification_tests =
           attribute name { "element_circumsphere" },
           test_real,
           comment
+        }|
+        ## Compare the raw content of the description
+        ## of the boundary representation
+        # Improve with tolerance on positions?
+        element brep_description {
+          attribute name { "brep_description" },
+          attribute file_name { string },
+          comment
         }
       )+
     }?
   )
 
-
+# raw geo diff?
+# geo diff with tolerance on positions?
 
 
 
