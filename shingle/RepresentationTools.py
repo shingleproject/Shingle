@@ -297,7 +297,7 @@ def array_to_gmsh_points(rep, num, index, location, minarea, region, dx, latitud
 
 
   # asc
-  #index = pig_sponge(index, loopstartpoint, index.point, validlocation[0], validlocation[-1])
+  #index = pig_sponge(index, loopstartpoint, index.point, validlocation[0], validlocation[-1], dx)
 
   return index
 

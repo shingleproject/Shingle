@@ -141,7 +141,6 @@ def InitialiseGlobals():
   
   universe.boundaries = []
   universe.boundariestoexclude = []
-  universe.dx = universe.dx_default
   universe.region = 'True'
   universe.box = []
   universe.minarea = 0
@@ -161,6 +160,7 @@ def InitialiseGlobals():
 
   universe.planet_radius = 6.37101e+06
   universe.dx_default = 0.1
+  universe.dx = universe.dx_default
   #fileid = 'G'
   universe.fileid = ''
   universe.compound = False

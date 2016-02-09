@@ -23,7 +23,7 @@
 ##########################################################################
 
 
-def pig_sponge(index, indexa, indexb, a, b):
+def pig_sponge(index, indexa, indexb, a, b, dx):
 
   print indexa, indexb
   if indexa != 722:
@@ -72,7 +72,7 @@ def pig_sponge(index, indexa, indexb, a, b):
 
   indexstore = index
 
-  ldx = universe.dx / 10.0
+  ldx = dx / 10.0
   #ldx = 5000
 
   index = close_path(b, bi, index, ldx, None, proj='horizontal')

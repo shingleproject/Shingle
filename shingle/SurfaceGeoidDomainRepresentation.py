@@ -62,13 +62,13 @@ class SurfaceGeoidDomainRepresentation(object):
     self.paths = None
     self.minarea = 0.0
     self.region = 'True'
-    self.dx = universe.dx_default
     self.latitude_max = None
+
+    self.SetSpacing(universe.dx)
 
     self.SetPathsSelected(universe.boundaries)
     self.SetMinArea(universe.minarea)
     self.SetRegion(universe.region)
-    self.SetSpacing(universe.dx)
     self.SetMaximumLatitude(universe.extendtolatitude)
 
     self.AppendArguments()
@@ -154,8 +154,8 @@ class SurfaceGeoidDomainRepresentation(object):
       self.report('Boundaries restricted to ' + str(universe.boundaries))
     if universe.region is not 'True':
       self.report('Region defined by ' + str(universe.region))
-    if universe.dx != universe.dx_default:
-      self.report('Open contours closed with a line formed by points spaced %(dx)g degrees apart' % {'dx':universe.dx} )
+    if self.dx != universe.dx_default:
+      self.report('Open contours closed with a line formed by points spaced %(dx)g degrees apart' % {'dx':self.dx} )
     if universe.extendtolatitude is not None:
       self.report('Extending region to meet parallel on latitude ' + str(universe.extendtolatitude))
 
@@ -586,7 +586,7 @@ Call DrawParallel;''' % { 'start_x':startp[0], 'start_y':startp[1], 'end_x':endp
     index = self.index
     boundary = self.boundary
 
-    dx = universe.dx
+    dx = self.dx
     parallel = universe.bounding_lat
     index.start = index.point + 1
     loopstartpoint = index.start
@@ -731,7 +731,7 @@ General.RotationZ = 270;
     self.output_surfaces()
 
     #from specific.AntarcticCircumpolarCurrent import draw_acc
-    #index = draw_acc(index, boundary, universe.dx)
+    #index = draw_acc(index, boundary, self.dx)
 
     self.gmsh_section('End of contour definitions')
 
