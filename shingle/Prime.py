@@ -23,6 +23,8 @@
 ##########################################################################
 
 def main():
+  """ Main routine 
+  """
 
   from Universe import universe
   from Support import InitialiseGlobals, ReadArguments
