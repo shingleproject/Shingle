@@ -27,12 +27,105 @@ start =
             comment
          },
          general,
+         datasets*,
          surface_geoid_representation+,
          metric_options,
          mesh_options,
          verification_tests
       }
    )      
+
+datasets =
+  (
+    ## Boundary representation component
+    element dataset {
+      attribute name { string },
+      (
+      dataset_new
+      |dataset_source
+      |dataset_shapefile
+      )
+    }
+  )
+
+dataset_new =
+  (
+    ## Boundary representation component format
+    element format {
+      attribute name { string },
+      attribute file_name { string },
+      comment
+    },
+    ## Projection of input data source
+    element projection {
+      # Automatic
+      # Options
+      # Option to give proj4 string?
+      comment
+    }
+  )
+
+dataset_shapefile =
+  (
+    ## Boundary representation component format
+    element format {
+      attribute name { "shapefile" },
+      comment,
+      dataset_shapefile_options
+    }
+  )
+
+dataset_source =
+  (
+    ## Boundary representation component format
+    element format {
+      attribute name { "raster" },
+      comment,
+      dataset_source_options
+    }
+  )
+
+dataset_shapefile_options =
+  (
+    ## Source shapefile
+    ## (change to define a folder within project for location?)
+    element source {
+      attribute name { "file_name" },
+      comment
+    }
+  )
+
+dataset_source_options =
+  (
+    (
+      ## Source raster dataset
+      ## (change to define a folder within project for location?)
+      ##
+      ## Default: ~/tmp/dataset/rtopo/RTopo105b_50S.nc
+      element source {
+        attribute name { "file_name" },
+        string, 
+        comment
+      }|
+      ## Source raster dataset
+      ##
+      ## See: http://www.opendap.org
+      ##
+      ## See: http://opendap.deltares.nl
+      ##
+      ## See: http://www.esrl.noaa.gov/psd/data/gridded/using_dods.html
+      element source {
+        attribute name { "OPeNDAP" },
+        string, 
+        comment
+      }
+    )
+  )
+
+
+
+
+
 
 general =
   (
@@ -84,14 +177,11 @@ general =
 surface_geoid_representation_output = 
   (
     ## Output options
+    ##
+    ## Default file_name: ./shorelines.geo
     element output {
-      ## Output
-      ##
-      ## Default: ./shorelines.geo
-      element file_name {
-        string,
-        comment
-      },
+      attribute file_name { string },
+      comment,
       ## Output Projection type
       ##
       ## Default: cartesian
@@ -156,7 +246,7 @@ surface_geoid_representation_brep =
     element brep_component {
       attribute name { string },
       (
-      surface_geoid_representation_new
+      surface_geoid_representation_named
       |surface_geoid_representation_source
       |surface_geoid_representation_shapefile
       ),
@@ -220,12 +310,11 @@ surface_geoid_representation_brep =
     }
   )
 
-surface_geoid_representation_new =
+surface_geoid_representation_named =
   (
     ## Boundary representation component format
     element format {
       attribute name { string },
-      attribute file_name { string },
       comment
     }
   )
@@ -255,7 +344,7 @@ surface_geoid_representation_shapefile_options =
     ## Source shapefile
     ## (change to define a folder within project for location?)
     element source {
-      string, 
+      attribute name { "file_name" },
       comment
     }
   )
@@ -268,7 +357,7 @@ surface_geoid_representation_source_options =
       ##
       ## Default: ~/tmp/dataset/rtopo/RTopo105b_50S.nc
       element source {
-        attribute name { "file" },
+        attribute name { "file_name" },
         string, 
         comment
       }|
