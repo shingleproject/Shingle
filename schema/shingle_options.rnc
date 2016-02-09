@@ -91,7 +91,7 @@ surface_geoid_representation_output =
       element file_name {
         string,
         comment
-      }?,
+      },
       ## Output Projection type
       ##
       ## Default: cartesian
@@ -235,8 +235,8 @@ surface_geoid_representation_shapefile =
     ## Boundary representation component format
     element format {
       attribute name { "shapefile" },
-      attribute file_name { string },
-      comment
+      comment,
+      surface_geoid_representation_shapefile_options
     }
   )
 
@@ -245,43 +245,69 @@ surface_geoid_representation_source =
     ## Boundary representation component format
     element format {
       attribute name { "raster" },
-      attribute file_name { string }, 
       comment,
       surface_geoid_representation_source_options
     }
   )
 
+surface_geoid_representation_shapefile_options =
+  (
+    ## Source shapefile
+    ## (change to define a folder within project for location?)
+    element source {
+      string, 
+      comment
+    }
+  )
 
 surface_geoid_representation_source_options =
   (
-    ## Source raster dataset
-    ## (change to define a folder within project for location?)
-    ##
-    ## Default: ~/tmp/dataset/rtopo/RTopo105b_50S.nc
-    element source {
-      attribute file_name { string }, 
-      comment
-    }?,
-
+    (
+      ## Source raster dataset
+      ## (change to define a folder within project for location?)
+      ##
+      ## Default: ~/tmp/dataset/rtopo/RTopo105b_50S.nc
+      element source {
+        attribute name { "file" },
+        string, 
+        comment
+      }|
+      ## Source raster dataset
+      ##
+      ## See: http://www.opendap.org
+      ##
+      ## See: http://opendap.deltares.nl
+      ##
+      ## See: http://www.esrl.noaa.gov/psd/data/gridded/using_dods.html
+      element source {
+        attribute name { "OPeNDAP" },
+        string, 
+        comment
+      }
+    ),
     ## Region specification - multiple?
     ## Function specifying region of interest
+    ##
+    ## e.g. 'latitude <= -60.0'
     ##
     ## Default: 'True' (string)
     ##
     ## Legacy: 
     ## region
     element region {
-      attribute file_name { string }, 
+      string, 
       comment
     }?,
     ## Box 
     ## Boxes with regions of interest
     ##
+    ## e.g. -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0
+    ##
     ## Default: []
     ##
     ## Legacy: box
     element box {
-      attribute file_name { string }, 
+      string, 
       comment
     }?,
     ## Minimum area of islands / holes in geoid surface
@@ -293,6 +319,8 @@ surface_geoid_representation_source_options =
       real,
       comment
     }?,
+
+    # Define alternative here - breaking up the following
 
     ## Contour type
     ##
@@ -345,12 +373,12 @@ surface_geoid_representation_closure =
   (
       ## Methods to close the geoid surface domain.
       element closure {
-        ## Include open boundaries
+        ## Do not include open boundaries
         ##
-        ## Default: True
+        ## Default: False
         ##
-        ## Legacy: open
-        element open {
+        ## Legacy: open (default true)
+        element no_open {
           comment
         }?,
         ## Bounding latitude.

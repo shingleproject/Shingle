@@ -97,15 +97,13 @@ Default: False</a:documentation>
   <define name="surface_geoid_representation_output">
     <element name="output">
       <a:documentation>Output options</a:documentation>
-      <optional>
-        <element name="file_name">
-          <a:documentation>Output
+      <element name="file_name">
+        <a:documentation>Output
 
 Default: ./shorelines.geo</a:documentation>
-          <data type="string"/>
-          <ref name="comment"/>
-        </element>
-      </optional>
+        <data type="string"/>
+        <ref name="comment"/>
+      </element>
       <optional>
         <element name="projection">
           <a:documentation> Output Projection type
@@ -283,10 +281,8 @@ Enable this to match end to end</a:documentation>
       <attribute name="name">
         <value>shapefile</value>
       </attribute>
-      <attribute name="file_name">
-        <data type="string"/>
-      </attribute>
       <ref name="comment"/>
+      <ref name="surface_geoid_representation_shapefile_options"/>
     </element>
   </define>
   <define name="surface_geoid_representation_source">
@@ -295,26 +291,46 @@ Enable this to match end to end</a:documentation>
       <attribute name="name">
         <value>raster</value>
       </attribute>
-      <attribute name="file_name">
-        <data type="string"/>
-      </attribute>
       <ref name="comment"/>
       <ref name="surface_geoid_representation_source_options"/>
     </element>
   </define>
+  <define name="surface_geoid_representation_shapefile_options">
+    <element name="source">
+      <a:documentation>Source shapefile
+(change to define a folder within project for location?)</a:documentation>
+      <data type="string"/>
+      <ref name="comment"/>
+    </element>
+  </define>
   <define name="surface_geoid_representation_source_options">
-    <optional>
+    <choice>
       <element name="source">
         <a:documentation>Source raster dataset
 (change to define a folder within project for location?)
 
 Default: ~/tmp/dataset/rtopo/RTopo105b_50S.nc</a:documentation>
-        <attribute name="file_name">
-          <data type="string"/>
+        <attribute name="name">
+          <value>file</value>
         </attribute>
+        <data type="string"/>
         <ref name="comment"/>
       </element>
-    </optional>
+      <element name="source">
+        <a:documentation>Source raster dataset
+
+See: http://www.opendap.org
+
+See: http://opendap.deltares.nl
+
+See: http://www.esrl.noaa.gov/psd/data/gridded/using_dods.html</a:documentation>
+        <attribute name="name">
+          <value>OPeNDAP</value>
+        </attribute>
+        <data type="string"/>
+        <ref name="comment"/>
+      </element>
+    </choice>
     <optional>
       <element name="region">
         <a:documentation>Region specification - multiple?
@@ -424,12 +440,12 @@ Legacy: boundariestoexclude</a:documentation>
     <element name="closure">
       <a:documentation>Methods to close the geoid surface domain.</a:documentation>
       <optional>
-        <element name="open">
-          <a:documentation>Include open boundaries
+        <element name="no_open">
+          <a:documentation>Do not include open boundaries
 
-Default: True
+Default: False
 
-Legacy: open</a:documentation>
+Legacy: open (default true)</a:documentation>
           <ref name="comment"/>
         </element>
       </optional>

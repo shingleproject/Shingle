@@ -3,6 +3,7 @@ Add a line in shml for complete command line, and a switch to apply as an overid
 Test engine could test both?
 
 Report to log instead
+Breakup contourtype - see Import.py
 
 Cache = ensure ths is not messing with the tests
 

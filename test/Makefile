@@ -1,4 +1,4 @@
-##########################################################################
+#########################################################################
 #  
 #  Generation of boundary representation from arbitrary geophysical
 #  fields and initialisation for anisotropic, unstructured meshing.
