@@ -57,7 +57,6 @@ class universe():
 
   # Arguments
   input  = None
-  picklefile = None
   output = None
   boundaries = None
   boundariestoexclude = None

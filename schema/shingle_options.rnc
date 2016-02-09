@@ -2,6 +2,42 @@ include "spud_base.rnc"
 
 include "mesh_options.rnc"
 
+#  verbose = True
+#  debug = False
+#  
+#  reportcache = ''
+#  reportline = 0
+#  
+#  planet_radius = 6.37101e+06
+#  dx_default = 0.1
+#  fileid = ''
+#  compound = False
+#  more_bsplines = False
+#  physical_lines_separate = False
+#  
+#  input  = os.path.expanduser('~/tmp/dataset/rtopo/RTopo105b_50S.nc')
+#  output = './shorelines.geo'
+#  boundaries = []
+#  boundariestoexclude = []
+#  dx = universe.dx_default
+#  region = 'True'
+#  box = []
+#  minarea = 0
+#  extendtolatitude = None
+#  open = True
+#  bounding_lat = -50.0
+#  smooth_data = False
+#  smooth_degree = 100
+#  include_iceshelf_ocean_cavities = True
+#  projection = 'cartesian'
+#  contourtype = 'iceshelfcavity'
+#  plotcontour = False
+#  cache = False
+#  closewithparallels = False
+#  elementlength = '1.0E5'
+#  generatemesh = False
+#  generatemetric = False
+
 start =
    (
       ## The root node of the options dictionary.
@@ -33,43 +69,75 @@ start =
                }
             }
          },
-         element test {
-            ## Test structure
-            element node_number {
-              attribute name { "Node number" },
-              element tolerance {
-                integer
-              }
-            },
-            element element_number {
-              attribute name { "Element number" },
-              element tolerance {
-                integer
-              }
-            },
-            element surface_geoid_area {
-              # Check correct in spherical projection
-              attribute name { "Surface Geoid Area" },
-              element tolerance {
-                real
-              }
-            }?,
-            element edge_node_number {
-              attribute name { "Edge node number" },
-              element tolerance {
-                integer
-              }
-            },
-            element element_circumsphere {
-              attribute name { "Element circumsphere range" },
-              element tolerance {
-                integer
-              }
-            }?
-         }
+         metric,
+         mesh,
+         test
       }
    )      
 
+metric =
+  (
+     element metric {
+        ## Metric definition
+        element name {
+          attribute name { "Metric name" },
+          element name {
+            anystring
+          }
+        }
+     }
+  )
+
+mesh =
+  (
+     element mesh {
+        ## Mesh definition
+        element name {
+          attribute name { "Mesh name" },
+          element name {
+            anystring
+          }
+        }
+     }
+  )
+
+test =
+  (
+     element test {
+        ## Test structure
+        element node_number {
+          attribute name { "Node number" },
+          element tolerance {
+            integer
+          }
+        },
+        element element_number {
+          attribute name { "Element number" },
+          element tolerance {
+            integer
+          }
+        },
+        element surface_geoid_area {
+          # Check correct in spherical projection
+          attribute name { "Surface Geoid Area" },
+          element tolerance {
+            real
+          }
+        }?,
+        element edge_node_number {
+          attribute name { "Edge node number" },
+          element tolerance {
+            integer
+          }
+        },
+        element element_circumsphere {
+          attribute name { "Element circumsphere range" },
+          element tolerance {
+            integer
+          }
+        }?
+     }
+  )
 
 geometry = 
    (

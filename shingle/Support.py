@@ -142,8 +142,6 @@ def InitialiseGlobals():
   #### IMPORT END
 
   universe.input  = os.path.expanduser('~/tmp/dataset/rtopo/RTopo105b_50S.nc')
-  universe.picklefile = ''
-  #output = './stereographic_projection.geo'
   universe.output = './shorelines.geo'
   universe.boundaries = []
   universe.boundariestoexclude = []
