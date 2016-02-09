@@ -2,42 +2,6 @@ include "spud_base.rnc"
 
 include "mesh_options.rnc"
 
-#  verbose = True
-#  debug = False
-#  
-#  reportcache = ''
-#  reportline = 0
-#  
-#  planet_radius = 6.37101e+06
-#  dx_default = 0.1
-#  fileid = ''
-#  compound = False
-#  more_bsplines = False
-#  physical_lines_separate = False
-#  
-#  input  = os.path.expanduser('~/tmp/dataset/rtopo/RTopo105b_50S.nc')
-#  output = './shorelines.geo'
-#  boundaries = []
-#  boundariestoexclude = []
-#  dx = universe.dx_default
-#  region = 'True'
-#  box = []
-#  minarea = 0
-#  extendtolatitude = None
-#  open = True
-#  bounding_lat = -50.0
-#  smooth_data = False
-#  smooth_degree = 100
-#  include_iceshelf_ocean_cavities = True
-#  projection = 'cartesian'
-#  contourtype = 'iceshelfcavity'
-#  plotcontour = False
-#  cache = False
-#  closewithparallels = False
-#  elementlength = '1.0E5'
-#  generatemesh = False
-#  generatemetric = False
-
 start =
    (
       ## The root node of the options dictionary.
@@ -59,6 +23,7 @@ start =
             },
             comment
          },
+         general,
          geometry,
          ## Input/output options
          element io {
@@ -74,6 +39,63 @@ start =
          test
       }
    )      
+
+general =
+  (
+     element metric {
+        ## Metric definition
+        element name {
+          attribute name { "Metric name" },
+          element name {
+            anystring
+          }
+        }
+     }
+  )
+
+
+#  source  = os.path.expanduser('~/tmp/dataset/rtopo/RTopo105b_50S.nc')
+#  output = './shorelines.geo'
+#  
+#  boundaries = []
+#  boundariestoexclude = []
+#  dx = universe.dx_default
+#  region = 'True'
+#  box = []
+#  minarea = 0
+#  extendtolatitude = None
+#  open = True
+#  bounding_lat = -50.0
+#  smooth_data = False
+#  smooth_degree = 100
+#  include_iceshelf_ocean_cavities = True
+#  projection = 'cartesian'
+#  contourtype = 'iceshelfcavity'
+#  closewithparallels = False
+#  elementlength = '1.0E5'
+#  generatemesh = False
+#  generatemetric = False
+#  
+#  planet_radius = 6.37101e+06
+#  dx_default = 0.1
+#    #fileid = 'G'
+#  fileid = ''
+#  compound = False
+#  more_bsplines = False
+#  # Interestingly, if the following is true, gmsh generates a nice mesh, but complains (rightly so) on multiple definitions of a physical line id.  If false, the mesh contains extra 1d elements, which need parsing out!
+#  physical_lines_separate = False
+
+
+
+
+
+
+
+
+
+
+
+
 
 metric =
   (

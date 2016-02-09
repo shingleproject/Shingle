@@ -129,27 +129,16 @@ def InitialiseGlobals():
   # [backup]
   # location = ~/path/to/calendar/backup/folder/,~/path/to/second/calendar/folder/
 
-
   universe.verbose = True
   universe.debug = False
-  
-  universe.reportcache = ''
-  universe.reportline = 0
+ 
+  universe.plotcontour = False
+  universe.cache = False
 
-  #### IMPORT START
-  universe.planet_radius = 6.37101e+06
-  universe.dx_default = 0.1
-  #fileid = 'G'
-  universe.fileid = ''
-  universe.compound = False
-  #compound = True
-  universe.more_bsplines = False
-  # Interestingly, if the following is true, gmsh generates a nice mesh, but complains (rightly so) on multiple definitions of a physical line id.  If false, the mesh contains extra 1d elements, which need parsing out!
-  universe.physical_lines_separate = False
-  #### IMPORT END
 
   universe.source  = os.path.expanduser('~/tmp/dataset/rtopo/RTopo105b_50S.nc')
   universe.output = './shorelines.geo'
+  
   universe.boundaries = []
   universe.boundariestoexclude = []
   universe.dx = universe.dx_default
@@ -164,13 +153,25 @@ def InitialiseGlobals():
   universe.include_iceshelf_ocean_cavities = True
   universe.projection = 'cartesian'
   universe.contourtype = 'iceshelfcavity'
-  universe.plotcontour = False
   #call = ' '.join(argv)
-  universe.cache = False
   universe.closewithparallels = False
   universe.elementlength = '1.0E5'
   universe.generatemesh = False
   universe.generatemetric = False
+
+  universe.planet_radius = 6.37101e+06
+  universe.dx_default = 0.1
+  #fileid = 'G'
+  universe.fileid = ''
+  universe.compound = False
+  universe.more_bsplines = False
+  # Interestingly, if the following is true, gmsh generates a nice mesh, but complains (rightly so) on multiple definitions of a physical line id.  If false, the mesh contains extra 1d elements, which need parsing out!
+  universe.physical_lines_separate = False
+
+
+  # Misc
+  universe.reportcache = ''
+  universe.reportline = 0
 
 
 

@@ -29,6 +29,8 @@ bin/shingle: src/shingle lib/libspud.so
 clean:
 	@echo 'CLEAN test'
 	@make -s -C test clean
+	@echo 'CLEAN shingle'
+	@rm -f shingle/*.pyc
 	@echo 'CLEAN tool'
 	@rm -f tool/spud-preprocess
 	@echo 'CLEAN lib'

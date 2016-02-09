@@ -50,15 +50,15 @@ class universe():
   verbose = None
   debug = None
   optiontreesource = None
-  # Main arguments
-  source  = None
-  output = None
  
   # Extra options
   plotcontour = None
   cache = None
   stage = None
 
+  # IO arguments
+  source  = None
+  output = None
 
   # Arguments
   boundaries = None
