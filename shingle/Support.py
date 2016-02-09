@@ -34,6 +34,8 @@ from StringOperations import expand_boxes
 from Usage import usage
 
 class ReadArguments(object):
+
+  _stages = ['path', 'brep', 'mesh', 'metric']
   
   def __init__(self):
     from sys import argv
@@ -66,11 +68,19 @@ class ReadArguments(object):
       elif (self.argument == '-n'): universe.source  = self.NextArgument();
       elif (self.argument == '-f'): universe.output = self.NextArgument();
       elif (self.argument == '-x'): universe.optiontreesource = self.NextArgument();
+
+      elif (self.argument == '-c'): universe.cache = True
+      elif (self.argument == '-plot'): universe.plotcontour = True
+      elif (self.argument == '-stage'): universe.stage = self.NextArgument()
+
       elif (self.argument == '-l'): self.legacy = True; report('Including legacy command line options')
       else: self.ReadLegacy()
 
     universe.region = expand_boxes(universe.region, universe.box)
 
+    if universe.stage is not None:
+      if universe.stage not in stages:
+        error('Stage %(stage)s not recognised' % universe.stage, fatal=True)
 
   def ReadLegacy(self):
     from Universe import universe
@@ -89,8 +99,6 @@ class ReadArguments(object):
       universe.smooth_data = True
     elif (self.argument == '-no'): universe.open = False
     elif (self.argument == '-exclude_ice_shelves'): universe.include_iceshelf_ocean_cavities = False
-    elif (self.argument == '-c'): universe.cache = True
-    elif (self.argument == '-plot'): universe.plotcontour = True
     elif (self.argument == '-mesh'): universe.generatemesh = True
     elif (self.argument == '-m'): universe.projection = self.NextArgument()
     elif (self.argument == '-el'): universe.elementlength = self.NextArgument()
@@ -163,7 +171,6 @@ def InitialiseGlobals():
   universe.elementlength = '1.0E5'
   universe.generatemesh = False
   universe.generatemetric = False
-
 
 
 

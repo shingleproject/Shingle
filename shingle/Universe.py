@@ -53,7 +53,13 @@ class universe():
   # Main arguments
   source  = None
   output = None
-  
+ 
+  # Extra options
+  plotcontour = None
+  cache = None
+  stage = None
+
+
   # Arguments
   boundaries = None
   boundariestoexclude = None
@@ -69,10 +75,6 @@ class universe():
   include_iceshelf_ocean_cavities = None
   projection = None
   contourtype = None
-  plotcontour = None
-  #call = None
-  call = None
-  cache = None
   closewithparallels = None
   elementlength = None
   generatemesh = None
@@ -88,6 +90,9 @@ class universe():
   # Interestingly, if the following is true, gmsh generates a nice mesh, but complains (rightly so) on multiple definitions of a physical line id.  If false, the mesh contains extra 1d elements, which need parsing out!
   physical_lines_separate = None
   
+  # Store
+  call = None
+
   # Misc
   logfile = None
   reportcache = None
