@@ -2,43 +2,6 @@
 <grammar xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
   <include href="spud_base.rng"/>
   <include href="mesh_options.rng"/>
-  <!--
-     verbose = True
-     debug = False
-     
-     reportcache = ''
-     reportline = 0
-     
-     planet_radius = 6.37101e+06
-     dx_default = 0.1
-     fileid = ''
-     compound = False
-     more_bsplines = False
-     physical_lines_separate = False
-     
-     input  = os.path.expanduser('~/tmp/dataset/rtopo/RTopo105b_50S.nc')
-     output = './shorelines.geo'
-     boundaries = []
-     boundariestoexclude = []
-     dx = universe.dx_default
-     region = 'True'
-     box = []
-     minarea = 0
-     extendtolatitude = None
-     open = True
-     bounding_lat = -50.0
-     smooth_data = False
-     smooth_degree = 100
-     include_iceshelf_ocean_cavities = True
-     projection = 'cartesian'
-     contourtype = 'iceshelfcavity'
-     plotcontour = False
-     cache = False
-     closewithparallels = False
-     elementlength = '1.0E5'
-     generatemesh = False
-     generatemetric = False
-  -->
   <start>
     <element name="shingle_options">
       <a:documentation>The root node of the options dictionary.</a:documentation>
@@ -69,6 +32,9 @@ characters in the simulation name should be avoided.</a:documentation>
         </element>
         <ref name="comment"/>
       </element>
+      <ref name="general"/>
+      <ref name="metric_options"/>
+      <ref name="mesh_options"/>
       <ref name="geometry"/>
       <element name="io">
         <a:documentation>Input/output options</a:documentation>
@@ -79,11 +45,207 @@ characters in the simulation name should be avoided.</a:documentation>
           </element>
         </element>
       </element>
-      <ref name="metric"/>
-      <ref name="mesh"/>
       <ref name="test"/>
     </element>
   </start>
+  <define name="general">
+    <element name="source">
+      <a:documentation>planet_radius = 6.37101e+06</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <element name="source2">
+      <a:documentation>dx_default = 0.1</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <!-- # Interestingly, if the following is true, gmsh generates a nice mesh, but complains (rightly so) on multiple definitions of a physical line id.  If false, the mesh contains extra 1d elements, which need parsing out! -->
+    <element name="source2">
+      <a:documentation>physical_lines_separate = False</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+  </define>
+  <define name="surface_geoid_representation">
+    <element name="source2">
+      <a:documentation>general
+  #fileid = 'G'
+fileid = ''</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <element name="source2">
+      <a:documentation>compound = False</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <element name="source2">
+      <a:documentation>more_bsplines = False</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <element name="source">
+      <a:documentation>io</a:documentation>
+      <a:documentation>source  = os.path.expanduser('~/tmp/dataset/rtopo/RTopo105b_50S.nc')</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <element name="output">
+      <a:documentation>output = './shorelines.geo'</a:documentation>
+      <attribute name="name">
+        <value>Output</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <element name="source2">
+      <a:documentation>contourtype = 'iceshelfcavity'</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <element name="source2">
+      <a:documentation>projection = 'cartesian'</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <element name="source2">
+      <a:documentation>boundaries = []</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <element name="source2">
+      <a:documentation>boundariestoexclude = []</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <element name="source2">
+      <a:documentation>dx = universe.dx_default</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <element name="source2">
+      <a:documentation>region = 'True'</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <element name="source2">
+      <a:documentation>box = []</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <element name="source2">
+      <a:documentation>minarea = 0</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <element name="source2">
+      <a:documentation>extendtolatitude = None</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <element name="source2">
+      <a:documentation>open = True</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <element name="source2">
+      <a:documentation>bounding_lat = -50.0</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <element name="source2">
+      <a:documentation>include_iceshelf_ocean_cavities = True</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <element name="source2">
+      <a:documentation>closewithparallels = False</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <element name="source2">
+      <a:documentation>elementlength = '1.0E5'</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <!--
+      processing
+      have separate rasters section?  - sources?
+    -->
+    <element name="source2">
+      <a:documentation>smooth_data = False</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <element name="source2">
+      <a:documentation>smooth_degree = 100</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+  </define>
+  <define name="mesh_options">
+    <element name="source2">
+      <a:documentation>generatemesh = False</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+  </define>
+  <define name="metric_options">
+    <element name="source2">
+      <a:documentation>generatemetric = False</a:documentation>
+      <attribute name="name">
+        <value>source</value>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+  </define>
   <define name="metric">
     <element name="metric">
       <element name="name">
@@ -108,6 +270,24 @@ characters in the simulation name should be avoided.</a:documentation>
           <ref name="anystring"/>
         </element>
       </element>
+    </element>
+  </define>
+  <define name="raster_input_format">
+    <a:documentation>NetCDF CF 1.4 (http://cf-pcmdi.llnl.gov/)</a:documentation>
+    <element name="format">
+      <a:documentation>raster input file format.</a:documentation>
+      <attribute name="name">
+        <value>Raster</value>
+      </attribute>
+      <optional>
+        <element name="field_name">
+          <a:documentation>The field to read from the vtu file. If not supplied, the name of
+the initialised field is used.</a:documentation>
+          <ref name="anystring"/>
+          <ref name="comment"/>
+        </element>
+      </optional>
+      <ref name="comment"/>
     </element>
   </define>
   <define name="test">

@@ -24,6 +24,8 @@ start =
             comment
          },
          general,
+         metric_options,
+         mesh_options,
          geometry,
          ## Input/output options
          element io {
@@ -34,69 +36,208 @@ start =
                }
             }
          },
-         metric,
-         mesh,
          test
       }
    )      
 
 general =
   (
-     element metric {
-        ## Metric definition
-        element name {
-          attribute name { "Metric name" },
-          element name {
-            anystring
-          }
-        }
-     }
+
+    ## planet_radius = 6.37101e+06
+    element source {
+      attribute name { "source" },
+      comment
+    },
+
+    ## dx_default = 0.1
+    element source2 {
+      attribute name { "source" },
+      comment
+    },
+
+
+    # # Interestingly, if the following is true, gmsh generates a nice mesh, but complains (rightly so) on multiple definitions of a physical line id.  If false, the mesh contains extra 1d elements, which need parsing out!
+    ## physical_lines_separate = False
+    element source2 {
+      attribute name { "source" },
+      comment
+    }
+
+
+
+  )
+
+surface_geoid_representation =
+  (
+
+    ## general
+    ##   #fileid = 'G'
+    ## fileid = ''
+    element source2 {
+      attribute name { "source" },
+      comment
+    },
+
+
+    ## compound = False
+    element source2 {
+      attribute name { "source" },
+      comment
+    },
+
+    ## more_bsplines = False
+    element source2 {
+      attribute name { "source" },
+      comment
+    },
+
+
+
+    ## io
+
+    ## source  = os.path.expanduser('~/tmp/dataset/rtopo/RTopo105b_50S.nc')
+    element source {
+      attribute name { "source" },
+      comment
+    },
+
+    ## output = './shorelines.geo'
+    element output {
+      attribute name { "Output" },
+      comment
+    },
+
+    ## contourtype = 'iceshelfcavity'
+    element source2 {
+      attribute name { "source" },
+      comment
+    },
+
+    ## projection = 'cartesian'
+    element source2 {
+      attribute name { "source" },
+      comment
+    },
+
+
+    ## boundaries = []
+    element source2 {
+      attribute name { "source" },
+      comment
+    },
+
+    ## boundariestoexclude = []
+    element source2 {
+      attribute name { "source" },
+      comment
+    },
+
+    ## dx = universe.dx_default
+    element source2 {
+      attribute name { "source" },
+      comment
+    },
+
+    ## region = 'True'
+    element source2 {
+      attribute name { "source" },
+      comment
+    },
+
+    ## box = []
+    element source2 {
+      attribute name { "source" },
+      comment
+    },
+
+    ## minarea = 0
+    element source2 {
+      attribute name { "source" },
+      comment
+    },
+
+    ## extendtolatitude = None
+    element source2 {
+      attribute name { "source" },
+      comment
+    },
+
+    ## open = True
+    element source2 {
+      attribute name { "source" },
+      comment
+    },
+
+    ## bounding_lat = -50.0
+    element source2 {
+      attribute name { "source" },
+      comment
+    },
+
+    ## include_iceshelf_ocean_cavities = True
+    element source2 {
+      attribute name { "source" },
+      comment
+    },
+
+    ## closewithparallels = False
+    element source2 {
+      attribute name { "source" },
+      comment
+    },
+
+    ## elementlength = '1.0E5'
+    element source2 {
+      attribute name { "source" },
+      comment
+    },
+
+
+
+    #processing
+    # have separate rasters section?  - sources?
+    ## smooth_data = False
+    element source2 {
+      attribute name { "source" },
+      comment
+    },
+
+    ## smooth_degree = 100
+    element source2 {
+      attribute name { "source" },
+      comment
+    }
+
+
+
   )
 
 
-#  source  = os.path.expanduser('~/tmp/dataset/rtopo/RTopo105b_50S.nc')
-#  output = './shorelines.geo'
-#  
-#  boundaries = []
-#  boundariestoexclude = []
-#  dx = universe.dx_default
-#  region = 'True'
-#  box = []
-#  minarea = 0
-#  extendtolatitude = None
-#  open = True
-#  bounding_lat = -50.0
-#  smooth_data = False
-#  smooth_degree = 100
-#  include_iceshelf_ocean_cavities = True
-#  projection = 'cartesian'
-#  contourtype = 'iceshelfcavity'
-#  closewithparallels = False
-#  elementlength = '1.0E5'
-#  generatemesh = False
-#  generatemetric = False
-#  
-#  planet_radius = 6.37101e+06
-#  dx_default = 0.1
-#    #fileid = 'G'
-#  fileid = ''
-#  compound = False
-#  more_bsplines = False
-#  # Interestingly, if the following is true, gmsh generates a nice mesh, but complains (rightly so) on multiple definitions of a physical line id.  If false, the mesh contains extra 1d elements, which need parsing out!
-#  physical_lines_separate = False
+
+mesh_options = 
+  (
+    ## generatemesh = False
+    element source2 {
+      attribute name { "source" },
+      comment
+    }
 
 
+  )
+
+metric_options = 
+  (
+
+    ## generatemetric = False
+    element source2 {
+      attribute name { "source" },
+      comment
+    }
 
 
-
-
-
-
-
-
-
-
-
+  )
+     
+     
 metric =
   (
      element metric {
@@ -122,6 +263,43 @@ mesh =
         }
      }
   )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## NetCDF CF 1.4 (http://cf-pcmdi.llnl.gov/)
+
+raster_input_format =
+  (
+      ## raster input file format.
+      element format {
+         attribute name { "Raster" },
+         ## The field to read from the vtu file. If not supplied, the name of
+         ## the initialised field is used.
+         element field_name {
+            anystring,
+            comment
+         }?,
+         comment
+      }
+  )
+
+
+
 
 test =
   (
