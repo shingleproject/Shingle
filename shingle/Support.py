@@ -60,8 +60,12 @@ class ReadArguments(object):
     while (len(self.arguments) > 0):
       self.argument = self.NextArgument()
       if   (self.argument == '-h'): usage()
-      elif (self.argument == '-n'): universe.input  = self.NextArgument(); print universe.input
-      elif (self.argument == '-f'): universe.output = self.NextArgument(); print universe.output
+      elif (self.argument == '-v'): universe.verbose = True
+      elif (self.argument == '-vv'): universe.verbose = True; universe.debug = True; 
+      elif (self.argument == '-q'): universe.verbose = False
+      elif (self.argument == '-n'): universe.input  = self.NextArgument();
+      elif (self.argument == '-f'): universe.output = self.NextArgument();
+      elif (self.argument == '-x'): universe.optiontree = self.NextArgument();
       elif (self.argument == '-l'): self.legacy = True; report('Including legacy command line options')
       else: self.ReadLegacy()
 
@@ -91,9 +95,6 @@ class ReadArguments(object):
     elif (self.argument == '-m'): universe.projection = self.NextArgument()
     elif (self.argument == '-el'): universe.elementlength = self.NextArgument()
     elif (self.argument == '-metric'): universe.generatemetric = True
-    elif (self.argument == '-v'): universe.verbose = True
-    elif (self.argument == '-vv'): universe.verbose = True; universe.debug = True; 
-    elif (self.argument == '-q'): universe.verbose = False
     elif (self.argument == '-p'):
       while ((len(self.arguments) > 0) and (self.arguments[0][0] != '-')):
         universe.boundaries.append(int(self.NextArgument()))

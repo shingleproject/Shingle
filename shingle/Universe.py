@@ -49,6 +49,10 @@ colour = {
 class universe():
   verbose = None
   debug = None
+  optiontree = None
+  # Main arguments
+  input  = None
+  output = None
   
   reportcache = None
   reportline = None
@@ -56,8 +60,6 @@ class universe():
   logfile = None
 
   # Arguments
-  input  = None
-  output = None
   boundaries = None
   boundariestoexclude = None
   region = None

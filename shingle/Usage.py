@@ -33,6 +33,14 @@ def usage(unknown = None):
 - Options ---------------------\ 
    -n filename                 | Input netCDF file
    -f filename                 | Output Gmsh file
+                               |______________________________________________
+   -h                          | Help
+   -v                          | Verbose
+   -vv                         | Very verbose (debugging)
+   -q                          | Quiet
+                               \_____________________________________________
+  Legacy options --------------\ 
+                               |
    -p path1 (path2)..          | Specify paths to include
    -pn path1 (path2)..         | Specify paths to exclude
    -r function                 | Function specifying region of interest
@@ -53,11 +61,6 @@ def usage(unknown = None):
    -plot                       | Plot contour before geo generation 
    -el                         | Element length (default 1.0E5)
    -metric                     | Generate background metric based on bathymetry
-                               |______________________________________________
-   -v                          | Verbose
-   -vv                         | Very verbose (debugging)
-   -q                          | Quiet
-   -h                          | Help
                                \_____________________________________________
 Example usage:
 Include only the main Antarctic mass (path 1), and only parts which lie below 60S
