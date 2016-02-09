@@ -65,6 +65,8 @@ Unit: metres</a:documentation>
           <a:documentation>The default spacing between nodes in connecting
 paths that are drawn out as required.
 
+Distance of steps when drawing parallels and meridians (currently in degrees - need to project)
+
 Default: 0.1
 
 Legacy parameter: dx_default</a:documentation>
@@ -96,13 +98,11 @@ Default: False</a:documentation>
     <element name="output">
       <a:documentation>Output options</a:documentation>
       <optional>
-        <element name="output">
+        <element name="file_name">
           <a:documentation>Output
 
 Default: ./shorelines.geo</a:documentation>
-          <attribute name="file_name">
-            <data type="string"/>
-          </attribute>
+          <data type="string"/>
           <ref name="comment"/>
         </element>
       </optional>
@@ -215,6 +215,8 @@ Legacy: compound</a:documentation>
         <element name="spacing">
           <a:documentation>Node spacing
 
+Distance of steps when drawing parallels and meridians (currently in degrees - need to project)
+
 Default: Revert to global spacing above
 
 Legacy: dx</a:documentation>
@@ -316,6 +318,7 @@ Default: ~/tmp/dataset/rtopo/RTopo105b_50S.nc</a:documentation>
     <optional>
       <element name="region">
         <a:documentation>Region specification - multiple?
+Function specifying region of interest
 
 Default: 'True' (string)
 
@@ -330,6 +333,7 @@ region</a:documentation>
     <optional>
       <element name="box">
         <a:documentation>Box 
+Boxes with regions of interest
 
 Default: []
 
@@ -381,6 +385,8 @@ Legacy: contourtype</a:documentation>
       <element name="include_iceshelf_ocean_cavities">
         <a:documentation>Include iceshelf ocean cavities
 
+Includes iceshelf ocean cavities from mesh (default behaviour includes region)
+
 Default: True
 
 Legacy: include_iceshelf_ocean_cavities</a:documentation>
@@ -391,6 +397,7 @@ Legacy: include_iceshelf_ocean_cavities</a:documentation>
       <element name="boundary">
         <a:documentation>Boundaries
 Use a list of integers instead?
+Specify paths to include
 
 Default: []
 
@@ -403,6 +410,7 @@ Legacy: boundaries</a:documentation>
       <element name="boundary_to_exclude">
         <a:documentation>Boundaries to exclude
 Use a list of integers instead?
+Specify paths to exclude
 
 Default: []
 
@@ -414,10 +422,10 @@ Legacy: boundariestoexclude</a:documentation>
   </define>
   <define name="surface_geoid_representation_closure">
     <element name="closure">
-      <a:documentation>Methods to close the geoid surface domain</a:documentation>
+      <a:documentation>Methods to close the geoid surface domain.</a:documentation>
       <optional>
         <element name="open">
-          <a:documentation>Open
+          <a:documentation>Include open boundaries
 
 Default: True
 
@@ -427,7 +435,8 @@ Legacy: open</a:documentation>
       </optional>
       <optional>
         <element name="bounding_latitude">
-          <a:documentation>Bounding latitude
+          <a:documentation>Bounding latitude.
+Latitude of boundary to close the domain.
 
 Default: -50.0
 
@@ -438,7 +447,9 @@ Legacy: bounding_lat</a:documentation>
       </optional>
       <optional>
         <element name="extend_to_latitude">
-          <a:documentation>Extend to latitude 
+          <a:documentation>Extend to latitude.
+
+Latitude to extend open domain to.
 
 Default: None
 

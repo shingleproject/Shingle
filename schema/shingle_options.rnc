@@ -53,6 +53,8 @@ general =
       ## The default spacing between nodes in connecting
       ## paths that are drawn out as required.
       ##
+      ## Distance of steps when drawing parallels and meridians (currently in degrees - need to project)
+      ##
       ## Default: 0.1
       ##
       ## Legacy parameter: dx_default
@@ -86,8 +88,8 @@ surface_geoid_representation_output =
       ## Output
       ##
       ## Default: ./shorelines.geo
-      element output {
-        attribute file_name { string }, 
+      element file_name {
+        string,
         comment
       }?,
       ## Output Projection type
@@ -179,6 +181,8 @@ surface_geoid_representation_brep =
 
       ## Node spacing
       ##
+      ## Distance of steps when drawing parallels and meridians (currently in degrees - need to project)
+      ##
       ## Default: Revert to global spacing above
       ##
       ## Legacy: dx
@@ -260,6 +264,7 @@ surface_geoid_representation_source_options =
     }?,
 
     ## Region specification - multiple?
+    ## Function specifying region of interest
     ##
     ## Default: 'True' (string)
     ##
@@ -270,6 +275,7 @@ surface_geoid_representation_source_options =
       comment
     }?,
     ## Box 
+    ## Boxes with regions of interest
     ##
     ## Default: []
     ##
@@ -301,6 +307,8 @@ surface_geoid_representation_source_options =
     }?,
     ## Include iceshelf ocean cavities
     ##
+    ## Includes iceshelf ocean cavities from mesh (default behaviour includes region)
+    ##
     ## Default: True
     ##
     ## Legacy: include_iceshelf_ocean_cavities
@@ -309,6 +317,7 @@ surface_geoid_representation_source_options =
     }?,
     ## Boundaries
     ## Use a list of integers instead?
+    ## Specify paths to include
     ##
     ## Default: []
     ##
@@ -319,6 +328,7 @@ surface_geoid_representation_source_options =
     }?,
     ## Boundaries to exclude
     ## Use a list of integers instead?
+    ## Specify paths to exclude
     ##
     ## Default: []
     ##
@@ -333,43 +343,46 @@ surface_geoid_representation_source_options =
 
 surface_geoid_representation_closure =
   (
-    ## Methods to close the geoid surface domain
+      ## Methods to close the geoid surface domain.
       element closure {
-      ## Open
-      ##
-      ## Default: True
-      ##
-      ## Legacy: open
-      element open {
-        comment
-      }?,
-      ## Bounding latitude
-      ##
-      ## Default: -50.0
-      ##
-      ## Legacy: bounding_lat
-      element bounding_latitude {
-        real,
-        comment
-      }?,
-      ## Extend to latitude 
-      ##
-      ## Default: None
-      ##
-      ## Legacy: extendtolatitude
-      element extend_to_latitude {
-        real,
-        comment
-      }?,
-      ## Close with parallels 
-      ##
-      ## Default: False 
-      ##
-      ## Legacy: closewithparallels
-      element close_with_parallels {
-        comment
-      }?
-    }
+        ## Include open boundaries
+        ##
+        ## Default: True
+        ##
+        ## Legacy: open
+        element open {
+          comment
+        }?,
+        ## Bounding latitude.
+        ## Latitude of boundary to close the domain.
+        ##
+        ## Default: -50.0
+        ##
+        ## Legacy: bounding_lat
+        element bounding_latitude {
+          real,
+          comment
+        }?,
+        ## Extend to latitude.
+        ##
+        ## Latitude to extend open domain to.
+        ##
+        ## Default: None
+        ##
+        ## Legacy: extendtolatitude
+        element extend_to_latitude {
+          real,
+          comment
+        }?,
+        ## Close with parallels 
+        ##
+        ## Default: False 
+        ##
+        ## Legacy: closewithparallels
+        element close_with_parallels {
+          comment
+        }?
+      }
   )
 
 

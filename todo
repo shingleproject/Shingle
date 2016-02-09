@@ -2,6 +2,7 @@ Replace command line test behaviour with shml
 Add a line in shml for complete command line, and a switch to apply as an overide to all - for testing
 Test engine could test both?
 
+Report to log instead
 
 Cache = ensure ths is not messing with the tests
 
