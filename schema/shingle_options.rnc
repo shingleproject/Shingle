@@ -743,7 +743,11 @@ test_real =
 
 verification_tests_old =
   (
-    ## Verification test structure
+    ## Verification test structure.
+    ##
+    ## Parameters containing expected values for the
+    ## surface geoid boundary representation
+    ## provided above.
     element verification {
       ## Node number
       element node_number {
