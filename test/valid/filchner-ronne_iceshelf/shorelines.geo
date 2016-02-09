@@ -1,11 +1,12 @@
-// Arguments:  -f filchner-ronne_iceshelf/shorelines.geo -n ../RTopo105b_50S.nc -no -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0 -p 1 -r 'latitude <= -83'
-// Source netCDF located at ../RTopo105b_50S.nc
+// Arguments:  -l -f filchner-ronne_iceshelf/shorelines.geo -n ../dataset/RTopo105b_50S.nc -no -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0 -p 1 -r 'latitude <= -83'
 // Output to filchner-ronne_iceshelf/shorelines.geo
 // Projection type cartesian
 // Boundaries restricted to [1]
 // Region defined by ((latitude <= -83) and (((longitude >= -85.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0)) or ((longitude >= -64.0) and (longitude <= -30.0) and (latitude >= -89.0) and (latitude <= -70.0)) or ((longitude >= -30.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0))))
+// Source netCDF located at ../dataset/RTopo105b_50S.nc
 // Including iceshelf ocean cavities
 // Paths found: 348
+
 
 // == Header ======================================================
 IP = newp;
@@ -17,9 +18,9 @@ IFI = newf;
 Point ( IP + 0 ) = { 0, 0, 0 };
 Point ( IP + 1 ) = { 0, 0, 6.37101e+06 };
 PolarSphere ( IS + 0 ) = { IP, IP + 1 };
+
 Delete { Point{ IP + 0}; }
 Delete { Point{ IP + 1}; }
-// Paths that cross the date line: 
 // Merged paths that cross the date line: 
 // Paths found valid: 1, including 1
 
@@ -345,6 +346,7 @@ Point ( IP + 317 ) = { -7.95269337, 14.30775235, 0.00000000 };
 LoopStart0 = IP + 2;
 LoopEnd0 = IP + 317;
 BSpline ( IL + 0 ) = { IP + 2 : IP + 317 };
+
 // Closing path with parallels and merdians, from (-60.94166565, -83.00000000) to  (-57.89166641, -83.00000000)
 // Drawing parallel index 317 at -60.941666.2 (to match -57.891666.2), -83.000000.2
 Point ( IP + 318 ) = { -7.96605406, 14.27794652, 0.00000000 };
@@ -379,7 +381,9 @@ Point ( IP + 346 ) = { -8.65401809, 13.87176070, 0.00000000 };
 LoopStart1 = IP + 317;
 LoopEnd1 = IP + 346;
 BSpline ( IL + 1 ) = { IP + 317 : IP + 346, IP + 2 };
+
 Line Loop( ILL + 0 ) = { IL + 0, IL + 1 };
+
 // **** END end of loop False316/316True
 
 // == Physical entities ===========================================
@@ -389,6 +393,7 @@ Physical Line( 4 ) = { IL + 1 };
 // Closed boundaries (id 3): 1
 Plane Surface( 10 ) = { ILL + 0 };
 Physical Surface( 10 ) = { 10 };
+
 // == End of contour definitions ==================================
 
 // == Field definitions ===========================================
@@ -462,6 +467,7 @@ Field[ IFI + 7 ].Sigmoid = 0;
 
 Background Field = IFI + 1;
 
+
 // == Physical entities ===========================================
 
 //Set some options for better png output
@@ -474,3 +480,4 @@ General.Trackball = 0 ;
 General.RotationX = 180;
 General.RotationY = 0;
 General.RotationZ = 270;
+

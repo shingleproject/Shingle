@@ -1,12 +1,13 @@
-// Arguments:  -f antarctica_main_landmass/shorelines.geo -n ../RTopo105b_50S.nc -r 'latitude <= -60.0' -p 1 -dx 10 -exclude_ice_shelves -bl -60
-// Source netCDF located at ../RTopo105b_50S.nc
+// Arguments:  -l -f antarctica_main_landmass/shorelines.geo -n ../dataset/RTopo105b_50S.nc -r 'latitude <= -60.0' -p 1 -dx 10 -exclude_ice_shelves -bl -60
 // Output to antarctica_main_landmass/shorelines.geo
 // Projection type cartesian
 // Boundaries restricted to [1]
 // Region defined by latitude <= -60.0
 // Open contours closed with a line formed by points spaced 10 degrees apart
+// Source netCDF located at ../dataset/RTopo105b_50S.nc
 // Excluding iceshelf ocean cavities
 // Paths found: 269
+
 
 // == Header ======================================================
 IP = newp;
@@ -18,9 +19,9 @@ IFI = newf;
 Point ( IP + 0 ) = { 0, 0, 0 };
 Point ( IP + 1 ) = { 0, 0, 6.37101e+06 };
 PolarSphere ( IS + 0 ) = { IP, IP + 1 };
+
 Delete { Point{ IP + 0}; }
 Delete { Point{ IP + 1}; }
-// Paths that cross the date line: 
 // Merged paths that cross the date line: 
 // Paths found valid: 1, including 1
 
@@ -38517,7 +38518,9 @@ Point ( IP + 38489 ) = { 9.40253186, 0.00273442, 0.00000000 };
 LoopStart0 = IP + 2;
 LoopEnd0 = IP + 38489;
 BSpline ( IL + 0 ) = { IP + 2 : IP + 38489, IP + 2 };
+
 Line Loop( ILL + 0 ) = { IL + 0 };
+
 // Closing path with parallels and merdians, from (-1.00000000, -60.00000000) to  (179.00000000, -60.00000000)
 // Drawing parallel index 38489 at -1.000000.2 (to match 179.000000.2), -60.000000.2
 Point ( IP + 38490 ) = { -3.68610307, -0.58382137, 0.00000000 };
@@ -38559,7 +38562,9 @@ Point ( IP + 38523 ) = { -3.68610307, 0.58382137, 0.00000000 };
 LoopStart1 = IP + 38490;
 LoopEnd1 = IP + 38523;
 BSpline ( IL + 1 ) = { IP + 38490 : IP + 38523, IP + 38490 };
+
 Line Loop( ILL + 1 ) = { IL + 1 };
+
 
 // == Physical entities ===========================================
 Physical Line( 3 ) = { IL + 0 };
@@ -38568,6 +38573,7 @@ Physical Line( 4 ) = { IL + 1 };
 // Closed boundaries (id 3): 1
 Plane Surface( 10 ) = { ILL + 0, ILL + 1 };
 Physical Surface( 10 ) = { 10 };
+
 // == End of contour definitions ==================================
 
 // == Field definitions ===========================================
@@ -38641,6 +38647,7 @@ Field[ IFI + 7 ].Sigmoid = 0;
 
 Background Field = IFI + 1;
 
+
 // == Physical entities ===========================================
 
 //Set some options for better png output
@@ -38653,3 +38660,4 @@ General.Trackball = 0 ;
 General.RotationX = 180;
 General.RotationY = 0;
 General.RotationZ = 270;
+

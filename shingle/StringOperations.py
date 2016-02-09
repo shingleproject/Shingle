@@ -46,6 +46,9 @@ def list_to_space_separated(numbers, prefix='', add=0):
     string += str(number + add)
   return string
 
+def strplusone(number):
+  return str(number + 1)
+
 def expand_boxes(region, boxes):
   def error():
     print 'Error in argument for -b.'

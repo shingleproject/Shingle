@@ -46,24 +46,34 @@ class SurfaceGeoidDomainRepresentation(object):
 
   _cacheFiletype = '.shc'
 
-  def __init__(self, name='surfaceGeoidDomainRepresentation', output=None):
+  def __init__(self, name='SurfaceGeoidDomainRepresentation', output=None):
     self.output = ''
     self.filehandle = None
     # For now, use universal definitions:
     # Later to go in shml
     self.planet_radius = universe.planet_radius
     self.fileid = universe.fileid
-    self.contoursource = None
-    self.cache = universe.cache
-    self.cachefile = None 
     self.outputfile = universe.output
 
+    self.pathall = None
+
+    self.content = ''
 
     self.paths = None
     self.minarea = 0.0
     self.region = 'True'
     self.dx = universe.dx_default
     self.latitude_max = None
+
+    self.SetPathsSelected(universe.boundaries)
+    self.SetMinArea(universe.minarea)
+    self.SetRegion(universe.region)
+    self.SetSpacing(universe.dx)
+    self.SetMaximumLatitude(universe.extendtolatitude)
+
+    self.AppendArguments()
+    self.AppendParameters()
+
 
   class index:
     point = 0
@@ -85,10 +95,11 @@ class SurfaceGeoidDomainRepresentation(object):
     open    = 4
     surface = 9
 
-  def SetContourSource(self, filename):
-    self.contoursource = filename
+  def AddPath(self, source):
+    self.AddContent(source.log)
+    self.pathall = source.path
 
-  def SetPaths(self, paths):
+  def SetPathsSelected(self, paths):
     self.paths = paths
 
   def SetMinArea(self, area):
@@ -103,33 +114,22 @@ class SurfaceGeoidDomainRepresentation(object):
   def SetMaximumLatitude(self, latitude):
     self.latitude_max = latitude
 
-  def CheckSource(self):
-    from os.path import isfile
-    if not isfile(self.contoursource):
-      error('Source netCDF ' + self.contoursource + ' not found!', fatal=True)
-
-  def GetCacheLocation(self):
-    if self.cachefile is None:
-      from os.path import splitext
-      base, extension = splitext(self.contoursource)
-      self.cachefile = base + '_' + extension.lstrip('.') + '_' + universe.contourtype + self._cacheFiletype
-
-  def CheckCache(self):
-    self.GetCacheLocation()
-    if not self.isCachePresent():
-      self.report('Contour cache ' + self.cachefile + ' not found, forcing generation.')
-      self.cache = True
-
-  def isCachePresent(self):
-    from os.path import isfile
-    return isfile(self.cachefile)
-
   def filehandleOpen(self):
     filename = self.outputfile
     self.filehandle = file(filename,'w')
 
   def filehandleClose(self):
     self.filehandle.close()
+
+  def WriteContent(self):
+    self.filehandleOpen()
+    self.filehandle.write(self.content)
+    self.filehandleClose()
+
+  def AddContent(self, string=''):
+    from os import linesep
+    #self.filehandle.write( string + linesep)
+    self.content = self.content + string + linesep
 
   def report(self, text, include = True, debug = False):
     if debug and not universe.debug:
@@ -140,14 +140,14 @@ class SurfaceGeoidDomainRepresentation(object):
       self.gmsh_comment(text)
 
   def reportSkipped(self):
+    from os import linesep
     if len(self.index.skipped) > 0:
-      self.report('Skipped (because no point on the boundary appeared in the required region, or area enclosed by the boundary was too small):\n'+' '.join(rep.index.skipped))
+      self.report('Skipped (because no point on the boundary appeared in the required region, or area enclosed by the boundary was too small):'+linesep+' '.join(rep.index.skipped))
 
   def AppendArguments(self):
     self.gmsh_comment('Arguments: ' + universe.call)
 
   def AppendParameters(self):
-    self.report('Source netCDF located at ' + self.contoursource)
     self.report('Output to ' + universe.output)
     self.report('Projection type ' + universe.projection)
     if len(universe.boundaries) > 0:
@@ -164,12 +164,12 @@ class SurfaceGeoidDomainRepresentation(object):
 
   def gmsh_comment(self, comment, newline=False):
     if newline:
-      self.filehandle.write('\n')
+      self.AddContent()
     if (len(comment) > 0):
-      self.filehandle.write( '// ' + comment + '\n')
+      self.AddContent( '// ' + comment )
 
   def gmsh_out(self, comment):
-    self.filehandle.write( comment + '\n')
+    self.AddContent( comment )
 
   def gmsh_section(self, title):
     line = '='
@@ -206,29 +206,27 @@ PolarSphere ( IS%(fileid)s + 0 ) = { IP%(fileid)s, IP%(fileid)s + 1 };
     
     if (universe.projection not in ['longlat','proj_cartesian'] ):
       header = header + header_polar
-    self.filehandle.write(header)
+    self.AddContent(header)
     self.gmsh_remove_projection_points()
 
 
   def gmsh_footer(self, loopstart, loopend):
     # Note used?
-    self.filehandle.write( '''
-Field [ IFI%(fileid)s + 0 ]  = Attractor;
-Field [ IFI%(fileid)s + 0 ].NodesList  = { IP + %(loopstart)i : IP + %(loopend)i };
-''' % { 'loopstart':loopstart, 'loopend':loopend, 'fileid':self.fileid } )
+    self.AddContent()
+    self.AddContent( '''Field [ IFI%(fileid)s + 0 ]  = Attractor;
+Field [ IFI%(fileid)s + 0 ].NodesList  = { IP + %(loopstart)i : IP + %(loopend)i };''' % { 'loopstart':loopstart, 'loopend':loopend, 'fileid':self.fileid } )
 
   def gmsh_remove_projection_points(self):
     if universe.projection == 'longlat':
       return
-    self.filehandle.write( '''Delete { Point{ IP%(fileid)s + 0}; }
-Delete { Point{ IP%(fileid)s + 1}; }
-''' % { 'fileid':self.fileid } )
+    self.AddContent( '''Delete { Point{ IP%(fileid)s + 0}; }
+Delete { Point{ IP%(fileid)s + 1}; }''' % { 'fileid':self.fileid } )
 
 
   def gmsh_format_point(self, index, loc, z):
     accuracy = '.8'
-    format = 'Point ( IP%(fileid)s + %%i ) = { %%%(dp)sf, %%%(dp)sf, %%%(dp)sf };\n' % { 'dp': accuracy, 'fileid':self.fileid }
-    self.filehandle.write(format % (index, loc[0], loc[1], z))
+    format = 'Point ( IP%(fileid)s + %%i ) = { %%%(dp)sf, %%%(dp)sf, %%%(dp)sf };' % { 'dp': accuracy, 'fileid':self.fileid }
+    self.AddContent(format % (index, loc[0], loc[1], z))
     #return "Point ( IP + %i ) = { %f, %f, %f }\n" % (index, x, y, z)
 
   def gmsh_loop(self, index, loopstartpoint, last, open,  cachephysical):
@@ -256,24 +254,23 @@ Delete { Point{ IP%(fileid)s + 1}; }
 
   #//Line Loop( ILL + %(loopnumber)i ) = { IL + %(loopnumber)i };
   #// Identified as a %(type)s path
-    self.filehandle.write( '''LoopStart%(loopnumber)i = IP + %(pointstart)i;
-LoopEnd%(loopnumber)i = IP + %(pointend)i;
-''' % { 'pointstart':index.start, 'pointend':index.point, 'loopnumber':index.path, 'loopstartpoint':closure, 'type':type, 'boundaryid':boundaryid } )
+    self.AddContent( '''LoopStart%(loopnumber)i = IP + %(pointstart)i;
+LoopEnd%(loopnumber)i = IP + %(pointend)i;''' % { 'pointstart':index.start, 'pointend':index.point, 'loopnumber':index.path, 'loopstartpoint':closure, 'type':type, 'boundaryid':boundaryid } )
     
     if not universe.compound:
-      self.filehandle.write( '''BSpline ( IL%(fileid)s + %(loopnumber)i ) = { IP%(fileid)s + %(pointstart)i : IP%(fileid)s + %(pointend)i%(loopstartpoint)s };''' % { 'pointstart':index.start, 'pointend':index.point, 'loopnumber':index.path, 'loopstartpoint':closure, 'type':type, 'boundaryid':boundaryid, 'fileid':self.fileid } )
+      self.AddContent( '''BSpline ( IL%(fileid)s + %(loopnumber)i ) = { IP%(fileid)s + %(pointstart)i : IP%(fileid)s + %(pointend)i%(loopstartpoint)s };''' % { 'pointstart':index.start, 'pointend':index.point, 'loopnumber':index.path, 'loopstartpoint':closure, 'type':type, 'boundaryid':boundaryid, 'fileid':self.fileid } )
 
     index.physicalgroup.append(index.path)
-  #  self.filehandle.write( '''
+  #  self.AddContent( '''
   #Physical Line( %(boundaryid)i ) = { %(loopnumbers)s };
   #''' % { 'boundaryid':boundaryid , 'loopnumbers':list_to_comma_separated(index.pathsinloop, prefix = 'IL + ') } )
-  #  self.filehandle.write( '''
+  #  self.AddContent( '''
   #Physical Line( ILL + %(loop)i ) = { %(loopnumbers)s };
   #''' % { 'loop':index.loop , 'loopnumbers':list_to_comma_separated(index.pathsinloop, prefix = 'IL + ') } )
 
 
     if (not(cachephysical)):
-      #self.filehandle.write( '''
+      #self.AddContent( '''
   #Physical Line( %(boundaryid)i ) = { %(loopnumbers)s };
   #''' % { 'boundaryid':boundaryid, 'loopnumbers':list_to_comma_separated(index.physicalgroup, prefix = 'IL + ') } )
       index.physicalgroup = []
@@ -286,22 +283,20 @@ LoopEnd%(loopnumber)i = IP + %(pointend)i;
             end = index.start
           else:
             end = i + 1
-          self.filehandle.write( '''Line ( ILL%(fileid)s + %(loopnumber)i + 100000 ) = { IP%(fileid)s + %(pointstart)i, IP%(fileid)s + %(pointend)i };
+          self.AddContent( '''Line ( ILL%(fileid)s + %(loopnumber)i + 100000 ) = { IP%(fileid)s + %(pointstart)i, IP%(fileid)s + %(pointend)i };
 ''' % { 'pointstart':i, 'pointend':end, 'loopnumber':i, 'fileid':self.fileid } )
-        self.filehandle.write( '''Compound Line ( IL%(fileid)s + %(loopnumber)i ) = { ILL%(fileid)s + %(pointstart)i + 100000 : ILL%(fileid)s + %(pointend)i + 100000 };
+        self.AddContent( '''Compound Line ( IL%(fileid)s + %(loopnumber)i ) = { ILL%(fileid)s + %(pointstart)i + 100000 : ILL%(fileid)s + %(pointend)i + 100000 };
 ''' % { 'pointstart':index.start, 'pointend':index.point, 'loopnumber':index.loop, 'fileid':self.fileid } )
-        self.filehandle.write( '''
-Line Loop( ILL%(fileid)s + %(loop)i ) = { IL%(fileid)s + %(loopnumber)i};''' % { 'loop':index.loop, 'fileid':self.fileid, 'loopnumber': index.loop } )
+        self.AddContent( '''Line Loop( ILL%(fileid)s + %(loop)i ) = { IL%(fileid)s + %(loopnumber)i};''' % { 'loop':index.loop, 'fileid':self.fileid, 'loopnumber': index.loop } )
 
       else:
-        self.filehandle.write( '''
-Line Loop( ILL%(fileid)s + %(loop)i ) = { %(loopnumbers)s };''' % { 'loop':index.loop, 'fileid':self.fileid, 'loopnumbers':list_to_comma_separated(index.pathsinloop, prefix = 'IL%(fileid)s + ' % { 'fileid':self.fileid }) } )
+        self.AddContent()
+        self.AddContent( '''Line Loop( ILL%(fileid)s + %(loop)i ) = { %(loopnumbers)s };''' % { 'loop':index.loop, 'fileid':self.fileid, 'loopnumbers':list_to_comma_separated(index.pathsinloop, prefix = 'IL%(fileid)s + ' % { 'fileid':self.fileid }) } )
       index.loops.append(index.loop)
       index.loop += 1
       index.pathsinloop = []
     
-    self.filehandle.write( '''
-''' )
+    self.AddContent()
 
     index.path +=1
     index.start = index.point
@@ -310,7 +305,9 @@ Line Loop( ILL%(fileid)s + %(loop)i ) = { %(loopnumbers)s };''' % { 'loop':index
     self.report('Closed boundaries (id %i): %s' % (self.boundary.contour, list_to_space_separated(self.index.contour, add=1)))
     self.report('Open boundaries   (id %i): %s' % (self.boundary.open, list_to_space_separated(self.index.open, add=1)))
 
-
+  def GenerateContour(self):
+    self.report('Generating contours', include = False)
+    self.pathall = read_paths(self, self.contoursource)
 
   def output_boundaries(self):
     import pickle
@@ -318,59 +315,28 @@ Line Loop( ILL%(fileid)s + %(loop)i ) = { %(loopnumbers)s };''' % { 'loop':index
     from numpy import zeros
     from Mathematical import area_enclosed
     from RepresentationTools import array_to_gmsh_points
-    #try:
-    #  picklefile = open(universe.picklefile, 'rb')
-    #  self.report('Path pickle file found: ' + universe.picklefile)
-    #  pathall = pickle.load(picklefile)
-    #  picklefile.close()
-    #except:
-    #  self.report('No path pickle file present, generating contours and saving ' + universe.picklefile + 'for the future!')
-    #  pathall = read_rtopo(filename)
-    #  picklefile = open(universe.picklefile, 'wb')
-    #  pickle.dump(pathall, picklefile)
-    #  picklefile.close()
+    from StringOperations import strplusone
 
-    filename = self.contoursource
     paths = self.paths
     minarea = self.minarea
     region = self.region
     dx = self.dx
     latitude_max = self.latitude_max
 
-
-    if self.cache and os.path.exists(self.cachefile):
-      cachefile = open(self.cachefile, 'rb')
-      self.report('Cache file found: ' + self.cachefile)
-      pathall = pickle.load(cachefile)
-      cachefile.close()
-    else:
-      self.report('Generating contours', include = False)
-      pathall = read_paths(self, filename)
-      if self.cache:
-        self.report('Saving contours to: ' + self.cachefile + ' for the future!')
-        cachefile = open(self.cachefile, 'wb')
-        pickle.dump(pathall, cachefile)
-        cachefile.close()
-
-    self.report('Paths found: ' + str(len(pathall)))
     self.gmsh_header()
     splinenumber = 0
     indexbase = 1
     self.index.point = indexbase
 
-    ends = zeros([len(pathall),4])
-    for num in range(len(pathall)):
-      ends[num,:] = [ pathall[num].vertices[0][0], pathall[num].vertices[0][1], pathall[num].vertices[-1][0], pathall[num].vertices[-1][1]] 
+    ends = zeros([len(self.pathall),4])
+    for num in range(len(self.pathall)):
+      ends[num,:] = [ self.pathall[num].vertices[0][0], self.pathall[num].vertices[0][1], self.pathall[num].vertices[-1][0], self.pathall[num].vertices[-1][1]] 
     
     dateline=[]
-    for num in range(len(pathall)):
+    for num in range(len(self.pathall)):
       if (abs(ends[num,0]) == 180) and (abs(ends[num,2]) == 180):
         if (ends[num,1] != ends[num,3]):
           dateline.append(num)
-
-    def strplusone(number):
-      return str(number + 1)
-    self.report('Paths that cross the date line: ' + ' '.join(map(strplusone,dateline)))
 
     matched = []
     appended = []
@@ -400,15 +366,15 @@ Line Loop( ILL%(fileid)s + %(loop)i ) = { %(loopnumbers)s };''' % { 'loop':index
         match = matches[0][0]
         orientation = matches[0][1]
         printvv('  match %d - %d (%s)' % (num + 1, match + 1, str(orientation)))
-        #print pathall[num].vertices
-        #print pathall[num].vertices
-        #print pathall[match].vertices
-        #print pathall[match].vertices[::-1]
+        #print self.pathall[num].vertices
+        #print self.pathall[num].vertices
+        #print self.pathall[match].vertices
+        #print self.pathall[match].vertices[::-1]
         if orientation:
-          pathall[num].vertices = concatenate((pathall[num].vertices[:-2,:], pathall[match].vertices[::-1]), axis=0) 
+          self.pathall[num].vertices = concatenate((self.pathall[num].vertices[:-2,:], self.pathall[match].vertices[::-1]), axis=0) 
         else:
-          pathall[num].vertices = concatenate((pathall[num].vertices[:-2,:], pathall[match].vertices), axis=0) 
-        pathall[match] = None
+          self.pathall[num].vertices = concatenate((self.pathall[num].vertices[:-2,:], self.pathall[match].vertices), axis=0) 
+        self.pathall[match] = None
         matched.append(match)
         appended.append(num)
 
@@ -417,7 +383,7 @@ Line Loop( ILL%(fileid)s + %(loop)i ) = { %(loopnumbers)s };''' % { 'loop':index
     if ((paths is not None) and (len(paths) > 0)):
       pathids=paths
     else:
-      pathids=range(len(pathall)+1)[1:]
+      pathids=range(len(self.pathall)+1)[1:]
 
     def maxlat(points):
       maxlat = max(points[:,1])
@@ -427,12 +393,12 @@ Line Loop( ILL%(fileid)s + %(loop)i ) = { %(loopnumbers)s };''' % { 'loop':index
 
     pathvalid = []
     for num in pathids: 
-      if (pathall[num-1] == None):
+      if (self.pathall[num-1] == None):
         continue
-      area = area_enclosed(pathall[num-1].vertices)
+      area = area_enclosed(self.pathall[num-1].vertices)
       if (area < minarea):
         continue
-      #if (max(pathall[num-1].vertices[:,1]) > -55):
+      #if (max(self.pathall[num-1].vertices[:,1]) > -55):
       #  continue
       if num in universe.boundariestoexclude:
         continue
@@ -445,16 +411,16 @@ Line Loop( ILL%(fileid)s + %(loop)i ) = { %(loopnumbers)s };''' % { 'loop':index
 
     if universe.smooth_data:
       for num in pathvalid:
-        if (pathall[num-1] == None):
+        if (self.pathall[num-1] == None):
           continue
-        xy=pathall[num-1].vertices
+        xy=self.pathall[num-1].vertices
         origlen=len(xy)
         x = smoothGaussian(xy[:,0], degree=universe.smooth_degree)
         y = smoothGaussian(xy[:,1], degree=universe.smooth_degree)
         xy = zeros([len(x),2])
         xy[:,0] = x
         xy[:,1] = y
-        pathall[num-1].vertices = xy
+        self.pathall[num-1].vertices = xy
         self.report('Smoothed path %d, nodes %d from %d' % (num, len(xy), origlen))
 
 
@@ -468,22 +434,22 @@ Line Loop( ILL%(fileid)s + %(loop)i ) = { %(loopnumbers)s };''' % { 'loop':index
       #plt.show
       #plt.imshow(lon,lat,field)
 
-      p = [pathall[0].vertices, pathall[0].vertices] 
+      p = [self.pathall[0].vertices, self.pathall[0].vertices] 
 
-      #bol=patches.PathPatch(pathall[0])
+      #bol=patches.PathPatch(self.pathall[0])
       ax = plt.subplot(111)
       #ax.add_patch(bol, facecolor='none')
       pathcol = []
       for num in pathvalid: 
-        pathcol.append(pathall[num-1].vertices)
+        pathcol.append(self.pathall[num-1].vertices)
       col = collections.LineCollection(pathcol)
       ax.add_collection(col, autolim=True)
 
       font = font_manager.FontProperties(family='sans-serif', weight='normal', size=8)
       for num in pathvalid: 
-        #ax.annotate(str(num), (pathall[num-1].vertices[0][0], pathall[num-1].vertices[0][1]),
+        #ax.annotate(str(num), (self.pathall[num-1].vertices[0][0], self.pathall[num-1].vertices[0][1]),
         #              horizontalalignment='center', verticalalignment='center')
-        ax.annotate(str(num), (pathall[num-1].vertices[0][0], pathall[num-1].vertices[0][1]),
+        ax.annotate(str(num), (self.pathall[num-1].vertices[0][0], self.pathall[num-1].vertices[0][1]),
           xytext=(-20,20), textcoords='offset points', ha='center', va='bottom',
           bbox=dict(boxstyle='round,pad=0.2', fc='yellow', alpha=0.8),
           arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0.5', 
@@ -494,36 +460,35 @@ Line Loop( ILL%(fileid)s + %(loop)i ) = { %(loopnumbers)s };''' % { 'loop':index
       sys.exit(0)
 
     for num in pathvalid:
-      if (pathall[num-1] == None):
+      if (self.pathall[num-1] == None):
         continue
-      xy=pathall[num-1].vertices
+      xy=self.pathall[num-1].vertices
       self.index = array_to_gmsh_points(self, num, self.index, xy, minarea, region, dx, latitude_max)
 
 
     #for i in range(-85, 0, 5):
     #  indexend += 1
-    #  self.filehandle.write( self.gmsh_format_point(indexend, project(0, i), 0) )
+    #  self.AddContent( self.gmsh_format_point(indexend, project(0, i), 0) )
     #for i in range(-85, 0, 5):
     #  indexend += 1
-    #  self.filehandle.write( self.gmsh_format_point(indexend, project(45, i), 0) )
+    #  self.AddContent( self.gmsh_format_point(indexend, project(45, i), 0) )
     #self.gmsh_remove_projection_points()
     #return index
 
   def define_point(self, name, location):
     # location [long, lat]
-    self.filehandle.write('''
+    self.AddContent('''
 //Point %(name)s is located at, %(longitude).2f deg, %(latitude).2f deg.
 Point_%(name)s_longitude_rad = (%(longitude)f + (00/60))*(Pi/180);
 Point_%(name)s_latitude_rad  = (%(latitude)f + (00/60))*(Pi/180);
 Point_%(name)s_stereographic_y = Cos(Point_%(name)s_longitude_rad)*Cos(Point_%(name)s_latitude_rad)  / ( 1 + Sin(Point_%(name)s_latitude_rad) );
-Point_%(name)s_stereographic_x = Cos(Point_%(name)s_latitude_rad) *Sin(Point_%(name)s_longitude_rad) / ( 1 + Sin(Point_%(name)s_latitude_rad) );
-''' % { 'name':name, 'longitude':location[0], 'latitude':location[1] } )
+Point_%(name)s_stereographic_x = Cos(Point_%(name)s_latitude_rad) *Sin(Point_%(name)s_longitude_rad) / ( 1 + Sin(Point_%(name)s_latitude_rad) );''' % { 'name':name, 'longitude':location[0], 'latitude':location[1] } )
 
   def draw_parallel(self, startn, endn, start, end, points=200):
     startp = project(start)
     endp = project(end)
     
-    self.filehandle.write('''
+    self.AddContent('''
 pointsOnParallel = %(points)i;
 parallelSectionStartingX = %(start_x)g;
 parallelSectionStartingY = %(start_y)g;
@@ -532,8 +497,7 @@ parallelSectionEndingX = %(end_x)g;
 parallelSectionEndingY = %(end_y)g;
 lastPointOnParallel = IP + %(end_n)i;
 newParallelID = IL + 10100;
-Call DrawParallel;
-''' % { 'start_x':startp[0], 'start_y':startp[1], 'end_x':endp[0], 'end_y':endp[1], 'start_n':startn, 'end_n':endn, 'points':points })
+Call DrawParallel;''' % { 'start_x':startp[0], 'start_y':startp[1], 'end_x':endp[0], 'end_y':endp[1], 'start_n':startn, 'end_n':endn, 'points':points })
 
 
 
@@ -641,14 +605,11 @@ Call DrawParallel;
 
     if universe.physical_lines_separate:
       for l in index.physicalcontour:
-        self.filehandle.write( '''Physical Line( %(boundaryid)i ) = { %(loopnumbers)s };''' % { 'boundaryid':self.boundary.contour, 'loopnumbers':list_to_comma_separated([l], prefix = 'IL%(fileid)s + ' % { 'fileid':self.fileid } ) } )
-        self.filehandle.write( '''\n''' )
+        self.AddContent( '''Physical Line( %(boundaryid)i ) = { %(loopnumbers)s };''' % { 'boundaryid':self.boundary.contour, 'loopnumbers':list_to_comma_separated([l], prefix = 'IL%(fileid)s + ' % { 'fileid':self.fileid } ) } )
     else: 
-      self.filehandle.write( '''Physical Line( %(boundaryid)i ) = { %(loopnumbers)s };''' % { 'boundaryid':self.boundary.contour, 'loopnumbers':list_to_comma_separated(index.physicalcontour, prefix = 'IL%(fileid)s + ' % { 'fileid':self.fileid } ) } )
-      self.filehandle.write( '''\n''' )
+      self.AddContent( '''Physical Line( %(boundaryid)i ) = { %(loopnumbers)s };''' % { 'boundaryid':self.boundary.contour, 'loopnumbers':list_to_comma_separated(index.physicalcontour, prefix = 'IL%(fileid)s + ' % { 'fileid':self.fileid } ) } )
 
-    self.filehandle.write( '''Physical Line( %(boundaryid)i ) = { %(loopnumbers)s };''' % { 'boundaryid':self.boundary.open, 'loopnumbers':list_to_comma_separated(index.physicalopen, prefix = 'IL%(fileid)s + ' % { 'fileid':self.fileid } ) } )
-    self.filehandle.write( '''\n''' )
+    self.AddContent( '''Physical Line( %(boundaryid)i ) = { %(loopnumbers)s };''' % { 'boundaryid':self.boundary.open, 'loopnumbers':list_to_comma_separated(index.physicalopen, prefix = 'IL%(fileid)s + ' % { 'fileid':self.fileid } ) } )
 
 
     self.report('Open boundaries   (id %i): %s' % (self.boundary.open, list_to_space_separated(index.open, add=1)))
@@ -657,7 +618,7 @@ Call DrawParallel;
   #//Line Loop( ILL + %(loopnumber)i ) = { %(boundary_list)s };
   #//Plane Surface( %(surface)i ) = { ILL + %(loopnumber)i };
     if (len(index.loops) > 0):
-      self.filehandle.write('''Plane Surface( %(surface)i ) = { %(boundary_list)s };
+      self.AddContent('''Plane Surface( %(surface)i ) = { %(boundary_list)s };
 Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'loopnumber':index.path, 'surface':self.boundary.surface + 1, 'boundary_list':list_to_comma_separated(index.loops, prefix = 'ILL%(fileid)s + ' % { 'fileid':self.fileid } ) } )
     else:
       self.report('Warning: Unable to define surface - may need to define Line Loops?')
@@ -674,7 +635,7 @@ Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'loopnumber':index.pat
     else:
       edgeindex = ''
     if (index.contour is not None):
-      self.filehandle.write('''
+      self.AddContent('''
 Printf("Assigning characteristic mesh sizes...");
 
 // Field[ IFI + 1] = Attractor;
@@ -747,7 +708,7 @@ Background Field = IFI%(fileid)s + 1;
 
     self.gmsh_section('Physical entities')
 
-    self.filehandle.write('''
+    self.AddContent('''
 //Set some options for better png output
 General.Color.Background = {255,255,255};
 General.Color.BackgroundGradient = {255,255,255};
@@ -763,19 +724,7 @@ General.RotationZ = 270;
   def Generate(self):
 #   from specific.Pig import pig_sponge
 
-    self.SetContourSource(universe.input)
-    self.CheckSource()
     
-    self.SetPaths(universe.boundaries)
-    self.SetMinArea(universe.minarea)
-    self.SetRegion(universe.region)
-    self.SetSpacing(universe.dx)
-    self.SetMaximumLatitude(universe.extendtolatitude)
-
-    self.filehandleOpen()
-    self.CheckCache()
-    self.AppendArguments()
-    self.AppendParameters()
 
     self.output_boundaries()
     self.output_open_boundaries()
@@ -789,7 +738,8 @@ General.RotationZ = 270;
     self.output_fields()
 
     self.reportSkipped()
-    self.filehandleClose()
+    self.WriteContent()
+    
 
 
 

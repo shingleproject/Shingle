@@ -1,11 +1,12 @@
-// Arguments:  -f filchner-ronne/shorelines.geo -n ../RTopo105b_50S.nc -no -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0 -lat -65.0
-// Source netCDF located at ../RTopo105b_50S.nc
+// Arguments:  -l -f filchner-ronne/shorelines.geo -n ../dataset/RTopo105b_50S.nc -no -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0 -lat -65.0
 // Output to filchner-ronne/shorelines.geo
 // Projection type cartesian
 // Region defined by ((longitude >= -85.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0)) or ((longitude >= -64.0) and (longitude <= -30.0) and (latitude >= -89.0) and (latitude <= -70.0)) or ((longitude >= -30.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0))
 // Extending region to meet parallel on latitude -65.0
+// Source netCDF located at ../dataset/RTopo105b_50S.nc
 // Including iceshelf ocean cavities
 // Paths found: 348
+
 
 // == Header ======================================================
 IP = newp;
@@ -17,9 +18,9 @@ IFI = newf;
 Point ( IP + 0 ) = { 0, 0, 0 };
 Point ( IP + 1 ) = { 0, 0, 6.37101e+06 };
 PolarSphere ( IS + 0 ) = { IP, IP + 1 };
+
 Delete { Point{ IP + 0}; }
 Delete { Point{ IP + 1}; }
-// Paths that cross the date line: 
 // Merged paths that cross the date line: 
 // Paths found valid: 348, including 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255 256 257 258 259 260 261 262 263 264 265 266 267 268 269 270 271 272 273 274 275 276 277 278 279 280 281 282 283 284 285 286 287 288 289 290 291 292 293 294 295 296 297 298 299 300 301 302 303 304 305 306 307 308 309 310 311 312 313 314 315 316 317 318 319 320 321 322 323 324 325 326 327 328 329 330 331 332 333 334 335 336 337 338 339 340 341 342 343 344 345 346 347 348
 
@@ -12352,6 +12353,7 @@ Point ( IP + 12324 ) = { -2.65051368, 5.01653069, 0.00000000 };
 LoopStart0 = IP + 2;
 LoopEnd0 = IP + 12324;
 BSpline ( IL + 0 ) = { IP + 2 : IP + 12324 };
+
 // Closing path with parallels and merdians, from (-62.15833282, -70.00000000) to  (-20.00000000, -75.52499771)
 // Drawing meridian to max latitude index 12324 at -62.158333.2, -70.000000.2 (to match -65.000000.2)
 Point ( IP + 12325 ) = { -2.63520813, 4.98931872, 0.00000000 };
@@ -12934,7 +12936,9 @@ Point ( IP + 12899 ) = { -7.33544847, 2.66988490, 0.00000000 };
 LoopStart1 = IP + 12324;
 LoopEnd1 = IP + 12899;
 BSpline ( IL + 1 ) = { IP + 12324 : IP + 12899, IP + 2 };
+
 Line Loop( ILL + 0 ) = { IL + 0, IL + 1 };
+
 // **** END end of loop False12323/12323True
 
 // == Ice-Land mass number 2 ======================================
@@ -14154,7 +14158,9 @@ Point ( IP + 14103 ) = { -6.07280006, 11.08071610, 0.00000000 };
 LoopStart2 = IP + 12900;
 LoopEnd2 = IP + 14103;
 BSpline ( IL + 2 ) = { IP + 12900 : IP + 14103, IP + 12900 };
+
 Line Loop( ILL + 1 ) = { IL + 2 };
+
 
 // == Ice-Land mass number 5 ======================================
 // Path 5 points 2192/2193 area 372732 (required closing in 2 parts of the path)
@@ -16353,7 +16359,9 @@ Point ( IP + 16295 ) = { -7.56386694, 10.03455291, 0.00000000 };
 LoopStart3 = IP + 14104;
 LoopEnd3 = IP + 16295;
 BSpline ( IL + 3 ) = { IP + 14104 : IP + 16295, IP + 14104 };
+
 Line Loop( ILL + 2 ) = { IL + 3 };
+
 
 // == Ice-Land mass number 6 ======================================
 // Path 6 points 564/565 area 23435.8 (required closing in 2 parts of the path)
@@ -16924,7 +16932,9 @@ Point ( IP + 16859 ) = { -4.62819707, 10.51422849, 0.00000000 };
 LoopStart4 = IP + 16296;
 LoopEnd4 = IP + 16859;
 BSpline ( IL + 4 ) = { IP + 16296 : IP + 16859, IP + 16296 };
+
 Line Loop( ILL + 3 ) = { IL + 4 };
+
 
 // == Ice-Land mass number 7 ======================================
 //   Skipped (no points found in region)
@@ -17769,7 +17779,9 @@ Point ( IP + 17693 ) = { -3.69611780, 10.46168753, 0.00000000 };
 LoopStart5 = IP + 16860;
 LoopEnd5 = IP + 17693;
 BSpline ( IL + 5 ) = { IP + 16860 : IP + 17693, IP + 16860 };
+
 Line Loop( ILL + 4 ) = { IL + 5 };
+
 
 // == Ice-Land mass number 9 ======================================
 // Path 9 points 350/351 area 976.81 (required closing in 2 parts of the path)
@@ -18126,7 +18138,9 @@ Point ( IP + 18043 ) = { -8.76246118, 6.19078497, 0.00000000 };
 LoopStart6 = IP + 17694;
 LoopEnd6 = IP + 18043;
 BSpline ( IL + 6 ) = { IP + 17694 : IP + 18043, IP + 17694 };
+
 Line Loop( ILL + 5 ) = { IL + 6 };
+
 
 // == Ice-Land mass number 10 =====================================
 // Path 10 points 148/149 area 556.475 (required closing in 2 parts of the path)
@@ -18281,7 +18295,9 @@ Point ( IP + 18191 ) = { -4.06551787, 9.89225963, 0.00000000 };
 LoopStart7 = IP + 18044;
 LoopEnd7 = IP + 18191;
 BSpline ( IL + 7 ) = { IP + 18044 : IP + 18191, IP + 18044 };
+
 Line Loop( ILL + 6 ) = { IL + 7 };
+
 
 // == Ice-Land mass number 11 =====================================
 //   Skipped (no points found in region)
@@ -18532,7 +18548,9 @@ Point ( IP + 18259 ) = { -2.91523105, 5.22868492, 0.00000000 };
 LoopStart8 = IP + 18192;
 LoopEnd8 = IP + 18259;
 BSpline ( IL + 8 ) = { IP + 18192 : IP + 18259, IP + 18192 };
+
 Line Loop( ILL + 7 ) = { IL + 8 };
+
 
 // == Ice-Land mass number 56 =====================================
 //   Skipped (no points found in region)
@@ -18635,7 +18653,9 @@ Point ( IP + 18351 ) = { -2.86842301, 5.13419219, 0.00000000 };
 LoopStart9 = IP + 18260;
 LoopEnd9 = IP + 18351;
 BSpline ( IL + 9 ) = { IP + 18260 : IP + 18351, IP + 18260 };
+
 Line Loop( ILL + 8 ) = { IL + 9 };
+
 
 // == Ice-Land mass number 58 =====================================
 //   Skipped (no points found in region)
@@ -19808,6 +19828,7 @@ Physical Line( 4 ) = { IL + 1 };
 // Closed boundaries (id 3): 1 3 4 5 6 7 8 9 10
 Plane Surface( 10 ) = { ILL + 0, ILL + 1, ILL + 2, ILL + 3, ILL + 4, ILL + 5, ILL + 6, ILL + 7, ILL + 8 };
 Physical Surface( 10 ) = { 10 };
+
 // == End of contour definitions ==================================
 
 // == Field definitions ===========================================
@@ -19881,6 +19902,7 @@ Field[ IFI + 7 ].Sigmoid = 0;
 
 Background Field = IFI + 1;
 
+
 // == Physical entities ===========================================
 
 //Set some options for better png output
@@ -19893,3 +19915,4 @@ General.Trackball = 0 ;
 General.RotationX = 180;
 General.RotationY = 0;
 General.RotationZ = 270;
+

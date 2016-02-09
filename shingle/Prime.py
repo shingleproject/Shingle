@@ -28,6 +28,7 @@ def main():
   from Support import InitialiseGlobals, ReadArguments
   from SurfaceGeoidDomainRepresentation import SurfaceGeoidDomainRepresentation
 
+  from Raster import Raster
   from MeshGeneration import Mesh
   from MetricGeneration import Metric
 
@@ -38,7 +39,13 @@ def main():
   h = Metric(output = './metric.pos')
   h.Generate(sourcefile = universe.input)
 
+
+  
+  r = Raster(source=universe.input, cache=universe.cache)
+  r.Generate()
+
   rep = SurfaceGeoidDomainRepresentation(output = universe.output)
+  rep.AddPath(r)
   rep.Generate()
 
   m = Mesh(source = universe.output)

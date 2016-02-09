@@ -11,8 +11,6 @@
 #  Generation of boundary representation from arbitrary geophysical
 #  fields and initialisation for anisotropic, unstructured meshing.
 #  
-#  Copyright (C) 2011-2013 Dr Adam S. Candy, adam.candy@imperial.ac.uk
-#  
 #  This file is part of the Shingle project.
 #  
 #  Shingle is free software: you can redistribute it and/or modify
