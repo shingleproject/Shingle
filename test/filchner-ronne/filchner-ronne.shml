@@ -12,15 +12,20 @@
     <string_value lines="1">ocean_ice_shelf</string_value>
   </domain_type>
   <global_parameters/>
-  <surface_geoid_representation>
-    <output>
-      <file_name>shorelines.geo</file_name>
-    </output>
-    <brep_component name="RTopo">
-      <format name="raster">
-        <source name="file"/>
-      </format>
+  <dataset name="RTopo">
+    <source name="raster">
+      <source file_name="../../dataset/RTopo105b_50S.nc"/>
+    </source>
+    <projection name="Automatic"/>
+  </dataset>
+  <surface_geoid_representation name="filchner_ronne_ice_ocean">
+    <output file_name="./shorelines.geo"/>
+    <brep_component name="filchner_ronne_ice_ocean">
+      <source name="RTopo"/>
       <representation_type name="BSplines"/>
     </brep_component>
   </surface_geoid_representation>
+  <verification>
+    <brep_description file_name="./valid/filchner-ronne-legacy" name="brep_description"/>
+  </verification>
 </shingle_options>

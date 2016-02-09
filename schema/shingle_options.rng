@@ -54,36 +54,63 @@ It is used for options checking.</a:documentation>
         <data type="string"/>
       </attribute>
       <choice>
-        <ref name="dataset_new"/>
         <ref name="dataset_source"/>
         <ref name="dataset_shapefile"/>
+        <ref name="dataset_gis_project"/>
+      </choice>
+      <choice>
+        <element name="projection">
+          <a:documentation>Projection of input data source:
+Automatic, read from source
+(as much as possible)</a:documentation>
+          <attribute name="name">
+            <value>Automatic</value>
+          </attribute>
+          <ref name="comment"/>
+        </element>
+        <element name="projection">
+          <a:documentation>Projection of input data source:
+Cartesian</a:documentation>
+          <attribute name="name">
+            <value>Cartesian</value>
+          </attribute>
+          <ref name="comment"/>
+        </element>
+        <element name="projection">
+          <a:documentation>Projection of input data source:
+Stereographic
+
+Needs pole orientation?</a:documentation>
+          <attribute name="name">
+            <value>Stereographic</value>
+          </attribute>
+          <ref name="comment"/>
+        </element>
+        <element name="projection">
+          <a:documentation>Projection of input data source:
+Proj4 string</a:documentation>
+          <attribute name="name">
+            <value>Proj4_string</value>
+          </attribute>
+          <data type="string"/>
+          <ref name="comment"/>
+        </element>
       </choice>
     </element>
   </define>
-  <define name="dataset_new">
-    <element name="format">
-      <a:documentation>Boundary representation component format</a:documentation>
+  <define name="dataset_gis_project">
+    <element name="source">
+      <a:documentation>Boundary representation component source</a:documentation>
       <attribute name="name">
-        <data type="string"/>
-      </attribute>
-      <attribute name="file_name">
-        <data type="string"/>
+        <value>GIS_project</value>
       </attribute>
       <ref name="comment"/>
-    </element>
-    <element name="projection">
-      <a:documentation>Projection of input data source</a:documentation>
-      <!--
-        Automatic
-        Options
-        Option to give proj4 string?
-      -->
-      <ref name="comment"/>
+      <ref name="dataset_gis_options"/>
     </element>
   </define>
   <define name="dataset_shapefile">
-    <element name="format">
-      <a:documentation>Boundary representation component format</a:documentation>
+    <element name="source">
+      <a:documentation>Boundary representation component source</a:documentation>
       <attribute name="name">
         <value>shapefile</value>
       </attribute>
@@ -92,8 +119,8 @@ It is used for options checking.</a:documentation>
     </element>
   </define>
   <define name="dataset_source">
-    <element name="format">
-      <a:documentation>Boundary representation component format</a:documentation>
+    <element name="source">
+      <a:documentation>Boundary representation component source</a:documentation>
       <attribute name="name">
         <value>raster</value>
       </attribute>
@@ -105,8 +132,18 @@ It is used for options checking.</a:documentation>
     <element name="source">
       <a:documentation>Source shapefile
 (change to define a folder within project for location?)</a:documentation>
-      <attribute name="name">
-        <value>file_name</value>
+      <attribute name="file_name">
+        <data type="string"/>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+  </define>
+  <define name="dataset_gis_options">
+    <element name="source">
+      <a:documentation>Source GIS project
+(change to define a folder within project for location?)</a:documentation>
+      <attribute name="file_name">
+        <data type="string"/>
       </attribute>
       <ref name="comment"/>
     </element>
@@ -118,10 +155,9 @@ It is used for options checking.</a:documentation>
 (change to define a folder within project for location?)
 
 Default: ~/tmp/dataset/rtopo/RTopo105b_50S.nc</a:documentation>
-        <attribute name="name">
-          <value>file_name</value>
+        <attribute name="file_name">
+          <data type="string"/>
         </attribute>
-        <data type="string"/>
         <ref name="comment"/>
       </element>
       <element name="source">
@@ -224,14 +260,17 @@ Legacy: projection</a:documentation>
     <element name="surface_geoid_representation">
       <a:documentation>A description of a surface geoid object
 for computational representation</a:documentation>
-      <optional>
-        <element name="id_suffix">
-          <a:documentation>An supplement suffix for the IDs in the output
+      <attribute name="name">
+        <a:documentation>An supplement suffix for the IDs in the output
 boundary representation description.
 This is useful if multiple distinct surfaces exist
 in the project.
 
 Default: ''</a:documentation>
+        <data type="string"/>
+      </attribute>
+      <optional>
+        <element name="id_suffix">
           <ref name="comment"/>
         </element>
       </optional>
@@ -359,8 +398,8 @@ Enable this to match end to end</a:documentation>
     </element>
   </define>
   <define name="surface_geoid_representation_named">
-    <element name="format">
-      <a:documentation>Boundary representation component format</a:documentation>
+    <element name="source">
+      <a:documentation>Boundary representation component source</a:documentation>
       <attribute name="name">
         <data type="string"/>
       </attribute>
@@ -368,8 +407,8 @@ Enable this to match end to end</a:documentation>
     </element>
   </define>
   <define name="surface_geoid_representation_shapefile">
-    <element name="format">
-      <a:documentation>Boundary representation component format</a:documentation>
+    <element name="source">
+      <a:documentation>Boundary representation component source</a:documentation>
       <attribute name="name">
         <value>shapefile</value>
       </attribute>
@@ -378,8 +417,8 @@ Enable this to match end to end</a:documentation>
     </element>
   </define>
   <define name="surface_geoid_representation_source">
-    <element name="format">
-      <a:documentation>Boundary representation component format</a:documentation>
+    <element name="source">
+      <a:documentation>Boundary representation component source</a:documentation>
       <attribute name="name">
         <value>raster</value>
       </attribute>
@@ -391,8 +430,8 @@ Enable this to match end to end</a:documentation>
     <element name="source">
       <a:documentation>Source shapefile
 (change to define a folder within project for location?)</a:documentation>
-      <attribute name="name">
-        <value>file_name</value>
+      <attribute name="file_name">
+        <data type="string"/>
       </attribute>
       <ref name="comment"/>
     </element>
@@ -404,10 +443,9 @@ Enable this to match end to end</a:documentation>
 (change to define a folder within project for location?)
 
 Default: ~/tmp/dataset/rtopo/RTopo105b_50S.nc</a:documentation>
-        <attribute name="name">
-          <value>file_name</value>
+        <attribute name="file_name">
+          <data type="string"/>
         </attribute>
-        <data type="string"/>
         <ref name="comment"/>
       </element>
       <element name="source">

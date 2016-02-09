@@ -41,34 +41,57 @@ datasets =
     element dataset {
       attribute name { string },
       (
-      dataset_new
-      |dataset_source
+      dataset_source
       |dataset_shapefile
+      |dataset_gis_project
+      ),
+      (
+        ## Projection of input data source:
+        ## Automatic, read from source
+        ## (as much as possible)
+        element projection {
+          attribute name { "Automatic" },
+          comment
+        }|
+        ## Projection of input data source:
+        ## Cartesian
+        element projection {
+          attribute name { "Cartesian" },
+          comment
+        }|
+        ## Projection of input data source:
+        ## Stereographic
+        ##
+        ## Needs pole orientation?
+        element projection {
+          attribute name { "Stereographic" },
+          comment
+        }|
+        ## Projection of input data source:
+        ## Proj4 string
+        element projection {
+          attribute name { "Proj4_string" },
+          string,
+          comment
+        }
       )
     }
   )
 
-dataset_new =
+dataset_gis_project =
   (
-    ## Boundary representation component format
-    element format {
-      attribute name { string },
-      attribute file_name { string },
-      comment
-    },
-    ## Projection of input data source
-    element projection {
-      # Automatic
-      # Options
-      # Option to give proj4 string?
-      comment
+    ## Boundary representation component source
+    element source {
+      attribute name { "GIS_project" },
+      comment,
+      dataset_gis_options
     }
   )
 
 dataset_shapefile =
   (
-    ## Boundary representation component format
-    element format {
+    ## Boundary representation component source
+    element source {
       attribute name { "shapefile" },
       comment,
       dataset_shapefile_options
@@ -77,8 +100,8 @@ dataset_shapefile =
 
 dataset_source =
   (
-    ## Boundary representation component format
-    element format {
+    ## Boundary representation component source
+    element source {
       attribute name { "raster" },
       comment,
       dataset_source_options
@@ -90,7 +113,17 @@ dataset_shapefile_options =
     ## Source shapefile
     ## (change to define a folder within project for location?)
     element source {
-      attribute name { "file_name" },
+      attribute file_name { string },
+      comment
+    }
+  )
+
+dataset_gis_options =
+  (
+    ## Source GIS project
+    ## (change to define a folder within project for location?)
+    element source {
+      attribute file_name { string },
       comment
     }
   )
@@ -103,8 +136,7 @@ dataset_source_options =
       ##
       ## Default: ~/tmp/dataset/rtopo/RTopo105b_50S.nc
       element source {
-        attribute name { "file_name" },
-        string, 
+        attribute file_name { string },
         comment
       }|
       ## Source raster dataset
@@ -207,6 +239,7 @@ surface_geoid_representation =
       ## in the project.
       ##
       ## Default: ''
+      attribute name { string },
       element id_suffix {
         comment
       }?,
@@ -312,8 +345,8 @@ surface_geoid_representation_brep =
 
 surface_geoid_representation_named =
   (
-    ## Boundary representation component format
-    element format {
+    ## Boundary representation component source
+    element source {
       attribute name { string },
       comment
     }
@@ -321,8 +354,8 @@ surface_geoid_representation_named =
 
 surface_geoid_representation_shapefile =
   (
-    ## Boundary representation component format
-    element format {
+    ## Boundary representation component source
+    element source {
       attribute name { "shapefile" },
       comment,
       surface_geoid_representation_shapefile_options
@@ -331,8 +364,8 @@ surface_geoid_representation_shapefile =
 
 surface_geoid_representation_source =
   (
-    ## Boundary representation component format
-    element format {
+    ## Boundary representation component source
+    element source {
       attribute name { "raster" },
       comment,
       surface_geoid_representation_source_options
@@ -344,7 +377,7 @@ surface_geoid_representation_shapefile_options =
     ## Source shapefile
     ## (change to define a folder within project for location?)
     element source {
-      attribute name { "file_name" },
+      attribute file_name { string },
       comment
     }
   )
@@ -357,8 +390,7 @@ surface_geoid_representation_source_options =
       ##
       ## Default: ~/tmp/dataset/rtopo/RTopo105b_50S.nc
       element source {
-        attribute name { "file_name" },
-        string, 
+        attribute file_name { string },
         comment
       }|
       ## Source raster dataset
