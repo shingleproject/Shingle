@@ -7,14 +7,17 @@ start =
       ## The root node of the options dictionary.
       element shingle_options {
          comment,
-         ## Model output files are named according to the simulation
-         ## name, e.g. [simulation_name]_0.vtu. Non-standard
-         ## characters in the simulation name should be avoided.
+         ## Model output files are named according to the initialisation
+         ## name, e.g. [initialisation_name].geo.
+         ##
+         ## Non-standard characters in the simulation name should be avoided.
          element initialisation_name {
             anystring
          },
-         ## Option problem_type does not change the tree.  It is just used for options checking.
-         element problem_type {
+         ## Option domain_type does not change the tree.
+         ##
+         ## It is used for options checking.
+         element domain_type {
             element string_value {
                # Lines is a hint to the gui about the size of the text box.
                # It is not an enforced limit on string length.
@@ -24,219 +27,435 @@ start =
             comment
          },
          general,
+         surface_geoid_representation+,
          metric_options,
          mesh_options,
-         geometry,
-         ## Input/output options
-         element io {
-            ## Format for dump files. Only vtk for now.
-            element dump_format {
-               element string_value{
-                  "vtk"
-               }
-            }
-         },
-         test
+         verification_tests
       }
    )      
 
 general =
   (
-
-    ## planet_radius = 6.37101e+06
-    element source {
-      attribute name { "source" },
-      comment
-    },
-
-    ## dx_default = 0.1
-    element source2 {
-      attribute name { "source" },
-      comment
-    },
-
-
-    # # Interestingly, if the following is true, gmsh generates a nice mesh, but complains (rightly so) on multiple definitions of a physical line id.  If false, the mesh contains extra 1d elements, which need parsing out!
-    ## physical_lines_separate = False
-    element source2 {
-      attribute name { "source" },
-      comment
+    ## Global default paramters
+    element global_parameters
+    {
+      ## The default radius of the planet
+      ## for the purpose of a common parameter
+      ## in projections.
+      ##
+      ## Default: 6.37101e+06m
+      ##
+      ## Unit: metres
+      element planet_radius {
+        real,
+        comment
+      }?,
+      ## The default spacing between nodes in connecting
+      ## paths that are drawn out as required.
+      ##
+      ## Default: 0.1
+      ##
+      ## Legacy parameter: dx_default
+      element spacing_default {
+        real,
+        comment
+      }?,
+      ## Include this option to make individual definitions for
+      ## boundary identifications, instead of as a whole.
+      ##
+      ## Including this option ensures the output does not contain
+      ## extra spurious 1d elements in tests.
+      ## It does however generate complaints (rightly so) of multiple
+      ## physical line definitions.
+      ## This option is provided as a pragmatic solution to what appears
+      ## unintended behaviour of the meshing algorithm.
+      ## Alternatively the output mesh can be parsed of the spurious
+      ## elements using the post-processing option: parse_spurious_elements
+      ##
+      ## Default: False
+      element physical_lines_separate {
+        comment
+      }?
     }
+  )
 
-
-
+surface_geoid_representation_output = 
+  (
+    ## Output options
+    element output {
+      ## Output
+      ##
+      ## Default: ./shorelines.geo
+      element output {
+        attribute file_name { string }, 
+        comment
+      }?,
+      ## Output Projection type
+      ##
+      ## Default: cartesian
+      ##
+      ## Legacy: projection
+      element projection {
+        element string_value {
+          "cartesian" | "proj_cartesian" | "proj_cartesian_inverse" | "hammer" | "longlat"
+        },
+        comment
+      }?
+    }
   )
 
 surface_geoid_representation =
   (
-
-    ## general
-    ##   #fileid = 'G'
-    ## fileid = ''
-    element source2 {
-      attribute name { "source" },
-      comment
-    },
-
-
-    ## compound = False
-    element source2 {
-      attribute name { "source" },
-      comment
-    },
-
-    ## more_bsplines = False
-    element source2 {
-      attribute name { "source" },
-      comment
-    },
-
-
-
-    ## io
-
-    ## source  = os.path.expanduser('~/tmp/dataset/rtopo/RTopo105b_50S.nc')
-    element source {
-      attribute name { "source" },
-      comment
-    },
-
-    ## output = './shorelines.geo'
-    element output {
-      attribute name { "Output" },
-      comment
-    },
-
-    ## contourtype = 'iceshelfcavity'
-    element source2 {
-      attribute name { "source" },
-      comment
-    },
-
-    ## projection = 'cartesian'
-    element source2 {
-      attribute name { "source" },
-      comment
-    },
-
-
-    ## boundaries = []
-    element source2 {
-      attribute name { "source" },
-      comment
-    },
-
-    ## boundariestoexclude = []
-    element source2 {
-      attribute name { "source" },
-      comment
-    },
-
-    ## dx = universe.dx_default
-    element source2 {
-      attribute name { "source" },
-      comment
-    },
-
-    ## region = 'True'
-    element source2 {
-      attribute name { "source" },
-      comment
-    },
-
-    ## box = []
-    element source2 {
-      attribute name { "source" },
-      comment
-    },
-
-    ## minarea = 0
-    element source2 {
-      attribute name { "source" },
-      comment
-    },
-
-    ## extendtolatitude = None
-    element source2 {
-      attribute name { "source" },
-      comment
-    },
-
-    ## open = True
-    element source2 {
-      attribute name { "source" },
-      comment
-    },
-
-    ## bounding_lat = -50.0
-    element source2 {
-      attribute name { "source" },
-      comment
-    },
-
-    ## include_iceshelf_ocean_cavities = True
-    element source2 {
-      attribute name { "source" },
-      comment
-    },
-
-    ## closewithparallels = False
-    element source2 {
-      attribute name { "source" },
-      comment
-    },
-
-    ## elementlength = '1.0E5'
-    element source2 {
-      attribute name { "source" },
-      comment
-    },
-
-
-
-    #processing
-    # have separate rasters section?  - sources?
-    ## smooth_data = False
-    element source2 {
-      attribute name { "source" },
-      comment
-    },
-
-    ## smooth_degree = 100
-    element source2 {
-      attribute name { "source" },
-      comment
+    ## A description of a surface geoid object
+    ## for computational representation
+    element surface_geoid_representation {
+      ## An supplement suffix for the IDs in the output
+      ## boundary representation description.
+      ## This is useful if multiple distinct surfaces exist
+      ## in the project.
+      ##
+      ## Default: ''
+      element id_suffix {
+        comment
+      }?,
+      ## Break up BSpline defintions are turning points to impose
+      ## geometric constraint at these point in the mesh generation process.
+      ##
+      ## Default: False
+      element more_bsplines {
+        comment
+      }?,
+      surface_geoid_representation_output,
+      surface_geoid_representation_brep+,
+      surface_geoid_representation_closure?,
+      internal_regions?
     }
-
-
-
   )
 
-
-
-mesh_options = 
+internal_regions =
   (
-    ## generatemesh = False
-    element source2 {
-      attribute name { "source" },
+    ## Define interal regions
+    ##
+    ## e.g. vegetation in lagoons,
+    ## areas of variable manning coefficient
+    ##
+    ## To be sorted...
+    element internal_regions {
+      element internal_region {
+        attribute name { string },
+        comment
+      }*
+    }
+  )
+
+surface_geoid_representation_brep =
+  (
+    ## Boundary representation component
+    element brep_component {
+      attribute name { string },
+      (
+      surface_geoid_representation_new
+      |surface_geoid_representation_source
+      |surface_geoid_representation_shapefile
+      ),
+
+      (
+        ## Representation type for the component brep
+        ##
+        ## Default: BSplines
+        ##
+        ## Legacy: compound
+        element representation_type {
+          attribute name { "BSplines" },
+          comment
+        }|
+
+        element representation_type {
+          attribute name { "CompoundBSplines" },
+          comment
+        }
+
+      ),
+
+      ## Node spacing
+      ##
+      ## Default: Revert to global spacing above
+      ##
+      ## Legacy: dx
+      element spacing {
+        real,
+        comment
+      }?,
+
+      ## Link to other brep components
+      ##
+      ## Default behaviour is automatic
+      element links {
+        ## Start of brep is linked to brep_component named
+        element start {
+          attribute name { string },
+          ## Default behavior is to match the start of this brep
+          ## to the *end* of the named brep.
+          ## Enable this to match start to start
+          element reverse {
+            comment
+          }?
+        }?,
+        element end {
+          attribute name { string },
+          ## Default behavior is to match the end of this brep
+          ## to the *start* of the named brep.
+          ## Enable this to match end to end
+          element reverse {
+            comment
+          }?
+        }?,
+        comment
+      }?
+
+    }
+  )
+
+surface_geoid_representation_new =
+  (
+    ## Boundary representation component format
+    element format {
+      attribute name { string },
+      attribute file_name { string },
       comment
     }
+  )
 
+surface_geoid_representation_shapefile =
+  (
+    ## Boundary representation component format
+    element format {
+      attribute name { "shapefile" },
+      attribute file_name { string },
+      comment
+    }
+  )
+
+surface_geoid_representation_source =
+  (
+    ## Boundary representation component format
+    element format {
+      attribute name { "raster" },
+      attribute file_name { string }, 
+      comment,
+      surface_geoid_representation_source_options
+    }
+  )
+
+
+surface_geoid_representation_source_options =
+  (
+    ## Source raster dataset
+    ## (change to define a folder within project for location?)
+    ##
+    ## Default: ~/tmp/dataset/rtopo/RTopo105b_50S.nc
+    element source {
+      attribute file_name { string }, 
+      comment
+    }?,
+
+    ## Region specification - multiple?
+    ##
+    ## Default: 'True' (string)
+    ##
+    ## Legacy: 
+    ## region
+    element region {
+      attribute file_name { string }, 
+      comment
+    }?,
+    ## Box 
+    ##
+    ## Default: []
+    ##
+    ## Legacy: box
+    element box {
+      attribute file_name { string }, 
+      comment
+    }?,
+    ## Minimum area of islands / holes in geoid surface
+    ##
+    ## Default: 0
+    ##
+    ## Legacy: minarea
+    element minimum_area {
+      real,
+      comment
+    }?,
+
+    ## Contour type
+    ##
+    ## Default: iceshelfcavity
+    ##
+    ## Legacy: contourtype
+    element contourtype {
+      element string_value {
+         "iceshelfcavity" | "icesheet" | "z" | "ocean10m" | "zmask" | "xyz" | "noshelf" | "gsds" | "mask" | "gsdsz" | "gebco" | "gsdszc"
+      },
+      comment
+    }?,
+    ## Include iceshelf ocean cavities
+    ##
+    ## Default: True
+    ##
+    ## Legacy: include_iceshelf_ocean_cavities
+    element include_iceshelf_ocean_cavities {
+      comment
+    }?,
+    ## Boundaries
+    ## Use a list of integers instead?
+    ##
+    ## Default: []
+    ##
+    ## Legacy: boundaries
+    element boundary {
+      integer,
+      comment
+    }?,
+    ## Boundaries to exclude
+    ## Use a list of integers instead?
+    ##
+    ## Default: []
+    ##
+    ## Legacy: boundariestoexclude
+    element boundary_to_exclude {
+      integer,
+      comment
+    }?
 
   )
+
+
+surface_geoid_representation_closure =
+  (
+    ## Methods to close the geoid surface domain
+      element closure {
+      ## Open
+      ##
+      ## Default: True
+      ##
+      ## Legacy: open
+      element open {
+        comment
+      }?,
+      ## Bounding latitude
+      ##
+      ## Default: -50.0
+      ##
+      ## Legacy: bounding_lat
+      element bounding_latitude {
+        real,
+        comment
+      }?,
+      ## Extend to latitude 
+      ##
+      ## Default: None
+      ##
+      ## Legacy: extendtolatitude
+      element extend_to_latitude {
+        real,
+        comment
+      }?,
+      ## Close with parallels 
+      ##
+      ## Default: False 
+      ##
+      ## Legacy: closewithparallels
+      element close_with_parallels {
+        comment
+      }?
+    }
+  )
+
+
+
+#      ## Processing - smoothing
+#      ## Have separate rasters section?  - sources?
+#      ##
+#      ## Default: False
+#      ##
+#      ## Legacy: smooth_data
+#      element smooth_data {
+#        comment,
+#        ## Intensity of smoothing
+#        ##
+#        ## Default: 100
+#        ##
+#        ## Legacy: smooth_degree
+#        element magnitude {
+#          real,
+#          comment
+#        }
+#      }
+
+
+
+
+
+
 
 metric_options = 
   (
-
-    ## generatemetric = False
-    element source2 {
-      attribute name { "source" },
-      comment
-    }
-
-
+    ## Metric generation options
+    element metric_options {
+      ## Generate metric alongside the creation of the boundary representation
+      ## to guide element size over the spatial surface geoid
+      ##
+      ## Default: False
+      element generate_metric {
+        comment
+      }?,
+      ## Element length
+      ##
+      ## Default: 1.0E5
+      ##
+      ## Legacy: elementlength
+      element element_length {
+        real,
+        comment
+      }?
+    }?
   )
-     
+
+mesh_options = 
+  (
+    ## Mesh generation options
+    element mesh_options {
+      ## Generate mesh following creation of the boundary representation
+      ##
+      ## Default: False
+      element generate_mesh {
+        comment
+      }?
+    }?
+  )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
      
 metric =
   (
@@ -299,45 +518,139 @@ raster_input_format =
   )
 
 
-
-
-test =
+test_integer =
   (
-     element test {
-        ## Test structure
-        element node_number {
-          attribute name { "Node number" },
-          element tolerance {
-            integer
-          }
-        },
-        element element_number {
-          attribute name { "Element number" },
-          element tolerance {
-            integer
-          }
-        },
-        element surface_geoid_area {
-          # Check correct in spherical projection
-          attribute name { "Surface Geoid Area" },
-          element tolerance {
-            real
-          }
-        }?,
-        element edge_node_number {
-          attribute name { "Edge node number" },
-          element tolerance {
-            integer
-          }
-        },
-        element element_circumsphere {
-          attribute name { "Element circumsphere range" },
-          element tolerance {
-            integer
-          }
-        }?
-     }
+    ## Value
+    element value {
+      integer,
+      comment,
+      ## Tolerance
+      element tolerance {
+        integer,
+        comment
+      }?
+    }|
+    ## Range
+    element range {
+      ## Minimum
+      element minimum {
+        integer,
+        comment
+      }?,
+      ## Maximum
+      element maximum {
+        integer,
+        comment
+      }?,
+      comment
+    }
   )
+
+test_real =
+  (
+    ## Value
+    element value {
+      real,
+      comment,
+      ## Tolerance
+      element tolerance {
+        real,
+        comment
+      }?
+    }|
+    ## Range
+    element range {
+      ## Minimum
+      element minimum {
+        real,
+        comment
+      },
+      ## Maximum
+      element maximum {
+        real,
+        comment
+      },
+      comment
+    }
+  )
+
+
+
+verification_tests_old =
+  (
+    ## Verification test structure
+    element verification {
+      ## Node number
+      element node_number {
+        test_integer,
+        comment
+      }?,
+      ## Element number
+      element element_number {
+        test_integer,
+        comment
+      }?,
+      ## Edge node number
+      element edge_node_number {
+        test_integer,
+        comment
+      }?,
+      ## Surface Geoid Area
+      element surface_geoid_area {
+        test_real,
+        comment
+      }?,
+      ## Element circumsphere range
+      element element_circumsphere {
+        test_real,
+        comment
+      }?
+    }?
+  )
+
+
+verification_tests =
+  (
+    ## Verification test structure
+    element verification {
+      (
+        ## Node number
+        element test {
+          attribute name { "node_number" },
+          test_integer,
+          comment
+        }|
+        ## Element number
+        element test {
+          attribute name { "element_number" },
+          test_integer,
+          comment
+        }|
+        ## Edge node number
+        element test {
+          attribute name { "edge_node_number" },
+          test_integer,
+          comment
+        }|
+        ## Surface Geoid Area
+        element test {
+          attribute name { "surface_geoid_area" },
+          test_real,
+          comment
+        }|
+        ## Element circumsphere range
+        element test {
+          attribute name { "element_circumsphere" },
+          test_real,
+          comment
+        }
+      )+
+    }?
+  )
+
+
+
+
 
 geometry = 
    (
@@ -367,7 +680,7 @@ geometry =
             mesh_info
          }?,
          element mesh {
-            attribute name { xsd:string },
+            attribute name { string },
             mesh_info,
             element exclude_from_mesh_adaptivity{empty}?
          }*,
