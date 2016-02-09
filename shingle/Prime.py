@@ -37,11 +37,11 @@ def main():
   ReadArguments()
 
   h = Metric(output = './metric.pos')
-  h.Generate(sourcefile = universe.input)
+  h.Generate(sourcefile = universe.source)
 
 
   
-  r = Raster(source=universe.input, cache=universe.cache)
+  r = Raster(source=universe.source, cache=universe.cache)
   r.Generate()
 
   rep = SurfaceGeoidDomainRepresentation(output = universe.output)

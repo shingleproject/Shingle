@@ -63,9 +63,9 @@ class ReadArguments(object):
       elif (self.argument == '-v'): universe.verbose = True
       elif (self.argument == '-vv'): universe.verbose = True; universe.debug = True; 
       elif (self.argument == '-q'): universe.verbose = False
-      elif (self.argument == '-n'): universe.input  = self.NextArgument();
+      elif (self.argument == '-n'): universe.source  = self.NextArgument();
       elif (self.argument == '-f'): universe.output = self.NextArgument();
-      elif (self.argument == '-x'): universe.optiontree = self.NextArgument();
+      elif (self.argument == '-x'): universe.optiontreesource = self.NextArgument();
       elif (self.argument == '-l'): self.legacy = True; report('Including legacy command line options')
       else: self.ReadLegacy()
 
@@ -140,7 +140,7 @@ def InitialiseGlobals():
   universe.physical_lines_separate = False
   #### IMPORT END
 
-  universe.input  = os.path.expanduser('~/tmp/dataset/rtopo/RTopo105b_50S.nc')
+  universe.source  = os.path.expanduser('~/tmp/dataset/rtopo/RTopo105b_50S.nc')
   universe.output = './shorelines.geo'
   universe.boundaries = []
   universe.boundariestoexclude = []

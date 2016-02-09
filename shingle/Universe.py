@@ -49,16 +49,11 @@ colour = {
 class universe():
   verbose = None
   debug = None
-  optiontree = None
+  optiontreesource = None
   # Main arguments
-  input  = None
+  source  = None
   output = None
   
-  reportcache = None
-  reportline = None
-
-  logfile = None
-
   # Arguments
   boundaries = None
   boundariestoexclude = None
@@ -83,7 +78,6 @@ class universe():
   generatemesh = None
   generatemetric = None
 
-  #### IMPORT START
   planet_radius = None
   dx_default = None
   #fileid = 'G'
@@ -93,7 +87,11 @@ class universe():
   more_bsplines = None
   # Interestingly, if the following is true, gmsh generates a nice mesh, but complains (rightly so) on multiple definitions of a physical line id.  If false, the mesh contains extra 1d elements, which need parsing out!
   physical_lines_separate = None
-  #### IMPORT END
+  
+  # Misc
+  logfile = None
+  reportcache = None
+  reportline = None
   
 
 
