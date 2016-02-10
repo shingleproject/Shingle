@@ -20,8 +20,8 @@
 #  
 ##########################################################################
 
-DATADIR=../../dataset
-DATASET=../../dataset/RTopo105b_50S.nc
+DATADIR=../../../dataset
+DATASET=../../../dataset/RTopo105b_50S.nc
 
 SCRIPT=../../bin/shingle
 DIFFTOOL=../../tool/diff_exclude_header

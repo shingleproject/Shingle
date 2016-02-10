@@ -1,10 +1,10 @@
-// Arguments:  -legacy -f antarctica_main_landmass_30s/shorelines.geo -n ../../dataset/RTopo105b_50S.nc -r 'latitude <= -60.0' -p 1 -dx 10 -exclude_ice_shelves -bl -30
+// Arguments:  -legacy -f antarctica_main_landmass_30s/shorelines.geo -n ../../../dataset/RTopo105b_50S.nc -r 'latitude <= -60.0' -p 1 -dx 10 -exclude_ice_shelves -bl -30
 // Output to shorelines.geo
 // Projection type cartesian
 // Boundaries restricted to [1]
 // Region defined by latitude <= -60.0
 // Open contours closed with a line formed by points spaced 10 degrees apart
-// Source netCDF located at ../../dataset/RTopo105b_50S.nc
+// Source netCDF located at ../../../dataset/RTopo105b_50S.nc
 // Excluding iceshelf ocean cavities
 // Paths found: 269
 

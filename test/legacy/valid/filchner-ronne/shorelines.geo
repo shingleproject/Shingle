@@ -1,9 +1,9 @@
-// Arguments:  -legacy -f filchner-ronne/shorelines.geo -n ../../dataset/RTopo105b_50S.nc -no -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0 -lat -65.0
+// Arguments:  -legacy -f filchner-ronne/shorelines.geo -n ../../../dataset/RTopo105b_50S.nc -no -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0 -lat -65.0
 // Output to shorelines.geo
 // Projection type cartesian
 // Region defined by ((longitude >= -85.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0)) or ((longitude >= -64.0) and (longitude <= -30.0) and (latitude >= -89.0) and (latitude <= -70.0)) or ((longitude >= -30.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0))
 // Extending region to meet parallel on latitude -65.0
-// Source netCDF located at ../../dataset/RTopo105b_50S.nc
+// Source netCDF located at ../../../dataset/RTopo105b_50S.nc
 // Including iceshelf ocean cavities
 // Paths found: 348
 

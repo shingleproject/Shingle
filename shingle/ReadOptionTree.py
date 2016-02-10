@@ -85,7 +85,12 @@ def ReadOptionTree(case=None):
       raise NotImplementedError
     else:
       raise NotImplementedError
-    dataset[d.name] = d
+    #print d.SourceExists()
+    #print d.location
+    if d.SourceExists():
+      dataset[d.name] = d
+    else:
+      error('Dataset %(name)s source not available at: %(location)s' % {'name':d.name, 'location':d.LocationFull()})
   report('Found %(number)d datasets:' % { 'number':len(dataset) })
   for d in dataset.keys():
     dataset[d].Show()

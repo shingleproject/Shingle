@@ -48,10 +48,17 @@ class Dataset(object):
     self.form = libspud.get_option(self._path + '/form[0]/name' )
     self.source = libspud.get_option(self._path + '/form[0]/source[0]/name' )
     if self.source == 'Local_file':
-      self.location = libspud.get_option(self._path + '/form[0]/source[0]/file_name' )  
+      self.SetContourSource(libspud.get_option(self._path + '/form[0]/source[0]/file_name' )) 
     elif self.source == 'OPeNDAP':
       self.location = libspud.get_option(self._path + '/form[0]/source[0]/url' )  
     self.projection = libspud.get_option(self._path + '/projection[0]/name' )
+
+  def SetContourSource(self, filename):
+    self.location = filename
+
+  def LocationFull(self):
+    from Support import PathFull
+    return PathFull(self.location)
 
   def Show(self):
     report('  %(blue)s%(number)s.%(end)s %(name)s', var = {'number':self._number, 'name':self.name })
@@ -75,22 +82,26 @@ class Raster(Dataset):
   log = ''
 
   def __init__(self, name='Raster', location=None, cache=False, number=None):
-    self.location = location
+    if location is not None:
+      self.location = location
     Dataset.__init__(self, number=number)
     self.cache = cache
 
-  def SetContourSource(self, filename):
-    self.location = filename
+  def SourceExists(self):
+    from os.path import isfile
+    if self.location is None:
+      return False
+    return isfile(self.LocationFull())
 
   def CheckSource(self):
     from os.path import isfile
-    if not isfile(self.location):
-      error('Source netCDF ' + self.location + ' not found!', fatal=True)
+    if not self.SourceExists(): 
+      error('Source netCDF ' + self.LocationFull() + ' not found!', fatal=True)
 
   def GetCacheLocation(self):
     if self.cachefile is None:
       from os.path import splitext
-      base, extension = splitext(self.location)
+      base, extension = splitext(self.LocationFull())
       self.cachefile = base + '_' + extension.lstrip('.') + '_' + universe.contourtype + self._cacheFiletype
 
   def CheckCache(self):
@@ -146,7 +157,7 @@ class Raster(Dataset):
   def GenerateContour(self):
     from Import import read_paths
     self.report('Generating contours', include = False)
-    self.pathall = read_paths(self, self.location)
+    self.pathall = read_paths(self, self.LocationFull())
 
   def Generate(self):
     import os

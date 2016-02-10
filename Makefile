@@ -20,6 +20,8 @@
 #  
 ##########################################################################
 
+ECHO=echo
+
 default: bin/shingle
 
 bin/shingle: src/shingle lib/libspud.so
@@ -48,7 +50,12 @@ test: bin/shingle
 	@./bin/shingle -t test
 
 testlegacy:
+	@echo "Legacy test engine:"
 	@make -s -C test/legacy
+
+testall:
+	@make test
+	@make testlegacy
 
 data:
 	@make -s -C test/legacy data

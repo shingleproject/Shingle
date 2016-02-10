@@ -849,6 +849,9 @@ General.RotationZ = 270;
   def Generate(self):
 #   from specific.Pig import pig_sponge
 
+    if self.brepsource not in universe.dataset.keys():
+      error('Dataset %(dataset)s required for surface geoid representation %(rep)s' % {'dataset':self.brepsource, 'rep':self.name}, fatal=True)
+
     r = universe.dataset[self.brepsource]
     r.Generate()
     self.AddPath(r)

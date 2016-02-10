@@ -14,13 +14,7 @@
   <global_parameters/>
   <dataset name="RTopo">
     <form name="Raster">
-      <source file_name="../dataset/RTopo105b_50S.nc" name="Local_file"/>
-    </form>
-    <projection name="Automatic"/>
-  </dataset>
-  <dataset name="abc">
-    <form name="Raster">
-      <source file_name="abc" name="Local_file"/>
+      <source file_name="../../dataset/RTopo105b_50S.nc" name="Local_file"/>
     </form>
     <projection name="Automatic"/>
   </dataset>

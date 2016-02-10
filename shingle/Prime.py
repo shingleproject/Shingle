@@ -52,8 +52,8 @@ def Prime(case=None):
   from MeshGeneration import Mesh
   from MetricGeneration import Metric
 
-  ReadOptionTree(case)
   Initialise(case)
+  ReadOptionTree(case)
 
   h = Metric(output = './metric.pos')
   h.Generate(sourcefile = universe.source)

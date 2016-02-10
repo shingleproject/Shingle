@@ -104,7 +104,7 @@ class VerificationTests(object):
     #delta = ''.join(x[2:] for x in diff if x.startswith('- '))
     changes = (x for x in diff if x.startswith('- ') or x.startswith('+ '))
 
-    show = False
+    show = True
     total = 0
     for change in changes:
       total += 1
@@ -122,6 +122,9 @@ class VerificationTests(object):
 
 
   def PerformValidationTests(self):
+    if not libspud.have_option('/verification'):
+      return
+
     total = libspud.option_count('/verification/test')
     report('%(blue)sReading verification tests%(end)s %(grey)s(%(total)d in total)%(end)s', var={'total':total}, force=True, indent=1) 
 
