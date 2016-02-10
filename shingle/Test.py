@@ -101,7 +101,7 @@ class VerificationTests(object):
       error('Cannot locate valid file: ' + fullvalid)
       return False
     if not os.path.exists(fullpath):
-      error('Cannot locate valid file: ' + fullpath)
+      error('Cannot locate generated file: ' + fullpath)
       return False
 
     file1 = open(fullvalid, 'r')

@@ -2,7 +2,7 @@
 // Arguments:  -t test
 // Output to Filchner-Ronne.geo
 // Projection type cartesian
-// Source netCDF located at ../dataset/RTopo105b_50S.nc
+// Source netCDF located at ../../dataset/RTopo105b_50S.nc
 // Including iceshelf ocean cavities
 // Paths found: 348
 
