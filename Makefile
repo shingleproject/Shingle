@@ -27,8 +27,10 @@ bin/shingle: src/shingle lib/libspud.so
 	@cp src/shingle bin/shingle
 
 clean:
+	@echo 'CLEAN test legacy'
+	@make -s -C test/legacy clean
 	@echo 'CLEAN test'
-	@make -s -C test clean
+	@rm -f test/*/*.log test/*/*.geo
 	@echo 'CLEAN shingle'
 	@rm -f shingle/*.pyc
 	@echo 'CLEAN tool'
