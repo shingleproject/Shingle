@@ -192,13 +192,9 @@ class SurfaceGeoidDomainRepresentation(object):
       if libspud.have_option(path + 'minimum_area'):
         self.SetMinArea(libspud.get_option(path + 'minimum_area')) 
 
-      print path + 'contourtype'
-
       if libspud.have_option(path + 'contourtype'):
         self.contourtype = libspud.get_option(path + 'contourtype')
       
-      print self.contourtype
-
       self.include_iceshelf_ocean_cavities = libspud.have_option(path + 'exclude_iceshelf_ocean_cavities')
 
       if libspud.have_option(path + 'boundary'):
@@ -480,18 +476,19 @@ LoopEnd%(loopnumber)i = IP + %(pointend)i;''' % { 'pointstart':index.start, 'poi
           # match found, same orientation
           matches.append((i, False))
       if (len(matches) > 1):
-        self.report('More than one match found for path %d' % num)
+        error('Matches:')
         print matches
+        error('More than one match found for path %d' % num, fatal=True)
         sys.exit(1)
       elif (len(matches) == 0):
         self.report('No match found for path %d' % num)
         #sys.exit(1)
 
-      printvv('Path %d crosses date line' % (num + 1))
+      report('Path %d crosses date line' % (num + 1), debug=True)
       if (len(matches) > 0):
         match = matches[0][0]
         orientation = matches[0][1]
-        printvv('  match %d - %d (%s)' % (num + 1, match + 1, str(orientation)))
+        report('  match %d - %d (%s)' % (num + 1, match + 1, str(orientation)), debug=True)
         #print self.pathall[num].vertices
         #print self.pathall[num].vertices
         #print self.pathall[match].vertices
@@ -666,7 +663,7 @@ Call DrawParallel;''' % { 'start_x':startp[0], 'start_y':startp[1], 'end_x':endp
           current[1] = current[1] + diff[1] * (dx /  normdiff)
 
           index.point += 1
-          printvv('Drawing connection to end index %s at %f.2, %f.2 (to match %f.2)' % (index.point, current[0], current[1], end[1]))
+          report('Drawing connection to end index %s at %f.2, %f.2 (to match %f.2)' % (index.point, current[0], current[1], end[1]), debug=False)
           loc = project(current)
           self.gmsh_format_point(index.point, loc, 0.0)
 
@@ -686,7 +683,7 @@ Call DrawParallel;''' % { 'start_x':startp[0], 'start_y':startp[1], 'end_x':endp
           ncurrent[0] = ncurrent[0] + 360
         #print start, end, ncurrent, diff
         index.point += 1
-        printvv('Drawing connection to end index %s at %f.2, %f.2 (to match %f.2)' % (index.point, ncurrent[0], ncurrent[1], end[1]))
+        report('Drawing connection to end index %s at %f.2, %f.2 (to match %f.2)' % (index.point, ncurrent[0], ncurrent[1], end[1]), debug=False)
         nloc = project(ncurrent)
         self.gmsh_format_point(index.point, nloc, 0.0)
         
@@ -846,6 +843,8 @@ General.RotationX = 180;
 General.RotationY = 0;
 General.RotationZ = 270;
 ''')
+
+
 
   def Generate(self):
 #   from specific.Pig import pig_sponge

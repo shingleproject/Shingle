@@ -151,27 +151,27 @@ all%:
 
 # Include only the main Antarctic mass (path 1), and only parts which lie below 60S
 antarctica_main_landmass/shorelines.geo: 
-	@$(SCRIPT) -l -f $@ -n $(DATASET) -r 'latitude <= -60.0' -p 1 -dx 10 -exclude_ice_shelves -bl -60 > $(dir $@)/mesh.log
+	@$(SCRIPT) -legacy -f $@ -n $(DATASET) -r 'latitude <= -60.0' -p 1 -dx 10 -exclude_ice_shelves -bl -60 > $(dir $@)/mesh.log
 
 # Include only the main Antarctic mass (path 1), and only parts which lie below 60S, domain up to -30S
 antarctica_main_landmass_30s/shorelines.geo: 
-	@$(SCRIPT) -l -f $@ -n $(DATASET) -r 'latitude <= -60.0' -p 1 -dx 10 -exclude_ice_shelves -bl -30 > $(dir $@)/mesh.log
+	@$(SCRIPT) -legacy -f $@ -n $(DATASET) -r 'latitude <= -60.0' -p 1 -dx 10 -exclude_ice_shelves -bl -30 > $(dir $@)/mesh.log
 
 # Filchner-Ronne extended out to the 65S parallel
 filchner-ronne/shorelines.geo:
-	@$(SCRIPT) -l -f $@ -n $(DATASET) -no -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0 -lat '-65.0' > $(dir $@)/mesh.log
+	@$(SCRIPT) -legacy -f $@ -n $(DATASET) -no -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0 -lat '-65.0' > $(dir $@)/mesh.log
 
 # Antarctica, everything below the 60S parallel, coarse approximation to open boundary
 antarctica_all/shorelines.geo:
-	@$(SCRIPT) -l -f $@ -n $(DATASET) -dx 2 -r 'latitude <= -60' > $(dir $@)/mesh.log
+	@$(SCRIPT) -legacy -f $@ -n $(DATASET) -dx 2 -r 'latitude <= -60' > $(dir $@)/mesh.log
 
 # Small region close to the Filcher-Ronne ice shelf
 filchner-ronne_iceshelf/shorelines.geo:
-	@$(SCRIPT) -l -f $@ -n $(DATASET) -no -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0 -p 1 -r 'latitude <= -83' > $(dir $@)/mesh.log
+	@$(SCRIPT) -legacy -f $@ -n $(DATASET) -no -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0 -p 1 -r 'latitude <= -83' > $(dir $@)/mesh.log
 
 # Amundsen Sea
 amundsen_sea/shorelines.geo:
-	@$(SCRIPT) -l -f $@ -n $(DATASET) -no -b -130.0:-85.0,-85.0:-60.0 -lat -64.0 > $(dir $@)/mesh.log
+	@$(SCRIPT) -legacy -f $@ -n $(DATASET) -no -b -130.0:-85.0,-85.0:-60.0 -lat -64.0 > $(dir $@)/mesh.log
 
 
 

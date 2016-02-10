@@ -30,7 +30,7 @@
 
 import os
 from Universe import universe
-from Reporting import report
+from Reporting import report, LogEmpty
 from StringOperations import expand_boxes
 from Usage import usage
 
@@ -76,23 +76,26 @@ class ReadArguments(object):
       elif (self.argument == '-v'): universe.verbose = True
       elif (self.argument == '-vv'): universe.verbose = True; universe.debug = True; 
       elif (self.argument == '-q'): universe.verbose = False
-      elif (self.argument == '-n'): universe.source  = self.NextArgument();
-      elif (self.argument == '-f'): universe.output = self.NextArgument();
       elif (self.argument == '-x'): universe.optiontreesource = self.NextArgument();
+      elif (self.argument == '-t'): universe.testfolder = self.NextArgument()
+      elif (self.argument == '-l'):
+        universe.log = True
+        if ((len(self.arguments) > 0) and (self.arguments[0][0] != '-')):
+          universe.logfilename = self.NextArgument()
 
       elif (self.argument == '-c'): universe.cache = True
       elif (self.argument == '-plot'): universe.plotcontour = True
       elif (self.argument == '-stage'): universe.stage = self.NextArgument()
 
-      elif (self.argument == '-l'): self.legacy = True; report('Including legacy command line options')
+      elif (self.argument == '-legacy'): self.legacy = True; report('Including legacy command line options')
       else: self.ReadLegacy()
 
     universe.region = expand_boxes(universe.region, universe.box)
-    if universe.optiontreesource is not None:
-      universe.root = os.path.realpath(os.path.dirname(universe.optiontreesource))
-    elif universe.output is not None:
+  
+    if universe.output is not None:
       universe.root = os.path.realpath(os.path.dirname(universe.output))
 
+    # Argument sanity check
     if universe.stage is not None:
       if universe.stage not in stages:
         error('Stage %(stage)s not recognised' % universe.stage, fatal=True)
@@ -101,6 +104,8 @@ class ReadArguments(object):
     from Universe import universe
     if not self.legacy: return
     if (self.argument == '-s'): universe.scenario = str(self.NextArgument()); universe=scenario(universe.scenario)
+    elif (self.argument == '-n'): universe.source  = self.NextArgument();
+    elif (self.argument == '-f'): universe.output = self.NextArgument();
     elif (self.argument == '-t'): universe.contourtype = self.NextArgument()
     elif (self.argument == '-r'): universe.region = self.NextArgument()
     elif (self.argument == '-m'): universe.projection = self.NextArgument()
@@ -128,6 +133,14 @@ class ReadArguments(object):
       while ((len(self.arguments) > 0) and ((self.arguments[0][0] != '-') or ( (self.arguments[0][0] == '-') and (self.arguments[0][1].isdigit()) ))):
         universe.box.append(self.NextArgument())
 
+def Initialise(case):
+  if case is not None:
+    universe.root = os.path.realpath(os.path.dirname(case))
+
+  if universe.logfilename is not None:
+    universe.logfile = PathFull(universe.logfilename)
+    LogEmpty()
+
 def InitialiseGlobals():
   import os
 
@@ -148,6 +161,8 @@ def InitialiseGlobals():
   universe.debug = False
 
   universe.root = './'
+  universe.logfilename = 'shingle.log'
+  universe.log = False
 
   universe.plotcontour = False
   universe.cache = False

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <shingle_options>
   <initialisation_name>
-    <string_value lines="1">filcher-ronne-shml</string_value>
+    <string_value lines="1">Filchner-Ronne</string_value>
     <comment>-f filchner-ronne-legacy/shorelines.geo
 -n ../dataset/RTopo105b_50S.nc
 -no
@@ -52,6 +52,6 @@
     </closure>
   </surface_geoid_representation>
   <verification>
-    <brep_description file_name="./valid/filchner-ronne-legacy" name="brep_description"/>
+    <test file_name="data/Filchner-Ronne-valid.geo" name="BrepDescription"/>
   </verification>
 </shingle_options>

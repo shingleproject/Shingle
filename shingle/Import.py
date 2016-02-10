@@ -24,7 +24,7 @@
 
 import os
 from Universe import universe
-from Reporting import error
+from Reporting import error, report
 from Scientific.IO import NetCDF
 
 def read_rtopo(ref, filename):
@@ -124,7 +124,7 @@ def read_rtopo(ref, filename):
     #field[field<0.001]=0 
     #field[field>=0.001]=1 
   else:
-    print "Contour type not recognised, '" + universe.contourtype + "'"
+    error("Contour type not recognised, '" + universe.contourtype + "'", fatal=True)
     sys.exit(1)
 
   return lon, lat, field
@@ -146,7 +146,7 @@ def read_raster(filename):
   lon = arange(a.shape[1])
   lat = arange(a.shape[0])
   field = a
-  print "Found raster, sizes", len(lon), len(lat), a.shape
+  report("Found raster, sizes: lat %(lat)d, lon %(lon)d, shape %(shape)s", var = {'lon':len(lon), 'lat':len(lat), 'shape':str(a.shape)} )
 
   return lon, lat, field
 
@@ -231,7 +231,7 @@ def read_paths(rep, filename):
       import matplotlib
       matplotlib.use('Agg')
       from pylab import contour
-      print "Found raster, sizes", len(lon), len(lat), field.shape
+      report("Found raster, sizes: lat %(lat)d, lon %(lon)d, shape %(shape)s", var = {'lon':len(lon), 'lat':len(lat), 'shape':str(field.shape)} )
       paths = contour(lon,lat,field,levels=[0.5]).collections[0].get_paths()
 
   return paths

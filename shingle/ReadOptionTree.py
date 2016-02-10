@@ -53,13 +53,14 @@ class ReadMultipleInstance(object):
     report('      %(blue)spath:      %(end)s%(path)s', var = {'path':self._path} )
 
 
-def ReadOptionTree():
+def ReadOptionTree(case=None):
   """ Read options from the supplied .shml file
   """
-  if universe.optiontreesource is None:
+
+  if case is None:
     return
 
-  libspud.load_options(universe.optiontreesource)
+  libspud.load_options(case)
 
   #universe.optiontreecontent = libspud.write_options()
   # Read file directly into content, add '//'

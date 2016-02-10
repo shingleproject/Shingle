@@ -28,18 +28,32 @@ def main():
 
   from Universe import universe
   from Support import InitialiseGlobals, ReadArguments
+  from Test import VerificationTestEngine
+
+  InitialiseGlobals()
+  ReadArguments()
+
+  if universe.testfolder is not None:
+    VerificationTestEngine()
+  else:
+    Prime(universe.optiontreesource)
+
+
+def Prime(case=None):
+
+  from Universe import universe
+  from Support import Initialise
+  from Test import VerificationTests
   from SurfaceGeoidDomainRepresentation import SurfaceGeoidDomainRepresentation
+
+  from ReadOptionTree import ReadOptionTree
 
   from Raster import Raster
   from MeshGeneration import Mesh
   from MetricGeneration import Metric
 
-  from ReadOptionTree import ReadOptionTree
-
-  InitialiseGlobals()
-  ReadArguments()
-
-  ReadOptionTree()
+  ReadOptionTree(case)
+  Initialise(case)
 
   h = Metric(output = './metric.pos')
   h.Generate(sourcefile = universe.source)
@@ -62,6 +76,9 @@ def main():
   #rep.AddPath(r)
   rep.Generate()
 
+
   m = Mesh(source = universe.output)
   m.Generate()
+
+  VerificationTests(rep)
 

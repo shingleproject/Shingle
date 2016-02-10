@@ -821,39 +821,39 @@ verification_tests =
       (
         ## Node number
         element test {
-          attribute name { "node_number" },
+          attribute name { "NodeNumber" },
           test_integer,
           comment
         }|
         ## Element number
         element test {
-          attribute name { "element_number" },
+          attribute name { "ElementNumber" },
           test_integer,
           comment
         }|
         ## Edge node number
         element test {
-          attribute name { "edge_node_number" },
+          attribute name { "EdgeNodeNumber" },
           test_integer,
           comment
         }|
         ## Surface Geoid Area
         element test {
-          attribute name { "surface_geoid_area" },
+          attribute name { "SurfaceGeoidArea" },
           test_real,
           comment
         }|
         ## Element circumsphere range
         element test {
-          attribute name { "element_circumsphere" },
+          attribute name { "ElementCircumsphere" },
           test_real,
           comment
         }|
         ## Compare the raw content of the description
         ## of the boundary representation
         # Improve with tolerance on positions?
-        element brep_description {
-          attribute name { "brep_description" },
+        element test {
+          attribute name { "BrepDescription" },
           attribute file_name { string },
           comment
         }

@@ -1,4 +1,4 @@
-// Arguments:  -l -f filchner-ronne_iceshelf/shorelines.geo -n ../../dataset/RTopo105b_50S.nc -no -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0 -p 1 -r 'latitude <= -83'
+// Arguments:  -legacy -f filchner-ronne_iceshelf/shorelines.geo -n ../../dataset/RTopo105b_50S.nc -no -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0 -p 1 -r 'latitude <= -83'
 // Output to shorelines.geo
 // Projection type cartesian
 // Boundaries restricted to [1]

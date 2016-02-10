@@ -71,13 +71,25 @@ def addcolour(dic, colourful = True):
     result.update(dic)
     return result
 
-def report(text, var = {}, debug = False, force = False, colourful = True):
+def LogEmpty():
+  open(universe.logfile, 'w').close()
+
+def Log(text):
+  from os import linesep
+  f = open(universe.logfile, 'a')
+  f.write(text + linesep)
+  f.close()
+
+def report(text, var = {}, debug = False, force = False, colourful = True, indent=0):
   # Link to rep.report
   # Option to send to log file instead - independent of terminal verbosity
+  spacer = ' ' * 2 * indent
   if debug and not universe.debug:
     return
   if universe.verbose or force:
-    print(text % addcolour(var, colourful = colourful))
+    print(spacer + text % addcolour(var, colourful = colourful))
+  if universe.logfile is not None:
+    Log(spacer + text % addcolour(var, colourful = False))
 
 def error(text, var = {}, fatal=False):
   suffix = ''

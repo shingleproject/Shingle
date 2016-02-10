@@ -51,6 +51,7 @@ class universe():
   debug = None
   optiontreesource = None
   optiontreecontent = None
+  testfolder = None
   
   # Extra options
   plotcontour = None
@@ -98,7 +99,9 @@ class universe():
   surface_geoid_rep = {}
 
   # Misc
+  log = None
   logfile = None
+  logfilename = None
   reportcache = None
   reportline = None
   

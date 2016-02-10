@@ -897,7 +897,7 @@ provided above.</a:documentation>
             <element name="test">
               <a:documentation>Node number</a:documentation>
               <attribute name="name">
-                <value>node_number</value>
+                <value>NodeNumber</value>
               </attribute>
               <ref name="test_integer"/>
               <ref name="comment"/>
@@ -905,7 +905,7 @@ provided above.</a:documentation>
             <element name="test">
               <a:documentation>Element number</a:documentation>
               <attribute name="name">
-                <value>element_number</value>
+                <value>ElementNumber</value>
               </attribute>
               <ref name="test_integer"/>
               <ref name="comment"/>
@@ -913,7 +913,7 @@ provided above.</a:documentation>
             <element name="test">
               <a:documentation>Edge node number</a:documentation>
               <attribute name="name">
-                <value>edge_node_number</value>
+                <value>EdgeNodeNumber</value>
               </attribute>
               <ref name="test_integer"/>
               <ref name="comment"/>
@@ -921,7 +921,7 @@ provided above.</a:documentation>
             <element name="test">
               <a:documentation>Surface Geoid Area</a:documentation>
               <attribute name="name">
-                <value>surface_geoid_area</value>
+                <value>SurfaceGeoidArea</value>
               </attribute>
               <ref name="test_real"/>
               <ref name="comment"/>
@@ -929,17 +929,17 @@ provided above.</a:documentation>
             <element name="test">
               <a:documentation>Element circumsphere range</a:documentation>
               <attribute name="name">
-                <value>element_circumsphere</value>
+                <value>ElementCircumsphere</value>
               </attribute>
               <ref name="test_real"/>
               <ref name="comment"/>
             </element>
             <!-- Improve with tolerance on positions? -->
-            <element name="brep_description">
+            <element name="test">
               <a:documentation>Compare the raw content of the description
 of the boundary representation</a:documentation>
               <attribute name="name">
-                <value>brep_description</value>
+                <value>BrepDescription</value>
               </attribute>
               <attribute name="file_name">
                 <data type="string"/>

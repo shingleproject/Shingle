@@ -36,8 +36,8 @@ def usage(unknown = None):
    -stage stagename            | Partial processing, up to given stage
                                |______________________________________________
    -x filename                 | Option tree file fully specifying the surface geoid representation
-   -n filename                 | Input netCDF file
-   -f filename                 | Output Gmsh file
+   -t testfolder               | Run all tests located in testfolder
+   -l (logfile)                | Log messages to file (optional filename, default shingle.log in project folder)
                                |______________________________________________
    -h                          | Help
    -v                          | Verbose
@@ -45,6 +45,10 @@ def usage(unknown = None):
    -q                          | Quiet
                                \_____________________________________________
   Legacy options --------------\ 
+   -legacy                     | Enable legacy options
+                               |
+   -n filename                 | Input netCDF file
+   -f filename                 | Output Gmsh file
                                |
    -p path1 (path2)..          | Specify paths to include
    -pn path1 (path2)..         | Specify paths to exclude

@@ -42,19 +42,22 @@ clean:
 
 # ------------------------------------------------------------------------
 
-test:
-	@make -s -C test
+test: bin/shingle
+	@./bin/shingle -t test
+
+testlegacy:
+	@make -s -C test/legacy
 
 data:
-	@make -s -C test data
+	@make -s -C test/legacy data
 
 datalink:
-	@make -s -C test datalink
+	@make -s -C test/legacy datalink
 
 testwithdatadownload:
-	@make -s -C test testwithdatadownload
+	@make -s -C test/legacy testwithdatadownload
 	
-.PHONY: test data datalink testwithdatadownload schema
+.PHONY: test testlegacy data datalink testwithdatadownload schema
 
 # ------------------------------------------------------------------------
 

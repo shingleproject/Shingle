@@ -1,4 +1,4 @@
-// Arguments:  -l -f antarctica_main_landmass_30s/shorelines.geo -n ../../dataset/RTopo105b_50S.nc -r 'latitude <= -60.0' -p 1 -dx 10 -exclude_ice_shelves -bl -30
+// Arguments:  -legacy -f antarctica_main_landmass_30s/shorelines.geo -n ../../dataset/RTopo105b_50S.nc -r 'latitude <= -60.0' -p 1 -dx 10 -exclude_ice_shelves -bl -30
 // Output to shorelines.geo
 // Projection type cartesian
 // Boundaries restricted to [1]

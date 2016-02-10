@@ -1,4 +1,4 @@
-// Arguments:  -l -f amundsen_sea/shorelines.geo -n ../../dataset/RTopo105b_50S.nc -no -b -130.0:-85.0,-85.0:-60.0 -lat -64.0
+// Arguments:  -legacy -f amundsen_sea/shorelines.geo -n ../../dataset/RTopo105b_50S.nc -no -b -130.0:-85.0,-85.0:-60.0 -lat -64.0
 // Output to shorelines.geo
 // Projection type cartesian
 // Region defined by ((longitude >= -130.0) and (longitude <= -85.0) and (latitude >= -85.0) and (latitude <= -60.0))
