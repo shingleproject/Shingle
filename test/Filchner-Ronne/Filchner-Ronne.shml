@@ -46,6 +46,6 @@
     </closure>
   </surface_geoid_representation>
   <verification>
-    <test file_name="data/Filchner-Ronne-valid.geo" name="BrepDescription"/>
+    <test file_name="data/Filchner-Ronne_valid.geo" name="BrepDescription"/>
   </verification>
 </shingle_options>
