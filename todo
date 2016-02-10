@@ -1,3 +1,12 @@
+test cases to add:
+  Amundsen_Sea
+  Antarctica_all
+  Antarctica_main_landmass
+  Antarctica_main_landmass_30s
+  Filchner-Ronne_iceshelf
+
+
+
 Replace command line test behaviour with shml
 Add a line in shml for complete command line, and a switch to apply as an overide to all - for testing
 Test engine could test both?
