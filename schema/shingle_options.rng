@@ -795,7 +795,11 @@ bound, as well as specifying a complete range.</a:documentation>
   <define name="verification_tests_old">
     <optional>
       <element name="verification">
-        <a:documentation>Verification test structure</a:documentation>
+        <a:documentation>Verification test structure.
+
+Parameters containing expected values for the
+surface geoid boundary representation
+provided above.</a:documentation>
         <optional>
           <element name="node_number">
             <a:documentation>Node number</a:documentation>
