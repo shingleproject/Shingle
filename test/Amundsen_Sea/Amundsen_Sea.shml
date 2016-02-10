@@ -1,12 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <shingle_options>
   <initialisation_name>
-    <string_value lines="1">Filchner-Ronne</string_value>
-    <comment>-f filchner-ronne-legacy/shorelines.geo
--n ../dataset/RTopo105b_50S.nc
+    <string_value lines="1">Amundsen_Sea</string_value>
+    <comment>-n ../dataset/RTopo105b_50S.nc
 -no
--b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0
--lat '-65.0'</comment>
+-b -130.0:-85.0,-85.0:-60.0
+-lat -64.0</comment>
   </initialisation_name>
   <domain_type>
     <string_value lines="1">ocean_ice_shelf</string_value>
@@ -25,7 +24,7 @@
     <brep_component name="filchner_ronne_ice_ocean_brep">
       <form name="Raster">
         <source name="RTopo"/>
-        <box>-85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0</box>
+        <box>-130.0:-85.0,-85.0:-60.0</box>
         <contourtype>
           <string_value>iceshelfcavity</string_value>
         </contourtype>
@@ -41,11 +40,11 @@
         <integer_value rank="0">4</integer_value>
       </open_id>
       <bounding_latitude>
-        <real_value rank="0">-65.0</real_value>
+        <real_value rank="0">-64.0</real_value>
       </bounding_latitude>
     </closure>
   </surface_geoid_representation>
   <verification>
-    <test file_name="data/Filchner-Ronne_valid.geo" name="BrepDescription"/>
+    <test file_name="data/Amundsen_Sea_valid.geo" name="BrepDescription"/>
   </verification>
 </shingle_options>

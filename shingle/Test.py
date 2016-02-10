@@ -80,7 +80,7 @@ class VerificationTestEngine(object):
       if location.startswith('./'): locationstr = location[2:]
       else: locationstr = location 
       report('%(number)'+spacing+'s %(location)s', var={'number':numberstr, 'location':locationstr}, force=True)
-      report('%(blue)sGenerating mesh%(end)s%(grey)s...%(end)s', force=True, indent=1) 
+      report('%(blue)sGenerating representation%(end)s%(grey)s...%(end)s', force=True, indent=1) 
       Prime(case=location)
 
 
