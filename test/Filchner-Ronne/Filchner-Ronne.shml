@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+<shingle_options>
+  <initialisation_name>
+    <string_value lines="1">Filchner-Ronne</string_value>
+    <comment>-f filchner-ronne-legacy/shorelines.geo
+-n ../dataset/RTopo105b_50S.nc
+-no
+-b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0
+-lat '-65.0'</comment>
+  </initialisation_name>
+  <domain_type>
+    <string_value lines="1">ocean_ice_shelf</string_value>
+  </domain_type>
+  <global_parameters/>
+  <dataset name="RTopo">
+    <form name="Raster">
+      <source file_name="../../dataset/RTopo105b_50S.nc" name="Local_file"/>
+    </form>
+    <projection name="Automatic"/>
+  </dataset>
+  <surface_geoid_representation name="filchner_ronne_ice_ocean">
+    <id>
+      <integer_value rank="0">9</integer_value>
+    </id>
+    <brep_component name="filchner_ronne_ice_ocean_brep">
+      <form name="Raster">
+        <source name="RTopo"/>
+        <box>-85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0</box>
+        <contourtype>
+          <string_value>iceshelfcavity</string_value>
+        </contourtype>
+      </form>
+      <id>
+        <integer_value rank="0">3</integer_value>
+      </id>
+      <representation_type name="BSplines"/>
+    </brep_component>
+    <closure>
+      <no_open/>
+      <open_id>
+        <integer_value rank="0">4</integer_value>
+      </open_id>
+      <bounding_latitude>
+        <real_value rank="0">-65.0</real_value>
+      </bounding_latitude>
+    </closure>
+  </surface_geoid_representation>
+  <verification>
+    <test file_name="data/Filchner-Ronne-valid.geo" name="BrepDescription"/>
+  </verification>
+</shingle_options>
