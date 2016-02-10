@@ -97,6 +97,13 @@ class VerificationTests(object):
     fullvalid = PathFull(valid)
     fullpath = PathFull(self.representation.outputfile)
 
+    if not os.path.exists(fullvalid):
+      error('Cannot locate valid file: ' + fullvalid)
+      return False
+    if not os.path.exists(fullpath):
+      error('Cannot locate valid file: ' + fullpath)
+      return False
+
     file1 = open(fullvalid, 'r')
     file2 = open(fullpath, 'r')
 
