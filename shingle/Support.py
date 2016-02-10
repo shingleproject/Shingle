@@ -90,6 +90,8 @@ class ReadArguments(object):
     universe.region = expand_boxes(universe.region, universe.box)
     if universe.optiontreesource is not None:
       universe.root = os.path.realpath(os.path.dirname(universe.optiontreesource))
+    elif universe.output is not None:
+      universe.root = os.path.realpath(os.path.dirname(universe.output))
 
     if universe.stage is not None:
       if universe.stage not in stages:

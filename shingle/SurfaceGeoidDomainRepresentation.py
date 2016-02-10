@@ -72,7 +72,7 @@ class SurfaceGeoidDomainRepresentation(object):
   def __init__(self, name='SurfaceGeoidDomainRepresentation', output=None):
     self.name = name
     self.content = ''
-    self.report('Initialising surface geoid representation %(name)s', var = {'name':self.name})
+    self.report('Initialising surface geoid representation %(name)s', var = {'name':self.name}, include=False)
     self.output = ''
     self.brep_component = {}
     self.compound = False
@@ -96,6 +96,7 @@ class SurfaceGeoidDomainRepresentation(object):
 
     self.ReadOptions()
 
+    self.OutputFilenameUpdate()
     self.AppendArguments()
     self.AppendParameters()
 
@@ -121,7 +122,7 @@ class SurfaceGeoidDomainRepresentation(object):
     surface = 9
 
   def ReadOptions(self):
-    self.report('Reading surface geoid representation %(name)s', var = {'name':self.name}) 
+    self.report('Reading surface geoid representation %(name)s', var = {'name':self.name}, include=False) 
     path = '//surface_geoid_representation::%(name)s/' % {'name':self.name}
     if libspud.have_option(path + 'id'):
       self.boundary.surface = libspud.get_option(path + 'id')
@@ -231,14 +232,17 @@ class SurfaceGeoidDomainRepresentation(object):
   def SetMaximumLatitude(self, latitude):
     self.latitude_max = latitude
 
-  def filehandleOpen(self):
-    from Support import PathFull, FilenameAddExtension
-    filename = FilenameAddExtension(self.outputfile, 'geo')
-    fullpath = PathFull(filename)
-    report('%(blue)sWriting surface geoid representation to file:%(end)s %(yellow)s%(filename)s%(end)s %(grey)s(%(fullpath)s)%(end)s', var={'filename':filename, 'fullpath':fullpath})
-    self.filehandle = file(fullpath,'w')
+  def OutputFilenameUpdate(self):
     # Update output file name used to write representation
-    self.outputfile = filename
+    from Support import FilenameAddExtension
+    self.outputfile = FilenameAddExtension(self.outputfile, 'geo')
+
+  def filehandleOpen(self):
+    from Support import PathFull
+    self.OutputFilenameUpdate()
+    fullpath = PathFull(self.outputfile)
+    report('%(blue)sWriting surface geoid representation to file:%(end)s %(yellow)s%(filename)s%(end)s %(grey)s(%(fullpath)s)%(end)s', var={'filename':self.outputfile, 'fullpath':fullpath})
+    self.filehandle = file(fullpath,'w')
 
   def filehandleClose(self):
     self.filehandle.close()
@@ -270,7 +274,7 @@ class SurfaceGeoidDomainRepresentation(object):
     self.gmsh_comment('Arguments: ' + universe.call)
 
   def AppendParameters(self):
-    self.report('Output to ' + universe.output)
+    self.report('Output to ' + self.outputfile)
     self.report('Projection type ' + universe.projection)
     if len(universe.boundaries) > 0:
       self.report('Boundaries restricted to ' + str(universe.boundaries))
