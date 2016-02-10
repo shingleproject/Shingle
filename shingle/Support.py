@@ -28,10 +28,21 @@
 #
 ##########################################################################
 
+import os
 from Universe import universe
 from Reporting import report
 from StringOperations import expand_boxes
 from Usage import usage
+
+def FilenameAddExtension(path, extension):
+  base, extension_existing = os.path.splitext(path)
+  path = base + '.' + extension
+  return path
+
+def PathFull(path):
+  if path.startswith('/'):
+    return path
+  return os.path.realpath(os.path.join(universe.root, path))
 
 class ReadArguments(object):
 
@@ -77,6 +88,8 @@ class ReadArguments(object):
       else: self.ReadLegacy()
 
     universe.region = expand_boxes(universe.region, universe.box)
+    if universe.optiontreesource is not None:
+      universe.root = os.path.realpath(os.path.dirname(universe.optiontreesource))
 
     if universe.stage is not None:
       if universe.stage not in stages:
@@ -131,10 +144,11 @@ def InitialiseGlobals():
 
   universe.verbose = True
   universe.debug = False
- 
+
+  universe.root = './'
+
   universe.plotcontour = False
   universe.cache = False
-
 
   universe.source  = os.path.expanduser('~/tmp/dataset/rtopo/RTopo105b_50S.nc')
   universe.output = './shorelines.geo'
@@ -173,7 +187,6 @@ def InitialiseGlobals():
   # Misc
   universe.reportcache = ''
   universe.reportline = 0
-
 
 
 #   import ConfigParser

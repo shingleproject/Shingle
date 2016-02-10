@@ -322,7 +322,9 @@ Default: False</a:documentation>
           <ref name="comment"/>
         </element>
       </optional>
-      <ref name="surface_geoid_representation_output"/>
+      <optional>
+        <ref name="surface_geoid_representation_output"/>
+      </optional>
       <oneOrMore>
         <ref name="surface_geoid_representation_brep"/>
       </oneOrMore>
@@ -362,14 +364,17 @@ To be sorted...</a:documentation>
         <ref name="surface_geoid_representation_raster"/>
         <ref name="surface_geoid_representation_polyline"/>
       </choice>
-      <element name="id">
-        <a:documentation>Identification the resulting boundary
+      <optional>
+        <element name="id">
+          <a:documentation>Identification the resulting boundary
 
 Default (for closed boundaries): 3
+
 Default (for open boundaries): 4</a:documentation>
-        <ref name="integer"/>
-        <ref name="comment"/>
-      </element>
+          <ref name="integer"/>
+          <ref name="comment"/>
+        </element>
+      </optional>
       <choice>
         <element name="representation_type">
           <a:documentation>Representation type for the component brep
@@ -548,14 +553,14 @@ Legacy: contourtype</a:documentation>
       </element>
     </optional>
     <optional>
-      <element name="include_iceshelf_ocean_cavities">
-        <a:documentation>Include iceshelf ocean cavities
+      <element name="exclude_iceshelf_ocean_cavities">
+        <a:documentation>Exclude iceshelf ocean cavities
 
-Includes iceshelf ocean cavities from mesh (default behaviour includes region)
+Excludes iceshelf ocean cavities from mesh (default behaviour includes region)
 
-Default: True
+Default: False
 
-Legacy: include_iceshelf_ocean_cavities</a:documentation>
+Legacy: exclude_iceshelf_ocean_cavities</a:documentation>
         <ref name="comment"/>
       </element>
     </optional>
@@ -568,7 +573,7 @@ Specify paths to include
 Default: []
 
 Legacy: boundaries</a:documentation>
-        <ref name="integer"/>
+        <data type="string"/>
         <ref name="comment"/>
       </element>
     </optional>
@@ -581,7 +586,7 @@ Specify paths to exclude
 Default: []
 
 Legacy: boundariestoexclude</a:documentation>
-        <ref name="integer"/>
+        <data type="string"/>
         <ref name="comment"/>
       </element>
     </optional>
@@ -701,6 +706,25 @@ Legacy: elementlength</a:documentation>
             <a:documentation>Generate mesh following creation of the boundary representation
 
 Default: False</a:documentation>
+            <ref name="comment"/>
+          </element>
+        </optional>
+        <optional>
+          <element name="parse">
+            <a:documentation>Parse mesh to remove spurious elements
+included erroneously by mesh generation stage
+
+To be completed</a:documentation>
+            <ref name="comment"/>
+          </element>
+        </optional>
+        <optional>
+          <element name="extrude">
+            <a:documentation>Extrude geoid surface to one or two surface fields
+
+Extrude to a raster, vtk, ...
+
+To be completed</a:documentation>
             <ref name="comment"/>
           </element>
         </optional>

@@ -40,16 +40,26 @@ def main():
   ReadArguments()
 
   ReadOptionTree()
-  import sys; sys.exit()
 
   h = Metric(output = './metric.pos')
   h.Generate(sourcefile = universe.source)
 
-  r = Raster(source=universe.source, cache=universe.cache)
-  r.Generate()
+  if universe.optiontreesource is None:
+    universe.dataset['legacy'] = Raster(location=universe.source, cache=universe.cache)
+  #s = universe.surface_geoid_rep[surface_geoid_rep_names[0]]
+  #r = Raster(source=universe.source, cache=universe.cache)
+  #r.Generate()
 
-  rep = SurfaceGeoidDomainRepresentation(output = universe.output)
-  rep.AddPath(r)
+  try:
+    surface_geoid_rep_names = universe.surface_geoid_rep.keys()
+    name = universe.surface_geoid_rep[surface_geoid_rep_names[0]].name
+  except:
+    name = ''
+    pass
+
+  rep = SurfaceGeoidDomainRepresentation(name=name)
+  #import sys; sys.exit()
+  #rep.AddPath(r)
   rep.Generate()
 
   m = Mesh(source = universe.output)

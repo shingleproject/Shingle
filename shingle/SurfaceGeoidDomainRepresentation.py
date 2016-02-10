@@ -37,39 +37,64 @@
 # output_fields
 
 from Universe import universe
-from Reporting import error
+from Reporting import report, error
 from Import import read_paths
-from StringOperations import list_to_comma_separated, list_to_space_separated
+from StringOperations import expand_boxes, list_to_comma_separated, list_to_space_separated
 from RepresentationTools import draw_parallel_explicit
+from Spud import libspud
+from ReadOptionTree import ReadMultipleInstance
 
 class SurfaceGeoidDomainRepresentation(object):
 
   _cacheFiletype = '.shc'
 
+  name = None 
+  output = None
+  filehandle = None
+  brep_component = None
+  # For now, use universal definitions:
+  # Later to go in shml
+  planet_radius = None
+  fileid = None
+  outputfile = None
+  pathall = None
+  content = None
+  paths = None
+  minarea = None
+  region = None
+  latitude_max = None 
+  compound = None
+  boundariestoexclude = None
+  include_iceshelf_ocean_cavities = None
+  contourtype = None
+  brepsource = None 
+  
   def __init__(self, name='SurfaceGeoidDomainRepresentation', output=None):
+    self.name = name
+    self.content = ''
+    self.report('Initialising surface geoid representation %(name)s', var = {'name':self.name})
     self.output = ''
-    self.filehandle = None
+    self.brep_component = {}
+    self.compound = False
+    self.boundariestoexclude = []
+    self.include_iceshelf_ocean_cavities = True
     # For now, use universal definitions:
     # Later to go in shml
     self.planet_radius = universe.planet_radius
     self.fileid = universe.fileid
-    self.outputfile = universe.output
-
-    self.pathall = None
-
-    self.content = ''
-
-    self.paths = None
+    #self.outputfile = universe.output
+    #self.outputfile = self.name
+    self.outputfile = universe.name
     self.minarea = 0.0
     self.region = 'True'
-    self.latitude_max = None
 
     self.SetSpacing(universe.dx)
-
     self.SetPathsSelected(universe.boundaries)
     self.SetMinArea(universe.minarea)
     self.SetRegion(universe.region)
     self.SetMaximumLatitude(universe.extendtolatitude)
+
+    self.ReadOptions()
 
     self.AppendArguments()
     self.AppendParameters()
@@ -95,6 +120,98 @@ class SurfaceGeoidDomainRepresentation(object):
     open    = 4
     surface = 9
 
+  def ReadOptions(self):
+    self.report('Reading surface geoid representation %(name)s', var = {'name':self.name}) 
+    path = '//surface_geoid_representation::%(name)s/' % {'name':self.name}
+    if libspud.have_option(path + 'id'):
+      self.boundary.surface = libspud.get_option(path + 'id')
+    if libspud.have_option(path + 'id_internal_suffix'):
+      self.fileid = libspud.get_option(path + 'id_internal_suffix')
+    if libspud.have_option(path + 'output'):
+      self.outputfile = libspud.get_option(path + 'output/file_name')
+
+    #if libspud.have_option(path + 'more_bsplines'):
+    #  self.?? = libspud.get_option(path + 'more_bsplines')
+
+    if libspud.have_option(path + 'closure'):
+      #self.?? = libspud.have_option(path + 'closure/no_open')
+      #self.?? = libspud.have_option(path + 'closure/close_with_parallels')
+
+      if libspud.have_option(path + 'closure/open_id'):
+        self.boundary.open = libspud.get_option(path + 'closure/open_id')
+      #if libspud.have_option(path + 'closure/bounding_latitude')
+      #  self.?? = libspud.get_option(path + 'closure/bounding_latitude')
+      if libspud.have_option(path + 'closure/extend_to_latitude'):
+        self.SetMaximumLatitude(libspud.get_option(path + 'closure/extend_to_latitude'))
+  
+    self.brep_component = {}
+    for number in range(libspud.option_count(path + 'brep_component')):
+      if len(self.brep_component) > 0:
+        error('More than one boundary representation component in the same initialisaiton currently not supported. Will examine the first for now.', fatal=False)
+        break
+      d = ReadMultipleInstance(path + 'brep_component', number)
+      self.brep_component[d.name] = d
+
+    report('Found %(number)d component boundary representations:' % { 'number':len(self.brep_component) })
+    for d in self.brep_component.keys():
+      self.brep_component[d].Show()
+    
+    # For running form the commandline:
+    if len(self.brep_component) == 0:
+      self.brepsource = 'legacy'
+      return
+
+    brep_component_names = self.brep_component.keys()
+    b = self.brep_component[brep_component_names[0]]
+
+    self.report('Reading boundary representation %(name)s', var = {'name':b.name}) 
+    path = '/surface_geoid_representation::%(name)s/brep_component::%(brep_name)s/' % {'name':self.name, 'brep_name':b.name}
+
+    if libspud.have_option(path + 'id'):
+      self.boundary.contour = libspud.get_option(path + 'id')
+    if libspud.have_option(path + 'spacing'):
+      self.SetSpacing(libspud.get_option(path + 'spacing'))
+    representation_type = libspud.get_option(path + 'representation_type[0]/name')
+    if representation_type == 'CompoundBSplines':
+      self.compound = True
+
+    form = libspud.get_option(path + 'form[0]/name')
+
+    if form == 'Raster':
+      path = '/surface_geoid_representation::%(name)s/brep_component::%(brep_name)s/form::%(form)s/' % {'name':self.name, 'brep_name':b.name, 'form':form}
+
+      self.brepsource = libspud.get_option(path + 'source[0]/name')
+      
+      if libspud.have_option(path + 'region'):
+        self.SetRegion(libspud.get_option(path + 'region'))
+
+      if libspud.have_option(path + 'box'):
+        self.SetRegion( expand_boxes(self.region, libspud.get_option(path + 'box').split() ) )
+
+      if libspud.have_option(path + 'minimum_area'):
+        self.SetMinArea(libspud.get_option(path + 'minimum_area')) 
+
+      print path + 'contourtype'
+
+      if libspud.have_option(path + 'contourtype'):
+        self.contourtype = libspud.get_option(path + 'contourtype')
+      
+      print self.contourtype
+
+      self.include_iceshelf_ocean_cavities = libspud.have_option(path + 'exclude_iceshelf_ocean_cavities')
+
+      if libspud.have_option(path + 'boundary'):
+        self.SetPathsSelected(libspud.get_option(path + 'boundary').split())
+
+      if libspud.have_option(path + 'boundary_to_exclude'):
+        self.boundariestoexclude = libspud.get_option(path + 'boundary_to_exclude').split()
+
+    elif form == 'Polyline':
+      raise NotImplementedError
+    else:
+      raise NotImplementedError
+
+
   def AddPath(self, source):
     self.AddContent(source.log)
     self.pathall = source.path
@@ -105,8 +222,8 @@ class SurfaceGeoidDomainRepresentation(object):
   def SetMinArea(self, area):
     self.minarea = area
 
-  def SetRegion(self, regions):
-    self.region = regions
+  def SetRegion(self, region):
+    self.region = region
 
   def SetSpacing(self, dx):
     self.dx = dx
@@ -115,8 +232,13 @@ class SurfaceGeoidDomainRepresentation(object):
     self.latitude_max = latitude
 
   def filehandleOpen(self):
-    filename = self.outputfile
-    self.filehandle = file(filename,'w')
+    from Support import PathFull, FilenameAddExtension
+    filename = FilenameAddExtension(self.outputfile, 'geo')
+    fullpath = PathFull(filename)
+    report('%(blue)sWriting surface geoid representation to file:%(end)s %(yellow)s%(filename)s%(end)s %(grey)s(%(fullpath)s)%(end)s', var={'filename':filename, 'fullpath':fullpath})
+    self.filehandle = file(fullpath,'w')
+    # Update output file name used to write representation
+    self.outputfile = filename
 
   def filehandleClose(self):
     self.filehandle.close()
@@ -131,13 +253,13 @@ class SurfaceGeoidDomainRepresentation(object):
     #self.filehandle.write( string + linesep)
     self.content = self.content + string + linesep
 
-  def report(self, text, include = True, debug = False):
+  def report(self, text, include = True, debug = False, var = {}):
     if debug and not universe.debug:
       return
     if (universe.verbose):
-      print text
+      report(text, var=var, debug=debug)
     if include:
-      self.gmsh_comment(text)
+      self.gmsh_comment(text % var)
 
   def reportSkipped(self):
     from os import linesep
@@ -307,7 +429,7 @@ LoopEnd%(loopnumber)i = IP + %(pointend)i;''' % { 'pointstart':index.start, 'poi
 
   def GenerateContour(self):
     self.report('Generating contours', include = False)
-    self.pathall = read_paths(self, self.contoursource)
+    self.pathall = read_paths(self, self.contourtype)
 
   def output_boundaries(self):
     import pickle
@@ -400,7 +522,7 @@ LoopEnd%(loopnumber)i = IP + %(pointend)i;''' % { 'pointstart':index.start, 'poi
         continue
       #if (max(self.pathall[num-1].vertices[:,1]) > -55):
       #  continue
-      if num in universe.boundariestoexclude:
+      if num in self.boundariestoexclude:
         continue
       pathvalid.append(num)  
     self.report('Paths found valid: ' + str(len(pathvalid)) + ', including ' + ' '.join(map(str, pathvalid)))
@@ -724,6 +846,9 @@ General.RotationZ = 270;
   def Generate(self):
 #   from specific.Pig import pig_sponge
 
+    r = universe.dataset[self.brepsource]
+    r.Generate()
+    self.AddPath(r)
     
 
     self.output_boundaries()

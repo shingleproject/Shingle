@@ -23,35 +23,74 @@
 ##########################################################################
 
 from Universe import universe
-from Reporting import error
+from Reporting import error, report
+from Spud import libspud
 
-class Raster(object):
+class Dataset(object):
+  
+  _number = None
+  _path = None
+  name = None
+  form = None
+  source = None
+  location = None
+  projection = None
+  
+  def __init__(self, number=None):
+    self._number = number
+    self.Read()
+
+  def Read(self):
+    if self._number is None:
+      return
+    self.name = libspud.get_option('/dataset[%(number)d]/name' % {'number':self._number} )
+    self._path = '/dataset::%(name)s' % {'name':self.name} 
+    self.form = libspud.get_option(self._path + '/form[0]/name' )
+    self.source = libspud.get_option(self._path + '/form[0]/source[0]/name' )
+    if self.source == 'Local_file':
+      self.location = libspud.get_option(self._path + '/form[0]/source[0]/file_name' )  
+    elif self.source == 'OPeNDAP':
+      self.location = libspud.get_option(self._path + '/form[0]/source[0]/url' )  
+    self.projection = libspud.get_option(self._path + '/projection[0]/name' )
+
+  def Show(self):
+    report('  %(blue)s%(number)s.%(end)s %(name)s', var = {'number':self._number, 'name':self.name })
+    report('      %(blue)spath:       %(end)s%(path)s', var = {'path':self._path} )
+    report('      %(blue)sform:       %(end)s%(form)s', var = {'form':self.form} )
+    report('      %(blue)ssource:     %(end)s%(source)s', var = {'source':self.source} )
+    report('      %(blue)slocation:   %(end)s%(location)s', var = {'location':self.location} )
+    report('      %(blue)sprojection: %(end)s%(projection)s', var = {'projection':self.projection} )
+
+class Raster(Dataset):
 
   _cacheFiletype = '.shc'
+  # Input parameters
+  contoursource = None
+  cache = None
+  # Internal variables
+  cachefile = None 
+  pathall = None
+  path = None
+  # Log of object events
+  log = ''
 
-  def __init__(self, name='Raster', source=None, cache=False):
-    # Input parameters
-    self.contoursource = source
+  def __init__(self, name='Raster', location=None, cache=False, number=None):
+    self.location = location
+    Dataset.__init__(self, number=number)
     self.cache = cache
-    # Internal variables
-    self.cachefile = None 
-    self.pathall = None
-    self.path = None
-    # Log of object events
-    self.log = ''
 
   def SetContourSource(self, filename):
-    self.contoursource = filename
+    self.location = filename
 
   def CheckSource(self):
     from os.path import isfile
-    if not isfile(self.contoursource):
-      error('Source netCDF ' + self.contoursource + ' not found!', fatal=True)
+    if not isfile(self.location):
+      error('Source netCDF ' + self.location + ' not found!', fatal=True)
 
   def GetCacheLocation(self):
     if self.cachefile is None:
       from os.path import splitext
-      base, extension = splitext(self.contoursource)
+      base, extension = splitext(self.location)
       self.cachefile = base + '_' + extension.lstrip('.') + '_' + universe.contourtype + self._cacheFiletype
 
   def CheckCache(self):
@@ -74,7 +113,7 @@ class Raster(object):
       self.log = self.log + '// ' + text + linesep
 
   def AppendParameters(self):
-    self.report('Source netCDF located at ' + self.contoursource)
+    self.report('Source netCDF located at ' + self.location)
 
   def CacheLoad(self):
     import pickle
@@ -107,7 +146,7 @@ class Raster(object):
   def GenerateContour(self):
     from Import import read_paths
     self.report('Generating contours', include = False)
-    self.pathall = read_paths(self, self.contoursource)
+    self.pathall = read_paths(self, self.location)
 
   def Generate(self):
     import os

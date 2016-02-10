@@ -283,7 +283,7 @@ surface_geoid_representation =
       element more_bsplines {
         comment
       }?,
-      surface_geoid_representation_output,
+      surface_geoid_representation_output?,
       surface_geoid_representation_brep+,
       surface_geoid_representation_closure?,
       internal_regions?
@@ -323,7 +323,7 @@ surface_geoid_representation_brep =
       element id {
         integer,
         comment
-      },
+      }?,
       (
         ## Representation type for the component brep
         ##
@@ -468,14 +468,14 @@ surface_geoid_representation_raster_options =
       },
       comment
     }?,
-    ## Include iceshelf ocean cavities
+    ## Exclude iceshelf ocean cavities
     ##
-    ## Includes iceshelf ocean cavities from mesh (default behaviour includes region)
+    ## Excludes iceshelf ocean cavities from mesh (default behaviour includes region)
     ##
-    ## Default: True
+    ## Default: False
     ##
-    ## Legacy: include_iceshelf_ocean_cavities
-    element include_iceshelf_ocean_cavities {
+    ## Legacy: exclude_iceshelf_ocean_cavities
+    element exclude_iceshelf_ocean_cavities {
       comment
     }?,
     ## Boundaries
@@ -486,7 +486,7 @@ surface_geoid_representation_raster_options =
     ##
     ## Legacy: boundaries
     element boundary {
-      integer,
+      string,
       comment
     }?,
     ## Boundaries to exclude
@@ -497,7 +497,7 @@ surface_geoid_representation_raster_options =
     ##
     ## Legacy: boundariestoexclude
     element boundary_to_exclude {
-      integer,
+      string,
       comment
     }?
 
@@ -613,6 +613,21 @@ mesh_options =
       ##
       ## Default: False
       element generate_mesh {
+        comment
+      }?,
+      ## Parse mesh to remove spurious elements
+      ## included erroneously by mesh generation stage
+      ##
+      ## To be completed
+      element parse {
+        comment
+      }?,
+      ## Extrude geoid surface to one or two surface fields
+      ##
+      ## Extrude to a raster, vtk, ...
+      ##
+      ## To be completed
+      element extrude {
         comment
       }?
     }?

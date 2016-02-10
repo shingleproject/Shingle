@@ -50,10 +50,7 @@ def strplusone(number):
   return str(number + 1)
 
 def expand_boxes(region, boxes):
-  def error():
-    print 'Error in argument for -b.'
-    sys.exit(1)
-
+  from Reporting import error
   def build_function(function, requireand, axis, comparison, number):
     if (len(number) > 0):
       function = '%s%s(%s %s %s)' % (function, requireand, axis, comparison, number)
@@ -67,11 +64,16 @@ def expand_boxes(region, boxes):
     requireor = ''
     for box in boxes:
       longlat = box.split(',')
-      if (len(longlat) != 2): error()
+      if (len(longlat) != 2):
+        print 'longlat:', longlat
+        error('Error in splitting around comma in the definition of boxes: ' + boxes, fatal=True)
 
       long = longlat[0].split(':')
       lat = longlat[1].split(':')
-      if ((len(long) != 2) and (len(lat) != 2)): error()
+      if ((len(long) != 2) and (len(lat) != 2)):
+        print 'long:', long
+        print 'lat:', lat
+        error('Error in splitting around a colon in the definition of boxes: ' + boxes, fatal=True)
       
       function_box = ''
       requireand = ''
