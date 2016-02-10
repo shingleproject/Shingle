@@ -34,15 +34,17 @@ def main():
   from MeshGeneration import Mesh
   from MetricGeneration import Metric
 
+  from ReadOptionTree import ReadOptionTree
 
   InitialiseGlobals()
   ReadArguments()
 
+  ReadOptionTree()
+  import sys; sys.exit()
+
   h = Metric(output = './metric.pos')
   h.Generate(sourcefile = universe.source)
 
-
-  
   r = Raster(source=universe.source, cache=universe.cache)
   r.Generate()
 

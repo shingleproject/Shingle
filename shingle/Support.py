@@ -139,6 +139,7 @@ def InitialiseGlobals():
   universe.source  = os.path.expanduser('~/tmp/dataset/rtopo/RTopo105b_50S.nc')
   universe.output = './shorelines.geo'
   
+  universe.name = 'shorelines'
   universe.boundaries = []
   universe.boundariestoexclude = []
   universe.region = 'True'

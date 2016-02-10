@@ -35,6 +35,7 @@ def usage(unknown = None):
    -c                          | Use cache
    -stage stagename            | Partial processing, up to given stage
                                |______________________________________________
+   -x filename                 | Option tree file fully specifying the surface geoid representation
    -n filename                 | Input netCDF file
    -f filename                 | Output Gmsh file
                                |______________________________________________

@@ -50,6 +50,7 @@ class universe():
   verbose = None
   debug = None
   optiontreesource = None
+  optiontreecontent = None
  
   # Extra options
   plotcontour = None
@@ -61,6 +62,7 @@ class universe():
   output = None
 
   # Arguments
+  name = None
   boundaries = None
   boundariestoexclude = None
   region = None

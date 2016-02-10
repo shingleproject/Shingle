@@ -54,8 +54,8 @@ It is used for options checking.</a:documentation>
         <data type="string"/>
       </attribute>
       <choice>
-        <ref name="dataset_source"/>
-        <ref name="dataset_shapefile"/>
+        <ref name="dataset_raster"/>
+        <ref name="dataset_polyline"/>
         <ref name="dataset_gis_project"/>
       </choice>
       <choice>
@@ -98,63 +98,49 @@ Proj4 string</a:documentation>
       </choice>
     </element>
   </define>
+  <define name="dataset_raster">
+    <element name="form">
+      <a:documentation>Raster dataset reference</a:documentation>
+      <attribute name="name">
+        <value>Raster</value>
+      </attribute>
+      <ref name="comment"/>
+      <ref name="dataset_raster_options"/>
+    </element>
+  </define>
+  <define name="dataset_polyline">
+    <element name="form">
+      <a:documentation>Polyline dataset reference</a:documentation>
+      <attribute name="name">
+        <value>Polyline</value>
+      </attribute>
+      <ref name="comment"/>
+      <ref name="dataset_polyline_options"/>
+    </element>
+  </define>
   <define name="dataset_gis_project">
-    <element name="source">
-      <a:documentation>Boundary representation component source</a:documentation>
+    <element name="form">
+      <a:documentation>Project file reference,
+containing both polyline and raster data forms,
+from a GIS project, for example.</a:documentation>
       <attribute name="name">
-        <value>GIS_project</value>
+        <value>Project</value>
       </attribute>
       <ref name="comment"/>
-      <ref name="dataset_gis_options"/>
+      <ref name="dataset_project_options"/>
     </element>
   </define>
-  <define name="dataset_shapefile">
-    <element name="source">
-      <a:documentation>Boundary representation component source</a:documentation>
-      <attribute name="name">
-        <value>shapefile</value>
-      </attribute>
-      <ref name="comment"/>
-      <ref name="dataset_shapefile_options"/>
-    </element>
-  </define>
-  <define name="dataset_source">
-    <element name="source">
-      <a:documentation>Boundary representation component source</a:documentation>
-      <attribute name="name">
-        <value>raster</value>
-      </attribute>
-      <ref name="comment"/>
-      <ref name="dataset_source_options"/>
-    </element>
-  </define>
-  <define name="dataset_shapefile_options">
-    <element name="source">
-      <a:documentation>Source shapefile
-(change to define a folder within project for location?)</a:documentation>
-      <attribute name="file_name">
-        <data type="string"/>
-      </attribute>
-      <ref name="comment"/>
-    </element>
-  </define>
-  <define name="dataset_gis_options">
-    <element name="source">
-      <a:documentation>Source GIS project
-(change to define a folder within project for location?)</a:documentation>
-      <attribute name="file_name">
-        <data type="string"/>
-      </attribute>
-      <ref name="comment"/>
-    </element>
-  </define>
-  <define name="dataset_source_options">
+  <define name="dataset_raster_options">
     <choice>
       <element name="source">
         <a:documentation>Source raster dataset
+
 (change to define a folder within project for location?)
 
 Default: ~/tmp/dataset/rtopo/RTopo105b_50S.nc</a:documentation>
+        <attribute name="name">
+          <value>Local_file</value>
+        </attribute>
         <attribute name="file_name">
           <data type="string"/>
         </attribute>
@@ -175,6 +161,48 @@ See: http://www.esrl.noaa.gov/psd/data/gridded/using_dods.html</a:documentation>
         <ref name="comment"/>
       </element>
     </choice>
+  </define>
+  <define name="dataset_polyline_options">
+    <element name="source">
+      <a:documentation>Source shapefile (.shp) containing polyline information
+
+(change to define a folder within project for location?)</a:documentation>
+      <attribute name="name">
+        <value>Local_file</value>
+      </attribute>
+      <attribute name="file_name">
+        <data type="string"/>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <element name="source">
+      <a:documentation>Source shapefile (.shp) containing polyline information
+
+See: http://www.opendap.org
+
+See: http://opendap.deltares.nl
+
+See: http://www.esrl.noaa.gov/psd/data/gridded/using_dods.html</a:documentation>
+      <attribute name="name">
+        <value>OPeNDAP</value>
+      </attribute>
+      <data type="string"/>
+      <ref name="comment"/>
+    </element>
+  </define>
+  <define name="dataset_project_options">
+    <element name="source">
+      <a:documentation>Source project location
+
+(change to define a folder within project for location?)</a:documentation>
+      <attribute name="name">
+        <value>Local_file</value>
+      </attribute>
+      <attribute name="file_name">
+        <data type="string"/>
+      </attribute>
+      <ref name="comment"/>
+    </element>
   </define>
   <define name="general">
     <element name="global_parameters">
@@ -269,8 +297,19 @@ in the project.
 Default: ''</a:documentation>
         <data type="string"/>
       </attribute>
+      <element name="id">
+        <a:documentation>Identification the resulting surface
+
+Default: 9</a:documentation>
+        <ref name="integer"/>
+        <ref name="comment"/>
+      </element>
       <optional>
-        <element name="id_suffix">
+        <element name="id_internal_suffix">
+          <a:documentation>Character used in boundary representation description
+
+Used for debugging purposes.</a:documentation>
+          <data type="string"/>
           <ref name="comment"/>
         </element>
       </optional>
@@ -320,10 +359,17 @@ To be sorted...</a:documentation>
         <data type="string"/>
       </attribute>
       <choice>
-        <ref name="surface_geoid_representation_named"/>
-        <ref name="surface_geoid_representation_source"/>
-        <ref name="surface_geoid_representation_shapefile"/>
+        <ref name="surface_geoid_representation_raster"/>
+        <ref name="surface_geoid_representation_polyline"/>
       </choice>
+      <element name="id">
+        <a:documentation>Identification the resulting boundary
+
+Default (for closed boundaries): 3
+Default (for open boundaries): 4</a:documentation>
+        <ref name="integer"/>
+        <ref name="comment"/>
+      </element>
       <choice>
         <element name="representation_type">
           <a:documentation>Representation type for the component brep
@@ -397,72 +443,43 @@ Enable this to match end to end</a:documentation>
       </optional>
     </element>
   </define>
-  <define name="surface_geoid_representation_named">
-    <element name="source">
+  <define name="surface_geoid_representation_raster">
+    <element name="form">
       <a:documentation>Boundary representation component source</a:documentation>
+      <attribute name="name">
+        <value>Raster</value>
+      </attribute>
+      <ref name="comment"/>
+      <ref name="surface_geoid_representation_raster_options"/>
+    </element>
+  </define>
+  <define name="surface_geoid_representation_polyline">
+    <element name="form">
+      <a:documentation>Boundary representation component source</a:documentation>
+      <attribute name="name">
+        <value>Polyline</value>
+      </attribute>
+      <ref name="comment"/>
+      <ref name="surface_geoid_representation_polyline_options"/>
+    </element>
+  </define>
+  <define name="surface_geoid_representation_polyline_options">
+    <element name="source">
+      <a:documentation>Dataset to source the polyline</a:documentation>
       <attribute name="name">
         <data type="string"/>
       </attribute>
       <ref name="comment"/>
     </element>
   </define>
-  <define name="surface_geoid_representation_shapefile">
+  <define name="surface_geoid_representation_raster_options">
     <element name="source">
-      <a:documentation>Boundary representation component source</a:documentation>
+      <a:documentation>Dataset to source the raster</a:documentation>
       <attribute name="name">
-        <value>shapefile</value>
-      </attribute>
-      <ref name="comment"/>
-      <ref name="surface_geoid_representation_shapefile_options"/>
-    </element>
-  </define>
-  <define name="surface_geoid_representation_source">
-    <element name="source">
-      <a:documentation>Boundary representation component source</a:documentation>
-      <attribute name="name">
-        <value>raster</value>
-      </attribute>
-      <ref name="comment"/>
-      <ref name="surface_geoid_representation_source_options"/>
-    </element>
-  </define>
-  <define name="surface_geoid_representation_shapefile_options">
-    <element name="source">
-      <a:documentation>Source shapefile
-(change to define a folder within project for location?)</a:documentation>
-      <attribute name="file_name">
         <data type="string"/>
       </attribute>
       <ref name="comment"/>
     </element>
-  </define>
-  <define name="surface_geoid_representation_source_options">
-    <choice>
-      <element name="source">
-        <a:documentation>Source raster dataset
-(change to define a folder within project for location?)
-
-Default: ~/tmp/dataset/rtopo/RTopo105b_50S.nc</a:documentation>
-        <attribute name="file_name">
-          <data type="string"/>
-        </attribute>
-        <ref name="comment"/>
-      </element>
-      <element name="source">
-        <a:documentation>Source raster dataset
-
-See: http://www.opendap.org
-
-See: http://opendap.deltares.nl
-
-See: http://www.esrl.noaa.gov/psd/data/gridded/using_dods.html</a:documentation>
-        <attribute name="name">
-          <value>OPeNDAP</value>
-        </attribute>
-        <data type="string"/>
-        <ref name="comment"/>
-      </element>
-    </choice>
     <optional>
       <element name="region">
         <a:documentation>Region specification - multiple?
@@ -583,6 +600,15 @@ Legacy: open (default true)</a:documentation>
         </element>
       </optional>
       <optional>
+        <element name="open_id">
+          <a:documentation>Open boundary ID
+
+Default (for open boundaries): 4</a:documentation>
+          <ref name="integer"/>
+          <ref name="comment"/>
+        </element>
+      </optional>
+      <optional>
         <element name="bounding_latitude">
           <a:documentation>Bounding latitude.
 Latitude of boundary to close the domain.
@@ -686,7 +712,7 @@ Default: False</a:documentation>
       <element name="name">
         <a:documentation>Metric definition</a:documentation>
         <attribute name="name">
-          <value>Metric name</value>
+          <value>Metric_name</value>
         </attribute>
         <element name="name">
           <ref name="anystring"/>
@@ -699,7 +725,7 @@ Default: False</a:documentation>
       <element name="name">
         <a:documentation>Mesh definition</a:documentation>
         <attribute name="name">
-          <value>Mesh name</value>
+          <value>Mesh_name</value>
         </attribute>
         <element name="name">
           <ref name="anystring"/>

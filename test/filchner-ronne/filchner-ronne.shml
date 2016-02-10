@@ -2,7 +2,7 @@
 <shingle_options>
   <initialisation_name>
     <string_value lines="1">filcher-ronne-shml</string_value>
-    <comment>-f shorelines.geo
+    <comment>-f filchner-ronne-legacy/shorelines.geo
 -n ../dataset/RTopo105b_50S.nc
 -no
 -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0
@@ -13,17 +13,41 @@
   </domain_type>
   <global_parameters/>
   <dataset name="RTopo">
-    <source name="raster">
-      <source file_name="../../dataset/RTopo105b_50S.nc"/>
-    </source>
+    <form name="Raster">
+      <source file_name="../dataset/RTopo105b_50S.nc" name="Local_file"/>
+    </form>
+    <projection name="Automatic"/>
+  </dataset>
+  <dataset name="abc">
+    <form name="Raster">
+      <source file_name="abc" name="Local_file"/>
+    </form>
     <projection name="Automatic"/>
   </dataset>
   <surface_geoid_representation name="filchner_ronne_ice_ocean">
+    <id>
+      <integer_value rank="0">9</integer_value>
+    </id>
     <output file_name="./shorelines.geo"/>
     <brep_component name="filchner_ronne_ice_ocean">
-      <source name="RTopo"/>
+      <form name="Raster">
+        <source name="RTopo"/>
+        <box>-85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0</box>
+      </form>
+      <id>
+        <integer_value rank="0">3</integer_value>
+      </id>
       <representation_type name="BSplines"/>
     </brep_component>
+    <closure>
+      <no_open/>
+      <open_id>
+        <integer_value rank="0">4</integer_value>
+      </open_id>
+      <bounding_latitude>
+        <real_value rank="0">-65.0</real_value>
+      </bounding_latitude>
+    </closure>
   </surface_geoid_representation>
   <verification>
     <brep_description file_name="./valid/filchner-ronne-legacy" name="brep_description"/>
