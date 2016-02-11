@@ -105,6 +105,7 @@ class universe():
   reportcache = None
   reportline = None
   
+  legacy = None
 
 
 

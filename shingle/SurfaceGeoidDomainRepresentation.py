@@ -87,6 +87,7 @@ class SurfaceGeoidDomainRepresentation(object):
     self.outputfile = universe.name
     self.minarea = 0.0
     self.region = 'True'
+    self.bounding_lat = universe.bounding_lat
 
     self.SetSpacing(universe.dx)
     self.SetPathsSelected(universe.boundaries)
@@ -123,7 +124,7 @@ class SurfaceGeoidDomainRepresentation(object):
 
   def ReadOptions(self):
     self.report('Reading surface geoid representation %(name)s', var = {'name':self.name}, include=False) 
-    path = '//surface_geoid_representation::%(name)s/' % {'name':self.name}
+    path = '/surface_geoid_representation::%(name)s/' % {'name':self.name}
     if libspud.have_option(path + 'id'):
       self.boundary.surface = libspud.get_option(path + 'id')
     if libspud.have_option(path + 'id_internal_suffix'):
@@ -140,8 +141,8 @@ class SurfaceGeoidDomainRepresentation(object):
 
       if libspud.have_option(path + 'closure/open_id'):
         self.boundary.open = libspud.get_option(path + 'closure/open_id')
-      #if libspud.have_option(path + 'closure/bounding_latitude')
-      #  self.?? = libspud.get_option(path + 'closure/bounding_latitude')
+      if libspud.have_option(path + 'closure/bounding_latitude'):
+        self.bounding_lat = libspud.get_option(path + 'closure/bounding_latitude')
       if libspud.have_option(path + 'closure/extend_to_latitude'):
         self.SetMaximumLatitude(libspud.get_option(path + 'closure/extend_to_latitude'))
   
@@ -157,8 +158,12 @@ class SurfaceGeoidDomainRepresentation(object):
     for d in self.brep_component.keys():
       self.brep_component[d].Show()
     
-    # For running form the commandline:
     if len(self.brep_component) == 0:
+      error('No component boundary representations found', fatal=True)
+    
+    # For running form the commandline:
+    #if len(self.brep_component) == 0:
+    if universe.legacy:
       self.brepsource = 'legacy'
       return
 
@@ -207,7 +212,6 @@ class SurfaceGeoidDomainRepresentation(object):
       raise NotImplementedError
     else:
       raise NotImplementedError
-
 
   def AddPath(self, source):
     self.AddContent(source.log)
@@ -710,7 +714,7 @@ Call DrawParallel;''' % { 'start_x':startp[0], 'start_y':startp[1], 'end_x':endp
     boundary = self.boundary
 
     dx = self.dx
-    parallel = universe.bounding_lat
+    parallel = self.bounding_lat
     index.start = index.point + 1
     loopstartpoint = index.start
     index = draw_parallel_explicit(self, [   -1.0, parallel], [ 179.0, parallel], index, None, dx)

@@ -68,6 +68,7 @@ def Prime(case=None):
     surface_geoid_rep_names = universe.surface_geoid_rep.keys()
     name = universe.surface_geoid_rep[surface_geoid_rep_names[0]].name
   except:
+    raise
     name = ''
     pass
 

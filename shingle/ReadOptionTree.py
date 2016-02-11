@@ -75,8 +75,8 @@ def ReadOptionTree(case=None):
 
   universe.physical_lines_separate = libspud.have_option('/global_parameters/physical_lines_separate')
 
+  universe.dataset = {} 
   dataset = universe.dataset
-  dataset = {}
 
   for number in range(libspud.option_count('/dataset')):
     d = Dataset(number=number)
@@ -96,8 +96,8 @@ def ReadOptionTree(case=None):
   for d in dataset.keys():
     dataset[d].Show()
 
+  universe.surface_geoid_rep = {} 
   surface_geoid_rep = universe.surface_geoid_rep
-  surface_geoid_rep = {} 
 
   for number in range(libspud.option_count('/surface_geoid_representation')):
     if len(surface_geoid_rep) > 0:

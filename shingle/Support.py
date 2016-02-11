@@ -87,7 +87,7 @@ class ReadArguments(object):
       elif (self.argument == '-plot'): universe.plotcontour = True
       elif (self.argument == '-stage'): universe.stage = self.NextArgument()
 
-      elif (self.argument == '-legacy'): self.legacy = True; report('Including legacy command line options')
+      elif (self.argument == '-legacy'): self.legacy = True; universe.legacy = True; report('Including legacy command line options')
       else: self.ReadLegacy()
 
     universe.region = expand_boxes(universe.region, universe.box)
@@ -204,6 +204,7 @@ def InitialiseGlobals():
   # Misc
   universe.reportcache = ''
   universe.reportline = 0
+  universe.legacy = False
 
 
 #   import ConfigParser
