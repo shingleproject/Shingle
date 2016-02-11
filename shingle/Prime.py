@@ -27,59 +27,15 @@ def main():
   """
 
   from Universe import universe
-  from Support import InitialiseGlobals, ReadArguments
+  from Support import ReadArguments
+  from Scenario import Scenario
   from Test import VerificationTestEngine
 
-  InitialiseGlobals()
   ReadArguments()
 
   if universe.testfolder is not None:
     VerificationTestEngine()
   else:
-    Prime(universe.optiontreesource)
+    Scenario(case=universe.optiontreesource)
 
-
-def Prime(case=None):
-
-  from Universe import universe
-  from Support import Initialise
-  from Test import VerificationTests
-  from SurfaceGeoidDomainRepresentation import SurfaceGeoidDomainRepresentation
-
-  from ReadOptionTree import ReadOptionTree
-
-  from Raster import Raster
-  from MeshGeneration import Mesh
-  from MetricGeneration import Metric
-
-  Initialise(case)
-  ReadOptionTree(case)
-
-  h = Metric(output = './metric.pos')
-  h.Generate(sourcefile = universe.source)
-
-  if universe.optiontreesource is None:
-    universe.dataset['legacy'] = Raster(location=universe.source, cache=universe.cache)
-  #s = universe.surface_geoid_rep[surface_geoid_rep_names[0]]
-  #r = Raster(source=universe.source, cache=universe.cache)
-  #r.Generate()
-
-  try:
-    surface_geoid_rep_names = universe.surface_geoid_rep.keys()
-    name = universe.surface_geoid_rep[surface_geoid_rep_names[0]].name
-  except:
-    raise
-    name = ''
-    pass
-
-  rep = SurfaceGeoidDomainRepresentation(name=name)
-  #import sys; sys.exit()
-  #rep.AddPath(r)
-  rep.Generate()
-
-
-  m = Mesh(source = universe.output)
-  m.Generate()
-
-  VerificationTests(rep)
 

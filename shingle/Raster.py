@@ -30,14 +30,17 @@ class Dataset(object):
   
   _number = None
   _path = None
+  _scenario = None
   name = None
   form = None
   source = None
   location = None
   projection = None
   
-  def __init__(self, number=None):
+  def __init__(self, scenario=None, number=None):
     self._number = number
+    if scenario is not None:
+      self._scenario = scenario
     self.Read()
 
   def Read(self):
@@ -57,8 +60,7 @@ class Dataset(object):
     self.location = filename
 
   def LocationFull(self):
-    from Support import PathFull
-    return PathFull(self.location)
+    return self._scenario.PathRelative(self.location)
 
   def Show(self):
     report('  %(blue)s%(number)s.%(end)s %(name)s', var = {'number':self._number, 'name':self.name })
@@ -81,10 +83,10 @@ class Raster(Dataset):
   # Log of object events
   log = ''
 
-  def __init__(self, name='Raster', location=None, cache=False, number=None):
+  def __init__(self, name='Raster', location=None, cache=False, number=None, scenario=None):
     if location is not None:
       self.location = location
-    Dataset.__init__(self, number=number)
+    Dataset.__init__(self, scenario=scenario, number=number)
     self.cache = cache
 
   def SourceExists(self):
@@ -154,23 +156,24 @@ class Raster(Dataset):
       pass
     return False
 
-  def GenerateContour(self):
-    from Import import read_paths
-    self.report('Generating contours', include = False)
-    self.pathall = read_paths(self, self.LocationFull())
 
-  def Generate(self):
-    import os
-
-    self.AppendParameters()
-    self.CheckSource()
-
-    if self.cache and os.path.exists(self.cachefile):
-      self.CacheLoad()
-    else:
-      self.GenerateContour()
-      self.CacheSave()
-
-    self.path = self.pathall
-    self.report('Paths found: ' + str(len(self.pathall)))
+#  def GenerateContour(self):
+#    from Import import read_paths
+#    self.report('Generating contours', include = False)
+#    self.pathall = read_paths(self, self.LocationFull())
+#
+#  def Generate(self):
+#    import os
+#
+#    self.AppendParameters()
+#    self.CheckSource()
+#
+#    if self.cache and os.path.exists(self.cachefile):
+#      self.CacheLoad()
+#    else:
+#      self.GenerateContour()
+#      self.CacheSave()
+#
+#    self.path = self.pathall
+#    self.report('Paths found: ' + str(len(self.pathall)))
 

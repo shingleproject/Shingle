@@ -23,6 +23,7 @@
 ##########################################################################
 
 from Universe import universe
+from Reporting import report, error
 import math
 from numpy import array
 
@@ -44,22 +45,22 @@ def point_diff(a,b):
 
 
 def point_diff_cartesian(a,b):
-  pa = project(a, type='proj_cartesian')
-  pb = project(b, type='proj_cartesian')
+  pa = project(a, projection_type='proj_cartesian')
+  pb = project(b, projection_type='proj_cartesian')
   diff = [ a[0] - b[0], a[1] - b[1] ]
   return diff
 
 def point_diff_cartesian(a,b):
-  pa = project(a, type='proj_cartesian')
-  pb = project(b, type='proj_cartesian')
+  pa = project(a, projection_type='proj_cartesian')
+  pb = project(b, projection_type='proj_cartesian')
   diff = [ pa[0] - pb[0], pa[1] - pb[1] ]
   return diff
 
 def compare_points(a, b, dx, proj='longlat'):
   tolerance = dx * 0.6
   if (proj == 'horizontal'):
-    pa = project(a, type='proj_cartesian')
-    pb = project(b, type='proj_cartesian')
+    pa = project(a, projection_type='proj_cartesian')
+    pb = project(b, projection_type='proj_cartesian')
     #print tolerance, pa, pb
     if ( not (abs(pa[1] - pb[1]) < tolerance) ):
       return False
@@ -82,13 +83,13 @@ def compare_points(a, b, dx, proj='longlat'):
       return False
 
 def p2(location):
-  p = project(project(location, type='proj_cartesian'), type='proj_cartesian_inverse')
+  p = project(project(location, projection_type='proj_cartesian'), projection_type='proj_cartesian_inverse')
   if (p[0] < 0.0):
     p[0] = p[0] + 360
   return p
 
 
-def project(location, type=None):
+def project(location, projection_type=None):
   from pyproj import Proj
   #params={'proj':'utm','zone':19}
   # Antartica - pig?:
@@ -96,9 +97,11 @@ def project(location, type=None):
   # UK:
   params={'proj':'utm','lon_0':'0','lat_0':'50'}
   proj = Proj(params)
-  if (type is None):
-    type = universe.projection
-  if (type == 'cartesian' ):
+  if (projection_type is None):
+    projection_type = universe.default.projection
+    # FIXME: Projection is not defined for some operations
+    #error('Projection type not defined')
+  if (projection_type == 'cartesian' ):
     longitude = location[0]
     latitude  = location[1]
     cos = math.cos
@@ -117,17 +120,17 @@ def project(location, type=None):
       y = cos( longitude_rad ) * cos( latitude_rad  ) / ( 1 + sin( latitude_rad ) );
     return array([ x, y ])
 
-  elif (type == 'proj_cartesian' ):
+  elif (projection_type == 'proj_cartesian' ):
     longitude = location[0]
     latitude  = location[1]
     return array(proj(longitude, latitude))
 
-  elif (type == 'proj_cartesian_inverse' ):
+  elif (projection_type == 'proj_cartesian_inverse' ):
     longitude = location[0]
     latitude  = location[1]
     return array(proj(longitude, latitude, inverse=True))
 
-  elif (type == 'hammer' ):
+  elif (projection_type == 'hammer' ):
     longitude = location[0]
     latitude  = location[1]
     cos = math.cos
@@ -142,10 +145,10 @@ def project(location, type=None):
     x = planet_radius * ( 2 * math.sqrt(2) * cos(latitude_rad) * sin(longitude_rad / 2.0) ) / m
     y = planet_radius * (     math.sqrt(2) * sin(latitude_rad) ) / m
     return array([ x, y ])
-  elif (type == 'longlat' ):
+  elif (projection_type == 'longlat' ):
     return location
   else:
-    print 'Invalid projection type:', universe.projection
+    print 'Invalid projection type:', projection_type
     sys.exit(1)
 
 

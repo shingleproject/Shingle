@@ -5,7 +5,7 @@ test cases to add:
   Antarctica_main_landmass_30s
   Filchner-Ronne_iceshelf
 
-
+FIXME: Projections
 
 Replace command line test behaviour with shml
 Add a line in shml for complete command line, and a switch to apply as an overide to all - for testing

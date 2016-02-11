@@ -22,6 +22,8 @@
 #  
 ##########################################################################
 
+import os
+
 colour = {
   'red', None,
   'green', None,
@@ -47,66 +49,66 @@ colour = {
 }
 
 class universe():
-  verbose = None
-  debug = None
+  verbose = True
+  debug = False
   optiontreesource = None
-  optiontreecontent = None
   testfolder = None
+  call = None
   
   # Extra options
-  plotcontour = None
-  cache = None
+  plotcontour = False
+  cache = False
+  generatemesh = False 
+  generatemetric = False
   stage = None
 
-  # IO arguments
-  source  = None
-  output = None
-
-  # Arguments
-  name = None
-  boundaries = None
-  boundariestoexclude = None
-  region = None
-  box = None
-  minarea = None
-  dx = None
-  extendtolatitude = None
-  open = None
-  bounding_lat = None
-  smooth_data = None
-  smooth_degree = None
-  include_iceshelf_ocean_cavities = None
-  projection = None
-  contourtype = None
-  closewithparallels = None
-  elementlength = None
-  generatemesh = None
-  generatemetric = None
-
-  planet_radius = None
-  dx_default = None
-  #fileid = 'G'
-  fileid = None
-  compound = None
-  #compound = True
-  more_bsplines = None
-  # Interestingly, if the following is true, gmsh generates a nice mesh, but complains (rightly so) on multiple definitions of a physical line id.  If false, the mesh contains extra 1d elements, which need parsing out!
-  physical_lines_separate = None
-  
-  # Store
-  call = None
-  dataset = {}
-  surface_geoid_rep = {}
-
-  # Misc
+  # Log
+  root = './'
+  logfilename = 'shingle.log'
+  log_active = False
   log = None
-  logfile = None
-  logfilename = None
-  reportcache = None
-  reportline = None
-  
-  legacy = None
 
+  class default():
+    # Global
+    name = 'shingle'
+    planet_radius = 6.37101e+06
+    physical_lines_separate = False 
+    
+    # Surface Geoid Representation
+    fileid = '' 
+    more_bsplines = False
+    open = True
+    bounding_lat = -50.0
+    extendtolatitude = None
+    closewithparallels = False
+    
+    # Brep
+    boundaries = []
+    boundariestoexclude = []
+    region = 'True'
+    minarea = 0
+    dx = 0.1
+    exclude_iceshelf_ocean_cavities = True
+    projection = 'cartesian'
+    contourtype = 'iceshelfcavity'
+    compound = False
+
+    # Metric
+    elementlength = 1.0E5
+
+    class boundary:
+      contour = 3
+      open    = 4
+      surface = 9
+  
+  class legacy():
+    source  = os.path.expanduser('~/tmp/dataset/rtopo/RTopo105b_50S.nc')
+    output = '.shorelines.geo'
+    legacy = False
+
+
+  #smooth_data = False
+  #smooth_degree = 100
 
 
 

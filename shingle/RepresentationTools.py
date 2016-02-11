@@ -59,7 +59,7 @@ def draw_parallel_explicit(rep, start, end, index, latitude_max, dx):
     rep.report('Drawing meridian to max latitude index %s at %f.2, %f.2 (to match %f.2)' % (index.point, current[0], current[1], latitude_max), debug=True)
     loc = project(current)
     rep.gmsh_format_point(index.point, loc, 0.0)
-  if universe.more_bsplines:
+  if rep.MoreBSplines():
     index = rep.gmsh_loop(index, loopstart, False, True, True)
 
     loopstart = index
@@ -79,7 +79,7 @@ def draw_parallel_explicit(rep, start, end, index, latitude_max, dx):
     rep.report('Drawing parallel index %s at %f.2 (to match %f.2), %f.2' % (index.point, current[0], end[0], current[1]), debug=True)
     loc = project(current)
     rep.gmsh_format_point(index.point, loc, 0.0)
-  if universe.more_bsplines:
+  if rep.MoreBSplines():
     index = rep.gmsh_loop(index, loopstart, False, True, True)
 
     loopstart = index

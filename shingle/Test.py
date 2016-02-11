@@ -25,7 +25,7 @@
 import os
 from Universe import universe
 from Reporting import error, report
-from Prime import Prime
+from Scenario import Scenario
 from Spud import libspud
 
 class VerificationTestEngine(object):
@@ -81,7 +81,7 @@ class VerificationTestEngine(object):
       else: locationstr = location 
       report('%(number)'+spacing+'s %(location)s', var={'number':numberstr, 'location':locationstr}, force=True)
       report('%(blue)sGenerating representation%(end)s%(grey)s...%(end)s', force=True, indent=1) 
-      Prime(case=location)
+      Scenario(case=location)
 
 
 class VerificationTests(object):
@@ -93,9 +93,8 @@ class VerificationTests(object):
 
   def TestDiff(self, valid):
     import difflib
-    from Support import PathFull
-    fullvalid = PathFull(valid)
-    fullpath = PathFull(self.representation.outputfile)
+    fullvalid = self.representation.scenario.PathRelative(valid)
+    fullpath = self.representation.scenario.PathRelative(self.representation.Output())
 
     if not os.path.exists(fullvalid):
       error('Cannot locate valid file: ' + fullvalid)
@@ -120,8 +119,12 @@ class VerificationTests(object):
           report('%(green)s%(change)s%(end)s', var={'change':change.strip()}, indent=2, force=True)
         else:
           report('%(red)s%(change)s%(end)s', var={'change':change.strip()}, indent=2, force=True)
+      if (total > 16) or '+ // Paths found valid:' in change:
+        report('%(green)s...%(end)s', indent=2, force=True)
+        break
     file1.close()
     file2.close()
+    #State 'Over 10' on break
     #report('Total differences: %(total)s' % {'total':total}, indent=2, force=True)
     if total == 0:
       return True
@@ -146,7 +149,7 @@ class VerificationTests(object):
       if result:
         passes += 1
       report('%(blue)sTest %(number)s:%(end)s %(yellow)s%(name)s%(end)s' + ResultToString(result), var={'name':name, 'number':number + 1}, force=True, indent=2) 
-    report('%(blue)sResult:%(end)s %(yellow)s%(name)s%(end)s' + ResultToString(passes == total, show_failures=True, failures=total-passes), var={'name':universe.name, 'number':number + 1, 'failures':total-passes}, force=True, indent=1) 
+    report('%(blue)sResult:%(end)s %(yellow)s%(name)s%(end)s' + ResultToString(passes == total, show_failures=True, failures=total-passes), var={'name':self.representation.scenario.Name(), 'number':number + 1, 'failures':total-passes}, force=True, indent=1) 
       
 
 def ResultToString(result, show_failures=False, failures=None):

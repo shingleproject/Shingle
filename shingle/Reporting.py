@@ -71,14 +71,48 @@ def addcolour(dic, colourful = True):
     result.update(dic)
     return result
 
-def LogEmpty():
-  open(universe.logfile, 'w').close()
+class Log(object):
 
-def Log(text):
-  from os import linesep
-  f = open(universe.logfile, 'a')
-  f.write(text + linesep)
-  f.close()
+  _active = False
+  _logfilename = None
+  _logfullpath = None
+
+
+  def __init__(self, filename=None, on=False):
+    if filename is not None:
+      self._logfilename = filename
+    else:
+      self._logfilename = universe.logfilename
+    self._active = on
+    self._Empty
+
+  def On(self):
+    self._active = True
+
+  def Off(self):
+    self._active = False
+
+  def _isOn(self):
+    return self._active
+
+  def _Location(self):
+    from Support import PathFull
+    return PathFull(self._logfilename)
+    
+  def _Empty(self):
+    if not self._isOn():
+      return
+    open(self._Location(), 'w').close()
+    
+  def Write(self, text):
+    if not self._isOn():
+      return
+    from os import linesep
+    f = open(universe.logfile, 'a')
+    f.write(text + linesep)
+    f.close()
+
+
 
 def report(text, var = {}, debug = False, force = False, colourful = True, indent=0):
   # Link to rep.report
@@ -88,8 +122,8 @@ def report(text, var = {}, debug = False, force = False, colourful = True, inden
     return
   if universe.verbose or force:
     print(spacer + text % addcolour(var, colourful = colourful))
-  if universe.logfile is not None:
-    Log(spacer + text % addcolour(var, colourful = False))
+  if universe.log is not None:
+    universe.log.Write(spacer + text % addcolour(var, colourful = False))
 
 def error(text, var = {}, fatal=False):
   suffix = ''
@@ -105,44 +139,4 @@ def printvv(text):
   if (universe.debug):
     print text
 
-
-
-#def printv(text, include = True):
-#  if (universe.verbose):
-#    print text
-#  if include:
-#    gmsh_comment(text)
-
-# def report(string, forced=False, noreturn=False, debug=False, routine=False):
-#   # routine messages do not get added to consecutive reports, cauing error on multiple reports
-#   if debug and not universe.debug: return
-#   if (not debug and not routine):
-#     # Only change report lines for non-debug messages
-#     universe.reportline += 1
-#     # Don't include debug messages in repo commits
-#     universe.reportcache = universe.reportcache + string + os.linesep
-#   if (universe.verbose or forced):
-#     if logging():
-#       if noreturn:
-#         universe.bufferreturned = False
-#       else:
-#         string = string + os.linesep
-#         if not universe.bufferreturned:
-#           string = os.linesep + string
-#           universe.bufferreturned = True
-#       f = open(universe.log, 'ab')
-#       # Can cause trouble!
-#       f.write(string.encode('utf-8'))
-#       f.close()
-#     else:
-#       if noreturn:
-#         universe.bufferreturned = False
-#         sys.stdout.write(string.encode('utf-8'))
-#         sys.stdout.flush()
-#       else: 
-#         if not universe.bufferreturned:
-#           print ''.encode('utf-8')
-#           universe.bufferreturned = True
-#         print string.encode('utf-8')
-# 
 

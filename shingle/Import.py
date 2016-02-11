@@ -27,7 +27,8 @@ from Universe import universe
 from Reporting import error, report
 from Scientific.IO import NetCDF
 
-def read_rtopo(ref, filename):
+
+def read_rtopo(brep, ref, filename):
   file = NetCDF.NetCDFFile(filename, 'r')
   #variableNames = fileN.variables.keys() 
   try:
@@ -35,7 +36,8 @@ def read_rtopo(ref, filename):
     lat = file.variables['lat'][:] 
   except:
     error('Warning: Problem reading variables lon and lat.')
-  if (universe.contourtype=='iceshelfcavity'):
+  contourtype = brep.ContourType()
+  if (contourtype=='iceshelfcavity'):
     #             % 2
     # 0 ocean    1
     # 1 ice      0
@@ -45,56 +47,56 @@ def read_rtopo(ref, filename):
       field = file.variables['amask'][:, :] 
     except:
       field = file.variables['z'][:, :] 
-    if universe.include_iceshelf_ocean_cavities == True:
+    if brep.ExcludeIceshelfCavities():
       ref.report('Including iceshelf ocean cavities')
       field = field % 2
     else:
       ref.report('Excluding iceshelf ocean cavities')
       field[field>0.5]=1 
-  elif (universe.contourtype=='icesheet'):
+  elif (contourtype=='icesheet'):
     lon = file.variables['lon'][:] 
     lat = file.variables['lat'][:] 
     field = file.variables['height'][:, :] 
     field[field>0.001]=1 
-  elif (universe.contourtype=='z'):
+  elif (contourtype=='z'):
     lon = file.variables['lon'][:] 
     lat = file.variables['lat'][:] 
     field = file.variables['z'][:, :] 
     field[field<10.0]=0
     field[field>=10.0]=1
-  elif (universe.contourtype=='ocean10m'):
+  elif (contourtype=='ocean10m'):
     lon = file.variables['lon'][:] 
     lat = file.variables['lat'][:] 
     field = file.variables['z'][:, :] 
     field[field<=-10.0]=-10.0
     field[field>-10.0]=0
     field[field<=-10.0]=1
-  elif (universe.contourtype=='zmask'):
+  elif (contourtype=='zmask'):
     lon = file.variables['lon'][:] 
     lat = file.variables['lat'][:] 
     field = file.variables['z'][:, :] 
-  elif (universe.contourtype=='xyz'):
+  elif (contourtype=='xyz'):
     lon = file.variables['x'][:] 
     lat = file.variables['y'][:] 
     field = file.variables['z'][:, :] 
     field[field>=-10.0]=1
     field[field<-10.0]=0
-  elif (universe.contourtype=='noshelf'):
+  elif (contourtype=='noshelf'):
     lon = file.variables['lon'][:] 
     lat = file.variables['lat'][:] 
     field = file.variables['noshelf'][:, :] 
   # Greenland Standard Data Set
-  elif (universe.contourtype=='gsds'):
+  elif (contourtype=='gsds'):
     lon = file.variables['x1'][:] 
     lat = file.variables['y1'][:] 
     field = file.variables['usrf'][0,:, :] 
     field[field>0.001]=1 
-  elif (universe.contourtype=='mask'):
+  elif (contourtype=='mask'):
     lon = file.variables['longrid'][:,:] 
     lat = file.variables['latgrid'][:,:] 
     field = file.variables['grounding'][:, :] 
   # Greenland Standard Data Set, to zero ice thickness
-  elif (universe.contourtype=='gsdsz'):
+  elif (contourtype=='gsdsz'):
     lon = file.variables['x1'][:] 
     lat = file.variables['y1'][:] 
     field  = file.variables['thk'][0,:, :] 
@@ -105,14 +107,14 @@ def read_rtopo(ref, filename):
     field[field<10.0]=0
     field[field>=10.0]=1
     #field[field>0.001]=1 
-  elif (universe.contourtype=='gebco'):
+  elif (contourtype=='gebco'):
     # Currently non-functional - needs 2d z array
     lon = file.variables['x_range'][:] 
     lat = file.variables['y_range'][:] 
     field = file.variables['z_range'][:] 
     field[field<10.0]=0
     field[field>=10.0]=1
-  elif (universe.contourtype=='gsdszc'):
+  elif (contourtype=='gsdszc'):
     lon = file.variables['x1'][:] 
     lat = file.variables['y1'][:] 
     height  = file.variables['usrf'][0,:, :] 
@@ -124,7 +126,7 @@ def read_rtopo(ref, filename):
     #field[field<0.001]=0 
     #field[field>=0.001]=1 
   else:
-    error("Contour type not recognised, '" + universe.contourtype + "'", fatal=True)
+    error("Contour type not recognised, '" + contourtype + "'", fatal=True)
     sys.exit(1)
 
   return lon, lat, field
@@ -202,7 +204,7 @@ def read_shape(filename):
 
   return paths
 
-def read_paths(rep, filename):
+def read_paths(brep, rep, filename):
   contour_required = False
   base, ext = os.path.splitext(filename)
   ext = ext.lstrip('.')
@@ -212,7 +214,7 @@ def read_paths(rep, filename):
   elif ext in ['shp']:
     paths = read_shape(filename) 
   else: # NetCDF .nc files
-    lon, lat, field = read_rtopo(rep, filename)
+    lon, lat, field = read_rtopo(brep, rep, filename)
     contour_required = True
 
   if (False):
