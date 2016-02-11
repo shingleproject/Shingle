@@ -40,9 +40,10 @@
       <open_id>
         <integer_value rank="0">4</integer_value>
       </open_id>
-      <bounding_latitude>
+      <extend_to_latitude>
         <real_value rank="0">-65.0</real_value>
-      </bounding_latitude>
+      </extend_to_latitude>
+      <close_with_parallels/>
     </closure>
   </surface_geoid_representation>
   <verification>

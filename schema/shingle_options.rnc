@@ -534,6 +534,7 @@ surface_geoid_representation_closure =
           comment
         }?,
         ## Extend to latitude.
+        ## Note it is appropriate to enable 'close_with_parallels' with this option.
         ##
         ## Latitude to extend open domain to.
         ##

@@ -111,6 +111,7 @@ class VerificationTests(object):
     changes = (x for x in diff if x.startswith('- ') or x.startswith('+ '))
 
     show = True
+    broken = False
     total = 0
     for change in changes:
       total += 1
@@ -119,11 +120,14 @@ class VerificationTests(object):
           report('%(green)s%(change)s%(end)s', var={'change':change.strip()}, indent=2, force=True)
         else:
           report('%(red)s%(change)s%(end)s', var={'change':change.strip()}, indent=2, force=True)
-      if (total > 16) or '+ // Paths found valid:' in change:
+      if '+ // Paths found valid:' in change: broken = True
+      #if total > 16: broken = True
+      if broken:
         report('%(green)s...%(end)s', indent=2, force=True)
         break
     file1.close()
     file2.close()
+    report('vim -d %(valid)s %(new)s', var = {'valid':valid, 'new':fullpath}, indent=2, force=True)
     #State 'Over 10' on break
     #report('Total differences: %(total)s' % {'total':total}, indent=2, force=True)
     if total == 0:
