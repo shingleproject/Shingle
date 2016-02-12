@@ -37,12 +37,16 @@ class ReadMultipleInstance(object):
   _path = None
   name = None
   
-  def __init__(self, prefix, number):
+  def __init__(self, prefix, number, name=None):
     self._prefix = prefix
     self._number = number
     self._path = None
-    self.name = None
-    self.Read()
+    if name is None:
+      self.name = None
+      self.Read()
+    else:
+      self.name = name
+      self.path = prefix
 
   def Read(self):
     self.name = libspud.get_option('%(prefix)s[%(number)d]/name' % {'prefix':self._prefix, 'number':self._number} )
@@ -78,11 +82,9 @@ class Scenario(object):
 
   def __init__(self, case = None):
     if (case is None) and universe.legacy.legacy:
-      self.Legacy()
-      return
+      case = self.Legacy()
     self._filename = case
-    libspud.load_options(case)
-    self._loaded = True
+    self.LoadOptions()
     self.Dataset()
     self.SurfaceGeoidRep()
     log = Log(on=universe.log_active)
@@ -101,6 +103,12 @@ class Scenario(object):
     if path.startswith('/'):
       return path
     return os.path.realpath(os.path.join(self.Root(), path))
+
+  def LoadOptions(self):
+    if universe.legacy.legacy:
+      return
+    libspud.load_options(case)
+    self._loaded = True
 
   def PlanetRadius(self):
     if self._loaded and libspud.have_option('/global_parameters/planet_radius'):
@@ -184,7 +192,12 @@ class Scenario(object):
       return ''.join([ ( prefix + line ) for line in raw_content.splitlines(True) ])
 
   def Legacy(self):
-    self._dataset['legacy'] = Raster(location=universe.legacy.source)
+    self._dataset['legacy'] = Raster(location=universe.legacy.source, scenario=self)
+    self._dataset_read = True
+    self._surface_geoid_rep['legacy'] = ReadMultipleInstance('/legacy', 1, name='legacy')
+
+    self._surface_geoid_rep_read = True
+    return universe.legacy.output
 
   def SurfaceGeoidRepFirstName(self):
     if len(self.SurfaceGeoidRep()) == 0:
@@ -212,7 +225,6 @@ class Scenario(object):
     # #import sys; sys.exit()
     # #rep.AddPath(r)
     rep.Generate()
-
 
     #print s.RawContent(comment=True)
 

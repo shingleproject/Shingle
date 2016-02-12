@@ -100,6 +100,8 @@ class universe():
       contour = 3
       open    = 4
       surface = 9
+    
+    plot_backend = None
   
   class legacy():
     source  = os.path.expanduser('~/tmp/dataset/rtopo/RTopo105b_50S.nc')

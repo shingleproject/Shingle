@@ -231,6 +231,7 @@ def read_paths(brep, rep, filename):
   else:
     if contour_required:
       import matplotlib
+      universe.plot_backend = matplotlib.get_backend()
       matplotlib.use('Agg')
       from pylab import contour
       report("Found raster, sizes: lat %(lat)d, lon %(lon)d, shape %(shape)s", var = {'lon':len(lon), 'lat':len(lat), 'shape':str(field.shape)} )

@@ -42,6 +42,7 @@ from Import import read_paths
 from StringOperations import expand_boxes, list_to_comma_separated, list_to_space_separated
 from RepresentationTools import draw_parallel_explicit
 from Spud import libspud
+from Plot import PlotContours
 
 class BRepComponent():
 
@@ -113,7 +114,10 @@ class BRepComponent():
 
   def Name(self):
     if self._name is None:
-      self._name = libspud.get_option('/surface_geoid_representation::%(name)s/brep_component[%(number)d]/name' % {'name':self._surface_rep.name, 'number':self.number})
+      if libspud.have_option('/surface_geoid_representation::%(name)s/brep_component[%(number)d]/name' % {'name':self._surface_rep.name, 'number':self.number}):
+        self._name = libspud.get_option('/surface_geoid_representation::%(name)s/brep_component[%(number)d]/name' % {'name':self._surface_rep.name, 'number':self.number})
+      else:
+        self._name = 'legacy'
     return self._name
 
   def Id(self): 
@@ -130,7 +134,10 @@ class BRepComponent():
 
   def RepresentationType(self):
     if self._representation_type is None:
-      self._representation_type = libspud.get_option(self._path + 'representation_type[0]/name')
+      if libspud.have_option(self._path + 'representation_type[0]/name'):
+        self._representation_type = libspud.get_option(self._path + 'representation_type[0]/name')
+      else:
+        return 'Raster'
     return self._representation_type
   
   def isCompound(self):
@@ -138,7 +145,10 @@ class BRepComponent():
 
   def FormType(self):
     if self._form_type is None:
-      self._form_type = libspud.get_option(self._path + 'form[0]/name')
+      if libspud.have_option(self._path + 'form[0]/name'):
+        self._form_type = libspud.get_option(self._path + 'form[0]/name')
+      else:
+        self._form_type = 'Raster'
     # Useful to catch this at the moment:
     if self._form_type == 'Polyline':
       raise NotImplementedError
@@ -155,7 +165,10 @@ class BRepComponent():
     return self._formpath
 
   def Source(self):
-    return libspud.get_option(self.FormPath() + 'source[0]/name')
+    if libspud.have_option(self.FormPath() + 'source[0]/name'):
+      return libspud.get_option(self.FormPath() + 'source[0]/name')
+    else:
+      return 'legacy'
 
   # Raster options
   #if form == 'Raster':
@@ -164,7 +177,11 @@ class BRepComponent():
     if libspud.have_option(self.FormPath() + 'region'):
       region = libspud.get_option(self.FormPath() + 'region')
     if libspud.have_option(self.FormPath() + 'box'):
-      region = expand_boxes(region, libspud.get_option(self.FormPath() + 'box').split() )
+      box = libspud.get_option(self.FormPath() + 'box').split()
+      from os import linesep
+      self.gmsh_comment('Imposing box region: ' + (linesep + '//    ').join([''] + box))
+      region = expand_boxes(region, box )
+      self.gmsh_comment('Region of interest: ' + region)
     return region
 
   def MinimumArea(self):
@@ -489,39 +506,7 @@ LoopEnd%(loopnumber)i = IP + %(pointend)i;''' % { 'pointstart':index.start, 'poi
 
 
     if (universe.plotcontour):
-      import matplotlib.pyplot as plt
-      import matplotlib.patches as patches
-      import matplotlib.collections as collections
-      import matplotlib.font_manager as font_manager
-      fig = plt.figure()
-      #plt.plot(lon,lat, 'g-')
-      #plt.show
-      #plt.imshow(lon,lat,field)
-
-      p = [self._pathall[0].vertices, self._pathall[0].vertices] 
-
-      #bol=patches.PathPatch(self._pathall[0])
-      ax = plt.subplot(111)
-      #ax.add_patch(bol, facecolor='none')
-      pathcol = []
-      for num in pathvalid: 
-        pathcol.append(self._pathall[num-1].vertices)
-      col = collections.LineCollection(pathcol)
-      ax.add_collection(col, autolim=True)
-
-      font = font_manager.FontProperties(family='sans-serif', weight='normal', size=8)
-      for num in pathvalid: 
-        #ax.annotate(str(num), (self._pathall[num-1].vertices[0][0], self._pathall[num-1].vertices[0][1]),
-        #              horizontalalignment='center', verticalalignment='center')
-        ax.annotate(str(num), (self._pathall[num-1].vertices[0][0], self._pathall[num-1].vertices[0][1]),
-          xytext=(-20,20), textcoords='offset points', ha='center', va='bottom',
-          bbox=dict(boxstyle='round,pad=0.2', fc='yellow', alpha=0.8),
-          arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0.5', 
-          color='red'), fontproperties=font)
-
-      ax.autoscale()
-      plt.show()
-      sys.exit(0)
+      PlotContours(self._pathall, pathvalid)
 
     for num in pathvalid:
       if (self._pathall[num-1] == None):

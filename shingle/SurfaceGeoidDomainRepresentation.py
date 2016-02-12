@@ -151,6 +151,11 @@ class SurfaceGeoidDomainRepresentation(object):
   def BRepComponents(self):
     if self._brep_components is None:
       self._brep_components = {}
+
+      if universe.legacy.legacy:
+        b = BRepComponent(self, 1)
+        self._brep_components[b.Name()] = b
+
       path = '/surface_geoid_representation::%(name)s/' % {'name':self.name}
       for number in range(libspud.option_count(path + 'brep_component')):
         if len(self._brep_components) > 0:
@@ -158,6 +163,7 @@ class SurfaceGeoidDomainRepresentation(object):
           break
         b = BRepComponent(self, number)
         self._brep_components[b.Name()] = b
+
       if len(self._brep_components) == 0:
         error('No component boundary representations found', fatal=True)
       report('Found %(number)d component boundary representations:' % { 'number':len(self._brep_components) })
