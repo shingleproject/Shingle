@@ -47,6 +47,7 @@ def PathFull(path):
 class ReadArguments(object):
 
   _stages = ['path', 'brep', 'mesh', 'metric']
+  _box = []
   
   def __init__(self):
     from sys import argv
@@ -70,7 +71,6 @@ class ReadArguments(object):
 
   def Read(self):
     from Universe import universe
-    box = []
     while (len(self.arguments) > 0):
       self.argument = self.NextArgument()
       if   (self.argument == '-h'): usage()
@@ -91,7 +91,7 @@ class ReadArguments(object):
       elif (self.argument == '-legacy'): self.legacy = True; universe.legacy.legacy = True; report('Including legacy command line options')
       else: self.ReadLegacy()
 
-    universe.default.region = expand_boxes(universe.default.region, box)
+    universe.default.region = expand_boxes(universe.default.region, self._box)
   
     # Argument sanity check
     if universe.stage is not None:
@@ -129,7 +129,7 @@ class ReadArguments(object):
         universe.boundariestoexclude.append(int(self.NextArgument()))
     elif (self.argument == '-b'):
       while ((len(self.arguments) > 0) and ((self.arguments[0][0] != '-') or ( (self.arguments[0][0] == '-') and (self.arguments[0][1].isdigit()) ))):
-        box.append(self.NextArgument())
+        self._box.append(self.NextArgument())
 
 
 

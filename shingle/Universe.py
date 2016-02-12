@@ -103,7 +103,7 @@ class universe():
   
   class legacy():
     source  = os.path.expanduser('~/tmp/dataset/rtopo/RTopo105b_50S.nc')
-    output = '.shorelines.geo'
+    output = './shorelines.geo'
     legacy = False
 
 

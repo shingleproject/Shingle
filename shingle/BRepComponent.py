@@ -207,8 +207,6 @@ class BRepComponent():
 
   def Dataset(self):
     name = self.Source()
-    print name
-    print self._surface_rep.scenario.Dataset()
     return self._surface_rep.scenario.Dataset()[name]
 
 

@@ -6,7 +6,8 @@
 -n ../dataset/RTopo105b_50S.nc
 -no
 -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0
--lat '-65.0'</comment>
+-lat '-65.0'
+</comment>
   </initialisation_name>
   <domain_type>
     <string_value lines="1">ocean_ice_shelf</string_value>

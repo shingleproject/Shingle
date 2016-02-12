@@ -127,7 +127,7 @@ class VerificationTests(object):
         break
     file1.close()
     file2.close()
-    report('vim -d %(valid)s %(new)s', var = {'valid':valid, 'new':fullpath}, indent=2, force=True)
+    report('%(grey)svim -d %(valid)s %(new)s%(end)s', var = {'valid':fullvalid, 'new':fullpath}, indent=2, force=True)
     #State 'Over 10' on break
     #report('Total differences: %(total)s' % {'total':total}, indent=2, force=True)
     if total == 0:

@@ -77,7 +77,7 @@ class Scenario(object):
   _surface_geoid_rep = {}
 
   def __init__(self, case = None):
-    if case is None:
+    if (case is None) and universe.legacy.legacy:
       self.Legacy()
       return
     self._filename = case
@@ -185,7 +185,6 @@ class Scenario(object):
 
   def Legacy(self):
     self._dataset['legacy'] = Raster(location=universe.legacy.source)
-    self._legacy = universe.legacy.output
 
   def SurfaceGeoidRepFirstName(self):
     if len(self.SurfaceGeoidRep()) == 0:

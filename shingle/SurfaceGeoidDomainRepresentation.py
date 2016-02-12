@@ -95,8 +95,10 @@ class SurfaceGeoidDomainRepresentation(object):
     from Support import FilenameAddExtension
     if libspud.have_option(self._path + 'output'):
       output = libspud.get_option(self._path + 'output/file_name')
-    else:
+    elif universe.legacy.legacy:
       output = universe.legacy.output
+    else:
+      output = self.scenario.Name()
     # Update output file name used to write representation
     return FilenameAddExtension(output, 'geo')
 
