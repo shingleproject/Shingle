@@ -48,11 +48,11 @@ def read_rtopo(brep, ref, filename):
     except:
       field = file.variables['z'][:, :] 
     if brep.ExcludeIceshelfCavities():
-      ref.report('Including iceshelf ocean cavities')
-      field = field % 2
-    else:
       ref.report('Excluding iceshelf ocean cavities')
       field[field>0.5]=1 
+    else:
+      ref.report('Including iceshelf ocean cavities')
+      field = field % 2
   elif (contourtype=='icesheet'):
     lon = file.variables['lon'][:] 
     lat = file.variables['lat'][:] 

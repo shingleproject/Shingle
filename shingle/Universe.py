@@ -88,7 +88,7 @@ class universe():
     region = 'True'
     minarea = 0
     dx = 0.1
-    exclude_iceshelf_ocean_cavities = True
+    exclude_iceshelf_ocean_cavities = False
     projection = 'cartesian'
     contourtype = 'iceshelfcavity'
     compound = False

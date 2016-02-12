@@ -107,7 +107,7 @@ class Scenario(object):
   def LoadOptions(self):
     if universe.legacy.legacy:
       return
-    libspud.load_options(case)
+    libspud.load_options(self._filename)
     self._loaded = True
 
   def PlanetRadius(self):
