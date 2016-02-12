@@ -12,11 +12,12 @@ shingle.log
 
 dataset
 test/Amundsen_Sea/Amundsen_Sea.geo
-test/Antarctica_all/Filchner-Ronne.geo
-test/Antarctica_main_landmass/Filchner-Ronne.geo
-test/Antarctica_main_landmass_30s/Filchner-Ronne.geo
+test/Antarctica_all/Antarctica_all.geo
+test/Antarctica_main_landmass/Antarctica_main_landmass.geo
+test/Antarctica_main_landmass_30s/Antarctica_main_landmass_30s.geo
 test/Filchner-Ronne/Filchner-Ronne.geo
-test/Filchner-Ronne_iceshelf/Filchner-Ronne.geo
+test/Filchner-Ronne_iceshelf/Filchner-Ronne_iceshelf.geo
+
 test/legacy/amundsen_sea/
 test/legacy/antarctica_all/
 test/legacy/antarctica_main_landmass/
