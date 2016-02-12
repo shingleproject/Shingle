@@ -6,6 +6,7 @@ test cases to add:
   Filchner-Ronne_iceshelf
 
 FIXME: Projections
+FIXME: excldue iceshelves option
 Move output to global option, not part of surface_geoid?
 
 

@@ -121,6 +121,9 @@ class VerificationTests(object):
     broken = False
     total = 0
     for change in changes:
+      if '// Arguments:' in change:
+        # Improve to leave this line out of diff and cmp?
+        continue
       total += 1
       if show:
         if change.startswith('+ '):
@@ -138,7 +141,8 @@ class VerificationTests(object):
     #State 'Over 10' on break
     #report('Total differences: %(total)s' % {'total':total}, indent=2, force=True)
     if total == 0:
-      return True
+      error('File compare picked up a difference, but detailed diff showed none - potentially a difference in arguments comment line?')
+      #return True
     return False
 
 
