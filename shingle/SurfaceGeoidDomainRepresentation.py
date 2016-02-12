@@ -96,7 +96,9 @@ class SurfaceGeoidDomainRepresentation(object):
     if libspud.have_option(self._path + 'output'):
       output = libspud.get_option(self._path + 'output/file_name')
     elif universe.legacy.legacy:
-      output = universe.legacy.output
+      # Dirname picked up in scenario name and Root()
+      from os.path import basename
+      output = basename(universe.legacy.output)
     else:
       output = self.scenario.Name()
     # Update output file name used to write representation
