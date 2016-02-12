@@ -65,7 +65,6 @@ def usage(unknown = None):
    -no                         | Do not include open boundaries
    -mesh                       | Mesh geometry
    -lat latitude               | Latitude to extend open domain to
-   -s scenario                 | Select scenario (in development)
    -el                         | Element length (default 1.0E5)
    -metric                     | Generate background metric based on bathymetry
                                \_____________________________________________

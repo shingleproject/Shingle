@@ -101,32 +101,30 @@ class ReadArguments(object):
   def ReadLegacy(self):
     from Universe import universe
     if not self.legacy: return
-    if (self.argument == '-s'): universe.scenario = str(self.NextArgument()); universe=scenario(universe.scenario)
-    elif (self.argument == '-n'): universe.legacy.source  = self.NextArgument();
+    if (self.argument == '-n'): universe.legacy.source  = self.NextArgument();
     elif (self.argument == '-f'): universe.legacy.output = self.NextArgument();
-    elif (self.argument == '-t'): universe.contourtype = self.NextArgument()
-    elif (self.argument == '-r'): universe.region = self.NextArgument()
-    elif (self.argument == '-m'): universe.projection = self.NextArgument()
-    elif (self.argument == '-dx'): universe.dx = float(self.NextArgument())
-    elif (self.argument == '-lat'): universe.extendtolatitude = float(self.NextArgument()); universe.closewithparallels = True
-    elif (self.argument == '-a'): universe.minarea = float(self.NextArgument())
-    elif (self.argument == '-bounding_latitude'): universe.bounding_lat =float(self.NextArgument())
-    elif (self.argument == '-bl'): universe.bounding_lat = float(self.NextArgument())
+    elif (self.argument == '-t'): universe.default.contourtype = self.NextArgument()
+    elif (self.argument == '-r'): universe.default.region = self.NextArgument()
+    elif (self.argument == '-m'): universe.default.projection = self.NextArgument()
+    elif (self.argument == '-dx'): universe.default.dx = float(self.NextArgument())
+    elif (self.argument == '-lat'): universe.default.extendtolatitude = float(self.NextArgument()); universe.default.closewithparallels = True
+    elif (self.argument == '-a'): universe.default.minarea = float(self.NextArgument())
+    elif (self.argument == '-bounding_latitude'): universe.default.bounding_lat =float(self.NextArgument())
+    elif (self.argument == '-bl'): universe.default.bounding_lat = float(self.NextArgument())
     elif (self.argument == '-smooth_data'):
-      universe.smooth_degree = int(self.NextArgument())
-      universe.smooth_data = True
+      universe.default.smooth_degree = int(self.NextArgument())
+      universe.default.smooth_data = True
     elif (self.argument == '-no'): universe.open = False
-    elif (self.argument == '-exclude_ice_shelves'): universe.exclude_iceshelf_ocean_cavities = False
+    elif (self.argument == '-exclude_ice_shelves'): universe.default.exclude_iceshelf_ocean_cavities = False
     elif (self.argument == '-mesh'): universe.generatemesh = True
-    elif (self.argument == '-m'): universe.projection = self.NextArgument()
-    elif (self.argument == '-el'): universe.elementlength = self.NextArgument()
     elif (self.argument == '-metric'): universe.generatemetric = True
+    elif (self.argument == '-el'): universe.default.elementlength = self.NextArgument()
     elif (self.argument == '-p'):
       while ((len(self.arguments) > 0) and (self.arguments[0][0] != '-')):
-        universe.boundaries.append(int(self.NextArgument()))
+        universe.default.boundaries.append(int(self.NextArgument()))
     elif (self.argument == '-pn'):
       while ((len(self.arguments) > 0) and (self.arguments[0][0] != '-')):
-        universe.boundariestoexclude.append(int(self.NextArgument()))
+        universe.default.boundariestoexclude.append(int(self.NextArgument()))
     elif (self.argument == '-b'):
       while ((len(self.arguments) > 0) and ((self.arguments[0][0] != '-') or ( (self.arguments[0][0] == '-') and (self.arguments[0][1].isdigit()) ))):
         self._box.append(self.NextArgument())

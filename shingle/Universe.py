@@ -96,6 +96,9 @@ class universe():
     # Metric
     elementlength = 1.0E5
 
+    #smooth_data = False
+    #smooth_degree = 100
+
     class boundary:
       contour = 3
       open    = 4
@@ -109,8 +112,6 @@ class universe():
     legacy = False
 
 
-  #smooth_data = False
-  #smooth_degree = 100
 
 
 
