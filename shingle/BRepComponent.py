@@ -52,6 +52,10 @@ class BRepComponent():
   _form_type = None
   _surface_rep = None
   _representation_type = None
+  
+  _boundary = None
+  _boundary_to_exclude = None
+
   index = None
 
   def __init__(self, surface_rep, number):
@@ -210,16 +214,22 @@ class BRepComponent():
       return universe.default.exclude_iceshelf_ocean_cavities
 
   def Boundary(self):
-    if libspud.have_option(self.FormPath() + 'boundary'):
-      return libspud.get_option(self.FormPath() + 'boundary').split()
-    else:
-      return universe.default.boundaries
+    if self._boundary is None:
+      if libspud.have_option(self.FormPath() + 'boundary'):
+        boundaries = libspud.get_option(self.FormPath() + 'boundary').split()
+        self._boundary = [int(i) for i in boundaries]
+      else:
+        self._boundary = universe.default.boundaries
+    return self._boundary
 
   def BoundaryToExclude(self):
-    if libspud.have_option(self.FormPath() + 'boundary_to_exclude'):
-      return libspud.get_option(self.FormPath() + 'boundary_to_exclude').split()
-    else:
-      return universe.default.boundariestoexclude
+    if self._boundary_to_exclude is None:
+      if libspud.have_option(self.FormPath() + 'boundary_to_exclude'):
+        boundaries = libspud.get_option(self.FormPath() + 'boundary_to_exclude').split()
+        self._boundary_to_exclude = [int(i) for i in boundaries]
+      else:
+        self._boundary_to_exclude = universe.default.boundariestoexclude
+    return self._boundary_to_exclude
 
   def AppendParameters(self):
     if len(self.Boundary()) > 0:

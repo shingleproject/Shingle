@@ -54,7 +54,7 @@ class VerificationTestEngine(object):
           self.locations.append(fullpath)
   
   def EnableLogging(self):
-    universe.log = True
+    universe.log_active = True
     universe.verbose = False
 
   def List(self):

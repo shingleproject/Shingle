@@ -66,14 +66,14 @@ def expand_boxes(region, boxes):
       longlat = box.split(',')
       if (len(longlat) != 2):
         print 'longlat:', longlat
-        error('Error in splitting around comma in the definition of boxes: ' + boxes, fatal=True)
+        error('Error in splitting around comma in the definition of box: ' + str(box), fatal=True)
 
       long = longlat[0].split(':')
       lat = longlat[1].split(':')
       if ((len(long) != 2) and (len(lat) != 2)):
         print 'long:', long
         print 'lat:', lat
-        error('Error in splitting around a colon in the definition of boxes: ' + boxes, fatal=True)
+        error('Error in splitting around a colon in the definition of box: ' + str(box), fatal=True)
       
       function_box = ''
       requireand = ''

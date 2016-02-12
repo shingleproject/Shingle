@@ -24,7 +24,7 @@
     <brep_component name="filchner_ronne_ice_ocean_brep">
       <form name="Raster">
         <source name="RTopo"/>
-        <box>-85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:- 20.0,-89.0:-75.0</box>
+        <box>-85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0</box>
         <contourtype>
           <string_value>iceshelfcavity</string_value>
         </contourtype>
