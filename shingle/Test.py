@@ -93,6 +93,8 @@ class VerificationTests(object):
 
   def TestDiff(self, valid):
     import difflib
+    from filecmp import cmp as CompareFiles
+
     fullvalid = self.representation.scenario.PathRelative(valid)
     fullpath = self.representation.scenario.PathRelative(self.representation.Output())
 
@@ -102,11 +104,16 @@ class VerificationTests(object):
     if not os.path.exists(fullpath):
       error('Cannot locate generated file: ' + fullpath)
       return False
+  
+    if CompareFiles(fullvalid, fullpath):
+      return True
 
     file1 = open(fullvalid, 'r')
     file2 = open(fullpath, 'r')
 
-    diff = difflib.ndiff(file1.readlines(), file2.readlines())
+    # Too slow even on relatively small surface representation outputs (stuck in find_longest_match):
+    #diff = difflib.ndiff(file1.readlines(), file2.readlines())
+    diff = difflib.Differ().compare(file1.readlines(), file2.readlines())
     #delta = ''.join(x[2:] for x in diff if x.startswith('- '))
     changes = (x for x in diff if x.startswith('- ') or x.startswith('+ '))
 
@@ -120,10 +127,10 @@ class VerificationTests(object):
           report('%(green)s%(change)s%(end)s', var={'change':change.strip()}, indent=2, force=True)
         else:
           report('%(red)s%(change)s%(end)s', var={'change':change.strip()}, indent=2, force=True)
-      if '+ // Paths found valid:' in change: broken = True
-      #if total > 16: broken = True
+      #if '+ // Paths found valid:' in change: broken = True
+      if total > 10: broken = True
       if broken:
-        report('%(green)s...%(end)s', indent=2, force=True)
+        report('%(blue)s...%(end)s %(grey)s(further differences exist, but are not shown here)%(end)s', indent=2, force=True)
         break
     file1.close()
     file2.close()

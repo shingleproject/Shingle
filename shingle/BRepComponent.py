@@ -125,6 +125,13 @@ class BRepComponent():
       return libspud.get_option(self._path + 'id')
     else:
       return universe.default.boundary.contour
+
+  # To be moved to MetricGeneration
+  def BaseEdgeLength(self):
+    if libspud.have_option('/metric_options/element_length'):
+      return libspud.get_option('/metric_options/element_length')
+    else:
+      return universe.default.elementlength
   
   def Spacing(self):
     if libspud.have_option(self._path + 'spacing'):
@@ -673,12 +680,9 @@ Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'loopnumber':index.pat
 
   def output_fields(self):
     index = self.index
+    edgeindex = ''
 
     self.gmsh_section('Field definitions')
-    if self.isCompound():
-      edgeindex = ''
-    else:
-      edgeindex = ''
     if (index.contour is not None):
       self.AddContent('''
 Printf("Assigning characteristic mesh sizes...");
@@ -697,7 +701,7 @@ Printf("Assigning characteristic mesh sizes...");
 // Background Field = IFI + 2;
 
 Field[ IFI%(fileid)s + 1] = MathEval;
-Field[ IFI%(fileid)s + 1].F = "%(elementlength)s";
+Field[ IFI%(fileid)s + 1].F = "%(elementlength)e";
 
 Field[ IFI%(fileid)s + 2 ] = Attractor;
 //Field[ IFI%(fileid)s + 2 ].EdgesList = { 999999, %(boundary_list)s };
@@ -749,7 +753,7 @@ Field[ IFI%(fileid)s + 7 ].Sigmoid = 0;
 //Mesh.CharacteristicLengthExtendFromBoundary = 0;
 
 Background Field = IFI%(fileid)s + 1;
-''' % { 'boundary_list':list_to_comma_separated(index.contour, prefix = 'IL%(fileid)s + %(edgeindex)s' % {'fileid':self.Fileid(), 'edgeindex':edgeindex}), 'elementlength':self.Spacing(), 'fileid':self.Fileid() } )
+''' % { 'boundary_list':list_to_comma_separated(index.contour, prefix = 'IL%(fileid)s + %(edgeindex)s' % {'fileid':self.Fileid(), 'edgeindex':edgeindex}), 'elementlength':self.BaseEdgeLength(), 'fileid':self.Fileid() } )
 
     self.gmsh_section('Physical entities')
 

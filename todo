@@ -6,6 +6,8 @@ test cases to add:
   Filchner-Ronne_iceshelf
 
 FIXME: Projections
+Move output to global option, not part of surface_geoid?
+
 
 Replace command line test behaviour with shml
 Add a line in shml for complete command line, and a switch to apply as an overide to all - for testing

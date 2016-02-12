@@ -6,8 +6,7 @@
 -n ../dataset/RTopo105b_50S.nc
 -no
 -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0
--lat '-65.0'
-</comment>
+-lat '-65.0'</comment>
   </initialisation_name>
   <domain_type>
     <string_value lines="1">ocean_ice_shelf</string_value>
@@ -26,10 +25,10 @@
     <brep_component name="filchner_ronne_ice_ocean_brep">
       <form name="Raster">
         <source name="RTopo"/>
-        <box>-85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0</box>
         <contourtype>
           <string_value>iceshelfcavity</string_value>
         </contourtype>
+        <exclude_iceshelf_ocean_cavities/>
       </form>
       <id>
         <integer_value rank="0">3</integer_value>
@@ -47,6 +46,11 @@
       <close_with_parallels/>
     </closure>
   </surface_geoid_representation>
+  <metric_options>
+    <element_length>
+      <real_value rank="0">1.1E5</real_value>
+    </element_length>
+  </metric_options>
   <verification>
     <test file_name="data/Filchner-Ronne_valid.geo" name="BrepDescription"/>
   </verification>
