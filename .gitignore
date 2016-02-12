@@ -10,3 +10,18 @@ ref
 bin
 shingle.log
 
+dataset
+./test/Amundsen_Sea/Amundsen_Sea.geo
+./test/Antarctica_all/Filchner-Ronne.geo
+./test/Antarctica_main_landmass/Filchner-Ronne.geo
+./test/Antarctica_main_landmass_30s/Filchner-Ronne.geo
+./test/Filchner-Ronne/Filchner-Ronne.geo
+./test/Filchner-Ronne_iceshelf/Filchner-Ronne.geo
+./test/legacy/amundsen_sea/
+./test/legacy/antarctica_all/
+./test/legacy/antarctica_main_landmass/
+./test/legacy/antarctica_main_landmass_30s/
+./test/legacy/filchner-ronne/
+./test/legacy/filchner-ronne_iceshelf/
+
+
