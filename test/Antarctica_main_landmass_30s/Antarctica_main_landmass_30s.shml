@@ -2,8 +2,7 @@
 <shingle_options>
   <initialisation_name>
     <string_value lines="1">Antarctica_main_landmass_30s</string_value>
-    <comment>
--r 'latitude &lt;= -60.0'
+    <comment>-r 'latitude &lt;= -60.0'
 -p 1
 -dx 10
 -exclude_ice_shelves
@@ -27,10 +26,7 @@
       <form name="Raster">
         <source name="RTopo"/>
         <region>latitude &lt;= -60.0</region>
-        <contourtype>
-          <string_value>iceshelfcavity</string_value>
-        </contourtype>
-        <exclude_iceshelf_ocean_cavities/>
+        <contourtype name="iceshelfcavity"/>
         <boundary>1</boundary>
       </form>
       <id>

@@ -23,9 +23,7 @@
       <form name="Raster">
         <source name="RTopo"/>
         <region>latitude &lt;= -60</region>
-        <contourtype>
-          <string_value>iceshelfcavity</string_value>
-        </contourtype>
+        <contourtype name="iceshelfcavity"/>
       </form>
       <id>
         <integer_value rank="0">3</integer_value>

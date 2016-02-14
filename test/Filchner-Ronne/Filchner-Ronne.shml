@@ -41,7 +41,7 @@
   </surface_geoid_representation>
   <metric_options>
     <element_length>
-      <real_value rank="0">1.1E5</real_value>
+      <real_value rank="0">1.0E5</real_value>
     </element_length>
   </metric_options>
   <verification>

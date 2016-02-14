@@ -25,9 +25,7 @@
       <form name="Raster">
         <source name="RTopo"/>
         <box>-130.0:-85.0,-85.0:-60.0</box>
-        <contourtype>
-          <string_value>iceshelfcavity</string_value>
-        </contourtype>
+        <contourtype name="iceshelfcavity"/>
       </form>
       <id>
         <integer_value rank="0">3</integer_value>
