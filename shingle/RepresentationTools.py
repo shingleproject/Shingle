@@ -27,7 +27,6 @@ from Projection import compare_points, project
 from Mathematical import area_enclosed
 
 def draw_parallel_explicit(rep, start, end, index, latitude_max, dx):
-  print 'HERE ************************************'
   from Projection import longitude_diff
 
   #print start, end, index.point

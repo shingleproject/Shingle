@@ -81,7 +81,6 @@ class BRepComponent():
     return self._surface_rep.gmsh_section(*args, **kwargs)
 
   def ExtendToLatitude(self, *args, **kwargs):
-    print '**************',  self._surface_rep.ExtendToLatitude(*args, **kwargs)
     return self._surface_rep.ExtendToLatitude(*args, **kwargs)
   
   def Fileid(self, *args, **kwargs):
@@ -109,7 +108,6 @@ class BRepComponent():
     return self._surface_rep.SurfaceId(*args, **kwargs)
 
   def CloseWithParallels(self, *args, **kwargs):
-    print '****************', self._surface_rep.CloseWithParallels(*args, **kwargs)
     return self._surface_rep.CloseWithParallels(*args, **kwargs)
 
   # ---------------------------------------- 
