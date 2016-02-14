@@ -52,7 +52,8 @@ class BRepComponent():
   _form_type = None
   _surface_rep = None
   _representation_type = None
-  
+ 
+  _region = None
   _boundary = None
   _boundary_to_exclude = None
 
@@ -187,16 +188,18 @@ class BRepComponent():
   # Raster options
   #if form == 'Raster':
   def Region(self):
-    region = universe.default.region
-    if libspud.have_option(self.FormPath() + 'region'):
-      region = libspud.get_option(self.FormPath() + 'region')
-    if libspud.have_option(self.FormPath() + 'box'):
-      box = libspud.get_option(self.FormPath() + 'box').split()
-      from os import linesep
-      self.gmsh_comment('Imposing box region: ' + (linesep + '//    ').join([''] + box))
-      region = expand_boxes(region, box )
-      self.gmsh_comment('Region of interest: ' + region)
-    return region
+    if self._region is None:
+      region = universe.default.region
+      if libspud.have_option(self.FormPath() + 'region'):
+        region = libspud.get_option(self.FormPath() + 'region')
+      if libspud.have_option(self.FormPath() + 'box'):
+        box = libspud.get_option(self.FormPath() + 'box').split()
+        from os import linesep
+        self.gmsh_comment('Imposing box region: ' + (linesep + '//    ').join([''] + box))
+        region = expand_boxes(region, box )
+        self.gmsh_comment('Region of interest: ' + region)
+      self._region = region
+    return self._region
 
   def MinimumArea(self):
     if libspud.have_option(self.FormPath() + 'minimum_area'):
@@ -272,7 +275,7 @@ class BRepComponent():
       self.GenerateContour()
       dataset.CacheSave()
 
-    dataset.report('Paths found: ' + str(len(self._pathall)))
+    self.report('Paths found: ' + str(len(self._pathall)))
 
 
 

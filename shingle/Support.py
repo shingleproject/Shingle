@@ -114,7 +114,7 @@ class ReadArguments(object):
     elif (self.argument == '-smooth_data'):
       universe.default.smooth_degree = int(self.NextArgument())
       universe.default.smooth_data = True
-    elif (self.argument == '-no'): universe.open = False
+    elif (self.argument == '-no'): universe.default.open = False
     elif (self.argument == '-exclude_ice_shelves'): universe.default.exclude_iceshelf_ocean_cavities = False
     elif (self.argument == '-mesh'): universe.generatemesh = True
     elif (self.argument == '-metric'): universe.generatemetric = True

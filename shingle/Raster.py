@@ -122,6 +122,8 @@ class Raster(Dataset):
       return
     if (universe.verbose):
       print text
+    # Load log into Surf.report when available?
+    # Or link this to Surf - but race issue?
     if include:
       self.log = self.log + '// ' + text + linesep
 
