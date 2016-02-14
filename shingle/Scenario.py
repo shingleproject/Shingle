@@ -87,7 +87,7 @@ class Scenario(object):
     self.LoadOptions()
     self.Dataset()
     self.SurfaceGeoidRep()
-    log = Log(on=universe.log_active)
+    universe.log = Log(on=universe.log_active, scenario=self)
     self.Generate()
 
   def Name(self):
@@ -103,6 +103,9 @@ class Scenario(object):
     if path.startswith('/'):
       return path
     return os.path.realpath(os.path.join(self.Root(), path))
+
+  def report(self, *args, **kwargs):
+    report(*args, **kwargs)
 
   def Output(self):
     from Support import FilenameAddExtension
@@ -126,6 +129,7 @@ class Scenario(object):
   def LoadOptions(self):
     if universe.legacy.legacy:
       return
+    libspud.clear_options()
     libspud.load_options(self._filename)
     self._loaded = True
 

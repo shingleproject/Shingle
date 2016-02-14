@@ -189,13 +189,18 @@ class SurfaceGeoidDomainRepresentation(object):
     #self._filehandle.write( string + linesep)
     self.content = self.content + string + linesep
 
-  def report(self, text, include = True, debug = False, var = {}):
-    if debug and not universe.debug:
-      return
-    if (universe.verbose):
-      report(text, var=var, debug=debug)
-    if include:
-      self.gmsh_comment(text % addcolour(var, colourful = False))
+  def report(self, *args, **kwargs):
+    self.scenario.report(*args, **kwargs)
+
+    linclude = True
+    if 'include' in kwargs:
+      linclude = kwargs['include']
+    if linclude:
+      lvar = {}
+      if 'var' in kwargs:
+        lvar = kwargs['var']
+      self.gmsh_comment(comment=args[0] % addcolour(lvar, colourful = False))
+
 
   def reportSkipped(self):
     from os import linesep

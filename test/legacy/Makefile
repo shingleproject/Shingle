@@ -23,6 +23,8 @@
 DATADIR=../../../dataset
 DATASET=../../../dataset/RTopo105b_50S.nc
 
+BASE=$(shell git rev-parse --show-toplevel)
+
 SCRIPT=../../bin/shingle
 DIFFTOOL=../../tool/diff_exclude_header
 
@@ -124,7 +126,7 @@ test%: %
 	else \
 		$(ECHO) "    $(red)FAIL$(end)"; \
 		echo "Examine valid/$</shorelines.geo $</shorelines.geo"; \
-		echo "  e.g. vim -d test/legacy/{,valid/}$</shorelines.geo"; \
+		echo "  e.g. vim -d $(BASE)/test/legacy/{,valid/}$</shorelines.geo"; \
 		exit 1; \
 	fi
 
@@ -159,7 +161,7 @@ antarctica_main_landmass_30s/shorelines.geo:
 
 # Filchner-Ronne extended out to the 65S parallel
 filchner-ronne/shorelines.geo:
-	@$(SCRIPT) -legacy -f $@ -n $(DATASET) -no -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0 -lat '-65.0' > $(dir $@)/mesh.log
+	$(SCRIPT) -legacy -f $@ -n $(DATASET) -no -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0 -lat '-65.0' -l > $(dir $@)/mesh.log
 
 # Antarctica, everything below the 60S parallel, coarse approximation to open boundary
 antarctica_all/shorelines.geo:

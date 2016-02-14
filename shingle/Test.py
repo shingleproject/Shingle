@@ -91,12 +91,15 @@ class VerificationTests(object):
     self.mesh = mesh
     self.PerformValidationTests()
 
-  def TestDiff(self, valid):
+  def TestDiff(self, valid=None):
     import difflib
     from filecmp import cmp as CompareFiles
 
-    fullvalid = self.representation.scenario.PathRelative(valid)
     fullpath = self.representation.scenario.PathRelative(self.representation.Output())
+    if universe.legacy.legacy:
+      fullvalid = fullpath.replace('legacy','legacy/valid')
+    else:
+      fullvalid = self.representation.scenario.PathRelative(valid)
 
     if not os.path.exists(fullvalid):
       error('Cannot locate valid file: ' + fullvalid)
@@ -125,7 +128,7 @@ class VerificationTests(object):
         # Improve to leave this line out of diff and cmp?
         continue
       total += 1
-      if show:
+      if show and not broken:
         if change.startswith('+ '):
           report('%(green)s%(change)s%(end)s', var={'change':change.strip()}, indent=2, force=True)
         else:
@@ -133,7 +136,7 @@ class VerificationTests(object):
       #if '+ // Paths found valid:' in change: broken = True
       if total > 10: broken = True
       if broken:
-        report('%(blue)s...%(end)s %(grey)s(further differences exist, but are not shown here)%(end)s', indent=2, force=True)
+        report('%(blue)s...%(end)s %(grey)s(further differences exist (%(total)s in total), but are not shown here)%(end)s', var={'total':total}, indent=2, force=True)
         break
     file1.close()
     file2.close()
@@ -147,8 +150,8 @@ class VerificationTests(object):
 
 
   def PerformValidationTests(self):
-    if not libspud.have_option('/verification'):
-      return
+    #if not libspud.have_option('/verification'):
+    #  return
 
     total = libspud.option_count('/verification/test')
     report('%(blue)sReading verification tests%(end)s %(grey)s(%(total)d in total)%(end)s', var={'total':total}, force=True, indent=1) 
@@ -158,12 +161,17 @@ class VerificationTests(object):
       name = libspud.get_option('/verification/test[%(number)d]/name' % {'number':number})
       if name == 'BrepDescription':
         filename = libspud.get_option('/verification/test::%(name)s/file_name' % {'name':name})
-        result = self.TestDiff(filename)
+        result = self.TestDiff(valid=filename)
       else:
         continue
       if result:
         passes += 1
       report('%(blue)sTest %(number)s:%(end)s %(yellow)s%(name)s%(end)s' + ResultToString(result), var={'name':name, 'number':number + 1}, force=True, indent=2) 
+    # Inxclude legacy test cases
+    if universe.legacy.legacy:
+      passes = self.TestDiff()
+      total = 1
+      number = 1
     report('%(blue)sResult:%(end)s %(yellow)s%(name)s%(end)s' + ResultToString(passes == total, show_failures=True, failures=total-passes), var={'name':self.representation.scenario.Name(), 'number':number + 1, 'failures':total-passes}, force=True, indent=1) 
       
 

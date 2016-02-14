@@ -78,13 +78,19 @@ class Log(object):
   _logfullpath = None
 
 
-  def __init__(self, filename=None, on=False):
+  def __init__(self, filename=None, on=False, scenario=None):
+    self.scenario = scenario
     if filename is not None:
       self._logfilename = filename
     else:
       self._logfilename = universe.logfilename
     self._active = on
-    self._Empty
+    self._Empty()
+    self._Report()
+
+  def _Report(self):
+    if self._isOn():
+      report('%(blue)sLogging to file:%(end)s %(yellow)s%(filename)s%(end)s', var = {'filename':self._Location()})
 
   def On(self):
     self._active = True
@@ -96,8 +102,9 @@ class Log(object):
     return self._active
 
   def _Location(self):
-    from Support import PathFull
-    return PathFull(self._logfilename)
+    if self._logfullpath is None:
+      self._logfullpath = self.scenario.PathRelative(self._logfilename)
+    return self._logfullpath
     
   def _Empty(self):
     if not self._isOn():
@@ -108,13 +115,13 @@ class Log(object):
     if not self._isOn():
       return
     from os import linesep
-    f = open(universe.logfile, 'a')
+    f = open(self._Location(), 'a')
     f.write(text + linesep)
     f.close()
 
 
 
-def report(text, var = {}, debug = False, force = False, colourful = True, indent=0):
+def report(text, var = {}, debug = False, force = False, colourful = True, indent=0, include=True):
   # Link to rep.report
   # Option to send to log file instead - independent of terminal verbosity
   spacer = ' ' * 2 * indent
