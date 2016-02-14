@@ -81,6 +81,7 @@ class BRepComponent():
     return self._surface_rep.gmsh_section(*args, **kwargs)
 
   def ExtendToLatitude(self, *args, **kwargs):
+    print '**************',  self._surface_rep.ExtendToLatitude(*args, **kwargs)
     return self._surface_rep.ExtendToLatitude(*args, **kwargs)
   
   def Fileid(self, *args, **kwargs):
@@ -106,6 +107,10 @@ class BRepComponent():
 
   def SurfaceId(self, *args, **kwargs):
     return self._surface_rep.SurfaceId(*args, **kwargs)
+
+  def CloseWithParallels(self, *args, **kwargs):
+    print '****************', self._surface_rep.CloseWithParallels(*args, **kwargs)
+    return self._surface_rep.CloseWithParallels(*args, **kwargs)
 
   # ---------------------------------------- 
 
@@ -202,14 +207,15 @@ class BRepComponent():
       return universe.default.minarea
 
   def ContourType(self):
-    if libspud.have_option(self.FormPath() + 'contourtype'):
-      return libspud.get_option(self.FormPath() + 'contourtype')
+    if libspud.have_option(self.FormPath() + 'contourtype[0]'):
+      return libspud.get_option(self.FormPath() + 'contourtype[0]/name')
     else:
       return universe.default.contourtype
 
   def ExcludeIceshelfCavities(self):
-    if libspud.have_option(self.FormPath()):
-      return libspud.have_option(self.FormPath() + 'exclude_iceshelf_ocean_cavities')
+    path = '%(form)scontourtype::%(contour)s/exclude_iceshelf_ocean_cavities' % {'form':self.FormPath(), 'contour':self.ContourType()}
+    if libspud.have_option(path):
+      return libspud.have_option(path)
     else:
       return universe.default.exclude_iceshelf_ocean_cavities
 
@@ -569,80 +575,6 @@ Call DrawParallel;''' % { 'start_x':startp[0], 'start_y':startp[1], 'end_x':endp
 
 
 
-  def close_path(self, start, end, index, dx, latitude_max, proj='longlat'):
-    #print start, end
-    #print p2(start), p2(end)
-    if (self.CloseWithParallels()):
-      return draw_parallel_explicit(start, end, index, latitude_max, dx)
-    current = start.copy()
-    tolerance = dx * 0.6
-    diffinit = point_diff(end, current)
-
-    dxs = int(ceil(norm([ diffinit[0], diffinit[1] ]) / dx))
-    #print dxs
-    
-    if (compare_points(current, end, dx, proj=proj)):
-      self.gmsh_comment('Points already close enough after all' + proj + ' dx ' + str(dx))
-      return index
-    else:
-      self.gmsh_comment('Closing path, from (%.8f, %.8f) to (%.8f, %.8f), with vector (%.8f, %.8f)' % ( start[0], start[1], end[0], end[1], diffinit[0], diffinit[1] ) )
-   
-    loopstartpoint = 0
-    loopstartpoint = index.point
-    loopstart = index
-
-    if (proj is 'longlat'):
-      while (not compare_points(current, end, dx, proj=proj)):
-
-        diff = point_diff(end, current)
-          
-        normdiff = norm(diff)
-        #print current,end,diff,dx,normdiff
-        if (abs(normdiff) < dx * 1.5):
-          self.gmsh_comment('Finished closing, projection ' + proj + ' normdiff ' + str(normdiff) + ' dx ' + str(dx))
-          current = end
-        else:
-          current[0] = current[0] + diff[0] * (dx /  normdiff)
-          current[1] = current[1] + diff[1] * (dx /  normdiff)
-
-          index.point += 1
-          report('Drawing connection to end index %s at %f.2, %f.2 (to match %f.2)' % (index.point, current[0], current[1], end[1]), debug=False)
-          loc = project(current)
-          self.gmsh_format_point(index.point, loc, 0.0)
-
-    elif (proj is 'horizontal'):
-      diff = array(point_diff_cartesian(end, current)) / dxs
-
-      pstart = project(start, type='proj_cartesian')
-      pend   = project(end, type='proj_cartesian')
-
-      pcurrent = current.copy()
-      ncurrent = current.copy()
-      for i in range(dxs):
-        pcurrent[0] = pstart[0] + diff[0] * (i)
-        pcurrent[1] = pstart[1] + diff[1] * (i)
-        ncurrent = project(pcurrent, type='proj_cartesian_inverse')
-        if (ncurrent[0] < 0.0):
-          ncurrent[0] = ncurrent[0] + 360
-        #print start, end, ncurrent, diff
-        index.point += 1
-        report('Drawing connection to end index %s at %f.2, %f.2 (to match %f.2)' % (index.point, ncurrent[0], ncurrent[1], end[1]), debug=False)
-        nloc = project(ncurrent)
-        self.gmsh_format_point(index.point, nloc, 0.0)
-        
-
-    #print index.point, loopstartpoint
-
-    #if (index.point - loopstartpoint > 10):
-      #print 'Excessive ', start, end, diff, diffinit
-      
-    if (index.point > loopstart.point):
-      index = self.gmsh_loop(index, loopstart, True, True, False)
-    
-    self.gmsh_comment( 'Closed path as crow flys, from (%.8f, %.8f) to  (%.8f, %.8f)' % ( start[0], start[1], end[0], end[1] ) )
-
-    #print index
-    return index
 
 
   def output_open_boundaries(self):

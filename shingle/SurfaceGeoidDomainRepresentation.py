@@ -91,24 +91,15 @@ class SurfaceGeoidDomainRepresentation(object):
     else:
       return universe.default.fileid
 
-  def Output(self):
-    from Support import FilenameAddExtension
-    if libspud.have_option(self._path + 'output'):
-      output = libspud.get_option(self._path + 'output/file_name')
-    elif universe.legacy.legacy:
-      # Dirname picked up in scenario name and Root()
-      from os.path import basename
-      output = basename(universe.legacy.output)
-    else:
-      output = self.scenario.Name()
-    # Update output file name used to write representation
-    return FilenameAddExtension(output, 'geo')
+  # ------------------------------------------------------------ 
 
-  def Projection(self):
-    if libspud.have_option(self._path + 'output/projection'):
-      return libspud.get_option(self._path + 'output/projection')
-    else:
-      return universe.default.projection
+  def Output(self, *args, **kwargs):
+    return self.scenario.Output(*args, **kwargs)
+
+  def Projection(self, *args, **kwargs):
+    return self.scenario.Projection(*args, **kwargs)
+
+  # ------------------------------------------------------------ 
 
   def MoreBSplines(self):
     if libspud.have_option(self._path):
@@ -118,7 +109,7 @@ class SurfaceGeoidDomainRepresentation(object):
 
   def Open(self):
     if libspud.have_option(self._path):
-      return libspud.have_option(self._path + 'closure/no_open')
+      return not libspud.have_option(self._path + 'closure/no_open')
     else:
       return universe.default.open
 

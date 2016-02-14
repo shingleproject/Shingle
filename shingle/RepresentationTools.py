@@ -27,6 +27,7 @@ from Projection import compare_points, project
 from Mathematical import area_enclosed
 
 def draw_parallel_explicit(rep, start, end, index, latitude_max, dx):
+  print 'HERE ************************************'
   from Projection import longitude_diff
 
   #print start, end, index.point
@@ -237,6 +238,7 @@ def array_to_gmsh_points(rep, num, index, location, minarea, region, dx, latitud
   # 0=old, 1=new
   behaviour=0
 
+
   if behaviour == 1:
     for point in range(validnumber):
       #longitude = validlocation[point,0]
@@ -247,7 +249,7 @@ def array_to_gmsh_points(rep, num, index, location, minarea, region, dx, latitud
         #rep.gmsh_comment('**** END ' + str(point) + '/' + str(validnumber-1) + str(close[point]))
        # index = rep.gmsh_loop(index, loopstartpoint, False, False, False)
         #index = draw_parallel_explicit(validlocation[point], validlocation[0], index, latitude_max, dx)
-        index = close_path(validlocation[point], validlocation[0], index, dx, latitude_max)
+        index = close_path(rep, validlocation[point], validlocation[0], index, dx, latitude_max)
         #index = rep.gmsh_loop(index, loopstartpoint, True, True, False)
         index = rep.gmsh_loop(index, loopstartpoint, True, False, False)
         #rep.gmsh_comment('**** END end of loop ' + str(closelast) + str(point) + '/' + str(validnumber-1) + str(close[point]))
@@ -257,7 +259,7 @@ def array_to_gmsh_points(rep, num, index, location, minarea, region, dx, latitud
         rep.gmsh_comment(str(validlocation[point,:]) + str(validlocation[point,:]))
         index = rep.gmsh_loop(index, loopstartpoint, False, False, False)
         #index = draw_parallel_explicit(validlocation[point - 1], validlocation[point], index, latitude_max, dx)
-        index = close_path(validlocation[point - 1], validlocation[point], index, dx, latitude_max)
+        index = close_path(rep, validlocation[point - 1], validlocation[point], index, dx, latitude_max)
         index = rep.gmsh_loop(index, loopstartpoint, False, True, False)
         #rep.gmsh_comment('**** NOT END end of loop ' + str(point) + '/' + str(validnumber-1) + str(close[point]))
         rep.gmsh_comment('')
@@ -300,6 +302,93 @@ def array_to_gmsh_points(rep, num, index, location, minarea, region, dx, latitud
   #index = pig_sponge(index, loopstartpoint, index.point, validlocation[0], validlocation[-1], dx)
 
   return index
+
+def close_path(rep, start, end, index, dx, latitude_max, proj='longlat'):
+  #print start, end
+  #print p2(start), p2(end)
+  if rep.CloseWithParallels():
+    return draw_parallel_explicit(rep, start, end, index, latitude_max, dx)
+  current = start.copy()
+  tolerance = dx * 0.6
+  diffinit = point_diff(end, current)
+
+  dxs = int(ceil(norm([ diffinit[0], diffinit[1] ]) / dx))
+  #print dxs
+  
+  if (compare_points(current, end, dx, proj=proj)):
+    rep.gmsh_comment('Points already close enough after all' + proj + ' dx ' + str(dx))
+    return index
+  else:
+    rep.gmsh_comment('Closing path, from (%.8f, %.8f) to (%.8f, %.8f), with vector (%.8f, %.8f)' % ( start[0], start[1], end[0], end[1], diffinit[0], diffinit[1] ) )
+ 
+  loopstartpoint = 0
+  loopstartpoint = index.point
+  loopstart = index
+
+  if (proj is 'longlat'):
+    while (not compare_points(current, end, dx, proj=proj)):
+
+      diff = point_diff(end, current)
+        
+      normdiff = norm(diff)
+      #print current,end,diff,dx,normdiff
+      if (abs(normdiff) < dx * 1.5):
+        rep.gmsh_comment('Finished closing, projection ' + proj + ' normdiff ' + str(normdiff) + ' dx ' + str(dx))
+        current = end
+      else:
+        current[0] = current[0] + diff[0] * (dx /  normdiff)
+        current[1] = current[1] + diff[1] * (dx /  normdiff)
+
+        index.point += 1
+        report('Drawing connection to end index %s at %f.2, %f.2 (to match %f.2)' % (index.point, current[0], current[1], end[1]), debug=False)
+        loc = project(current)
+        rep.gmsh_format_point(index.point, loc, 0.0)
+
+  elif (proj is 'horizontal'):
+    diff = array(point_diff_cartesian(end, current)) / dxs
+
+    pstart = project(start, type='proj_cartesian')
+    pend   = project(end, type='proj_cartesian')
+
+    pcurrent = current.copy()
+    ncurrent = current.copy()
+    for i in range(dxs):
+      pcurrent[0] = pstart[0] + diff[0] * (i)
+      pcurrent[1] = pstart[1] + diff[1] * (i)
+      ncurrent = project(pcurrent, type='proj_cartesian_inverse')
+      if (ncurrent[0] < 0.0):
+        ncurrent[0] = ncurrent[0] + 360
+      #print start, end, ncurrent, diff
+      index.point += 1
+      report('Drawing connection to end index %s at %f.2, %f.2 (to match %f.2)' % (index.point, ncurrent[0], ncurrent[1], end[1]), debug=False)
+      nloc = project(ncurrent)
+      rep.gmsh_format_point(index.point, nloc, 0.0)
+      
+
+  #print index.point, loopstartpoint
+
+  #if (index.point - loopstartpoint > 10):
+    #print 'Excessive ', start, end, diff, diffinit
+    
+  if (index.point > loopstart.point):
+    index = rep.gmsh_loop(index, loopstart, True, True, False)
+  
+  rep.gmsh_comment( 'Closed path as crow flys, from (%.8f, %.8f) to  (%.8f, %.8f)' % ( start[0], start[1], end[0], end[1] ) )
+
+  #print index
+  return index
+
+
+
+
+
+
+
+
+
+
+
+
 
 #LoopStart1 = IP + 20;
 #LoopEnd1 = IP + 3157;

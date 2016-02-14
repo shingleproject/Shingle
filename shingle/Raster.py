@@ -104,7 +104,7 @@ class Raster(Dataset):
     if self.cachefile is None:
       from os.path import splitext
       base, extension = splitext(self.LocationFull())
-      self.cachefile = base + '_' + extension.lstrip('.') + '_' + universe.contourtype + self._cacheFiletype
+      self.cachefile = base + '_' + extension.lstrip('.') + '_' + universe.default.contourtype + self._cacheFiletype
 
   def CheckCache(self):
     self.GetCacheLocation()

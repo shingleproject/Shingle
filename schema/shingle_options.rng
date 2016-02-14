@@ -36,6 +36,9 @@ It is used for options checking.</a:documentation>
         <ref name="comment"/>
       </element>
       <ref name="general"/>
+      <optional>
+        <ref name="output"/>
+      </optional>
       <zeroOrMore>
         <ref name="datasets"/>
       </zeroOrMore>
@@ -254,7 +257,7 @@ Default: False</a:documentation>
       </optional>
     </element>
   </define>
-  <define name="surface_geoid_representation_output">
+  <define name="output">
     <element name="output">
       <a:documentation>Output options
 
@@ -321,9 +324,6 @@ geometric constraint at these point in the mesh generation process.
 Default: False</a:documentation>
           <ref name="comment"/>
         </element>
-      </optional>
-      <optional>
-        <ref name="surface_geoid_representation_output"/>
       </optional>
       <oneOrMore>
         <ref name="surface_geoid_representation_brep"/>
@@ -525,45 +525,7 @@ Legacy: minarea</a:documentation>
         <ref name="comment"/>
       </element>
     </optional>
-    <optional>
-      <!-- Define alternative here - breaking up the following -->
-      <element name="contourtype">
-        <a:documentation>Contour type
-
-Default: iceshelfcavity
-
-Legacy: contourtype</a:documentation>
-        <element name="string_value">
-          <choice>
-            <value>iceshelfcavity</value>
-            <value>icesheet</value>
-            <value>z</value>
-            <value>ocean10m</value>
-            <value>zmask</value>
-            <value>xyz</value>
-            <value>noshelf</value>
-            <value>gsds</value>
-            <value>mask</value>
-            <value>gsdsz</value>
-            <value>gebco</value>
-            <value>gsdszc</value>
-          </choice>
-        </element>
-        <ref name="comment"/>
-      </element>
-    </optional>
-    <optional>
-      <element name="exclude_iceshelf_ocean_cavities">
-        <a:documentation>Exclude iceshelf ocean cavities
-
-Excludes iceshelf ocean cavities from mesh (default behaviour includes region)
-
-Default: False
-
-Legacy: exclude_iceshelf_ocean_cavities</a:documentation>
-        <ref name="comment"/>
-      </element>
-    </optional>
+    <ref name="contourtypes"/>
     <optional>
       <element name="boundary">
         <a:documentation>Boundaries
@@ -628,6 +590,7 @@ Legacy: bounding_lat</a:documentation>
       <optional>
         <element name="extend_to_latitude">
           <a:documentation>Extend to latitude.
+Note it is appropriate to enable 'close_with_parallels' with this option.
 
 Latitude to extend open domain to.
 
@@ -1135,5 +1098,288 @@ i.e. the free surface or rigid lid.</a:documentation>
         </element>
       </optional>
     </element>
+  </define>
+  <define name="contourtypesold">
+    <optional>
+      <!-- Define alternative here - breaking up the following -->
+      <element name="contourtype">
+        <a:documentation>Contour type
+
+Default: iceshelfcavity
+
+Legacy: contourtype</a:documentation>
+        <element name="string_value">
+          <choice>
+            <value>iceshelfcavity</value>
+            <value>icesheet</value>
+            <value>z</value>
+            <value>ocean10m</value>
+            <value>zmask</value>
+            <value>xyz</value>
+            <value>noshelf</value>
+            <value>gsds</value>
+            <value>mask</value>
+            <value>gsdsz</value>
+            <value>gebco</value>
+            <value>gsdszc</value>
+          </choice>
+        </element>
+        <ref name="comment"/>
+      </element>
+    </optional>
+  </define>
+  <!--
+      ## Python function prescribing real input. Functions should be of the form:
+      ##
+      ##  def val(t):
+      ##     # Function code
+      ##     return # Return value
+      ##
+      ## 
+      element python {
+        python_code
+      }
+  -->
+  <define name="contourtypes">
+    <choice>
+      <!-- Define alternative here - breaking up the following -->
+      <element name="contourtype">
+        <a:documentation>Contour type
+
+Default: iceshelfcavity
+
+Legacy: contourtype</a:documentation>
+        <attribute name="name">
+          <data type="string"/>
+        </attribute>
+        <ref name="comment"/>
+        <choice>
+          <element name="x_coordinate_name">
+            <attribute name="name">
+              <data type="string"/>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="x_coordinate_name">
+            <attribute name="name">
+              <value>lon</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="x_coordinate_name">
+            <attribute name="name">
+              <value>longitude</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="x_coordinate_name">
+            <attribute name="name">
+              <value>x</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="x_coordinate_name">
+            <attribute name="name">
+              <value>x1</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="x_coordinate_name">
+            <attribute name="name">
+              <value>x_range</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+        </choice>
+        <choice>
+          <element name="y_coordinate_name">
+            <attribute name="name">
+              <data type="string"/>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="y_coordinate_name">
+            <attribute name="name">
+              <value>lat</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="y_coordinate_name">
+            <attribute name="name">
+              <value>latitude</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="y_coordinate_name">
+            <attribute name="name">
+              <value>y</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="y_coordinate_name">
+            <attribute name="name">
+              <value>y1</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="y_coordinate_name">
+            <attribute name="name">
+              <value>y_range</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+        </choice>
+        <choice>
+          <element name="field_name">
+            <attribute name="name">
+              <data type="string"/>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="field_name">
+            <attribute name="name">
+              <value>amask</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="field_name">
+            <attribute name="name">
+              <value>z</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="field_name">
+            <attribute name="name">
+              <value>noshelf</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="field_name">
+            <attribute name="name">
+              <value>usrf</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="field_name">
+            <attribute name="name">
+              <value>topg</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="field_name">
+            <attribute name="name">
+              <value>grounding</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="field_name">
+            <attribute name="name">
+              <value>thk</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="field_name">
+            <attribute name="name">
+              <value>z_range</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+        </choice>
+        <element name="field_level">
+          <ref name="real"/>
+          <ref name="comment"/>
+        </element>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>Python</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>iceshelfcavity</value>
+        </attribute>
+        <ref name="comment"/>
+        <optional>
+          <element name="exclude_iceshelf_ocean_cavities">
+            <a:documentation>Exclude iceshelf ocean cavities
+
+Excludes iceshelf ocean cavities from mesh (default behaviour includes region)
+
+Default: False
+
+Legacy: exclude_iceshelf_ocean_cavities</a:documentation>
+            <ref name="comment"/>
+          </element>
+        </optional>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>icesheet</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>z</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>ocean10m</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>zmask</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>xyz</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>noshelf</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>gsds</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>mask</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>gsdsz</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>gebco</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>gsdszc</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+    </choice>
   </define>
 </grammar>

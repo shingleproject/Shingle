@@ -27,6 +27,7 @@ start =
             comment
          },
          general,
+         output?,
          datasets*,
          surface_geoid_representation+,
          metric_options,
@@ -228,7 +229,7 @@ general =
     }
   )
 
-surface_geoid_representation_output = 
+output = 
   (
     ## Output options
     ##
@@ -283,7 +284,6 @@ surface_geoid_representation =
       element more_bsplines {
         comment
       }?,
-      surface_geoid_representation_output?,
       surface_geoid_representation_brep+,
       surface_geoid_representation_closure?,
       internal_regions?
@@ -454,30 +454,7 @@ surface_geoid_representation_raster_options =
       real,
       comment
     }?,
-
-    # Define alternative here - breaking up the following
-
-    ## Contour type
-    ##
-    ## Default: iceshelfcavity
-    ##
-    ## Legacy: contourtype
-    element contourtype {
-      element string_value {
-         "iceshelfcavity" | "icesheet" | "z" | "ocean10m" | "zmask" | "xyz" | "noshelf" | "gsds" | "mask" | "gsdsz" | "gebco" | "gsdszc"
-      },
-      comment
-    }?,
-    ## Exclude iceshelf ocean cavities
-    ##
-    ## Excludes iceshelf ocean cavities from mesh (default behaviour includes region)
-    ##
-    ## Default: False
-    ##
-    ## Legacy: exclude_iceshelf_ocean_cavities
-    element exclude_iceshelf_ocean_cavities {
-      comment
-    }?,
+    contourtypes,
     ## Boundaries
     ## Use a list of integers instead?
     ## Specify paths to include
@@ -997,3 +974,207 @@ geometry =
          }?
       }
    )
+
+contourtypesold = 
+  (
+    # Define alternative here - breaking up the following
+
+    ## Contour type
+    ##
+    ## Default: iceshelfcavity
+    ##
+    ## Legacy: contourtype
+    element contourtype {
+      element string_value {
+         "iceshelfcavity" | "icesheet" | "z" | "ocean10m" | "zmask" | "xyz" | "noshelf" | "gsds" | "mask" | "gsdsz" | "gebco" | "gsdszc"
+      },
+      comment
+    }?
+  )
+
+
+#   ## Python function prescribing real input. Functions should be of the form:
+#   ##
+#   ##  def val(t):
+#   ##     # Function code
+#   ##     return # Return value
+#   ##
+#   ## 
+#   element python {
+#     python_code
+#   }
+
+contourtypes = 
+  (
+    # Define alternative here - breaking up the following
+    ## Contour type
+    ##
+    ## Default: iceshelfcavity
+    ##
+    ## Legacy: contourtype
+
+
+
+    element contourtype {
+      attribute name { string },
+      comment,
+      (
+        element x_coordinate_name {
+          attribute name { string },
+          comment
+        }|
+        element x_coordinate_name {
+          attribute name { "lon" },
+          comment
+        }|
+        element x_coordinate_name {
+          attribute name { "longitude" },
+          comment
+        }|
+        element x_coordinate_name {
+          attribute name { "x" },
+          comment
+        }|
+        element x_coordinate_name {
+          attribute name { "x1" },
+          comment
+        }|
+        element x_coordinate_name {
+          attribute name { "x_range" },
+          comment
+        }
+      ),
+      (
+        element y_coordinate_name {
+          attribute name { string },
+          comment
+        }|
+        element y_coordinate_name {
+          attribute name { "lat" },
+          comment
+        }|
+        element y_coordinate_name {
+          attribute name { "latitude" },
+          comment
+        }|
+        element y_coordinate_name {
+          attribute name { "y" },
+          comment
+        }|
+        element y_coordinate_name {
+          attribute name { "y1" },
+          comment
+        }|
+        element y_coordinate_name {
+          attribute name { "y_range" },
+          comment
+        }
+      ),
+      (
+        element field_name {
+          attribute name { string },
+          comment
+        }|
+        element field_name {
+          attribute name { "amask" },
+          comment
+        }|
+        element field_name {
+          attribute name { "z" },
+          comment
+        }|
+        element field_name {
+          attribute name { "noshelf" },
+          comment
+        }|
+        element field_name {
+          attribute name { "usrf" },
+          comment
+        }|
+        element field_name {
+          attribute name { "topg" },
+          comment
+        }|
+        element field_name {
+          attribute name { "grounding" },
+          comment
+        }|
+        element field_name {
+          attribute name { "thk" },
+          comment
+        }|
+        element field_name {
+          attribute name { "z_range" },
+          comment
+        }
+      ),
+      element field_level {
+        real,
+        comment
+      }
+    }|
+    element contourtype {
+      attribute name { "Python" },
+      comment
+    }|
+    element contourtype {
+      attribute name { "iceshelfcavity" },
+      comment,
+      ## Exclude iceshelf ocean cavities
+      ##
+      ## Excludes iceshelf ocean cavities from mesh (default behaviour includes region)
+      ##
+      ## Default: False
+      ##
+      ## Legacy: exclude_iceshelf_ocean_cavities
+      element exclude_iceshelf_ocean_cavities {
+        comment
+      }?
+    }|
+    element contourtype {
+      attribute name { "icesheet" },
+      comment
+    }|
+    element contourtype {
+      attribute name { "z" },
+      comment
+    }|
+    element contourtype {
+      attribute name { "ocean10m" },
+      comment
+    }|
+    element contourtype {
+      attribute name { "zmask" },
+      comment
+    }|
+    element contourtype {
+      attribute name { "xyz" },
+      comment
+    }|
+    element contourtype {
+      attribute name { "noshelf" },
+      comment
+    }|
+    element contourtype {
+      attribute name { "gsds" },
+      comment
+    }|
+    element contourtype {
+      attribute name { "mask" },
+      comment
+    }|
+    element contourtype {
+      attribute name { "gsdsz" },
+      comment
+    }|
+    element contourtype {
+      attribute name { "gebco" },
+      comment
+    }|
+    element contourtype {
+      attribute name { "gsdszc" },
+      comment
+    }
+
+  )
+

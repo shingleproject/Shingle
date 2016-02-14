@@ -104,6 +104,25 @@ class Scenario(object):
       return path
     return os.path.realpath(os.path.join(self.Root(), path))
 
+  def Output(self):
+    from Support import FilenameAddExtension
+    if libspud.have_option('/output'):
+      output = libspud.get_option('/output/file_name')
+    elif universe.legacy.legacy:
+      # Dirname picked up in scenario name and Root()
+      from os.path import basename
+      output = basename(universe.legacy.output)
+    else:
+      output = self.Name()
+    # Update output file name used to write representation
+    return FilenameAddExtension(output, 'geo')
+
+  def Projection(self):
+    if libspud.have_option('/output/projection'):
+      return libspud.get_option('/output/projection')
+    else:
+      return universe.default.projection
+
   def LoadOptions(self):
     if universe.legacy.legacy:
       return
