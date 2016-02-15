@@ -50,13 +50,16 @@ class VerificationTestEngine(object):
     self.Summary()
 
   def Summary(self):
-    pass_number = len(self.failures) 
-    fail_number = len(self.passes) 
+    pass_number = len(self.passes) 
+    fail_number = len(self.failures) 
     total = pass_number + fail_number
     if fail_number == 0:
       report('%(brightgreen)sPASS%(end)s %(grey)%(total)d in total)%(end)s', var = {'total':total}, force=True)
     else:
       report('%(brightred)sFAIL%(end)s %(pass)d of %(total)d verification tests passed', var = {'pass':pass_number, 'total':total}, force=True)
+      report('Failures', force=True)
+      for failure in self.failures:
+        report(failure, indent=1, force=True)
 
   def LocateTestProblems(self):
     for root, dirs, files in os.walk(self._folder):
