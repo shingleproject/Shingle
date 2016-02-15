@@ -165,11 +165,11 @@ filchner-ronne/shorelines.geo:
 
 # Antarctica, everything below the 60S parallel, coarse approximation to open boundary
 antarctica_all/shorelines.geo:
-	@$(SCRIPT) -legacy -f $@ -n $(DATASET) -dx 2 -r 'latitude <= -60' > $(dir $@)/mesh.log
+	@$(SCRIPT) -legacy -f $@ -n $(DATASET) -r 'latitude <= -60.0' -dx 2 -bl -50 > $(dir $@)/mesh.log
 
 # Small region close to the Filcher-Ronne ice shelf
 filchner-ronne_iceshelf/shorelines.geo:
-	@$(SCRIPT) -legacy -f $@ -n $(DATASET) -no -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0 -p 1 -r 'latitude <= -83' > $(dir $@)/mesh.log
+	@$(SCRIPT) -legacy -f $@ -n $(DATASET) -no -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0 -p 1 -bl -83 > $(dir $@)/mesh.log
 
 # Amundsen Sea
 amundsen_sea/shorelines.geo:

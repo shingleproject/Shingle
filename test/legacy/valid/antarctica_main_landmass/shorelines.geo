@@ -1,13 +1,16 @@
 // Arguments:  -legacy -f antarctica_main_landmass/shorelines.geo -n ../../../dataset/RTopo105b_50S.nc -r 'latitude <= -60.0' -p 1 -dx 10 -exclude_ice_shelves -bl -60
 // Output to shorelines.geo
 // Projection type cartesian
-// Boundaries restricted to [1]
-// Region defined by latitude <= -60.0
+//   2. legacy
+//       path:       /surface_geoid_representation::legacy/brep_component::legacy/
+//       form:       Raster
+// Reading boundary representation legacy
+// Boundaries restricted to paths: 1
+// Bounding by latitude: -60.0
+// Region of interest: ((latitude <= -60.0) and (latitude <= -60.0))
+// Region defined by ((latitude <= -60.0) and (latitude <= -60.0))
 // Open contours closed with a line formed by points spaced 10 degrees apart
-// Source netCDF located at ../../../dataset/RTopo105b_50S.nc
-// Excluding iceshelf ocean cavities
 // Paths found: 269
-
 
 // == Header ======================================================
 IP = newp;
@@ -26,7 +29,7 @@ Delete { Point{ IP + 1}; }
 // Paths found valid: 1, including 1
 
 // == Ice-Land mass number 1 ======================================
-// Path 1 points 38488/38489 area 2.44976e+08 (required closing in 2 parts of the path)
+// Path 1: points 38488 (of 38489) area 2.44976e+08 (required closing in 2 parts of the path)
 Point ( IP + 2 ) = { 9.40253226, -0.00000000, 0.00000000 };
 Point ( IP + 3 ) = { 9.40903991, -0.00136816, 0.00000000 };
 Point ( IP + 4 ) = { 9.41555328, -0.00273820, 0.00000000 };
@@ -38522,7 +38525,7 @@ BSpline ( IL + 0 ) = { IP + 2 : IP + 38489, IP + 2 };
 Line Loop( ILL + 0 ) = { IL + 0 };
 
 // Closing path with parallels and merdians, from (-1.00000000, -60.00000000) to  (179.00000000, -60.00000000)
-// Drawing parallel index 38489 at -1.000000.2 (to match 179.000000.2), -60.000000.2
+// Drawing parallel index 38489 at -1.00 (to match 179.00), -60.00
 Point ( IP + 38490 ) = { -3.68610307, -0.58382137, 0.00000000 };
 Point ( IP + 38491 ) = { -3.52872336, -1.21503689, 0.00000000 };
 Point ( IP + 38492 ) = { -3.26412518, -1.80933413, 0.00000000 };
@@ -38541,7 +38544,7 @@ Point ( IP + 38504 ) = { 3.19899192, -1.92214826, 0.00000000 };
 Point ( IP + 38505 ) = { 3.48416958, -1.33744740, 0.00000000 };
 Point ( IP + 38506 ) = { 3.66348252, -0.71210887, 0.00000000 };
 // Closing path with parallels and merdians, from (-179.00000000, -60.00000000) to  (1.00000000, -60.00000000)
-// Drawing parallel index 38506 at -179.000000.2 (to match 1.000000.2), -60.000000.2
+// Drawing parallel index 38506 at -179.00 (to match 1.00), -60.00
 Point ( IP + 38507 ) = { 3.66348252, 0.71210887, 0.00000000 };
 Point ( IP + 38508 ) = { 3.48416958, 1.33744740, 0.00000000 };
 Point ( IP + 38509 ) = { 3.19899192, 1.92214826, 0.00000000 };
@@ -38594,7 +38597,7 @@ Printf("Assigning characteristic mesh sizes...");
 // Background Field = IFI + 2;
 
 Field[ IFI + 1] = MathEval;
-Field[ IFI + 1].F = "1.0E5";
+Field[ IFI + 1].F = "1.000000e+05";
 
 Field[ IFI + 2 ] = Attractor;
 //Field[ IFI + 2 ].EdgesList = { 999999, IL + 0 };
