@@ -35,6 +35,8 @@ class VerificationTestEngine(object):
 
   locations = []
   total_number = 0
+  passes = []
+  failures = []
 
   def __init__(self, folder=None, extension=None):
     if folder is None:
@@ -45,6 +47,16 @@ class VerificationTestEngine(object):
     self.LocateTestProblems()
     self.total_number = len(self.locations)
     self.Test()
+    self.Summary()
+
+  def Summary(self):
+    pass_number = len(self.failures) 
+    fail_number = len(self.passes) 
+    total = pass_number + fail_number
+    if fail_number == 0:
+      report('%(brightgreen)sPASS%(end)s %(grey)%(total)d in total)%(end)s', var = {'total':total}, force=True)
+    else:
+      report('%(brightred)sFAIL%(end)s %(pass)d of %(total)d verification tests passed', var = {'pass':pass_number, 'total':total}, force=True)
 
   def LocateTestProblems(self):
     for root, dirs, files in os.walk(self._folder):
@@ -55,7 +67,7 @@ class VerificationTestEngine(object):
   
   def EnableLogging(self):
     universe.log_active = True
-    universe.verbose = False
+    #universe.verbose = False
 
   def List(self):
     spacing = str(len(str(self.total_number)) + 2)
@@ -81,15 +93,22 @@ class VerificationTestEngine(object):
       else: locationstr = location 
       report('%(number)'+spacing+'s %(location)s', var={'number':numberstr, 'location':locationstr}, force=True)
       report('%(blue)sGenerating representation%(end)s%(grey)s...%(end)s', force=True, indent=1) 
-      Scenario(case=location)
+      s = Scenario(case=location)
+      if s.verification:
+        self.passes.append(s.Name())
+      else:
+        self.failures.append(s.Name())
 
 
 class VerificationTests(object):
+
+  result = None
 
   def __init__(self, representation, mesh=None):
     self.representation = representation
     self.mesh = mesh
     self.PerformValidationTests()
+
 
   def TestDiff(self, valid=None):
     import difflib
@@ -158,8 +177,8 @@ class VerificationTests(object):
     file2.close()
     if total == 0:
       error('File compare picked up a difference, but detailed diff showed none - potentially a difference in arguments comment line?')
-    else:
-      report('%(grey)svim -d %(valid)s %(new)s%(end)s', var = {'valid':fullvalid, 'new':fullpath}, indent=2, force=True)
+    report('%(grey)svim -d %(valid)s %(new)s%(end)s', var = {'valid':fullvalid, 'new':fullpath}, indent=2, force=True)
+    report('%(grey)sUpdate with: cat %(new)s > %(valid)s%(end)s', var = {'valid':fullvalid, 'new':fullpath}, indent=2, force=True)
     #State 'Over 10' on break
     #report('Total differences: %(total)s' % {'total':total}, indent=2, force=True)
       #return True
@@ -189,6 +208,7 @@ class VerificationTests(object):
       passes = self.TestDiff()
       total = 1
       number = 1
+    self.result = passes == total
     report('%(blue)sResult:%(end)s %(yellow)s%(name)s%(end)s' + ResultToString(passes == total, show_failures=True, failures=total-passes), var={'name':self.representation.scenario.Name(), 'number':number + 1, 'failures':total-passes}, force=True, indent=1) 
       
 

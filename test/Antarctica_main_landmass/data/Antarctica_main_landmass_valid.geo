@@ -1,13 +1,15 @@
 // Arguments:  -t test
 // Output to Antarctica_main_landmass.geo
 // Projection type cartesian
-// Reading boundary representation filchner_ronne_ice_ocean_brep
-// Boundaries restricted to [1]
-// Region defined by latitude <= -60.0
-// Open contours closed with a line formed by points spaced 10 degrees apart
-//   0. filchner_ronne_ice_ocean_brep
-//       path:       /surface_geoid_representation::filchner_ronne_ice_ocean/brep_component::filchner_ronne_ice_ocean_brep/
+//   1. Antarctica_main_landmass_brep
+//       path:       /surface_geoid_representation::Antarctica_main_landmass/brep_component::Antarctica_main_landmass_brep/
 //       form:       Raster
+// Reading boundary representation Antarctica_main_landmass_brep
+// Boundaries restricted to paths: 1
+// Bounding by latitude: -60.0
+// Region of interest: ((latitude <= -60.0) and (latitude <= -60.0))
+// Region defined by ((latitude <= -60.0) and (latitude <= -60.0))
+// Open contours closed with a line formed by points spaced 10 degrees apart
 // Paths found: 348
 
 // == Header ======================================================
@@ -27,7 +29,7 @@ Delete { Point{ IP + 1}; }
 // Paths found valid: 1, including 1
 
 // == Ice-Land mass number 1 ======================================
-// Path 1 points 59598/59599 area 4.42546e+08 (required closing in 2 parts of the path)
+// Path 1: points 59598 (of 59599) area 4.42546e+08 (required closing in 2 parts of the path)
 Point ( IP + 2 ) = { 20.11666130, -0.00000000, 0.00000000 };
 Point ( IP + 3 ) = { 20.11666045, -0.00585027, 0.00000000 };
 Point ( IP + 4 ) = { 20.11665790, -0.01170054, 0.00000000 };

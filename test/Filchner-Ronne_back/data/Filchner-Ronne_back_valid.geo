@@ -1,8 +1,11 @@
-// Arguments:  -x test/Filchner-Ronne_back/Filchner-Ronne_back.shml
+// Arguments:  -t test
 // Output to Filchner-Ronne_back.geo
 // Projection type cartesian
+//   1. filchner_ronne_back_brep
+//       path:       /surface_geoid_representation::filchner_ronne_back/brep_component::filchner_ronne_back_brep/
+//       form:       Raster
 // Reading boundary representation filchner_ronne_back_brep
-// Boundaries restricted to [1]
+// Boundaries restricted to paths: 1
 // Imposing box region: 
 //    -85.0:-20.0,-89.0:-75.0
 //    -64.0:-30.0,-89.0:-70.0
@@ -11,9 +14,6 @@
 // Region of interest: ((((longitude >= -85.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0)) or ((longitude >= -64.0) and (longitude <= -30.0) and (latitude >= -89.0) and (latitude <= -70.0)) or ((longitude >= -30.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0))) and (latitude <= -83.0))
 // Region defined by ((((longitude >= -85.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0)) or ((longitude >= -64.0) and (longitude <= -30.0) and (latitude >= -89.0) and (latitude <= -70.0)) or ((longitude >= -30.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0))) and (latitude <= -83.0))
 // Open contours closed with a line formed by points spaced 0.1 degrees apart
-//   0. filchner_ronne_back_brep
-//       path:       /surface_geoid_representation::filchner_ronne_back/brep_component::filchner_ronne_back_brep/
-//       form:       Raster
 // Paths found: 348
 
 // == Header ======================================================
@@ -33,7 +33,7 @@ Delete { Point{ IP + 1}; }
 // Paths found valid: 1, including 1
 
 // == Ice-Land mass number 1 ======================================
-// Path 1 points 317/59599 area 23814.8 (required closing in 2 parts of the path)
+// Path 1: points 317 (of 59599) area 23814.8 (required closing in 2 parts of the path)
 Point ( IP + 2 ) = { -8.69030439, 13.84905714, 0.00000000 };
 Point ( IP + 3 ) = { -8.69867315, 13.86687400, 0.00000000 };
 Point ( IP + 4 ) = { -8.69464005, 13.86940314, 0.00000000 };

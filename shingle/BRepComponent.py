@@ -44,7 +44,7 @@ from RepresentationTools import draw_parallel_explicit
 from Spud import libspud
 from Plot import PlotContours
 
-class BRepComponent():
+class BRepComponent(object):
 
   _name = None
   _path = None
@@ -107,9 +107,6 @@ class BRepComponent():
 
   def CloseWithParallels(self, *args, **kwargs):
     return self._surface_rep.CloseWithParallels(*args, **kwargs)
-
-  def BoundingLatitude(self, *args, **kwargs):
-    return self._surface_rep.BoundingLatitude(*args, **kwargs)
 
   # ---------------------------------------- 
 

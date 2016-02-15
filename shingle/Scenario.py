@@ -80,6 +80,8 @@ class Scenario(object):
   _dataset = {}
   _surface_geoid_rep = {}
 
+  verification = None
+
   def __init__(self, case = None):
     if (case is None) and universe.legacy.legacy:
       case = self.Legacy()
@@ -270,7 +272,8 @@ class Scenario(object):
     m = Mesh(source = universe.legacy.output)
     m.Generate()
 
-    VerificationTests(rep)
+    v = VerificationTests(rep)
+    self.verification = v.result
 
 
 

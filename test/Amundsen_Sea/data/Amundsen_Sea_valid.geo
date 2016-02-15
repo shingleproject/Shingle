@@ -2,15 +2,15 @@
 // Output to Amundsen_Sea.geo
 // Projection type cartesian
 // Extending region to meet parallel on latitude -64.0
-// Reading boundary representation filchner_ronne_ice_ocean_brep
+//   1. Amundsen_Sea_brep
+//       path:       /surface_geoid_representation::Amundsen_Sea/brep_component::Amundsen_Sea_brep/
+//       form:       Raster
+// Reading boundary representation Amundsen_Sea_brep
 // Imposing box region: 
 //    -130.0:-85.0,-85.0:-60.0
 // Region of interest: ((longitude >= -130.0) and (longitude <= -85.0) and (latitude >= -85.0) and (latitude <= -60.0))
 // Region defined by ((longitude >= -130.0) and (longitude <= -85.0) and (latitude >= -85.0) and (latitude <= -60.0))
 // Open contours closed with a line formed by points spaced 0.1 degrees apart
-//   0. filchner_ronne_ice_ocean_brep
-//       path:       /surface_geoid_representation::filchner_ronne_ice_ocean/brep_component::filchner_ronne_ice_ocean_brep/
-//       form:       Raster
 // Paths found: 348
 
 // == Header ======================================================
@@ -30,7 +30,7 @@ Delete { Point{ IP + 1}; }
 // Paths found valid: 348, including 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255 256 257 258 259 260 261 262 263 264 265 266 267 268 269 270 271 272 273 274 275 276 277 278 279 280 281 282 283 284 285 286 287 288 289 290 291 292 293 294 295 296 297 298 299 300 301 302 303 304 305 306 307 308 309 310 311 312 313 314 315 316 317 318 319 320 321 322 323 324 325 326 327 328 329 330 331 332 333 334 335 336 337 338 339 340 341 342 343 344 345 346 347 348
 
 // == Ice-Land mass number 1 ======================================
-// Path 1 points 5165/59599 area 3.84218e+06 (required closing in 2 parts of the path)
+// Path 1: points 5165 (of 59599) area 3.84218e+06 (required closing in 2 parts of the path)
 Point ( IP + 2 ) = { -0.60141060, 6.87415459, 0.00000000 };
 Point ( IP + 3 ) = { -0.60010318, 6.87072261, 0.00000000 };
 Point ( IP + 4 ) = { -0.59879708, 6.86729392, 0.00000000 };
@@ -5950,7 +5950,7 @@ Line Loop( ILL + 0 ) = { IL + 0, IL + 1 };
 
 
 // == Ice-Land mass number 23 =====================================
-// Path 23 points 158/159 area 2191.14 (required closing in 2 parts of the path)
+// Path 23: points 158 (of 159) area 2191.14 (required closing in 2 parts of the path)
 Point ( IP + 5819 ) = { 4.52512208, 5.87599111, 0.00000000 };
 Point ( IP + 5820 ) = { 4.52341227, 5.87730744, 0.00000000 };
 Point ( IP + 5821 ) = { 4.52170285, 5.87862268, 0.00000000 };
@@ -6129,7 +6129,7 @@ Line Loop( ILL + 1 ) = { IL + 2 };
 
 
 // == Ice-Land mass number 27 =====================================
-// Path 27 points 512/513 area 8103.48 (required closing in 2 parts of the path)
+// Path 27: points 512 (of 513) area 8103.48 (required closing in 2 parts of the path)
 Point ( IP + 5977 ) = { 3.89703542, 6.19637771, 0.00000000 };
 Point ( IP + 5978 ) = { 3.89523242, 6.19751129, 0.00000000 };
 Point ( IP + 5979 ) = { 3.89342909, 6.19864435, 0.00000000 };
@@ -6650,7 +6650,7 @@ Line Loop( ILL + 2 ) = { IL + 3 };
 
 
 // == Ice-Land mass number 28 =====================================
-// Path 28 points 18/19 area 5.40939 (required closing in 2 parts of the path)
+// Path 28: points 18 (of 19) area 5.40939 (required closing in 2 parts of the path)
 Point ( IP + 6489 ) = { 3.32430956, 6.46840768, 0.00000000 };
 Point ( IP + 6490 ) = { 3.32242830, 6.46937417, 0.00000000 };
 Point ( IP + 6491 ) = { 3.32054675, 6.47034012, 0.00000000 };
@@ -6677,7 +6677,7 @@ Line Loop( ILL + 3 ) = { IL + 4 };
 
 
 // == Ice-Land mass number 29 =====================================
-// Path 29 points 680/681 area 58481.4 (required closing in 2 parts of the path)
+// Path 29: points 680 (of 681) area 58481.4 (required closing in 2 parts of the path)
 Point ( IP + 6507 ) = { 4.05895397, 5.98754404, 0.00000000 };
 Point ( IP + 6508 ) = { 4.05721252, 5.98872420, 0.00000000 };
 Point ( IP + 6509 ) = { 4.05546993, 5.98990440, 0.00000000 };
@@ -7366,7 +7366,7 @@ Line Loop( ILL + 4 ) = { IL + 5 };
 
 
 // == Ice-Land mass number 30 =====================================
-// Path 30 points 180/181 area 1374.98 (required closing in 2 parts of the path)
+// Path 30: points 180 (of 181) area 1374.98 (required closing in 2 parts of the path)
 Point ( IP + 7187 ) = { 3.30148275, 6.41022486, 0.00000000 };
 Point ( IP + 7188 ) = { 3.29961840, 6.41118472, 0.00000000 };
 Point ( IP + 7189 ) = { 3.29775293, 6.41214447, 0.00000000 };
@@ -7555,7 +7555,7 @@ Line Loop( ILL + 5 ) = { IL + 6 };
 
 
 // == Ice-Land mass number 31 =====================================
-// Path 31 points 172/173 area 1082.44 (required closing in 2 parts of the path)
+// Path 31: points 172 (of 173) area 1082.44 (required closing in 2 parts of the path)
 Point ( IP + 7367 ) = { 3.57160041, 6.21957344, 0.00000000 };
 Point ( IP + 7368 ) = { 3.56979068, 6.22061234, 0.00000000 };
 Point ( IP + 7369 ) = { 3.56798063, 6.22165071, 0.00000000 };
@@ -7752,7 +7752,7 @@ Line Loop( ILL + 6 ) = { IL + 7 };
 
 
 // == Ice-Land mass number 36 =====================================
-// Path 36 points 108/109 area 538.654 (required closing in 2 parts of the path)
+// Path 36: points 108 (of 109) area 538.654 (required closing in 2 parts of the path)
 Point ( IP + 7539 ) = { 1.74027149, 6.54808684, 0.00000000 };
 Point ( IP + 7540 ) = { 1.73836712, 6.54859267, 0.00000000 };
 Point ( IP + 7541 ) = { 1.73646173, 6.54909817, 0.00000000 };
@@ -7869,7 +7869,7 @@ Line Loop( ILL + 7 ) = { IL + 8 };
 
 
 // == Ice-Land mass number 37 =====================================
-// Path 37 points 212/213 area 1205.91 (required closing in 2 parts of the path)
+// Path 37: points 212 (of 213) area 1205.91 (required closing in 2 parts of the path)
 Point ( IP + 7647 ) = { 0.17521212, 6.76631211, 0.00000000 };
 Point ( IP + 7648 ) = { 0.17324436, 6.76636277, 0.00000000 };
 Point ( IP + 7649 ) = { 0.17127567, 6.76641289, 0.00000000 };
@@ -8094,7 +8094,7 @@ Line Loop( ILL + 8 ) = { IL + 9 };
 
 
 // == Ice-Land mass number 39 =====================================
-// Path 39 points 130/131 area 913.168 (required closing in 2 parts of the path)
+// Path 39: points 130 (of 131) area 913.168 (required closing in 2 parts of the path)
 Point ( IP + 7859 ) = { 0.01957054, 6.72793965, 0.00000000 };
 Point ( IP + 7860 ) = { 0.01761394, 6.72794506, 0.00000000 };
 Point ( IP + 7861 ) = { 0.01565644, 6.72794990, 0.00000000 };
@@ -8233,7 +8233,7 @@ Line Loop( ILL + 9 ) = { IL + 10 };
 
 
 // == Ice-Land mass number 40 =====================================
-// Path 40 points 60/61 area 225.112 (required closing in 2 parts of the path)
+// Path 40: points 60 (of 61) area 225.112 (required closing in 2 parts of the path)
 Point ( IP + 7989 ) = { 0.45307241, 6.64590334, 0.00000000 };
 Point ( IP + 7990 ) = { 0.45113877, 6.64603488, 0.00000000 };
 Point ( IP + 7991 ) = { 0.44920597, 6.64616580, 0.00000000 };
@@ -8302,7 +8302,7 @@ Line Loop( ILL + 10 ) = { IL + 11 };
 
 
 // == Ice-Land mass number 41 =====================================
-// Path 41 points 240/241 area 2238.38 (required closing in 2 parts of the path)
+// Path 41: points 240 (of 241) area 2238.38 (required closing in 2 parts of the path)
 Point ( IP + 8049 ) = { 1.12032250, 6.51989292, 0.00000000 };
 Point ( IP + 8050 ) = { 1.11842549, 6.52021860, 0.00000000 };
 Point ( IP + 8051 ) = { 1.11652925, 6.52054359, 0.00000000 };
@@ -8559,7 +8559,7 @@ Line Loop( ILL + 11 ) = { IL + 12 };
 
 
 // == Ice-Land mass number 44 =====================================
-// Path 44 points 104/105 area 800.669 (required closing in 2 parts of the path)
+// Path 44: points 104 (of 105) area 800.669 (required closing in 2 parts of the path)
 Point ( IP + 8289 ) = { 0.58291105, 6.53139226, 0.00000000 };
 Point ( IP + 8290 ) = { 0.58101159, 6.53156150, 0.00000000 };
 Point ( IP + 8291 ) = { 0.57911120, 6.53173027, 0.00000000 };
@@ -8672,7 +8672,7 @@ Line Loop( ILL + 12 ) = { IL + 13 };
 
 
 // == Ice-Land mass number 45 =====================================
-// Path 45 points 1274/1275 area 25276.9 (required closing in 2 parts of the path)
+// Path 45: points 1274 (of 1275) area 25276.9 (required closing in 2 parts of the path)
 Point ( IP + 8393 ) = { 0.95983106, 6.46094589, 0.00000000 };
 Point ( IP + 8394 ) = { 0.95795207, 6.46122476, 0.00000000 };
 Point ( IP + 8395 ) = { 0.95607213, 6.46150320, 0.00000000 };
@@ -10099,7 +10099,7 @@ Line Loop( ILL + 13 ) = { IL + 14 };
 
 
 // == Ice-Land mass number 82 =====================================
-// Path 82 points 60/61 area 65.104 (required closing in 2 parts of the path)
+// Path 82: points 60 (of 61) area 65.104 (required closing in 2 parts of the path)
 Point ( IP + 9667 ) = { 0.06254953, 5.37551442, 0.00000000 };
 Point ( IP + 9668 ) = { 0.06098624, 5.37553239, 0.00000000 };
 Point ( IP + 9669 ) = { 0.05942222, 5.37554990, 0.00000000 };

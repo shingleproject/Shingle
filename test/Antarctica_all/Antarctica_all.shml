@@ -33,6 +33,11 @@
         <real_value rank="0">2.0</real_value>
       </spacing>
     </brep_component>
+    <closure>
+      <bounding_latitude>
+        <real_value rank="0">-50.0</real_value>
+      </bounding_latitude>
+    </closure>
   </surface_geoid_representation>
   <verification>
     <test file_name="data/Antarctica_all_valid.geo" name="BrepDescription"/>
