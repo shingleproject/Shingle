@@ -118,33 +118,40 @@ class VerificationTests(object):
     #diff = difflib.ndiff(file1.readlines(), file2.readlines())
     diff = difflib.Differ().compare(file1.readlines(), file2.readlines())
     #delta = ''.join(x[2:] for x in diff if x.startswith('- '))
-    changes = (x for x in diff if x.startswith('- ') or x.startswith('+ '))
+    changes = (x for x in diff if (x.startswith('- ') or x.startswith('+ ')) and ('// Arguments:' not in x))
+
+    total = 0
+    cached = []
+    for change in changes:
+      total += 1
+      cached.append(change)
+
+    if total > 30:
+      toshow = 20
+    else:
+      toshow = total
 
     show = True
-    broken = False
-    total = 0
-    for change in changes:
-      if '// Arguments:' in change:
-        # Improve to leave this line out of diff and cmp?
-        continue
-      total += 1
-      if show and not broken:
+    number = 0
+    if show:
+      for change in cached:
+        number += 1
+        if number > toshow: break
         if change.startswith('+ '):
           report('%(green)s%(change)s%(end)s', var={'change':change.strip()}, indent=2, force=True)
-        else:
+        elif change.startswith('- '):
           report('%(red)s%(change)s%(end)s', var={'change':change.strip()}, indent=2, force=True)
-      #if '+ // Paths found valid:' in change: broken = True
-      if total > 10: broken = True
-      if broken:
-        report('%(blue)s...%(end)s %(grey)s(further differences exist (%(total)s in total), but are not shown here)%(end)s', var={'total':total}, indent=2, force=True)
-        break
+    if toshow < total:
+      report('%(blue)s...%(end)s %(grey)s(further differences exist (%(total)s in total), but are not shown here)%(end)s', var={'total':total}, indent=2, force=True)
+
     file1.close()
     file2.close()
-    report('%(grey)svim -d %(valid)s %(new)s%(end)s', var = {'valid':fullvalid, 'new':fullpath}, indent=2, force=True)
-    #State 'Over 10' on break
-    #report('Total differences: %(total)s' % {'total':total}, indent=2, force=True)
     if total == 0:
       error('File compare picked up a difference, but detailed diff showed none - potentially a difference in arguments comment line?')
+    else:
+      report('%(grey)svim -d %(valid)s %(new)s%(end)s', var = {'valid':fullvalid, 'new':fullpath}, indent=2, force=True)
+    #State 'Over 10' on break
+    #report('Total differences: %(total)s' % {'total':total}, indent=2, force=True)
       #return True
     return False
 

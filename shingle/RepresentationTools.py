@@ -46,7 +46,7 @@ def draw_parallel_explicit(rep, start, end, index, latitude_max, dx):
   
   loopstart = index
   if (current[1] != latitude_max):
-    rep.gmsh_comment('Drawing meridian to max latitude index %s at %f.2, %f.2 (to match %f.2)' % (index.point, current[0], current[1], latitude_max))
+    rep.gmsh_comment('Drawing meridian to max latitude index %s at %.2f, %.2f (to match %.2f)' % (index.point, current[0], current[1], latitude_max))
   while (current[1] != latitude_max):
     if (current[1] < latitude_max):
       current[1] = current[1] + dx
@@ -56,7 +56,7 @@ def draw_parallel_explicit(rep, start, end, index, latitude_max, dx):
     if (compare_points(current, end, dx)): return index
     index.point += 1
     # vv
-    rep.report('Drawing meridian to max latitude index %s at %f.2, %f.2 (to match %f.2)' % (index.point, current[0], current[1], latitude_max), debug=True)
+    rep.report('Drawing meridian to max latitude index %s at %.2f, %.2f (to match %.2f)' % (index.point, current[0], current[1], latitude_max), debug=True)
     loc = project(current)
     rep.gmsh_format_point(index.point, loc, 0.0)
   if rep.MoreBSplines():
@@ -64,7 +64,7 @@ def draw_parallel_explicit(rep, start, end, index, latitude_max, dx):
 
     loopstart = index
   if (current[0] != end[0]):
-    rep.gmsh_comment('Drawing parallel index %s at %f.2 (to match %f.2), %f.2' % (index.point, current[0], end[0], current[1]))
+    rep.gmsh_comment('Drawing parallel index %s at %.2f (to match %.2f), %.2f' % (index.point, current[0], end[0], current[1]))
   while (current[0] != end[0]):
     if (longitude_diff(current[0], end[0]) < 0):
       current[0] = current[0] + dx
@@ -76,7 +76,7 @@ def draw_parallel_explicit(rep, start, end, index, latitude_max, dx):
     if (compare_points(current, end, dx)): return index
     index.point += 1
     # vv
-    rep.report('Drawing parallel index %s at %f.2 (to match %f.2), %f.2' % (index.point, current[0], end[0], current[1]), debug=True)
+    rep.report('Drawing parallel index %s at %.2f (to match %.2f), %.2f' % (index.point, current[0], end[0], current[1]), debug=True)
     loc = project(current)
     rep.gmsh_format_point(index.point, loc, 0.0)
   if rep.MoreBSplines():
@@ -84,7 +84,7 @@ def draw_parallel_explicit(rep, start, end, index, latitude_max, dx):
 
     loopstart = index
   if (current[1] != end[1]):
-    rep.gmsh_comment('Drawing meridian to end index %s at %f.2, %f.2 (to match %f.2)' % (index.point, current[0], current[1], end[1]))
+    rep.gmsh_comment('Drawing meridian to end index %s at %.2f, %.2f (to match %.2f)' % (index.point, current[0], current[1], end[1]))
   while (current[1] != end[1]):
     if (current[1] < end[1]):
       current[1] = current[1] + dx
@@ -94,7 +94,7 @@ def draw_parallel_explicit(rep, start, end, index, latitude_max, dx):
     if (compare_points(current, end, dx)): return index
     index.point += 1
     # vv
-    rep.report('Drawing meridian to end index %s at %f.2, %f.2 (to match %f.2)' % (index.point, current[0], current[1], end[1]), debug=True)
+    rep.report('Drawing meridian to end index %s at %.2f, %.2f (to match %.2f)' % (index.point, current[0], current[1], end[1]), debug=True)
     loc = project(current)
     rep.gmsh_format_point(index.point, loc, 0.0)
   index = rep.gmsh_loop(index, loopstart, True, True, False)
@@ -339,7 +339,7 @@ def close_path(rep, start, end, index, dx, latitude_max, proj='longlat'):
         current[1] = current[1] + diff[1] * (dx /  normdiff)
 
         index.point += 1
-        report('Drawing connection to end index %s at %f.2, %f.2 (to match %f.2)' % (index.point, current[0], current[1], end[1]), debug=False)
+        report('Drawing connection to end index %s at %.2f, %.2f (to match %.2f)' % (index.point, current[0], current[1], end[1]), debug=False)
         loc = project(current)
         rep.gmsh_format_point(index.point, loc, 0.0)
 
@@ -359,7 +359,7 @@ def close_path(rep, start, end, index, dx, latitude_max, proj='longlat'):
         ncurrent[0] = ncurrent[0] + 360
       #print start, end, ncurrent, diff
       index.point += 1
-      report('Drawing connection to end index %s at %f.2, %f.2 (to match %f.2)' % (index.point, ncurrent[0], ncurrent[1], end[1]), debug=False)
+      report('Drawing connection to end index %s at %.2f, %.2f (to match %.2f)' % (index.point, ncurrent[0], ncurrent[1], end[1]), debug=False)
       nloc = project(ncurrent)
       rep.gmsh_format_point(index.point, nloc, 0.0)
       

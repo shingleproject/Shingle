@@ -1,12 +1,19 @@
-// Arguments:  -legacy -f filchner-ronne/shorelines.geo -n ../../../dataset/RTopo105b_50S.nc -no -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0 -lat -65.0
-// Output to shorelines.geo
+// Arguments:  -x test/Filchner-Ronne/Filchner-Ronne.shml -l
+// Output to Filchner-Ronne.geo
 // Projection type cartesian
-// Region defined by ((longitude >= -85.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0)) or ((longitude >= -64.0) and (longitude <= -30.0) and (latitude >= -89.0) and (latitude <= -70.0)) or ((longitude >= -30.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0))
 // Extending region to meet parallel on latitude -65.0
-// Source netCDF located at ../../../dataset/RTopo105b_50S.nc
-// Including iceshelf ocean cavities
+// Reading boundary representation filchner_ronne_ice_ocean_brep
+// Imposing box region: 
+//    -85.0:-20.0,-89.0:-75.0
+//    -64.0:-30.0,-89.0:-70.0
+//    -30.0:-20.0,-89.0:-75.0
+// Region of interest: ((longitude >= -85.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0)) or ((longitude >= -64.0) and (longitude <= -30.0) and (latitude >= -89.0) and (latitude <= -70.0)) or ((longitude >= -30.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0))
+// Region defined by ((longitude >= -85.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0)) or ((longitude >= -64.0) and (longitude <= -30.0) and (latitude >= -89.0) and (latitude <= -70.0)) or ((longitude >= -30.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0))
+// Open contours closed with a line formed by points spaced 0.1 degrees apart
+//   0. filchner_ronne_ice_ocean_brep
+//       path:       /surface_geoid_representation::filchner_ronne_ice_ocean/brep_component::filchner_ronne_ice_ocean_brep/
+//       form:       Raster
 // Paths found: 348
-
 
 // == Header ======================================================
 IP = newp;
@@ -12355,7 +12362,7 @@ LoopEnd0 = IP + 12324;
 BSpline ( IL + 0 ) = { IP + 2 : IP + 12324 };
 
 // Closing path with parallels and merdians, from (-62.15833282, -70.00000000) to  (-20.00000000, -75.52499771)
-// Drawing meridian to max latitude index 12324 at -62.158333.2, -70.000000.2 (to match -65.000000.2)
+// Drawing meridian to max latitude index 12324 at -62.16, -70.00 (to match -65.00)
 Point ( IP + 12325 ) = { -2.63520813, 4.98931872, 0.00000000 };
 Point ( IP + 12326 ) = { -2.62189039, 4.96410384, 0.00000000 };
 Point ( IP + 12327 ) = { -2.60870250, 4.93913482, 0.00000000 };
@@ -12406,7 +12413,7 @@ Point ( IP + 12371 ) = { -2.13304725, 4.03856244, 0.00000000 };
 Point ( IP + 12372 ) = { -2.12417339, 4.02176131, 0.00000000 };
 Point ( IP + 12373 ) = { -2.11536970, 4.00509302, 0.00000000 };
 Point ( IP + 12374 ) = { -2.10663534, 3.98855597, 0.00000000 };
-// Drawing parallel index 12374 at -62.158333.2 (to match -20.000000.2), -65.000000.2
+// Drawing parallel index 12374 at -62.16 (to match -20.00), -65.00
 Point ( IP + 12375 ) = { -2.11359347, 3.98487313, 0.00000000 };
 Point ( IP + 12376 ) = { -2.12054516, 3.98117815, 0.00000000 };
 Point ( IP + 12377 ) = { -2.12749039, 3.97747103, 0.00000000 };
@@ -12828,7 +12835,7 @@ Point ( IP + 12792 ) = { -4.22894815, 1.56923190, 0.00000000 };
 Point ( IP + 12793 ) = { -4.23168053, 1.56184860, 0.00000000 };
 Point ( IP + 12794 ) = { -4.23440003, 1.55446055, 0.00000000 };
 Point ( IP + 12795 ) = { -4.23867950, 1.54275317, 0.00000000 };
-// Drawing meridian to end index 12795 at -20.000000.2, -65.000000.2 (to match -75.524998.2)
+// Drawing meridian to end index 12795 at -20.00, -65.00 (to match -75.52)
 Point ( IP + 12796 ) = { -4.25625358, 1.54914961, 0.00000000 };
 Point ( IP + 12797 ) = { -4.27396714, 1.55559682, 0.00000000 };
 Point ( IP + 12798 ) = { -4.29182188, 1.56209542, 0.00000000 };
@@ -19849,7 +19856,7 @@ Printf("Assigning characteristic mesh sizes...");
 // Background Field = IFI + 2;
 
 Field[ IFI + 1] = MathEval;
-Field[ IFI + 1].F = "1.0E5";
+Field[ IFI + 1].F = "1.000000e+05";
 
 Field[ IFI + 2 ] = Attractor;
 //Field[ IFI + 2 ].EdgesList = { 999999, IL + 0, IL + 2, IL + 3, IL + 4, IL + 5, IL + 6, IL + 7, IL + 8, IL + 9 };

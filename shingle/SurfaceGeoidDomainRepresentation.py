@@ -193,8 +193,13 @@ class SurfaceGeoidDomainRepresentation(object):
     self.scenario.report(*args, **kwargs)
 
     linclude = True
+    ldebug = False
     if 'include' in kwargs:
       linclude = kwargs['include']
+    if 'debug' in kwargs:
+      ldebug = kwargs['debug']
+      if ldebug and not universe.debug:
+        return
     if linclude:
       lvar = {}
       if 'var' in kwargs:
