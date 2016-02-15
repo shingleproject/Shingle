@@ -206,7 +206,7 @@ def array_to_gmsh_points(rep, num, index, location, minarea, region, dx, latitud
     rep.gmsh_comment('  Skipped (area too small)\n')
     return index
 
-  rep.report('Path %i points %i/%i area %g%s' % ( num, validnumber, pointnumber, area_enclosed(validlocation), closingtext ))
+  rep.report('Path %i: points %i (of %i) area %g%s' % ( num, validnumber, pointnumber, area_enclosed(validlocation), closingtext ), indent = 2)
  
   # if (closingrequired and closewithparallel):
   #   latitude_max = None

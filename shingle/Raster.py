@@ -98,7 +98,7 @@ class Raster(Dataset):
   def CheckSource(self):
     from os.path import isfile
     if not self.SourceExists(): 
-      error('Source netCDF ' + self.LocationFull() + ' not found!', fatal=True)
+      error('Source NetCDF ' + self.LocationFull() + ' not found!', fatal=True, indent = 1)
 
   def GetCacheLocation(self):
     if self.cachefile is None:
@@ -116,19 +116,23 @@ class Raster(Dataset):
     from os.path import isfile
     return isfile(self.cachefile)
 
-  def report(self, text, include = True, debug = False):
-    from os import linesep
-    if debug and not universe.debug:
-      return
-    if (universe.verbose):
-      print text
-    # Load log into Surf.report when available?
-    # Or link this to Surf - but race issue?
-    if include:
-      self.log = self.log + '// ' + text + linesep
+  def report(self, *args, **kwargs):
+    # Add cache ofr log?
+    return self._scenario.report(*args, **kwargs)
+
+  # def report(self, text, include = True, debug = False):
+  #   from os import linesep
+  #   if debug and not universe.debug:
+  #     return
+  #   if (universe.verbose):
+  #     print text
+  #   # Load log into Surf.report when available?
+  #   # Or link this to Surf - but race issue?
+  #   if include:
+  #     self.log = self.log + '// ' + text + linesep
 
   def AppendParameters(self):
-    self.report('Source netCDF located at ' + self.location)
+    self.report('Source NetCDF located at ' + self.location, indent = 1)
 
   def CacheLoad(self):
     import pickle

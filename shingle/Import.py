@@ -28,7 +28,7 @@ from Reporting import error, report
 from Scientific.IO import NetCDF
 
 
-def read_rtopo(brep, ref, filename):
+def read_rtopo(brep, rep, filename):
   file = NetCDF.NetCDFFile(filename, 'r')
   #variableNames = fileN.variables.keys() 
   try:
@@ -48,10 +48,10 @@ def read_rtopo(brep, ref, filename):
     except:
       field = file.variables['z'][:, :] 
     if brep.ExcludeIceshelfCavities():
-      ref.report('Excluding iceshelf ocean cavities')
+      rep.report('Excluding iceshelf ocean cavities', indent = 2)
       field[field>0.5]=1 
     else:
-      ref.report('Including iceshelf ocean cavities')
+      rep.report('Including iceshelf ocean cavities', indent = 2)
       field = field % 2
   elif (contourtype=='icesheet'):
     lon = file.variables['lon'][:] 
@@ -148,7 +148,7 @@ def read_raster(filename):
   lon = arange(a.shape[1])
   lat = arange(a.shape[0])
   field = a
-  report("Found raster, sizes: lat %(lat)d, lon %(lon)d, shape %(shape)s", var = {'lon':len(lon), 'lat':len(lat), 'shape':str(a.shape)} )
+  report("Found raster, sizes: lat %(lat)d, lon %(lon)d, shape %(shape)s", var = {'lon':len(lon), 'lat':len(lat), 'shape':str(a.shape)}, indent = 2 )
 
   return lon, lat, field
 
@@ -234,7 +234,7 @@ def read_paths(brep, rep, filename):
       universe.plot_backend = matplotlib.get_backend()
       matplotlib.use('Agg')
       from pylab import contour
-      report("Found raster, sizes: lat %(lat)d, lon %(lon)d, shape %(shape)s", var = {'lon':len(lon), 'lat':len(lat), 'shape':str(field.shape)} )
+      report("Found raster, sizes: lat %(lat)d, lon %(lon)d, shape %(shape)s", var = {'lon':len(lon), 'lat':len(lat), 'shape':str(field.shape)}, indent = 2 )
       paths = contour(lon,lat,field,levels=[0.5]).collections[0].get_paths()
 
   return paths

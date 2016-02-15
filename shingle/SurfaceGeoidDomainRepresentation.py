@@ -93,7 +93,7 @@ class SurfaceGeoidDomainRepresentation(object):
     self.scenario = scenario
     self._path = '/surface_geoid_representation::%(name)s/' % {'name':self.name}
     self.content = ''
-    self.report('Initialising surface geoid representation %(name)s', var = {'name':self.name}, include=False)
+    self.report('Initialising surface geoid representation %(name)s', var = {'name':self.name}, include=False, indent=1)
     self.index = SurfaceBRepIndexes()
 
     self.AppendArguments()
@@ -179,7 +179,7 @@ class SurfaceGeoidDomainRepresentation(object):
 
       if len(self._brep_components) == 0:
         error('No component boundary representations found', fatal=True)
-      report('Found %(number)d component boundary representations:' % { 'number':len(self._brep_components) })
+      report('COMPONENT BOUNDARY REPRESENTATIONS: Found %(number)d component boundary representations:' % { 'number':len(self._brep_components) })
       for b in self._brep_components.keys():
         self._brep_components[b].Show()
     return self._brep_components
@@ -236,8 +236,8 @@ class SurfaceGeoidDomainRepresentation(object):
     self.gmsh_comment('Arguments: ' + universe.call)
 
   def AppendParameters(self):
-    self.report('Output to ' + self.Output())
-    self.report('Projection type ' + self.Projection())
+    self.report('Output to ' + self.Output(), indent=1)
+    self.report('Projection type ' + self.Projection(), indent=1)
     if self.ExtendToLatitude() is not None:
       self.report('Extending region to meet parallel on latitude ' + str(self.ExtendToLatitude()))
     self.gmsh_comment('')

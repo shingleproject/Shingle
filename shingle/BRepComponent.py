@@ -62,10 +62,9 @@ class BRepComponent():
   def __init__(self, surface_rep, number):
     self.number = number
     self._surface_rep = surface_rep
-    self._surface_rep.report('Reading boundary representation %(name)s', var = {'name':self.Name()}) 
+    self._surface_rep.report('Reading boundary representation %(name)s', var = {'name':self.Name()}, indent=1) 
     self._path = '/surface_geoid_representation::%(name)s/brep_component::%(brep_name)s/' % {'name':self._surface_rep.name, 'brep_name':self.Name()}
     self.index = self._surface_rep.index
-    self.AppendParameters()
 
 
   # Imports:
@@ -247,10 +246,10 @@ class BRepComponent():
 
   def AppendParameters(self):
     if len(self.Boundary()) > 0:
-      self.report('Boundaries restricted to ' + str(self.Boundary()))
+      self.report('Boundaries restricted to ' + str(self.Boundary()), indent=1)
     if self.Region() is not 'True':
-      self.report('Region defined by ' + str(self.Region()))
-    self.report('Open contours closed with a line formed by points spaced %(dx)g degrees apart' % {'dx':self.Spacing()} )
+      self.report('Region defined by ' + str(self.Region()), indent=1)
+    self.report('Open contours closed with a line formed by points spaced %(dx)g degrees apart' % {'dx':self.Spacing()}, indent=1)
     self.gmsh_comment('')
 
   def Dataset(self):
@@ -258,19 +257,22 @@ class BRepComponent():
     return self._surface_rep.scenario.Dataset()[name]
 
 
-  def GGenerateContour(self):
-    self.report('Generating contours', include = False)
-    self._pathall = read_paths(self, self.ContourType())
+  #def GGenerateContour(self):
+  #  self.report('Generating contours', include = False)
+  #  self._pathall = read_paths(self, self.ContourType())
 
 
   def GenerateContour(self):
     from Import import read_paths
     dataset = self.Dataset()
-    self.report('Generating contours, from raster: ' + dataset.LocationFull(), include = False)
+    self.report('Generating contours, from raster: ' + dataset.LocationFull(), include = False, indent = 1)
     self._pathall = read_paths(self, dataset, dataset.LocationFull())
 
   def Generate(self):
     import os
+
+    self.AppendParameters()
+
     dataset = self.Dataset()
 
     dataset.AppendParameters()
@@ -282,7 +284,7 @@ class BRepComponent():
       self.GenerateContour()
       dataset.CacheSave()
 
-    self.report('Paths found: ' + str(len(self._pathall)))
+    self.report('Paths found: ' + str(len(self._pathall)), indent=1)
 
 
 
@@ -417,8 +419,8 @@ LoopEnd%(loopnumber)i = IP + %(pointend)i;''' % { 'pointstart':index.start, 'poi
     index.start = index.point
     return index
 
-    self.report('Closed boundaries (id %i): %s' % (self.Id(), list_to_space_separated(self.index.contour, add=1)))
-    self.report('Open boundaries   (id %i): %s' % (self.OpenId(), list_to_space_separated(self.index.open, add=1)))
+    self.report('Closed boundaries (ID %i): %s' % (self.Id(), list_to_space_separated(self.index.contour, add=1)), indent = 1)
+    self.report('Open boundaries   (ID %i): %s' % (self.OpenId(), list_to_space_separated(self.index.open, add=1)), indent = 1)
 
   def output_boundaries(self):
     import pickle
@@ -490,7 +492,7 @@ LoopEnd%(loopnumber)i = IP + %(pointend)i;''' % { 'pointstart':index.start, 'poi
         matched.append(match)
         appended.append(num)
 
-    self.report('Merged paths that cross the date line: ' + ' '.join(map(strplusone,appended)))
+    self.report('Merged paths that cross the date line: ' + ' '.join(map(strplusone,appended)), indent = 1)
 
     if ((paths is not None) and (len(paths) > 0)):
       pathids=paths
@@ -515,10 +517,10 @@ LoopEnd%(loopnumber)i = IP + %(pointend)i;''' % { 'pointstart':index.start, 'poi
       if num in self.BoundaryToExclude():
         continue
       pathvalid.append(num)  
-    self.report('Paths found valid: ' + str(len(pathvalid)) + ', including ' + ' '.join(map(str, pathvalid)))
+    self.report('Paths found valid: ' + str(len(pathvalid)) + ', including ' + ' '.join(map(str, pathvalid)), indent = 1)
     #print ends
     if (len(pathvalid) == 0):
-      self.report('No valid paths found.')
+      self.report('No valid paths found.', indent = 1)
       sys.exit(1)
 
     #if universe.smooth_data:
@@ -615,8 +617,8 @@ Call DrawParallel;''' % { 'start_x':startp[0], 'start_y':startp[1], 'end_x':endp
     self.AddContent( '''Physical Line( %(boundaryid)i ) = { %(loopnumbers)s };''' % { 'boundaryid':self.OpenId(), 'loopnumbers':list_to_comma_separated(index.physicalopen, prefix = 'IL%(fileid)s + ' % { 'fileid':self.Fileid() } ) } )
 
 
-    self.report('Open boundaries   (id %i): %s' % (self.OpenId(), list_to_space_separated(index.open, add=1)))
-    self.report('Closed boundaries (id %i): %s' % (self.Id(), list_to_space_separated(index.contour, add=1)))
+    self.report('Open boundaries   (id %i): %s' % (self.OpenId(), list_to_space_separated(index.open, add=1)), indent = 1)
+    self.report('Closed boundaries (id %i): %s' % (self.Id(), list_to_space_separated(index.contour, add=1)), indent = 1)
     boundary_list = list_to_comma_separated(index.contour + index.open)
   #//Line Loop( ILL + %(loopnumber)i ) = { %(boundary_list)s };
   #//Plane Surface( %(surface)i ) = { ILL + %(loopnumber)i };
