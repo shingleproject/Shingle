@@ -116,7 +116,7 @@ class VerificationTests(object):
 
     # FIXME Do in lines
 
-    bufferlength = 8192
+    bufferlength = 1024 * 16
 
     # Too slow even on relatively small surface representation outputs (stuck in find_longest_match):
     #diff = difflib.ndiff(file1.readlines(), file2.readlines())

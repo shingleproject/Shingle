@@ -39,7 +39,7 @@
 from Universe import universe
 from Reporting import report, error
 from Import import read_paths
-from StringOperations import expand_boxes, list_to_comma_separated, list_to_space_separated
+from StringOperations import expand_boxes, bound_by_latitude, list_to_comma_separated, list_to_space_separated
 from RepresentationTools import draw_parallel_explicit
 from Spud import libspud
 from Plot import PlotContours
@@ -110,6 +110,9 @@ class BRepComponent():
 
   def CloseWithParallels(self, *args, **kwargs):
     return self._surface_rep.CloseWithParallels(*args, **kwargs)
+
+  def BoundingLatitude(self, *args, **kwargs):
+    return self._surface_rep.BoundingLatitude(*args, **kwargs)
 
   # ---------------------------------------- 
 
@@ -197,7 +200,11 @@ class BRepComponent():
         from os import linesep
         self.gmsh_comment('Imposing box region: ' + (linesep + '//    ').join([''] + box))
         region = expand_boxes(region, box )
-        self.gmsh_comment('Region of interest: ' + region)
+      bounding_latitude = self.BoundingLatitude()
+      if bounding_latitude is not None:
+        self.gmsh_comment('Bounding by latitude: ' + str(bounding_latitude))
+        region = bound_by_latitude(region, bounding_latitude)
+      self.gmsh_comment('Region of interest: ' + region)
       self._region = region
     return self._region
 

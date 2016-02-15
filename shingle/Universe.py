@@ -78,7 +78,7 @@ class universe():
     fileid = '' 
     more_bsplines = False
     open = True
-    bounding_lat = -50.0
+    bounding_lat = None
     extendtolatitude = None
     closewithparallels = False
     

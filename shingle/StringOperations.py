@@ -95,3 +95,22 @@ def expand_boxes(region, boxes):
         region = function
 
   return region
+
+def bound_by_latitude(region, latitude):
+  if latitude is None:
+    return region
+  function = 'latitude <= %s' % latitude
+  if (region is not 'True'):
+    region = '((%s) and (%s))' % (region, function)
+  else:
+    region = function
+  return region
+
+
+
+
+
+
+
+
+

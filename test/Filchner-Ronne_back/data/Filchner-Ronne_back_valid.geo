@@ -1,12 +1,20 @@
-// Arguments:  -legacy -f filchner-ronne_iceshelf/shorelines.geo -n ../../../dataset/RTopo105b_50S.nc -no -b -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0 -p 1 -r 'latitude <= -83'
-// Output to shorelines.geo
+// Arguments:  -x test/Filchner-Ronne_back/Filchner-Ronne_back.shml
+// Output to Filchner-Ronne_back.geo
 // Projection type cartesian
+// Reading boundary representation filchner_ronne_back_brep
 // Boundaries restricted to [1]
-// Region defined by ((latitude <= -83) and (((longitude >= -85.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0)) or ((longitude >= -64.0) and (longitude <= -30.0) and (latitude >= -89.0) and (latitude <= -70.0)) or ((longitude >= -30.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0))))
-// Source netCDF located at ../../../dataset/RTopo105b_50S.nc
-// Including iceshelf ocean cavities
+// Imposing box region: 
+//    -85.0:-20.0,-89.0:-75.0
+//    -64.0:-30.0,-89.0:-70.0
+//    -30.0:-20.0,-89.0:-75.0
+// Bounding by latitude: -83.0
+// Region of interest: ((((longitude >= -85.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0)) or ((longitude >= -64.0) and (longitude <= -30.0) and (latitude >= -89.0) and (latitude <= -70.0)) or ((longitude >= -30.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0))) and (latitude <= -83.0))
+// Region defined by ((((longitude >= -85.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0)) or ((longitude >= -64.0) and (longitude <= -30.0) and (latitude >= -89.0) and (latitude <= -70.0)) or ((longitude >= -30.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0))) and (latitude <= -83.0))
+// Open contours closed with a line formed by points spaced 0.1 degrees apart
+//   0. filchner_ronne_back_brep
+//       path:       /surface_geoid_representation::filchner_ronne_back/brep_component::filchner_ronne_back_brep/
+//       form:       Raster
 // Paths found: 348
-
 
 // == Header ======================================================
 IP = newp;
@@ -348,7 +356,7 @@ LoopEnd0 = IP + 317;
 BSpline ( IL + 0 ) = { IP + 2 : IP + 317 };
 
 // Closing path with parallels and merdians, from (-60.94166565, -83.00000000) to  (-57.89166641, -83.00000000)
-// Drawing parallel index 317 at -60.941666.2 (to match -57.891666.2), -83.000000.2
+// Drawing parallel index 317 at -60.94 (to match -57.89), -83.00
 Point ( IP + 318 ) = { -7.96605406, 14.27794652, 0.00000000 };
 Point ( IP + 319 ) = { -7.99096164, 14.26402139, 0.00000000 };
 Point ( IP + 320 ) = { -8.01584487, 14.25005281, 0.00000000 };
@@ -414,7 +422,7 @@ Printf("Assigning characteristic mesh sizes...");
 // Background Field = IFI + 2;
 
 Field[ IFI + 1] = MathEval;
-Field[ IFI + 1].F = "1.0E5";
+Field[ IFI + 1].F = "1.000000e+05";
 
 Field[ IFI + 2 ] = Attractor;
 //Field[ IFI + 2 ].EdgesList = { 999999, IL + 0 };
