@@ -7,6 +7,7 @@ test cases to add:
 
 FIXME: Projections
 FIXME: excldue iceshelves option
+FIXME: Test.py read files to set line lenght to compare
 Move output to global option, not part of surface_geoid?
 
 

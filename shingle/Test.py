@@ -114,9 +114,13 @@ class VerificationTests(object):
     file1 = open(fullvalid, 'r')
     file2 = open(fullpath, 'r')
 
+    # FIXME Do in lines
+
+    bufferlength = 8192
+
     # Too slow even on relatively small surface representation outputs (stuck in find_longest_match):
     #diff = difflib.ndiff(file1.readlines(), file2.readlines())
-    diff = difflib.Differ().compare(file1.readlines(), file2.readlines())
+    diff = difflib.Differ().compare(file1.readlines(bufferlength), file2.readlines(bufferlength))
     #delta = ''.join(x[2:] for x in diff if x.startswith('- '))
     changes = (x for x in diff if (x.startswith('- ') or x.startswith('+ ')) and ('// Arguments:' not in x))
 
@@ -144,7 +148,7 @@ class VerificationTests(object):
         elif change.startswith('- '):
           report('%(red)s%(change)s%(end)s', var={'change':change.strip()}, indent=2, force=True)
     if toshow < total:
-      if total > 4000:
+      if total > 100:
         totalstring = 'more than 4000'
       else:
         totalstring = str(total)

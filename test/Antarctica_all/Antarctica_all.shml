@@ -15,11 +15,11 @@
     </form>
     <projection name="Automatic"/>
   </dataset>
-  <surface_geoid_representation name="filchner_ronne_ice_ocean">
+  <surface_geoid_representation name="Antarctica_all">
     <id>
       <integer_value rank="0">9</integer_value>
     </id>
-    <brep_component name="filchner_ronne_ice_ocean_brep">
+    <brep_component name="Antarctica_all_brep">
       <form name="Raster">
         <source name="RTopo"/>
         <region>latitude &lt;= -60</region>

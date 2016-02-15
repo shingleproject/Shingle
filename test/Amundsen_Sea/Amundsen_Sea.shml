@@ -17,11 +17,11 @@
     </form>
     <projection name="Automatic"/>
   </dataset>
-  <surface_geoid_representation name="filchner_ronne_ice_ocean">
+  <surface_geoid_representation name="Amundsen_Sea">
     <id>
       <integer_value rank="0">9</integer_value>
     </id>
-    <brep_component name="filchner_ronne_ice_ocean_brep">
+    <brep_component name="Amundsen_Sea_brep">
       <form name="Raster">
         <source name="RTopo"/>
         <box>-130.0:-85.0,-85.0:-60.0</box>
