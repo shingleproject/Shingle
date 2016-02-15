@@ -1,12 +1,17 @@
-// Arguments:  -legacy -f amundsen_sea/shorelines.geo -n ../../../dataset/RTopo105b_50S.nc -no -b -130.0:-85.0,-85.0:-60.0 -lat -64.0
-// Output to shorelines.geo
+// Arguments:  -t test
+// Output to Amundsen_Sea.geo
 // Projection type cartesian
-// Region defined by ((longitude >= -130.0) and (longitude <= -85.0) and (latitude >= -85.0) and (latitude <= -60.0))
 // Extending region to meet parallel on latitude -64.0
-// Source netCDF located at ../../../dataset/RTopo105b_50S.nc
-// Including iceshelf ocean cavities
+// Reading boundary representation filchner_ronne_ice_ocean_brep
+// Imposing box region: 
+//    -130.0:-85.0,-85.0:-60.0
+// Region of interest: ((longitude >= -130.0) and (longitude <= -85.0) and (latitude >= -85.0) and (latitude <= -60.0))
+// Region defined by ((longitude >= -130.0) and (longitude <= -85.0) and (latitude >= -85.0) and (latitude <= -60.0))
+// Open contours closed with a line formed by points spaced 0.1 degrees apart
+//   0. filchner_ronne_ice_ocean_brep
+//       path:       /surface_geoid_representation::filchner_ronne_ice_ocean/brep_component::filchner_ronne_ice_ocean_brep/
+//       form:       Raster
 // Paths found: 348
-
 
 // == Header ======================================================
 IP = newp;
@@ -5196,7 +5201,7 @@ LoopEnd0 = IP + 5165;
 BSpline ( IL + 0 ) = { IP + 2 : IP + 5165 };
 
 // Closing path with parallels and merdians, from (-130.00000000, -74.90833282) to  (-85.00000000, -73.50833130)
-// Drawing meridian to max latitude index 5165 at -130.000000.2, -74.908333.2 (to match -64.000000.2)
+// Drawing meridian to max latitude index 5165 at -130.00, -74.91 (to match -64.00)
 Point ( IP + 5166 ) = { 4.82014274, 5.74442243, 0.00000000 };
 Point ( IP + 5167 ) = { 4.78824776, 5.70641147, 0.00000000 };
 Point ( IP + 5168 ) = { 4.75676477, 5.66889151, 0.00000000 };
@@ -5306,7 +5311,7 @@ Point ( IP + 5271 ) = { 2.81880109, 3.35931633, 0.00000000 };
 Point ( IP + 5272 ) = { 2.80749621, 3.34584370, 0.00000000 };
 Point ( IP + 5273 ) = { 2.79627718, 3.33247338, 0.00000000 };
 Point ( IP + 5274 ) = { 2.78421902, 3.31810302, 0.00000000 };
-// Drawing parallel index 5274 at -130.000000.2 (to match -85.000000.2), -64.000000.2
+// Drawing parallel index 5274 at -130.00 (to match -85.00), -64.00
 Point ( IP + 5275 ) = { 2.77842360, 3.32295735, 0.00000000 };
 Point ( IP + 5276 ) = { 2.77261972, 3.32780155, 0.00000000 };
 Point ( IP + 5277 ) = { 2.76680739, 3.33263561, 0.00000000 };
@@ -5757,7 +5762,7 @@ Point ( IP + 5721 ) = { -0.35491467, 4.31691080, 0.00000000 };
 Point ( IP + 5722 ) = { -0.36244856, 4.31628478, 0.00000000 };
 Point ( IP + 5723 ) = { -0.36998134, 4.31564561, 0.00000000 };
 Point ( IP + 5724 ) = { -0.37751300, 4.31499330, 0.00000000 };
-// Drawing meridian to end index 5724 at -85.000000.2, -64.000000.2 (to match -73.508331.2)
+// Drawing meridian to end index 5724 at -85.00, -64.00 (to match -73.51)
 Point ( IP + 5725 ) = { -0.37902173, 4.33223819, 0.00000000 };
 Point ( IP + 5726 ) = { -0.38054196, 4.34961446, 0.00000000 };
 Point ( IP + 5727 ) = { -0.38207381, 4.36712366, 0.00000000 };
@@ -11254,7 +11259,7 @@ Printf("Assigning characteristic mesh sizes...");
 // Background Field = IFI + 2;
 
 Field[ IFI + 1] = MathEval;
-Field[ IFI + 1].F = "1.0E5";
+Field[ IFI + 1].F = "1.000000e+05";
 
 Field[ IFI + 2 ] = Attractor;
 //Field[ IFI + 2 ].EdgesList = { 999999, IL + 0, IL + 2, IL + 3, IL + 4, IL + 5, IL + 6, IL + 7, IL + 8, IL + 9, IL + 10, IL + 11, IL + 12, IL + 13, IL + 14, IL + 15 };
