@@ -10,6 +10,12 @@ FIXME: excldue iceshelves option
 FIXME: Test.py read files to set line lenght to compare
 Move output to global option, not part of surface_geoid?
 
+FIXME: Add globe case
+FIXME: Add UK case
+FIXME: Add north sea case
+FIXME: Add Caribbean case
+FIXME: Add focused Sint Maarten case
+
 
 Replace command line test behaviour with shml
 Add a line in shml for complete command line, and a switch to apply as an overide to all - for testing

@@ -54,7 +54,7 @@ class VerificationTestEngine(object):
     fail_number = len(self.failures) 
     total = pass_number + fail_number
     if fail_number == 0:
-      report('%(brightgreen)sPASS%(end)s %(grey)%(total)d in total)%(end)s', var = {'total':total}, force=True)
+      report('%(brightgreen)sPASS%(end)s %(grey)s%(total)d in total)%(end)s', var = {'total':total}, force=True)
     else:
       report('%(brightred)sFAIL%(end)s %(pass)d of %(total)d verification tests passed', var = {'pass':pass_number, 'total':total}, force=True)
       report('Failures', force=True)
