@@ -53,7 +53,7 @@ class ReadMultipleInstance(object):
     self._path = '%(prefix)s::filchner_ronne_ice_ocean::%(name)s' % {'prefix':self._prefix, 'name':self.name} 
 
   def Show(self):
-    report('  %(blue)s%(number)s.%(end)s %(name)s', var = {'number':self._number, 'name':self.name })
+    report('  %(blue)s%(number)s.%(end)s %(name)s', var = {'number':self._number + 1, 'name':self.name })
     report('      %(blue)spath:      %(end)s%(path)s', var = {'path':self._path} )
 
 
@@ -180,7 +180,7 @@ class Scenario(object):
         self._dataset[d.name] = d
       else:
         error('Dataset %(name)s source not available at: %(location)s' % {'name':d.name, 'location':d.LocationFull()})
-    report('DATASETS: Found %(number)d datasets:' % { 'number':len(self._dataset) })
+    report('%(brightyellow)sDATASETS%(end)s: Found %(number)d datasets:', var = { 'number':len(self._dataset) })
     for d in self._dataset.keys():
       self._dataset[d].Show()
     self._dataset_read = True
@@ -195,7 +195,7 @@ class Scenario(object):
       d = ReadMultipleInstance('/surface_geoid_representation', number)
       self._surface_geoid_rep[d.name] = d
 
-    report('SURFACE GEOID REPRESENTATIONS: Found %(number)d surface geoid representations:' % { 'number':len(self._surface_geoid_rep) })
+    report('%(brightyellow)sSURFACE GEOID REPRESENTATIONS%(end)s: Found %(number)d surface geoid representations:', var = { 'number':len(self._surface_geoid_rep) })
     for d in self._surface_geoid_rep.keys():
       self._surface_geoid_rep[d].Show()
     self._surface_geoid_rep_read = True

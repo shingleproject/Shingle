@@ -63,7 +63,7 @@ class Dataset(object):
     return self._scenario.PathRelative(self.location)
 
   def Show(self):
-    report('  %(blue)s%(number)s.%(end)s %(name)s', var = {'number':self._number, 'name':self.name })
+    report('  %(blue)s%(number)s.%(end)s %(name)s', var = {'number':self._number + 1, 'name':self.name })
     report('      %(blue)spath:       %(end)s%(path)s', var = {'path':self._path} )
     report('      %(blue)sform:       %(end)s%(form)s', var = {'form':self.form} )
     report('      %(blue)ssource:     %(end)s%(source)s', var = {'source':self.source} )

@@ -179,7 +179,7 @@ class SurfaceGeoidDomainRepresentation(object):
 
       if len(self._brep_components) == 0:
         error('No component boundary representations found', fatal=True)
-      report('COMPONENT BOUNDARY REPRESENTATIONS: Found %(number)d component boundary representations:' % { 'number':len(self._brep_components) })
+      report('%(brightyellow)sCOMPONENT BOUNDARY REPRESENTATIONS%(end)s: Found %(number)d component boundary representations:', var = { 'number':len(self._brep_components) })
       for b in self._brep_components.keys():
         self._brep_components[b].Show()
     return self._brep_components

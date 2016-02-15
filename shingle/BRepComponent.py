@@ -62,10 +62,8 @@ class BRepComponent():
   def __init__(self, surface_rep, number):
     self.number = number
     self._surface_rep = surface_rep
-    self._surface_rep.report('Reading boundary representation %(name)s', var = {'name':self.Name()}, indent=1) 
     self._path = '/surface_geoid_representation::%(name)s/brep_component::%(brep_name)s/' % {'name':self._surface_rep.name, 'brep_name':self.Name()}
     self.index = self._surface_rep.index
-
 
   # Imports:
   def report(self, *args, **kwargs):
@@ -118,7 +116,7 @@ class BRepComponent():
 
 
   def Show(self):
-    self.report('  %(blue)s%(number)s.%(end)s %(name)s', var = {'number':self.number, 'name':self.Name() })
+    self.report('  %(blue)s%(number)s.%(end)s %(name)s', var = {'number':self.number + 1, 'name':self.Name() })
     self.report('      %(blue)spath:       %(end)s%(path)s', var = {'path':self._path} )
     self.report('      %(blue)sform:       %(end)s%(form)s', var = {'form':self.FormType()} )
 
@@ -245,8 +243,9 @@ class BRepComponent():
     return self._boundary_to_exclude
 
   def AppendParameters(self):
+    self._surface_rep.report('Reading boundary representation %(name)s', var = {'name':self.Name()}, indent=1) 
     if len(self.Boundary()) > 0:
-      self.report('Boundaries restricted to ' + str(self.Boundary()), indent=1)
+      self.report('Boundaries restricted to paths: ' + list_to_comma_separated(self.Boundary()), indent=1)
     if self.Region() is not 'True':
       self.report('Region defined by ' + str(self.Region()), indent=1)
     self.report('Open contours closed with a line formed by points spaced %(dx)g degrees apart' % {'dx':self.Spacing()}, indent=1)
