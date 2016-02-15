@@ -42,6 +42,39 @@ from RepresentationTools import draw_parallel_explicit
 from Spud import libspud
 from BRepComponent import BRepComponent
 
+class SurfaceBRepIndexes(object):
+  point = 0
+  path = 0
+  contour = []
+  contournodes= []
+  open = []
+  skipped = []
+  start = 0
+  pathsinloop = []
+  physicalgroup = []
+  loop = 0
+  loops = []
+  physicalcontour = []
+  physicalopen = []
+
+  def _InitialiseIndexes(self):
+    self.point = 0
+    self.path = 0
+    self.contour = []
+    self.contournodes= []
+    self.open = []
+    self.skipped = []
+    self.start = 0
+    self.pathsinloop = []
+    self.physicalgroup = []
+    self.loop = 0
+    self.loops = []
+    self.physicalcontour = []
+    self.physicalopen = []
+
+  def __init__(self):
+    self._InitialiseIndexes()
+
 class SurfaceGeoidDomainRepresentation(object):
 
   _cacheFiletype = '.shc'
@@ -49,25 +82,11 @@ class SurfaceGeoidDomainRepresentation(object):
   _path = None
   _filehandle = None
   _pathall = None
-
+  
   name = None 
   scenario = None
   content = None
-
-  class index:
-    point = 0
-    path = 0
-    contour = []
-    contournodes= []
-    open = []
-    skipped = []
-    start = 0
-    pathsinloop = []
-    physicalgroup = []
-    loop = 0
-    loops = []
-    physicalcontour = []
-    physicalopen = []
+  index = None
   
   def __init__(self, scenario=None, name='SurfaceGeoidDomainRepresentation'):
     self.name = name
@@ -75,6 +94,7 @@ class SurfaceGeoidDomainRepresentation(object):
     self._path = '/surface_geoid_representation::%(name)s/' % {'name':self.name}
     self.content = ''
     self.report('Initialising surface geoid representation %(name)s', var = {'name':self.name}, include=False)
+    self.index = SurfaceBRepIndexes()
 
     self.AppendArguments()
     self.AppendParameters()

@@ -124,6 +124,8 @@ class VerificationTests(object):
     cached = []
     for change in changes:
       total += 1
+      if total > 4000:
+        break
       cached.append(change)
 
     if total > 30:
@@ -142,7 +144,11 @@ class VerificationTests(object):
         elif change.startswith('- '):
           report('%(red)s%(change)s%(end)s', var={'change':change.strip()}, indent=2, force=True)
     if toshow < total:
-      report('%(blue)s...%(end)s %(grey)s(further differences exist (%(total)s in total), but are not shown here)%(end)s', var={'total':total}, indent=2, force=True)
+      if total > 4000:
+        totalstring = 'more than 4000'
+      else:
+        totalstring = str(total)
+      report('%(blue)s...%(end)s %(grey)s(further differences exist (%(total)s in total), but are not shown here)%(end)s', var={'total':totalstring}, indent=2, force=True)
 
     file1.close()
     file2.close()
