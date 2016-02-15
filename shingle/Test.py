@@ -54,12 +54,12 @@ class VerificationTestEngine(object):
     fail_number = len(self.failures) 
     total = pass_number + fail_number
     if fail_number == 0:
-      report('%(brightgreen)sPASS%(end)s  %(grey)s(%(total)d in total)%(end)s', var = {'total':total}, force=True)
+      report('%(brightgreen)sPASS%(end)s  %(grey)s(%(total)d in total)%(end)s', var = {'total':total}, test=True)
     else:
-      report('%(brightred)sFAIL%(end)s  %(pass)d of %(total)d verification tests passed', var = {'pass':pass_number, 'total':total}, force=True)
-      report('Failures', force=True)
+      report('%(brightred)sFAIL%(end)s  %(pass)d of %(total)d verification tests passed', var = {'pass':pass_number, 'total':total}, test=True)
+      report('Failures', test=True)
       for failure in self.failures:
-        report(failure, indent=1, force=True)
+        report(failure, indent=1, test=True)
 
   def LocateTestProblems(self):
     for root, dirs, files in os.walk(self._folder):
@@ -70,32 +70,32 @@ class VerificationTestEngine(object):
   
   def EnableLogging(self):
     universe.log_active = True
-    #universe.verbose = False
+    universe.verbose = False
 
   def List(self):
     spacing = str(len(str(self.total_number)) + 2)
 
-    report('%(blue)sTest problems:%(end)s %(grey)s(%(total)d in total)%(end)s', var={'total':self.total_number}, force=True) 
+    report('%(blue)sTest problems:%(end)s %(grey)s(%(total)d in total)%(end)s', var={'total':self.total_number}, test=True) 
     for i in range(self.total_number):
       number = i + 1
       numberstr = '[%(number)d]' % {'number':number}
       location = self.locations[i]
       if location.startswith('./'): locationstr = location[2:]
       else: locationstr = location 
-      report('%(number)'+spacing+'s %(location)s', var={'number':numberstr, 'location':locationstr}, force=True)
+      report('%(number)'+spacing+'s %(location)s', var={'number':numberstr, 'location':locationstr}, test=True)
 
   def Test(self):
     spacing = str(len(str(self.total_number)) + 2)
     self.List()
-    report('%(blue)sBeginning tests:%(end)s %(grey)s(%(total)d in total)%(end)s', var={'total':self.total_number}, force=True) 
+    report('%(blue)sBeginning tests:%(end)s %(grey)s(%(total)d in total)%(end)s', var={'total':self.total_number}, test=True) 
     for i in range(self.total_number):
       number = i + 1
       numberstr = '[%(number)d]' % {'number':number}
       location = self.locations[i]
       if location.startswith('./'): locationstr = location[2:]
       else: locationstr = location 
-      report('%(number)'+spacing+'s %(location)s', var={'number':numberstr, 'location':locationstr}, force=True)
-      report('%(blue)sGenerating representation%(end)s%(grey)s...%(end)s', force=True, indent=1) 
+      report('%(number)'+spacing+'s %(location)s', var={'number':numberstr, 'location':locationstr}, test=True)
+      report('%(blue)sGenerating surface geoid representation%(end)s%(grey)s%(end)s', test=True, indent=1) 
       s = Scenario(case=location)
       if s.verification:
         self.passes.append(s.Name())
@@ -166,24 +166,24 @@ class VerificationTests(object):
         number += 1
         if number > toshow: break
         if change.startswith('+ '):
-          report('%(green)s%(change)s%(end)s', var={'change':change.strip()}, indent=2, force=True)
+          report('%(green)s%(change)s%(end)s', var={'change':change.strip()}, indent=2, test=True)
         elif change.startswith('- '):
-          report('%(red)s%(change)s%(end)s', var={'change':change.strip()}, indent=2, force=True)
+          report('%(red)s%(change)s%(end)s', var={'change':change.strip()}, indent=2, test=True)
     if toshow < total:
       if total > 100:
         totalstring = 'more than 4000'
       else:
         totalstring = str(total)
-      report('%(blue)s...%(end)s %(grey)s(further differences exist (%(total)s in total), but are not shown here)%(end)s', var={'total':totalstring}, indent=2, force=True)
+      report('%(blue)s...%(end)s %(grey)s(further differences exist (%(total)s in total), but are not shown here)%(end)s', var={'total':totalstring}, indent=2, test=True)
 
     file1.close()
     file2.close()
     if total == 0:
       error('File compare picked up a difference, but detailed diff showed none - potentially a difference in arguments comment line?')
-    report('%(grey)svim -d %(valid)s %(new)s%(end)s', var = {'valid':fullvalid, 'new':fullpath}, indent=2, force=True)
-    report('%(grey)sUpdate with: cat %(new)s > %(valid)s%(end)s', var = {'valid':fullvalid, 'new':fullpath}, indent=2, force=True)
+    report('%(grey)svim -d %(valid)s %(new)s%(end)s', var = {'valid':fullvalid, 'new':fullpath}, indent=2, test=True)
+    report('%(grey)sUpdate with: cat %(new)s > %(valid)s%(end)s', var = {'valid':fullvalid, 'new':fullpath}, indent=2, test=True)
     #State 'Over 10' on break
-    #report('Total differences: %(total)s' % {'total':total}, indent=2, force=True)
+    #report('Total differences: %(total)s' % {'total':total}, indent=2, test=True)
       #return True
     return False
 
@@ -193,7 +193,7 @@ class VerificationTests(object):
     #  return
 
     total = libspud.option_count('/verification/test')
-    report('%(blue)sReading verification tests%(end)s %(grey)s(%(total)d in total)%(end)s', var={'total':total}, force=True, indent=1) 
+    report('%(blue)sReading verification tests%(end)s %(grey)s(%(total)d in total)%(end)s', var={'total':total}, test=True, indent=1) 
 
     passes = 0
     for number in range(total):
@@ -205,14 +205,14 @@ class VerificationTests(object):
         continue
       if result:
         passes += 1
-      report('%(blue)sTest %(number)s:%(end)s %(yellow)s%(name)s%(end)s' + ResultToString(result), var={'name':name, 'number':number + 1}, force=True, indent=2) 
+      report('%(blue)sTest %(number)s:%(end)s %(yellow)s%(name)s%(end)s' + ResultToString(result), var={'name':name, 'number':number + 1}, test=True, indent=2) 
     # Inxclude legacy test cases
     if universe.legacy.legacy:
       passes = self.TestDiff()
       total = 1
       number = 1
     self.result = passes == total
-    report('%(blue)sResult:%(end)s %(yellow)s%(name)s%(end)s' + ResultToString(passes == total, show_failures=True, failures=total-passes), var={'name':self.representation.scenario.Name(), 'number':number + 1, 'failures':total-passes}, force=True, indent=1) 
+    report('%(blue)sResult:%(end)s %(yellow)s%(name)s%(end)s' + ResultToString(passes == total, show_failures=True, failures=total-passes), var={'name':self.representation.scenario.Name(), 'number':number + 1, 'failures':total-passes}, test=True, indent=1) 
       
 
 def ResultToString(result, show_failures=False, failures=None):

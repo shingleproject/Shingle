@@ -121,13 +121,13 @@ class Log(object):
 
 
 
-def report(text, var = {}, debug = False, force = False, colourful = True, indent=0, include=True):
+def report(text, var = {}, debug = False, force = False, colourful = True, indent=0, include=True, test=False):
   # Link to rep.report
   # Option to send to log file instead - independent of terminal verbosity
   spacer = ' ' * 2 * indent
   if debug and not universe.debug:
     return
-  if universe.verbose or force:
+  if universe.verbose or force or (universe.testfolder is not None and test):
     print(spacer + text % addcolour(var, colourful = colourful))
   if universe.log is not None:
     universe.log.Write(spacer + text % addcolour(var, colourful = False))
