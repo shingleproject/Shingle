@@ -1,0 +1,1904 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="">
+  <include href="spud_base.rng"/>
+  <include href="mesh_options.rng"/>
+  <start>
+    <element name="boundary_representation">
+      <a:documentation>The root node of the options dictionary.</a:documentation>
+      <ref name="comment"/>
+      <element name="model_name">
+        <a:documentation>Model output files are named according to the initialisation
+name, e.g. [initialisation_name].geo.
+
+Non-standard characters in the simulation name should be avoided.</a:documentation>
+        <ref name="anystring"/>
+      </element>
+      <optional>
+        <ref name="reference_options"/>
+      </optional>
+      <element name="domain_type">
+        <a:documentation>Option domain_type does not change the tree.
+
+It is used for options checking.</a:documentation>
+        <element name="string_value">
+          <!--
+            Lines is a hint to the gui about the size of the text box.
+            It is not an enforced limit on string length.
+          -->
+          <attribute name="lines">
+            <value>1</value>
+          </attribute>
+          <choice>
+            <value>oceans</value>
+            <value>ocean_ice_shelf</value>
+            <value>geophysical</value>
+            <value>surface_geoid</value>
+            <value>stokes</value>
+          </choice>
+        </element>
+        <ref name="comment"/>
+      </element>
+      <ref name="general"/>
+      <optional>
+        <ref name="output"/>
+      </optional>
+      <zeroOrMore>
+        <ref name="datasets"/>
+      </zeroOrMore>
+      <oneOrMore>
+        <ref name="geoid_surface_representation"/>
+      </oneOrMore>
+      <ref name="metric_options"/>
+      <ref name="mesh_options"/>
+      <ref name="validation_tests"/>
+      <optional>
+        <ref name="postprocess"/>
+      </optional>
+    </element>
+  </start>
+  <define name="postprocess">
+    <element name="postprocess">
+      <a:documentation>Prepare initialisation files
+with additional data and for
+specific modelling environments</a:documentation>
+      <optional>
+        <element name="format">
+          <a:documentation>Prepare initialisation files for
+specific modelling environments</a:documentation>
+          <ref name="comment"/>
+          <optional>
+            <element name="vtk">
+              <zeroOrMore>
+                <choice>
+                  <element name="add_field">
+                    <a:documentation>Adds the geoid metric as a field to the VTK output file</a:documentation>
+                    <attribute name="name">
+                      <value>geoid_metric</value>
+                    </attribute>
+                    <ref name="comment"/>
+                  </element>
+                  <element name="add_field">
+                    <a:documentation>Adds the bottom as a field to the VTK output file</a:documentation>
+                    <attribute name="name">
+                      <value>bottom</value>
+                    </attribute>
+                    <ref name="comment"/>
+                  </element>
+                  <element name="add_field">
+                    <a:documentation>Adds the top as a field to the VTK output file</a:documentation>
+                    <attribute name="name">
+                      <value>top</value>
+                    </attribute>
+                    <ref name="comment"/>
+                  </element>
+                  <element name="add_field">
+                    <a:documentation>User defined viewing angle</a:documentation>
+                    <attribute name="name">
+                      <data type="string"/>
+                    </attribute>
+                    <element name="dataset">
+                      <attribute name="name">
+                        <data type="string"/>
+                      </attribute>
+                      <ref name="comment"/>
+                    </element>
+                    <element name="field">
+                      <attribute name="name">
+                        <data type="string"/>
+                      </attribute>
+                      <ref name="comment"/>
+                    </element>
+                    <ref name="comment"/>
+                  </element>
+                </choice>
+              </zeroOrMore>
+              <ref name="comment"/>
+            </element>
+          </optional>
+          <optional>
+            <element name="h2ocean">
+              <ref name="comment"/>
+            </element>
+          </optional>
+          <optional>
+            <element name="adcirc">
+              <ref name="comment"/>
+            </element>
+          </optional>
+        </element>
+      </optional>
+    </element>
+  </define>
+  <define name="reference_options">
+    <element name="reference">
+      <a:documentation>Author contact details
+
+Details here to be used for questions over the model specification
+
+The authors specified here maintain the cases.</a:documentation>
+      <oneOrMore>
+        <element name="author">
+          <a:documentation>Author contact details
+
+Details here to be used for questions over the model specification
+
+The authors specified here maintain the cases.</a:documentation>
+          <attribute name="name">
+            <data type="string"/>
+          </attribute>
+          <ref name="anystring"/>
+          <ref name="comment"/>
+          <optional>
+            <element name="email_address">
+              <a:documentation>Author contact email address</a:documentation>
+              <ref name="anystring"/>
+              <ref name="comment"/>
+            </element>
+          </optional>
+          <optional>
+            <element name="institution">
+              <a:documentation>Author instituion</a:documentation>
+              <ref name="anystring"/>
+              <ref name="comment"/>
+            </element>
+          </optional>
+        </element>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="datasets">
+    <element name="dataset">
+      <a:documentation>Boundary representation component</a:documentation>
+      <attribute name="name">
+        <data type="string"/>
+      </attribute>
+      <choice>
+        <ref name="dataset_raster"/>
+        <ref name="dataset_polyline"/>
+        <ref name="dataset_gis_project"/>
+      </choice>
+      <choice>
+        <element name="projection">
+          <a:documentation>Projection of input data source:
+Automatic, read from source
+(as much as possible)</a:documentation>
+          <attribute name="name">
+            <value>Automatic</value>
+          </attribute>
+          <ref name="comment"/>
+        </element>
+        <element name="projection">
+          <a:documentation>Projection of input data source:
+Cartesian</a:documentation>
+          <attribute name="name">
+            <value>Cartesian</value>
+          </attribute>
+          <ref name="comment"/>
+        </element>
+        <element name="projection">
+          <a:documentation>Projection of input data source:
+Stereographic
+
+Needs pole orientation?</a:documentation>
+          <attribute name="name">
+            <value>Stereographic</value>
+          </attribute>
+          <ref name="comment"/>
+        </element>
+        <element name="projection">
+          <a:documentation>Projection of input data source:
+Proj4 string</a:documentation>
+          <attribute name="name">
+            <value>Proj4_string</value>
+          </attribute>
+          <data type="string"/>
+          <ref name="comment"/>
+        </element>
+      </choice>
+    </element>
+  </define>
+  <define name="dataset_raster">
+    <element name="form">
+      <a:documentation>Raster dataset reference</a:documentation>
+      <attribute name="name">
+        <value>Raster</value>
+      </attribute>
+      <ref name="comment"/>
+      <ref name="dataset_raster_options"/>
+    </element>
+  </define>
+  <define name="dataset_polyline">
+    <element name="form">
+      <a:documentation>Polyline dataset reference</a:documentation>
+      <attribute name="name">
+        <value>Polyline</value>
+      </attribute>
+      <ref name="comment"/>
+      <ref name="dataset_polyline_options"/>
+    </element>
+  </define>
+  <define name="dataset_gis_project">
+    <element name="form">
+      <a:documentation>Project file reference,
+containing both polyline and raster data forms,
+from a GIS project, for example.</a:documentation>
+      <attribute name="name">
+        <value>Project</value>
+      </attribute>
+      <ref name="comment"/>
+      <ref name="dataset_project_options"/>
+    </element>
+  </define>
+  <define name="dataset_raster_options">
+    <choice>
+      <element name="source">
+        <a:documentation>Source raster dataset
+
+(change to define a folder within project for location?)
+
+Default: ~/tmp/dataset/rtopo/RTopo105b_50S.nc</a:documentation>
+        <attribute name="name">
+          <value>Local_file</value>
+        </attribute>
+        <attribute name="file_name">
+          <data type="string"/>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="source">
+        <a:documentation>Source raster dataset
+
+See: http://www.opendap.org
+
+See: http://opendap.deltares.nl
+
+See: http://www.esrl.noaa.gov/psd/data/gridded/using_dods.html</a:documentation>
+        <attribute name="name">
+          <value>OPeNDAP</value>
+        </attribute>
+        <data type="string"/>
+        <ref name="comment"/>
+      </element>
+    </choice>
+  </define>
+  <define name="dataset_polyline_options">
+    <element name="source">
+      <a:documentation>Source shapefile (.shp) containing polyline information
+
+(change to define a folder within project for location?)</a:documentation>
+      <attribute name="name">
+        <value>Local_file</value>
+      </attribute>
+      <attribute name="file_name">
+        <data type="string"/>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <element name="source">
+      <a:documentation>Source shapefile (.shp) containing polyline information
+
+See: http://www.opendap.org
+
+See: http://opendap.deltares.nl
+
+See: http://www.esrl.noaa.gov/psd/data/gridded/using_dods.html</a:documentation>
+      <attribute name="name">
+        <value>OPeNDAP</value>
+      </attribute>
+      <data type="string"/>
+      <ref name="comment"/>
+    </element>
+  </define>
+  <define name="dataset_project_options">
+    <element name="source">
+      <a:documentation>Source project location
+
+(change to define a folder within project for location?)</a:documentation>
+      <attribute name="name">
+        <value>Local_file</value>
+      </attribute>
+      <attribute name="file_name">
+        <data type="string"/>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+  </define>
+  <define name="general">
+    <optional>
+      <element name="global_parameters">
+        <a:documentation>Global default paramters</a:documentation>
+        <optional>
+          <element name="planetary_radius">
+            <a:documentation>The default radius of the planet
+for the purpose of a common parameter
+in projections.
+
+Default: 6.37101e+06m
+
+Unit: metres</a:documentation>
+            <ref name="real"/>
+            <ref name="comment"/>
+          </element>
+        </optional>
+        <optional>
+          <element name="spacing_default">
+            <a:documentation>The default spacing between nodes in connecting
+paths of the high fidelity boundary representation,
+that are drawn out as required.
+
+Distance of steps when drawing parallels and meridians (currently in degrees - need to project)
+
+Default: 0.1
+
+Legacy parameter: dx_default</a:documentation>
+            <ref name="real"/>
+            <ref name="comment"/>
+          </element>
+        </optional>
+      </element>
+    </optional>
+  </define>
+  <define name="output">
+    <element name="output">
+      <a:documentation>Output options
+
+Default file_name: ./shorelines.geo</a:documentation>
+      <optional>
+        <element name="file_name">
+          <data type="string"/>
+          <ref name="comment"/>
+        </element>
+      </optional>
+      <ref name="comment"/>
+      <optional>
+        <element name="projection">
+          <a:documentation> Output Projection type
+
+Default: cartesian
+
+Legacy: projection</a:documentation>
+          <element name="string_value">
+            <choice>
+              <value>cartesian</value>
+              <value>proj_cartesian</value>
+              <value>proj_cartesian_inverse</value>
+              <value>hammer</value>
+              <value>longlat</value>
+            </choice>
+          </element>
+          <ref name="comment"/>
+        </element>
+      </optional>
+      <optional>
+        <choice>
+          <element name="orientation">
+            <a:documentation>User defined viewing angle</a:documentation>
+            <attribute name="name">
+              <value>UserDefined</value>
+            </attribute>
+            <attribute name="shape">
+              <value>3</value>
+            </attribute>
+            <ref name="real_vector"/>
+            <ref name="comment"/>
+          </element>
+          <element name="orientation">
+            <a:documentation>Sets default view to [0.0, 0.0, 0.0]</a:documentation>
+            <attribute name="name">
+              <value>LongLat</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="orientation">
+            <a:documentation>Sets default view to [0.0, 0.0, 180.0]</a:documentation>
+            <attribute name="name">
+              <value>SouthWest</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="orientation">
+            <a:documentation>Sets default view to [0.0, 0.0, 151.0]</a:documentation>
+            <attribute name="name">
+              <value>Caribbean</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="orientation">
+            <a:documentation>Sets default view to [180.0, 0.0, 270.0]</a:documentation>
+            <attribute name="name">
+              <value>SouthPole</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+        </choice>
+      </optional>
+    </element>
+  </define>
+  <define name="geoid_surface_representation">
+    <element name="geoid_surface_representation">
+      <a:documentation>A description of a surface geoid object
+for computational representation</a:documentation>
+      <attribute name="name">
+        <a:documentation>An supplement suffix for the IDs in the output
+boundary representation description.
+This is useful if multiple distinct surfaces exist
+in the project.
+
+Default: ''</a:documentation>
+        <data type="string"/>
+      </attribute>
+      <element name="id">
+        <a:documentation>Identification the resulting surface
+
+Default: 9</a:documentation>
+        <ref name="integer"/>
+        <ref name="comment"/>
+      </element>
+      <optional>
+        <element name="id_internal_suffix">
+          <a:documentation>Character used in boundary representation description
+
+Used for debugging purposes.</a:documentation>
+          <data type="string"/>
+          <ref name="comment"/>
+        </element>
+      </optional>
+      <optional>
+        <element name="more_bsplines">
+          <a:documentation>Break up BSpline defintions are turning points to impose
+geometric constraint at these point in the mesh generation process.
+
+Default: False</a:documentation>
+          <ref name="comment"/>
+        </element>
+      </optional>
+      <oneOrMore>
+        <ref name="geoid_surface_representation_brep"/>
+      </oneOrMore>
+      <optional>
+        <ref name="geoid_surface_representation_closure"/>
+      </optional>
+      <zeroOrMore>
+        <ref name="boundary"/>
+      </zeroOrMore>
+      <optional>
+        <ref name="internal_regions"/>
+      </optional>
+    </element>
+  </define>
+  <define name="boundary">
+    <element name="boundary">
+      <a:documentation>Identification of this named boundary
+
+Old: Default (for closed boundaries): 3
+
+Old: Default (for open boundaries): 4</a:documentation>
+      <attribute name="name">
+        <data type="string"/>
+      </attribute>
+      <ref name="comment"/>
+      <element name="identification_number">
+        <a:documentation>Identification of this named boundary
+
+Old: Default (for closed boundaries): 3
+
+Old: Default (for open boundaries): 4</a:documentation>
+        <ref name="integer"/>
+        <ref name="comment"/>
+      </element>
+    </element>
+  </define>
+  <define name="internal_regions">
+    <element name="internal_regions">
+      <a:documentation>Define interal regions
+
+e.g. vegetation in lagoons,
+areas of variable manning coefficient
+
+To be sorted...</a:documentation>
+      <zeroOrMore>
+        <element name="internal_region">
+          <attribute name="name">
+            <data type="string"/>
+          </attribute>
+          <ref name="comment"/>
+        </element>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="geoid_surface_representation_brep">
+    <element name="brep_component">
+      <a:documentation>Boundary representation component</a:documentation>
+      <attribute name="name">
+        <data type="string"/>
+      </attribute>
+      <choice>
+        <ref name="geoid_surface_representation_raster"/>
+        <ref name="geoid_surface_representation_polyline"/>
+        <ref name="geoid_surface_representation_parallel"/>
+        <ref name="geoid_surface_representation_extend_to_parallel"/>
+        <ref name="geoid_surface_representation_extend_to_meridian"/>
+      </choice>
+      <element name="identification">
+        <a:documentation>Identification of the resulting boundary
+
+Old: Default (for closed boundaries): 3
+
+Old: Default (for open boundaries): 4</a:documentation>
+        <attribute name="name">
+          <data type="string"/>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <optional>
+        <element name="id">
+          <a:documentation>Identification the resulting boundary
+
+Default (for closed boundaries): 3
+
+Default (for open boundaries): 4
+
+TO BE CUT</a:documentation>
+          <ref name="integer"/>
+          <ref name="comment"/>
+        </element>
+      </optional>
+      <choice>
+        <element name="representation_type">
+          <a:documentation>Representation type for the component brep
+
+Default: BSplines
+
+Legacy: compound</a:documentation>
+          <attribute name="name">
+            <value>BSplines</value>
+          </attribute>
+          <ref name="comment"/>
+        </element>
+        <element name="representation_type">
+          <attribute name="name">
+            <value>CompoundBSplines</value>
+          </attribute>
+          <ref name="comment"/>
+        </element>
+      </choice>
+      <optional>
+        <element name="spacing">
+          <a:documentation>Node spacing
+
+Distance of steps when drawing parallels and meridians (currently in degrees - need to project)
+
+Default: Revert to global spacing above
+
+Legacy: dx</a:documentation>
+          <ref name="real"/>
+          <ref name="comment"/>
+        </element>
+      </optional>
+      <optional>
+        <element name="links">
+          <a:documentation>Link to other brep components
+
+Default behaviour is automatic</a:documentation>
+          <optional>
+            <element name="start">
+              <a:documentation>Start of brep is linked to brep_component named</a:documentation>
+              <attribute name="name">
+                <data type="string"/>
+              </attribute>
+              <optional>
+                <element name="reverse">
+                  <a:documentation>Default behavior is to match the start of this brep
+to the *end* of the named brep.
+Enable this to match start to start</a:documentation>
+                  <ref name="comment"/>
+                </element>
+              </optional>
+            </element>
+          </optional>
+          <optional>
+            <element name="end">
+              <attribute name="name">
+                <data type="string"/>
+              </attribute>
+              <optional>
+                <element name="reverse">
+                  <a:documentation>Default behavior is to match the end of this brep
+to the *start* of the named brep.
+Enable this to match end to end</a:documentation>
+                  <ref name="comment"/>
+                </element>
+              </optional>
+            </element>
+          </optional>
+          <ref name="comment"/>
+        </element>
+      </optional>
+    </element>
+  </define>
+  <define name="geoid_surface_representation_raster">
+    <element name="form">
+      <a:documentation>Boundary representation component source</a:documentation>
+      <attribute name="name">
+        <value>Raster</value>
+      </attribute>
+      <ref name="comment"/>
+      <ref name="geoid_surface_representation_raster_options"/>
+    </element>
+  </define>
+  <define name="geoid_surface_representation_polyline">
+    <element name="form">
+      <a:documentation>Boundary representation component source</a:documentation>
+      <attribute name="name">
+        <value>Polyline</value>
+      </attribute>
+      <ref name="comment"/>
+      <ref name="geoid_surface_representation_polyline_options"/>
+    </element>
+  </define>
+  <define name="geoid_surface_representation_parallel">
+    <element name="form">
+      <a:documentation>Boundary representation component source</a:documentation>
+      <attribute name="name">
+        <value>Parallel</value>
+      </attribute>
+      <element name="latitude">
+        <ref name="real"/>
+        <ref name="comment"/>
+      </element>
+      <ref name="comment"/>
+    </element>
+  </define>
+  <define name="geoid_surface_representation_extend_to_parallel">
+    <element name="form">
+      <a:documentation>Boundary representation component source</a:documentation>
+      <attribute name="name">
+        <value>ExtendToParallel</value>
+      </attribute>
+      <element name="latitude">
+        <ref name="real"/>
+        <ref name="comment"/>
+      </element>
+      <ref name="comment"/>
+    </element>
+  </define>
+  <define name="geoid_surface_representation_extend_to_meridian">
+    <element name="form">
+      <a:documentation>Boundary representation component source</a:documentation>
+      <attribute name="name">
+        <value>ExtendToMeridian</value>
+      </attribute>
+      <element name="longitude">
+        <ref name="real"/>
+        <ref name="comment"/>
+      </element>
+      <ref name="comment"/>
+    </element>
+  </define>
+  <define name="geoid_surface_representation_polyline_options">
+    <element name="source">
+      <a:documentation>Dataset to source the polyline</a:documentation>
+      <attribute name="name">
+        <data type="string"/>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+  </define>
+  <define name="geoid_surface_representation_raster_options">
+    <element name="source">
+      <a:documentation>Dataset to source the raster</a:documentation>
+      <attribute name="name">
+        <data type="string"/>
+      </attribute>
+      <ref name="comment"/>
+    </element>
+    <optional>
+      <element name="region">
+        <a:documentation>Region specification - multiple?
+Function specifying region of interest
+
+e.g. 'latitude &lt;= -60.0'
+
+Default: 'True' (string)
+
+Legacy: 
+region</a:documentation>
+        <data type="string"/>
+        <ref name="comment"/>
+      </element>
+    </optional>
+    <optional>
+      <element name="box">
+        <a:documentation>Box 
+Boxes with regions of interest
+
+e.g. -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0
+
+Default: []
+
+Legacy: box</a:documentation>
+        <data type="string"/>
+        <ref name="comment"/>
+      </element>
+    </optional>
+    <optional>
+      <element name="minimum_area">
+        <a:documentation>Minimum area of islands / holes in geoid surface
+
+Default: 0
+
+Legacy: minarea</a:documentation>
+        <ref name="real"/>
+        <ref name="comment"/>
+      </element>
+    </optional>
+    <ref name="contourtypes"/>
+    <optional>
+      <element name="boundary">
+        <a:documentation>Boundaries
+
+Use a list of integers instead?
+
+Specify paths to include
+
+Default: []
+
+Legacy: boundaries</a:documentation>
+        <data type="string"/>
+        <ref name="comment"/>
+      </element>
+    </optional>
+    <optional>
+      <element name="boundary_to_exclude">
+        <a:documentation>Boundaries to exclude
+Use a list of integers instead?
+Specify paths to exclude
+
+Default: []
+
+Legacy: boundariestoexclude</a:documentation>
+        <data type="string"/>
+        <ref name="comment"/>
+      </element>
+    </optional>
+    <optional>
+      <element name="exterior_boundary">
+        <a:documentation>Identify the exterior boundary
+
+Note all other boundaries are considered to be holes in the geoid surface.</a:documentation>
+        <ref name="integer"/>
+        <ref name="comment"/>
+      </element>
+    </optional>
+  </define>
+  <define name="geoid_surface_representation_closure">
+    <element name="closure">
+      <a:documentation>Methods to close the geoid surface domain.</a:documentation>
+      <optional>
+        <element name="no_open">
+          <a:documentation>Do not include open boundaries
+
+Default: False
+
+Legacy: open (default true)</a:documentation>
+          <ref name="comment"/>
+        </element>
+      </optional>
+      <optional>
+        <element name="open_id">
+          <a:documentation>Open boundary ID
+
+Default (for open boundaries): 4</a:documentation>
+          <ref name="integer"/>
+          <ref name="comment"/>
+        </element>
+      </optional>
+      <optional>
+        <element name="bounding_latitude">
+          <a:documentation>Bounding latitude.
+Latitude of boundary to close the domain.
+
+Default: -50.0
+
+Legacy: bounding_lat</a:documentation>
+          <ref name="real"/>
+          <ref name="comment"/>
+        </element>
+      </optional>
+      <optional>
+        <element name="extend_to_latitude">
+          <a:documentation>Extend to latitude.
+Note it is appropriate to enable 'close_with_parallels' with this option.
+
+Latitude to extend open domain to.
+
+Default: None
+
+Legacy: extendtolatitude</a:documentation>
+          <ref name="real"/>
+          <ref name="comment"/>
+        </element>
+      </optional>
+      <optional>
+        <element name="close_with_parallels">
+          <a:documentation>Close with parallels 
+
+Default: False 
+
+Legacy: closewithparallels</a:documentation>
+          <ref name="comment"/>
+        </element>
+      </optional>
+    </element>
+  </define>
+  <!--
+         ## Processing - smoothing
+         ## Have separate rasters section?  - sources?
+         ##
+         ## Default: False
+         ##
+         ## Legacy: smooth_data
+         element smooth_data {
+           comment,
+           ## Intensity of smoothing
+           ##
+           ## Default: 100
+           ##
+           ## Legacy: smooth_degree
+           element magnitude {
+             real,
+             comment
+           }
+         }
+  -->
+  <define name="metric_options">
+    <element name="geoid_metric">
+      <oneOrMore>
+        <choice>
+          <element name="form">
+            <attribute name="name">
+              <value>Homogeneous</value>
+            </attribute>
+            <element name="edge_length">
+              <a:documentation>Element edge length
+
+Default: 1.0E5
+
+Legacy: elementlength</a:documentation>
+              <ref name="real"/>
+              <ref name="comment"/>
+            </element>
+          </element>
+          <element name="form">
+            <a:documentation>Proximity to boundary</a:documentation>
+            <attribute name="name">
+              <value>Proximity</value>
+            </attribute>
+            <oneOrMore>
+              <element name="boundary">
+                <attribute name="name">
+                  <data type="string"/>
+                </attribute>
+                <ref name="comment"/>
+              </element>
+            </oneOrMore>
+            <element name="edge_length_minimum">
+              <ref name="real"/>
+              <ref name="comment"/>
+            </element>
+            <element name="edge_length_maximum">
+              <ref name="real"/>
+              <ref name="comment"/>
+            </element>
+            <element name="proximity_minimum">
+              <ref name="real"/>
+              <ref name="comment"/>
+            </element>
+            <element name="proximity_maximum">
+              <ref name="real"/>
+              <ref name="comment"/>
+            </element>
+            <optional>
+              <element name="equidistant_node_number">
+                <ref name="real"/>
+                <ref name="comment"/>
+              </element>
+            </optional>
+          </element>
+          <element name="form">
+            <a:documentation>From Raster</a:documentation>
+            <attribute name="name">
+              <value>FromRaster</value>
+            </attribute>
+            <element name="source">
+              <attribute name="name">
+                <data type="string"/>
+              </attribute>
+              <ref name="comment"/>
+            </element>
+            <optional>
+              <element name="filter">
+                <data type="string"/>
+                <ref name="comment"/>
+              </element>
+            </optional>
+            <optional>
+              <element name="absolute">
+                <ref name="comment"/>
+              </element>
+              <element name="positive_value">
+                <ref name="comment"/>
+              </element>
+              <element name="minimum_value">
+                <ref name="real"/>
+                <ref name="comment"/>
+              </element>
+            </optional>
+            <element name="max_hessian">
+              <ref name="real"/>
+              <ref name="comment"/>
+            </element>
+          </element>
+          <optional>
+            <element name="form">
+              <a:documentation>Metric generation options</a:documentation>
+              <attribute name="name">
+                <data type="string"/>
+              </attribute>
+              <optional>
+                <element name="generate_metric">
+                  <a:documentation>Generate metric alongside the creation of the boundary representation
+to guide element size over the spatial surface geoid
+
+Default: False</a:documentation>
+                  <ref name="comment"/>
+                </element>
+              </optional>
+              <optional>
+                <element name="element_length">
+                  <a:documentation>Element length
+
+Default: 1.0E5
+
+Legacy: elementlength</a:documentation>
+                  <ref name="real"/>
+                  <ref name="comment"/>
+                </element>
+              </optional>
+            </element>
+          </optional>
+        </choice>
+      </oneOrMore>
+      <ref name="comment"/>
+    </element>
+  </define>
+  <define name="mesh_options">
+    <element name="geoid_mesh">
+      <a:documentation>Mesh generation options</a:documentation>
+      <choice>
+        <element name="library">
+          <a:documentation>Interact with Gmsh meshing library (default)</a:documentation>
+          <attribute name="name">
+            <value>Gmsh</value>
+          </attribute>
+          <optional>
+            <element name="binary">
+              <a:documentation>Output mesh in a binary format
+
+Use for smaller output mesh descriptions
+
+Some models do not support this binary mesh type</a:documentation>
+              <ref name="comment"/>
+            </element>
+          </optional>
+          <optional>
+            <element name="extend_metric_from_boundary">
+              <ref name="comment"/>
+            </element>
+          </optional>
+          <optional>
+            <element name="physical_lines_separate">
+              <a:documentation>Include this option to make individual definitions for
+boundary identifications, instead of as a whole.
+
+Including this option ensures the output does not contain
+extra spurious 1d elements in tests.
+It does however generate complaints (rightly so) of multiple
+physical line definitions.
+This option is provided as a pragmatic solution to what appears
+unintended behaviour of the meshing algorithm.
+Alternatively the output mesh can be parsed of the spurious
+elements using the post-processing option: parse_spurious_elements
+
+Default: False</a:documentation>
+              <ref name="comment"/>
+            </element>
+          </optional>
+          <optional>
+            <element name="postprocess">
+              <a:documentation>Postprocessing instructions
+
+To output resulting boundary representation or
+mesh as an image, use the following for example:
+
+Mesh.Format=1;
+
+Mesh 2;
+
+Save "m.msh";
+
+Draw;
+
+Include "m.msh";
+
+Print Sprintf("m.png");
+
+Exit;</a:documentation>
+              <data type="string"/>
+              <ref name="comment"/>
+            </element>
+          </optional>
+          <ref name="comment"/>
+        </element>
+        <element name="library">
+          <a:documentation>Interact with other meshing library
+
+To be added</a:documentation>
+          <attribute name="name">
+            <value>Other</value>
+          </attribute>
+          <ref name="comment"/>
+        </element>
+      </choice>
+      <optional>
+        <element name="generate">
+          <a:documentation>Generate mesh following creation of the boundary representation
+
+Default: False</a:documentation>
+          <ref name="comment"/>
+          <optional>
+            <element name="file_name">
+              <data type="string"/>
+              <ref name="comment"/>
+            </element>
+          </optional>
+          <optional>
+            <element name="do_not_output_constraint_description">
+              <a:documentation>Output a description of constraints in the Gmsh syntax</a:documentation>
+              <ref name="comment"/>
+            </element>
+          </optional>
+        </element>
+      </optional>
+      <optional>
+        <element name="parse">
+          <a:documentation>Parse mesh to remove spurious elements
+included erroneously by mesh generation stage
+
+To be completed</a:documentation>
+          <ref name="comment"/>
+        </element>
+      </optional>
+      <optional>
+        <element name="extrude">
+          <a:documentation>Extrude geoid surface to one or two surface fields
+
+Extrude to a raster, vtk, ...
+
+To be completed</a:documentation>
+          <ref name="comment"/>
+        </element>
+      </optional>
+      <optional>
+        <element name="generate_image">
+          <a:documentation>Create an image of the mesh and boundary representation
+
+Default: False</a:documentation>
+          <ref name="comment"/>
+          <optional>
+            <element name="file_name">
+              <data type="string"/>
+              <ref name="comment"/>
+            </element>
+          </optional>
+          <optional>
+            <element name="include_axes">
+              <a:documentation>Include axes in image</a:documentation>
+              <ref name="comment"/>
+            </element>
+          </optional>
+        </element>
+      </optional>
+    </element>
+  </define>
+  <define name="metric">
+    <element name="metric">
+      <element name="name">
+        <a:documentation>Metric definition</a:documentation>
+        <attribute name="name">
+          <value>Metric_name</value>
+        </attribute>
+        <element name="name">
+          <ref name="anystring"/>
+        </element>
+      </element>
+    </element>
+  </define>
+  <define name="mesh">
+    <element name="mesh">
+      <element name="name">
+        <a:documentation>Mesh definition</a:documentation>
+        <attribute name="name">
+          <value>Mesh_name</value>
+        </attribute>
+        <element name="name">
+          <ref name="anystring"/>
+        </element>
+      </element>
+    </element>
+  </define>
+  <define name="raster_input_format">
+    <a:documentation>NetCDF CF 1.4 (http://cf-pcmdi.llnl.gov/)</a:documentation>
+    <element name="format">
+      <a:documentation>raster input file format.</a:documentation>
+      <attribute name="name">
+        <value>Raster</value>
+      </attribute>
+      <optional>
+        <element name="field_name">
+          <a:documentation>The field to read from the vtu file. If not supplied, the name of
+the initialised field is used.</a:documentation>
+          <ref name="anystring"/>
+          <ref name="comment"/>
+        </element>
+      </optional>
+      <ref name="comment"/>
+    </element>
+  </define>
+  <define name="test_integer">
+    <choice>
+      <element name="value">
+        <a:documentation>Value</a:documentation>
+        <ref name="integer"/>
+        <ref name="comment"/>
+        <optional>
+          <element name="tolerance">
+            <a:documentation>Tolerance</a:documentation>
+            <ref name="integer"/>
+            <ref name="comment"/>
+          </element>
+        </optional>
+      </element>
+      <element name="range">
+        <a:documentation>Range</a:documentation>
+        <optional>
+          <element name="minimum">
+            <a:documentation>Minimum</a:documentation>
+            <ref name="integer"/>
+            <ref name="comment"/>
+          </element>
+        </optional>
+        <optional>
+          <element name="maximum">
+            <a:documentation>Maximum</a:documentation>
+            <ref name="integer"/>
+            <ref name="comment"/>
+          </element>
+        </optional>
+        <ref name="comment"/>
+      </element>
+    </choice>
+  </define>
+  <define name="test_real">
+    <choice>
+      <element name="value">
+        <a:documentation>Value</a:documentation>
+        <ref name="real"/>
+        <ref name="comment"/>
+        <optional>
+          <element name="tolerance">
+            <a:documentation>Tolerance</a:documentation>
+            <ref name="real"/>
+            <ref name="comment"/>
+          </element>
+        </optional>
+      </element>
+      <element name="range">
+        <a:documentation>Range
+
+Note one can use this option to specify a lower or upper 
+bound, as well as specifying a complete range.</a:documentation>
+        <element name="minimum">
+          <a:documentation>Minimum</a:documentation>
+          <ref name="real"/>
+          <ref name="comment"/>
+        </element>
+        <element name="maximum">
+          <a:documentation>Maximum</a:documentation>
+          <ref name="real"/>
+          <ref name="comment"/>
+        </element>
+        <ref name="comment"/>
+      </element>
+    </choice>
+  </define>
+  <define name="validation_tests_old">
+    <optional>
+      <element name="validation">
+        <a:documentation>Verification test structure.
+
+Parameters containing expected values for the
+surface geoid boundary representation
+provided above.</a:documentation>
+        <optional>
+          <element name="node_number">
+            <a:documentation>Node number</a:documentation>
+            <ref name="test_integer"/>
+            <ref name="comment"/>
+          </element>
+        </optional>
+        <optional>
+          <element name="element_number">
+            <a:documentation>Element number</a:documentation>
+            <ref name="test_integer"/>
+            <ref name="comment"/>
+          </element>
+        </optional>
+        <optional>
+          <element name="edge_node_number">
+            <a:documentation>Edge node number</a:documentation>
+            <ref name="test_integer"/>
+            <ref name="comment"/>
+          </element>
+        </optional>
+        <optional>
+          <element name="surface_geoid_area">
+            <a:documentation>Surface Geoid Area</a:documentation>
+            <ref name="test_real"/>
+            <ref name="comment"/>
+          </element>
+        </optional>
+        <optional>
+          <element name="element_circumsphere">
+            <a:documentation>Element circumsphere range</a:documentation>
+            <ref name="test_real"/>
+            <ref name="comment"/>
+          </element>
+        </optional>
+      </element>
+    </optional>
+  </define>
+  <define name="tags">
+    <choice>
+      <element name="tag">
+        <attribute name="name">
+          <data type="string"/>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <attribute name="name">
+          <value>Caribbean</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <attribute name="name">
+          <value>IceShelfOceanCavity</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <attribute name="name">
+          <value>short</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <attribute name="name">
+          <value>long</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+    </choice>
+  </define>
+  <define name="validation_tests">
+    <optional>
+      <element name="validation">
+        <a:documentation>Validation test structure</a:documentation>
+        <oneOrMore>
+          <choice>
+            <element name="test">
+              <a:documentation>Node number</a:documentation>
+              <attribute name="name">
+                <value>NodeNumber</value>
+              </attribute>
+              <ref name="test_integer"/>
+              <ref name="comment"/>
+            </element>
+            <element name="test">
+              <a:documentation>Element number</a:documentation>
+              <attribute name="name">
+                <value>ElementNumber</value>
+              </attribute>
+              <ref name="test_integer"/>
+              <ref name="comment"/>
+            </element>
+            <element name="test">
+              <a:documentation>Edge node number</a:documentation>
+              <attribute name="name">
+                <value>EdgeNodeNumber</value>
+              </attribute>
+              <ref name="test_integer"/>
+              <ref name="comment"/>
+            </element>
+            <element name="test">
+              <a:documentation>Surface Geoid Area</a:documentation>
+              <attribute name="name">
+                <value>SurfaceGeoidArea</value>
+              </attribute>
+              <ref name="test_real"/>
+              <ref name="comment"/>
+            </element>
+            <element name="test">
+              <a:documentation>Minkowski fractal dimension of discretised 
+geoid surface boundary.</a:documentation>
+              <attribute name="name">
+                <value>SurfaceGeoidMinkowskiFractalDimension</value>
+              </attribute>
+              <ref name="test_real"/>
+              <ref name="comment"/>
+            </element>
+            <element name="test">
+              <a:documentation>Element circumsphere range</a:documentation>
+              <attribute name="name">
+                <value>ElementCircumsphere</value>
+              </attribute>
+              <ref name="test_real"/>
+              <ref name="comment"/>
+            </element>
+            <!-- Improve with tolerance on positions? -->
+            <element name="test">
+              <a:documentation>Compare the raw content of the description
+of the boundary representation</a:documentation>
+              <attribute name="name">
+                <value>BrepDescription</value>
+              </attribute>
+              <attribute name="file_name">
+                <data type="string"/>
+              </attribute>
+              <ref name="comment"/>
+              <optional>
+                <element name="compressed">
+                  <a:documentation>Check if stored file is compressed with bz2 compression</a:documentation>
+                  <ref name="comment"/>
+                </element>
+              </optional>
+            </element>
+          </choice>
+        </oneOrMore>
+        <optional>
+          <element name="exclude">
+            <a:documentation>Exclude from test engine</a:documentation>
+            <ref name="comment"/>
+          </element>
+        </optional>
+        <zeroOrMore>
+          <ref name="tags"/>
+        </zeroOrMore>
+      </element>
+    </optional>
+  </define>
+  <!--
+    raw geo diff?
+    geo diff with tolerance on positions?
+  -->
+  <define name="geometry">
+    <element name="geometry">
+      <a:documentation>Options dealing with the specification of geometry</a:documentation>
+      <element name="dimension">
+        <a:documentation>Dimension of the problem.
+&lt;b&gt;This can only be set once&lt;/b&gt;</a:documentation>
+        <element name="integer_value">
+          <attribute name="rank">
+            <value>0</value>
+          </attribute>
+          <choice>
+            <value>3</value>
+            <value>2</value>
+            <value>1</value>
+          </choice>
+        </element>
+      </element>
+      <element name="mesh">
+        <a:documentation>The position mesh</a:documentation>
+        <attribute name="name">
+          <value>CoordinateMesh</value>
+        </attribute>
+        <ref name="mesh_info"/>
+      </element>
+      <optional>
+        <element name="mesh">
+          <a:documentation>The velocity mesh</a:documentation>
+          <attribute name="name">
+            <value>VelocityMesh</value>
+          </attribute>
+          <ref name="mesh_info"/>
+        </element>
+      </optional>
+      <optional>
+        <element name="mesh">
+          <a:documentation>The pressure mesh</a:documentation>
+          <attribute name="name">
+            <value>PressureMesh</value>
+          </attribute>
+          <ref name="mesh_info"/>
+        </element>
+      </optional>
+      <zeroOrMore>
+        <element name="mesh">
+          <attribute name="name">
+            <data type="string"/>
+          </attribute>
+          <ref name="mesh_info"/>
+          <optional>
+            <element name="exclude_from_mesh_adaptivity">
+              <empty/>
+            </element>
+          </optional>
+        </element>
+      </zeroOrMore>
+      <element name="quadrature">
+        <a:documentation>Quadrature</a:documentation>
+        <element name="degree">
+          <a:documentation>Quadrature degree
+
+note: this specifies the degree of quadrature,
+not the number of gauss points</a:documentation>
+          <ref name="integer"/>
+        </element>
+        <optional>
+          <element name="surface_degree">
+            <a:documentation>Surface quadrature degree
+
+note: this specifies the degree of surface
+quadrature not the number of surface gauss points</a:documentation>
+            <ref name="integer"/>
+          </element>
+        </optional>
+        <optional>
+          <element name="controlvolume_surface_degree">
+            <a:documentation>Sets the degree of quadrature on each quadrilateral
+face of the control volume. 
+
+Defaults to 1 if
+unselected which is the same as pre-new options
+behaviour.</a:documentation>
+            <ref name="integer"/>
+          </element>
+        </optional>
+        <optional>
+          <element name="quadrature_family">
+            <a:documentation>Select which family of quadrature rules to use.
+The default is family_cools.
+family_wandzura allows for degree up to 30
+on triangular meshes.
+family_grundmann_moeller allows for degree up to
+29 on simplicial meshes in arbitrary dimension.</a:documentation>
+            <element name="string_value">
+              <choice>
+                <value>family_cools</value>
+                <value>family_grundmann_moeller</value>
+                <value>family_wandzura</value>
+              </choice>
+            </element>
+          </element>
+        </optional>
+      </element>
+      <optional>
+        <element name="disable_geometric_data_cache">
+          <a:documentation>This causes the change of variables associated with each element in 
+the mesh to be stored rather than calculated every time it is used. 
+This should speed up computations at a cost of some memory. 
+
+The cache is automatically regenerated after mesh movement or 
+adaptivity and is automatically disabled for non-linear positions fields.</a:documentation>
+          <empty/>
+        </element>
+      </optional>
+      <optional>
+        <element name="spherical_earth">
+          <a:documentation>Options specifying that the problem is on the surface of the sphere.</a:documentation>
+          <choice>
+            <element name="linear_mapping">
+              <empty/>
+            </element>
+            <element name="superparametric_mapping">
+              <a:documentation>Enabling this option approximates the curvature of the Earth as an
+nth degree polynomial, where n is the polynomial degree of the coordinate mesh.</a:documentation>
+              <empty/>
+            </element>
+          </choice>
+        </element>
+      </optional>
+      <optional>
+        <element name="ocean_boundaries">
+          <a:documentation>Options specifying the top surface and bottom of the domain
+used in various ocean calculations.</a:documentation>
+          <element name="top_surface_ids">
+            <a:documentation>Specify the surface ids that make up the top of the domain,
+i.e. the free surface or rigid lid.</a:documentation>
+            <ref name="integer_vector"/>
+          </element>
+          <element name="bottom_surface_ids">
+            <a:documentation>Specify the surface ids that make up the bottom.</a:documentation>
+            <ref name="integer_vector"/>
+          </element>
+          <element name="scalar_field">
+            <a:documentation>Diagnostic field giving the distance to the top surface.</a:documentation>
+            <attribute name="rank">
+              <value>0</value>
+            </attribute>
+            <attribute name="name">
+              <value>DistanceToTop</value>
+            </attribute>
+            <element name="diagnostic">
+              <ref name="internal_algorithm"/>
+              <element name="mesh">
+                <attribute name="name">
+                  <value>CoordinateMesh</value>
+                </attribute>
+              </element>
+              <ref name="diagnostic_scalar_field"/>
+            </element>
+          </element>
+          <element name="scalar_field">
+            <a:documentation>Diagnostic field giving the distance to ocean bottom.</a:documentation>
+            <attribute name="rank">
+              <value>0</value>
+            </attribute>
+            <attribute name="name">
+              <value>DistanceToBottom</value>
+            </attribute>
+            <element name="diagnostic">
+              <ref name="internal_algorithm"/>
+              <element name="mesh">
+                <attribute name="name">
+                  <value>CoordinateMesh</value>
+                </attribute>
+              </element>
+              <ref name="diagnostic_scalar_field"/>
+            </element>
+          </element>
+        </element>
+      </optional>
+    </element>
+  </define>
+  <define name="contourtypesold">
+    <optional>
+      <!-- Define alternative here - breaking up the following -->
+      <element name="contourtype">
+        <a:documentation>Contour type
+
+Default: iceshelfcavity
+
+Legacy: contourtype</a:documentation>
+        <element name="string_value">
+          <choice>
+            <value>iceshelfcavity</value>
+            <value>icesheet</value>
+            <value>z</value>
+            <value>ocean10m</value>
+            <value>zmask</value>
+            <value>xyz</value>
+            <value>noshelf</value>
+            <value>gsds</value>
+            <value>mask</value>
+            <value>gsdsz</value>
+            <value>gebco</value>
+            <value>gsdszc</value>
+          </choice>
+        </element>
+        <ref name="comment"/>
+      </element>
+    </optional>
+  </define>
+  <!--
+      ## Python function prescribing real input. Functions should be of the form:
+      ##
+      ##  def val(t):
+      ##     # Function code
+      ##     return # Return value
+      ##
+      ## 
+      element python {
+        python_code
+      }
+  -->
+  <define name="contourtypes">
+    <choice>
+      <!-- Define alternative here - breaking up the following -->
+      <element name="contourtype">
+        <a:documentation>Contour type
+
+Default: iceshelfcavity
+
+Legacy: contourtype</a:documentation>
+        <attribute name="name">
+          <data type="string"/>
+        </attribute>
+        <ref name="comment"/>
+        <choice>
+          <element name="x_coordinate_name">
+            <attribute name="name">
+              <data type="string"/>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="x_coordinate_name">
+            <attribute name="name">
+              <value>lon</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="x_coordinate_name">
+            <attribute name="name">
+              <value>longitude</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="x_coordinate_name">
+            <attribute name="name">
+              <value>x</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="x_coordinate_name">
+            <attribute name="name">
+              <value>x1</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="x_coordinate_name">
+            <attribute name="name">
+              <value>x_range</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+        </choice>
+        <choice>
+          <element name="y_coordinate_name">
+            <attribute name="name">
+              <data type="string"/>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="y_coordinate_name">
+            <attribute name="name">
+              <value>lat</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="y_coordinate_name">
+            <attribute name="name">
+              <value>latitude</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="y_coordinate_name">
+            <attribute name="name">
+              <value>y</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="y_coordinate_name">
+            <attribute name="name">
+              <value>y1</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="y_coordinate_name">
+            <attribute name="name">
+              <value>y_range</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+        </choice>
+        <choice>
+          <element name="field_name">
+            <attribute name="name">
+              <data type="string"/>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="field_name">
+            <attribute name="name">
+              <value>amask</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="field_name">
+            <attribute name="name">
+              <value>z</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="field_name">
+            <attribute name="name">
+              <value>noshelf</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="field_name">
+            <attribute name="name">
+              <value>usrf</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="field_name">
+            <attribute name="name">
+              <value>topg</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="field_name">
+            <attribute name="name">
+              <value>grounding</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="field_name">
+            <attribute name="name">
+              <value>thk</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="field_name">
+            <attribute name="name">
+              <value>z_range</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+        </choice>
+        <element name="field_level">
+          <ref name="real"/>
+          <ref name="comment"/>
+        </element>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>Python</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>iceshelfcavity</value>
+        </attribute>
+        <ref name="comment"/>
+        <optional>
+          <element name="exclude_iceshelf_ocean_cavities">
+            <a:documentation>Exclude iceshelf ocean cavities
+
+Excludes iceshelf ocean cavities from mesh (default behaviour includes region)
+
+Default: False
+
+Legacy: exclude_iceshelf_ocean_cavities</a:documentation>
+            <ref name="comment"/>
+          </element>
+        </optional>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>icesheet</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>z</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>ocean10m</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>gebco10m</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>gebco1m</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>gebco0.1m</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>gebco-10m</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>zmask</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>xyz</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>noshelf</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>gsds</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>mask</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>gsdsz</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>gebco</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="contourtype">
+        <attribute name="name">
+          <value>gsdszc</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+    </choice>
+  </define>
+</grammar>

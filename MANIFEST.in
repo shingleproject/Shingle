@@ -1,0 +1,13 @@
+include MANIFEST MANIFEST.in README.md
+include setup.py
+include schema/shingle_options.rng
+recursive-include shingle/ *.py
+recursive-include shingle/ *.so
+
+recursive-include spud/include/ *.h
+include spud/include/*.h
+
+prune dataset
+recursive-exclude dataset/ *
+
+

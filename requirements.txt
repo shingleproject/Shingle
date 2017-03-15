@@ -1,0 +1,6 @@
+numpy
+ScientificPython
+matplotlib
+shapely
+GDAL
+Pillow
