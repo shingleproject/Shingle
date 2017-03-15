@@ -1,5 +1,5 @@
 numpy
-ScientificPython
+scipy
 matplotlib
 shapely
 GDAL
