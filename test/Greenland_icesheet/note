@@ -1,0 +1,2 @@
+Arguments:  -f shorelines2.geo -n /d/dataset/greenland/Greenland_5km_v1.1.nc -no -t gsdsz -m longlat -c -p 1
+

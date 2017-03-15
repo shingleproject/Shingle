@@ -1,0 +1,1 @@
+numpy ScientificPython matplotlib shapely pygdal Pillow
