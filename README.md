@@ -11,7 +11,7 @@ Geophysical model domains typically contain irregular, complex fractal-like boun
 
 Outline web page: [http://shingleproject.org](http://shingleproject.org "Shingle")
 
-Further details are provided in the library source and [Shingle project manual](http://homepage.tudelft.nl/w8w0h/4fcf65d8/shingle_manual.pdf "Shingle manual")
+Further details are provided in the library source and [Shingle project manual](http://homepage.tudelft.nl/w8w0h/4fcf65d8/shingle_manual.pdf "Shingle manual").
 
 For further information and updates, please contact the lead author Dr Adam S. Candy at contact@shingleproject.org.
 
