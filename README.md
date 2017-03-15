@@ -38,8 +38,8 @@ Objectives
 6. Platform for iterative development that is repeatable, reproducible with a provenance history of generation.
 7. Enabling rigorous unstructured mesh generation in general, for a wide range of geophysical applications, in a process that is automated, quick-to-draft and repeat, rigorous and robust, and consistent to the source data throughout.
 
-Test suite
-----------
+Verification test engine
+------------------------
 
 Includes a selection of examples, from a relatively straight-forward high-level GUI-driven interaction accessible to modellers new to mesh generation, to complex low-level development communicating with the LibShingle library.  Python interaction is used within the source, in generating documentation and in example Jupyter notebooks.
 
