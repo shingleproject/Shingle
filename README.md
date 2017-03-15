@@ -45,5 +45,6 @@ Includes a selection of examples, from a relatively straight-forward high-level 
 
 A verification test engine is continuously run in response to source code changes, some of which is tested under [http://travis-ci.org/shingleproject/Shingle](Travis "Travis").
 
-An earlier version of the library Shingle 1.0 is available at: [https://github.com/shingleproject/Shingle1.0](https://github.com/shingleproject/Shingle1.0 "Shingle1.0").
+An earlier version of the library Shingle 1.0 is available at: [https://github.com/shingleproject/Shingle1.0](https://github.com/shingleproject/Shingle1.0 "Shingle1.0"), with details on the [Shingle1.0 webpage](http://shingleproject.org/index_shingle1.0.html "Shingle1.0 webpage").
+
 
