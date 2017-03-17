@@ -17,4 +17,4 @@ addons:
       - gfortran
 install: "pip install numpy matplotlib shapely Pillow"
 script:
-  - ./configure && make unittest
+  - ./configure && make && ls -a && ls -a lib/ && tree & unittest
