@@ -66,6 +66,8 @@ manual:
 package:
 	@$(ECHO) 'PACKAGE shingle'
 	@python setup.py sdist bdist_wheel
+	@$(ECHO) 'PACKAGE dxdiff'
+	@cd spud/dxdiff; python setup.py sdist; cp -rp dist/* ../../dist/; cd ../..
 	@$(ECHO) 'PACKAGE diamond'
 	@cd spud/diamond; python setup.py sdist; cp -rp dist/* ../../dist/; cd ../..
 
@@ -73,6 +75,8 @@ packageupload:
 	@$(ECHO) 'PACKAGE UPLOAD shingle'
 	@python setup.py register -r $(PYPI)
 	@python setup.py sdist bdist_wheel upload -r $(PYPI)
+	@$(ECHO) 'PACKAGE UPLOAD dxdiff'
+	@cd spud/dxdiff; python setup.py register -r $(PYPI); python setup.py sdist upload -r $(PYPI); cp -rp dist/* ../../dist/; cd ../..
 	@$(ECHO) 'PACKAGE UPLOAD diamond'
 	@cd spud/diamond; python setup.py register -r $(PYPI); python setup.py sdist upload -r $(PYPI); cp -rp dist/* ../../dist/; cd ../..
 
