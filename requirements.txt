@@ -1,6 +1,1 @@
-numpy
-ScientificPython
-matplotlib
-shapely
-GDAL
-Pillow
+numpy ScientificPython matplotlib shapely pygdal Pillow
