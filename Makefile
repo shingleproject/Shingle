@@ -126,6 +126,8 @@ lib/libspud.so:
 	@$(MAKE) -C spud install-pyspud
 	@cp lib/python*/site-packages/libspud.so lib/
 	@cp lib/python*/site-packages/libspud.so shingle/
+	@cd lib; ln -sf libspud.so libspud.so.0; cd ..
+	@cd shingle; ln -sf libspud.so libspud.so.0; cd ..
 
 # ------------------------------------------------------------------------
 
