@@ -1,7 +1,10 @@
 language: python
 python:
   - "2.7"
-sudo: false
+sudo: required
 #install: "pip install -r requirements.txt"
-install: "pip install numpy ScientificPython matplotlib shapely pygdal Pillow"
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y -qq python-numpy python-scientific python-matplotlib
+install: "pip install numpy matplotlib shapely pygdal Pillow"
 script: make test
