@@ -92,7 +92,7 @@ testimagelabel:
 	@convert test/images/*.png test/ShingleVerificationOverviewImages.pdf 
 	@rm -r test/images
 
-unittest:
+unittest: lib/libspud.so
 	@cd shingle; pytest; cd ..
 
 # ------------------------------------------------------------------------
