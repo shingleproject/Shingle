@@ -8,5 +8,5 @@ before_install:
   - sudo apt-get install -y -qq python-numpy python-scientific python-matplotlib
 install: "pip install numpy matplotlib shapely Pillow"
 script:
-  - configure
+  - ./configure
   - make test
