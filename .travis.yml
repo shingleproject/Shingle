@@ -12,6 +12,8 @@ addons:
       - python-numpy
       - python-scientific
       - python-matplotlib
+      - gcc-4.8
+      - g++-4.8
 install: "pip install numpy matplotlib shapely Pillow"
 script:
   - ./configure && make test
