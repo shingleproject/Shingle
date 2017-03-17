@@ -3,10 +3,15 @@ python:
   - "2.7"
 sudo: required
 #install: "pip install -r requirements.txt"
-before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get install -y -qq python-numpy python-scientific python-matplotlib
+#before_install:
+#  - sudo apt-get -qq update
+#  - sudo apt-get install -y -qq python-numpy python-scientific python-matplotlib
+addons:
+  apt:
+    packages:
+      - python-numpy
+      - python-scientific
+      - python-matplotlib
 install: "pip install numpy matplotlib shapely Pillow"
 script:
-  - ./configure
-  - make test
+  - ./configure && make test
