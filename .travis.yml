@@ -24,15 +24,19 @@ before_install:
 install:
   - pip install numpy matplotlib shapely Pillow
   - ./configure
-  - make
+  #- make
 before_script:
- - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/build/shingleproject/Shingle/spud/.libs/"
- - export LIBRARY_PATH="$LIBRARY_PATH:$HOME/build/shingleproject/Shingle/spud/.libs/"
+ #- export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/build/shingleproject/Shingle/spud/.libs/"
+ #- export LIBRARY_PATH="$LIBRARY_PATH:$HOME/build/shingleproject/Shingle/spud/.libs/"
 # - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/:$HOME/build/shingleproject/Shingle/lib/spud/:$HOME/build/shingleproject/Shingle/spud/.libs/:$HOME/build/lib.linux-x86_64-2.7/"
 # - export LIBRARY_PATH="$LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/:$HOME/build/shingleproject/Shingle/spud/:$HOME/build/shingleproject/Shingle/spud/.libs/:$HOME/build/lib.linux-x86_64-2.7/"
+ - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/:$HOME/build/shingleproject/Shingle/lib/spud/:$HOME/build/shingleproject/Shingle/spud/.libs/:$HOME/build/lib.linux-x86_64-2.7/"
+ - export LIBRARY_PATH="$LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/:$HOME/build/shingleproject/Shingle/spud/:$HOME/build/shingleproject/Shingle/spud/.libs/:$HOME/build/lib.linux-x86_64-2.7/"
 script:
-  - make installpackage
+  - make package
+  - cp build/lib.*/libspud.so lib/
   - make unittest
+#  - make installpackage
 #  - ./configure
 #  - make 
 #  - find . -iname libspud* -print -exec nm -g {} \; 
