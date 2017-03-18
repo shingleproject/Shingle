@@ -24,5 +24,6 @@ script:
   - ls -a
   - ls -a lib/
   - env
-  - find . -iname libspud* -print -exec nm -g {} \; 
+  - nm -g lib/libspud.so
+#  - find . -iname libspud* -print -exec nm -g {} \; 
   - make unittest
