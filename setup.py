@@ -92,12 +92,6 @@ setup(name='shingle',
              'COPYING',
              'LGPL-3.0',
              ],
-        'spud':[
-            'spud/README',
-            'spud/AUTHORS',
-            'spud/COPYING',
-            'spud/LGPL-2.1',
-              ],
     },
 #    install_requires = [
 #        'libspud',
