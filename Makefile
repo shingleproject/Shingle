@@ -84,7 +84,7 @@ installpackage: package
 	@$(ECHO) 'INSTALL shingle Python library'
 	@pip install ./dist/shingle-*.tar.gz
 	@$(ECHO) 'INSTALL diamond'
-	@pip install ./dist/diamond-*.tar.gz
+	@pip install ./dist/spud-diamond-*.tar.gz
 	@$(ECHO) 'INSTALL dxdiff'
 	@pip install ./dist/dxdiff-*.tar.gz
 
