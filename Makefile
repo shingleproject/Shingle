@@ -132,7 +132,7 @@ libspud: lib/libspud.so
 lib/libspud.so:
 	@mkdir -p lib
 	@$(MAKE) -C spud install-pyspud
-	@cp build/lib.linux-x86_64-2.7/libspud.so lib/
+	@cp spud/build/lib.linux-x86_64-2.7/libspud.so lib/
 	@cd lib; ln -sf libspud.so libspud.so.0; cd ..
 	@cd shingle; ln -sf libspud.so libspud.so.0; cd ..
 
