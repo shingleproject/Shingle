@@ -30,8 +30,8 @@ before_script:
 script:
   - ./configure
   - make
-  - make installpackage
   - make unittest
+#  - make installpackage
 #  - ./configure
 #  - make 
 #  - find . -iname libspud* -print -exec nm -g {} \; 
