@@ -80,6 +80,14 @@ packageupload:
 	@$(ECHO) 'PACKAGE UPLOAD diamond'
 	@cd spud/diamond; python setup.py register -r $(PYPI); python setup.py sdist upload -r $(PYPI); cp -rp dist/* ../../dist/; cd ../..
 
+installpackage: package
+	@$(ECHO) 'INSTALL shingle Python library'
+	@pip install ./dist/shingle-*.tar.gz
+	@$(ECHO) 'INSTALL diamond'
+	@pip install ./dist/diamond-*.tar.gz
+	@$(ECHO) 'INSTALL dxdiff'
+	@pip install ./dist/dxdiff-*.tar.gz
+
 test: bin/shingle datalocal
 	@./bin/shingle -t test
 
@@ -92,7 +100,7 @@ testimagelabel:
 	@convert test/images/*.png test/ShingleVerificationOverviewImages.pdf 
 	@rm -r test/images
 
-unittest: lib/libspud.so
+unittest:
 	@cd shingle; pytest; cd ..
 
 # ------------------------------------------------------------------------
@@ -114,7 +122,7 @@ datalink:
 testwithdatadownload:
 	@$(MAKE) -s -C test/legacy testwithdatadownload
 
-.PHONY: test testlegacy data datalink testwithdatadownload schema doc datalocal
+.PHONY: test testlegacy data datalink testwithdatadownload schema doc datalocal package
 
 # ------------------------------------------------------------------------
 
