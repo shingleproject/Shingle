@@ -15,8 +15,9 @@ addons:
       - gcc
       - g++
       - gfortran
+      - tree
 before_install:
- - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/build/shingleproject/Shingle/"
+ - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/lib/python2.7/site-packages/:$HOME/build/shingleproject/Shingle/lib/"
 install: "pip install numpy matplotlib shapely Pillow"
 script:
   - ./configure
@@ -24,6 +25,8 @@ script:
   - ls -a
   - ls -a lib/
   - env
+  - tree
   - nm -g lib/libspud.so
+  - ldd lib/libspud.so
 #  - find . -iname libspud* -print -exec nm -g {} \; 
   - make unittest
