@@ -24,4 +24,5 @@ script:
   - ls -a
   - ls -a lib/
   - env
+  - nm -g ./lib/libspud.so 
   - make unittest
