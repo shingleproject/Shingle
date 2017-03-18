@@ -32,6 +32,7 @@ script:
   - make
   - make installpackage
   - make unittest
+
 #  - ./configure
 #  - make 
 #  - find . -iname libspud* -print -exec nm -g {} \; 
