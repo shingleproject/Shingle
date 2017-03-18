@@ -18,8 +18,8 @@ addons:
       - tree
 install: "pip install numpy matplotlib shapely Pillow"
 before_script:
- - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/:$HOME/build/shingleproject/Shingle/lib/spud/"
- - export LIBRARY_PATH="$LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/:$HOME/build/shingleproject/Shingle/lib/spud/"
+ - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/"
+ - export LIBRARY_PATH="$LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/"
 # - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/:$HOME/build/shingleproject/Shingle/lib/spud/:$HOME/build/shingleproject/Shingle/spud/.libs/:$HOME/build/lib.linux-x86_64-2.7/"
 # - export LIBRARY_PATH="$LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/:$HOME/build/shingleproject/Shingle/spud/:$HOME/build/shingleproject/Shingle/spud/.libs/:$HOME/build/lib.linux-x86_64-2.7/"
 script:

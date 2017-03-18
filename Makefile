@@ -132,11 +132,12 @@ libspud: lib/libspud.so
 lib/libspud.so:
 	@mkdir -p lib
 	@$(MAKE) -C spud install-pyspud
-	@cp lib/python*/site-packages/libspud.so lib/
-	@cp lib/python*/site-packages/libspud.so shingle/
+	@cp build/lib.linux-x86_64-2.7/libspud.so lib/
 	@cd lib; ln -sf libspud.so libspud.so.0; cd ..
 	@cd shingle; ln -sf libspud.so libspud.so.0; cd ..
 
+#@cp lib/python*/site-packages/libspud.so lib/
+#@cp lib/python*/site-packages/libspud.so shingle/
 # ------------------------------------------------------------------------
 
 schema: schema/shingle_options.rng .FORCE
