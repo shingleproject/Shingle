@@ -16,25 +16,14 @@ addons:
       - g++
       - gfortran
       - tree
-before_install:
- - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/:$HOME/build/shingleproject/Shingle/lib/spud/:$HOME/build/shingleproject/Shingle/spud/.libs/:$HOME/build/lib.linux-x86_64-2.7/"
- - export LIBRARY_PATH="$LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/:$HOME/build/shingleproject/Shingle/spud/:$HOME/build/shingleproject/Shingle/spud/.libs/:$HOME/build/lib.linux-x86_64-2.7/"
 install: "pip install numpy matplotlib shapely Pillow"
 before_script:
  - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/:$HOME/build/shingleproject/Shingle/lib/spud/:$HOME/build/shingleproject/Shingle/spud/.libs/:$HOME/build/lib.linux-x86_64-2.7/"
  - export LIBRARY_PATH="$LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/:$HOME/build/shingleproject/Shingle/spud/:$HOME/build/shingleproject/Shingle/spud/.libs/:$HOME/build/lib.linux-x86_64-2.7/"
 script:
   - ./configure
-  - make -C spud libspud.la
+  - make
   - make installpackage
-  - ls -a
-  - ls -a lib/
-  - env
-  - tree
-  - pwd
-  - ls "$HOME/build/shingleproject/Shingle/spud/"
-  - ls "$HOME/build/spud/"
-  - find . -iname libspud* -print 
   - make unittest
 #  - ./configure
 #  - make 
