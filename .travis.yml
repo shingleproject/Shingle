@@ -15,11 +15,13 @@ addons:
       - gcc
       - g++
       - gfortran
+before_install:
+ - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/build/shingleproject/Shingle/"
 install: "pip install numpy matplotlib shapely Pillow"
 script:
   - ./configure
   - make 
   - ls -a
   - ls -a lib/
-  - tree
+  - env
   - make unittest
