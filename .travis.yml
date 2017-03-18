@@ -28,6 +28,10 @@ script:
   - ls -a lib/
   - env
   - tree
+  - pwd
+  - ls "$HOME/build/shingleproject/Shingle/spud/"
+  - ls "$HOME/build/spud/"
+  - find . -iname libspud* -print 
   - make unittest
 #  - ./configure
 #  - make 
