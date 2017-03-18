@@ -17,7 +17,8 @@ addons:
       - gfortran
       - tree
 before_install:
- - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/"
+ - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/:$HOME/build/shingleproject/Shingle/lib/spud/"
+ - export LIBRARY_PATH="$LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/:$HOME/build/shingleproject/Shingle/spud/"
 install: "pip install numpy matplotlib shapely Pillow"
 script:
   - ./configure
