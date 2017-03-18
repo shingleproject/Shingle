@@ -20,6 +20,7 @@ before_install:
  - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/"
 install: "pip install numpy matplotlib shapely Pillow"
 script:
+  - configure
   - make -C spud libspud.la
   - make installpackage
   - ls -a
