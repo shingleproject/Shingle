@@ -16,15 +16,18 @@ addons:
       - g++
       - gfortran
       - tree
+virtualenv:
+  system_site_packages: true
 before_install:
+  - sudo apt-get install -qq python-numpy python-scientific python-matplotlib
+  - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/:$HOME/build/shingleproject/Shingle/lib/spud/:$HOME/build/shingleproject/Shingle/spud/.libs/:$HOME/build/lib.linux-x86_64-2.7/"
+  - export LIBRARY_PATH="$LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/:$HOME/build/shingleproject/Shingle/spud/:$HOME/build/shingleproject/Shingle/spud/.libs/:$HOME/build/lib.linux-x86_64-2.7/"
 # - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/"
 # - export LIBRARY_PATH="$LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/"
- - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/:$HOME/build/shingleproject/Shingle/lib/spud/:$HOME/build/shingleproject/Shingle/spud/.libs/:$HOME/build/lib.linux-x86_64-2.7/"
- - export LIBRARY_PATH="$LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/:$HOME/build/shingleproject/Shingle/spud/:$HOME/build/shingleproject/Shingle/spud/.libs/:$HOME/build/lib.linux-x86_64-2.7/"
 install: "pip install numpy matplotlib shapely Pillow"
 before_script:
- - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/"
- - export LIBRARY_PATH="$LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/"
+  - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/"
+  - export LIBRARY_PATH="$LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/"
 # - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/:$HOME/build/shingleproject/Shingle/lib/spud/:$HOME/build/shingleproject/Shingle/spud/.libs/:$HOME/build/lib.linux-x86_64-2.7/"
 # - export LIBRARY_PATH="$LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/:$HOME/build/shingleproject/Shingle/spud/:$HOME/build/shingleproject/Shingle/spud/.libs/:$HOME/build/lib.linux-x86_64-2.7/"
 script:

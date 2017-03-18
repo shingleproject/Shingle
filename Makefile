@@ -88,7 +88,8 @@ installpackage: package
 	#@$(ECHO) 'INSTALL diamond'
 	#@pip install ./dist/spud-diamond-*.tar.gz
 
-test: bin/shingle datalocal
+#test: bin/shingle datalocal
+test: bin/shingle
 	@./bin/shingle -t test
 
 testimage:
