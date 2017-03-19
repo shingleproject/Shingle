@@ -27,7 +27,7 @@ before_script:
 # - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/"
 # - export LIBRARY_PATH="$LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/"
 script:
-  - pip install numpy matplotlib pyproj shapely Pillow
+  - pip install numpy matplotlib pyproj shapely Pillow pytest
   - python -c 'import Scientific.IO'
   - ./configure
   - make
