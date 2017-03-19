@@ -105,6 +105,9 @@ class SpatialDiscretisation(object):
         universe.log = Log(on=universe.log_active, spatial_discretisation=self)
         self.Generate()
 
+    def Stat(self):
+        return True
+
     def Name(self):
         if self._loaded and specification.have_option('/model_name'):
             return specification.get_option('/model_name')

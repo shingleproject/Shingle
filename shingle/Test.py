@@ -72,6 +72,9 @@ class VerificationTestEngine(object):
         self.Test()
         self.Summary()
 
+    def Stat(self):
+        return len(self.failures) == 0
+
     def GetLocations(self):
         return self.locations
 

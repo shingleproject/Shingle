@@ -68,8 +68,8 @@ package:
 	@python setup.py sdist bdist_wheel
 	@$(ECHO) 'PACKAGE dxdiff'
 	@cd spud/dxdiff; python setup.py sdist; cp -rp dist/* ../../dist/; cd ../..
-	@$(ECHO) 'PACKAGE diamond'
-	@cd spud/diamond; python setup.py sdist; cp -rp dist/* ../../dist/; cd ../..
+	#@$(ECHO) 'PACKAGE diamond'
+	#@cd spud/diamond; python setup.py sdist; cp -rp dist/* ../../dist/; cd ../..
 
 packageupload:
 	@$(ECHO) 'PACKAGE UPLOAD shingle'
@@ -79,6 +79,14 @@ packageupload:
 	@cd spud/dxdiff; python setup.py register -r $(PYPI); python setup.py sdist upload -r $(PYPI); cp -rp dist/* ../../dist/; cd ../..
 	@$(ECHO) 'PACKAGE UPLOAD diamond'
 	@cd spud/diamond; python setup.py register -r $(PYPI); python setup.py sdist upload -r $(PYPI); cp -rp dist/* ../../dist/; cd ../..
+
+installpackage: package
+	@$(ECHO) 'INSTALL shingle Python library'
+	@pip install ./dist/shingle-*.tar.gz
+	@$(ECHO) 'INSTALL dxdiff'
+	@pip install ./dist/dxdiff-*.tar.gz
+	#@$(ECHO) 'INSTALL diamond'
+	#@pip install ./dist/spud-diamond-*.tar.gz
 
 test: bin/shingle datalocal
 	@./bin/shingle -t test
@@ -114,7 +122,7 @@ datalink:
 testwithdatadownload:
 	@$(MAKE) -s -C test/legacy testwithdatadownload
 
-.PHONY: test testlegacy data datalink testwithdatadownload schema doc datalocal
+.PHONY: test testlegacy data datalink testwithdatadownload schema doc datalocal package
 
 # ------------------------------------------------------------------------
 
@@ -124,8 +132,11 @@ libspud: lib/libspud.so
 lib/libspud.so:
 	@mkdir -p lib
 	@$(MAKE) -C spud install-pyspud
-	@cp lib/python*/site-packages/libspud.so lib/
-	@cp lib/python*/site-packages/libspud.so shingle/
+	@cd lib; ln -sf libspud.so libspud.so.0; cd ..
+	@cd shingle; ln -sf libspud.so libspud.so.0; cd ..
+
+#@cp lib/python*/site-packages/libspud.so lib/
+#@cp lib/python*/site-packages/libspud.so shingle/
 
 # ------------------------------------------------------------------------
 
