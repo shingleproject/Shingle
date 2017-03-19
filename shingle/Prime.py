@@ -41,10 +41,11 @@ def main():
 
     ReadArguments()
 
-
     if universe.testfolder is not None:
-        VerificationTestEngine()
+        stat = VerificationTestEngine()
     else:
-        SpatialDiscretisation(case=universe.optiontreesource)
+        stat = SpatialDiscretisation(case=universe.optiontreesource)
+
+    return stat
 
 

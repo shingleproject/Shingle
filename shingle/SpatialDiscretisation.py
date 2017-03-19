@@ -104,6 +104,8 @@ class SpatialDiscretisation(object):
         self.SurfaceGeoidRep()
         universe.log = Log(on=universe.log_active, spatial_discretisation=self)
         self.Generate()
+        # TOFIX
+        return True
 
     def Name(self):
         if self._loaded and specification.have_option('/model_name'):

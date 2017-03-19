@@ -71,6 +71,7 @@ class VerificationTestEngine(object):
         self.EnableLogging()
         self.Test()
         self.Summary()
+        return len(self.failures) == 0
 
     def GetLocations(self):
         return self.locations
