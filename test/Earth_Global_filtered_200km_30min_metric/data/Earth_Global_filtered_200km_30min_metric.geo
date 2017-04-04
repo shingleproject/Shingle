@@ -1,6 +1,6 @@
 // Surface Geoid Boundary Representation, for project: Earth_Global_filtered_200km_30min_metric
 // 
-// Created by:  Shingle (v1.2)
+// Created by:  Shingle 
 // 
 //    Shingle:  An approach and software library for the generation of
 //              boundary representation from arbitrary geophysical fields
@@ -10,13 +10,13 @@
 // 
 //              Contact: Dr Adam S. Candy, contact@shingleproject.org
 //     
-// Version: v1.2-446-g14c97ac
+// Version: [Not available]
 // Mesh tool version: 2.11.0
 //                    (on the system where the boundry representation has been created)
 // 
 // Project name: Earth_Global_filtered_200km_30min_metric
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/03/15 12:28:34 
+// Created at: 2017/04/04 22:53:13 
 // Project description:
 //   -n noshelf.nc -t noshelf -no -a 5000 -el 1.0E5 -mesh
 
@@ -44,7 +44,11 @@
 //   <global_parameters/>
 //   <dataset name="RTopo105b_data_filtered_200km_30min">
 //     <form name="Raster">
-//       <source file_name="../../dataset/SouthernOcean_noshelf_30m_fg.nc" name="Local_file"/>
+//       <source url="https://zenodo.org/record/399213/files/SouthernOcean_noshelf_30m_fg.nc" name="HTTP">
+//         <comment>SouthernOcean_noshelf_30m_fg.nc
+// Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.
+// </comment>
+//       </source>
 //     </form>
 //     <projection name="Automatic"/>
 //   </dataset>

@@ -1,6 +1,6 @@
 // Surface Geoid Boundary Representation, for project: Antarctica_main_landicemass_global
 // 
-// Created by:  Shingle (v1.2)
+// Created by:  Shingle 
 // 
 //    Shingle:  An approach and software library for the generation of
 //              boundary representation from arbitrary geophysical fields
@@ -10,13 +10,13 @@
 // 
 //              Contact: Dr Adam S. Candy, contact@shingleproject.org
 //     
-// Version: v1.2-446-g14c97ac
+// Version: [Not available]
 // Mesh tool version: 2.11.0
 //                    (on the system where the boundry representation has been created)
 // 
 // Project name: Antarctica_main_landicemass_global
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/03/15 12:26:49 
+// Created at: 2017/04/04 22:33:47 
 // Project description:
 //   Use the RTopo dataset (RTopo105b.nc),
 //   considering all land masses up to a latitude of 60S, within a global domain.
@@ -57,11 +57,15 @@
 //   </output>
 //   <dataset name="RTopo">
 //     <form name="Raster">
-//       <source file_name="../../dataset/RTopo105b_50S.nc" name="Local_file">
-//         <comment>grdsample -I30m -fg noshelf.nc -GSouthernOcean_noshelf_30m_fg.nc
+//       <source url="http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc" name="HTTP">
+//         <comment>RTopo105b_50S.nc
+// Timmermann, Ralph; Le Brocq, Anne M; Deen, Tara J; Domack, Eugene W; Dutrieux, Pierre; Galton-Fenzi, Ben; Hellmer, Hartmut H; Humbert, Angelika; Jansen, Daniela; Jenkins, Adrian; Lambrecht, Astrid; Makinson, Keith; Niederjasper, Fred; Nitsche, Frank-Oliver; Nøst, Ole Anders; Smedsrud, Lars Henrik; Smith, Walter (2010): Antarctic ice sheet topography, cavity geometry, and global bathymetry (RTopo 1.0.5-beta). doi:10.1594/PANGAEA.741917,
+// Supplement to: Timmermann, R et al. (2010): A consistent dataset of Antarctic ice sheet topography, cavity geometry, and global bathymetry. Earth System Science Data, 2(2), 261-273, doi:10.5194/essd-2-261-2010
+// grdsample -I30m -fg noshelf.nc -GSouthernOcean_noshelf_30m_fg.nc
 // 
 // ncks -v noshelf amask2.nc noshelf.nc
-// ncks -v amask /d/dataset/rtopo/RTopo105b_aux.nc amask.nc" ;</comment>
+// ncks -v amask /d/dataset/rtopo/RTopo105b_aux.nc amask.nc" ;
+// </comment>
 //       </source>
 //     </form>
 //     <projection name="Automatic"/>

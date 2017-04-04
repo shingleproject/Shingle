@@ -1,4 +1,4 @@
-// Surface Geoid Boundary Representation, for project: UK_NorthSea
+// Surface Geoid Boundary Representation, for project: UK_NorthSea_opendap
 // 
 // Created by:  Shingle 
 // 
@@ -14,9 +14,9 @@
 // Mesh tool version: 2.11.0
 //                    (on the system where the boundry representation has been created)
 // 
-// Project name: UK_NorthSea
+// Project name: UK_NorthSea_opendap
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/04/04 13:29:05 
+// Created at: 2017/04/04 22:54:22 
 // Project description:
 //   Example simulation domain around the UK and Ireland in the North Sea.
 //       In a latitude-longitude WGS84 projection.
@@ -25,7 +25,7 @@
 // <?xml version='1.0' encoding='utf-8'?>
 // <boundary_representation>
 //   <model_name>
-//     <string_value lines="1">UK_NorthSea</string_value>
+//     <string_value lines="1">UK_NorthSea_opendap</string_value>
 //     <comment>Example simulation domain around the UK and Ireland in the North Sea.
 //     In a latitude-longitude WGS84 projection.</comment>
 //   </model_name>
@@ -110,7 +110,7 @@
 // </boundary_representation>
 
 // == Boundary Representation Specification Parameters ============
-// Output to UK_NorthSea.geo
+// Output to UK_NorthSea_opendap.geo
 // Projection type longlat
 //   1. NorthSea
 //       Path:           /geoid_surface_representation::NorthSea/brep_component::NorthSea

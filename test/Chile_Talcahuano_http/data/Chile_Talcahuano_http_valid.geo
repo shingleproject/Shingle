@@ -1,4 +1,4 @@
-// Surface Geoid Boundary Representation, for project: Chile_Talcahuano
+// Surface Geoid Boundary Representation, for project: Chile_Talcahuano_http
 // 
 // Created by:  Shingle 
 // 
@@ -14,9 +14,9 @@
 // Mesh tool version: 2.11.0
 //                    (on the system where the boundry representation has been created)
 // 
-// Project name: Chile_Talcahuano
+// Project name: Chile_Talcahuano_http
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/04/04 14:41:03 
+// Created at: 2017/04/04 22:53:08 
 // Project description:
 //   Example simulation domain for modelling ocean wave propagation and
 //       tsunami inundation in the 2010 Chile M8.8 earthquake, centred at 35.9S 72.7W,
@@ -28,7 +28,7 @@
 // <?xml version='1.0' encoding='utf-8'?>
 // <boundary_representation>
 //   <model_name>
-//     <string_value lines="1">Chile_Talcahuano</string_value>
+//     <string_value lines="1">Chile_Talcahuano_http</string_value>
 //     <comment>Example simulation domain for modelling ocean wave propagation and
 //     tsunami inundation in the 2010 Chile M8.8 earthquake, centred at 35.9S 72.7W,
 //     approximately 100km north of Talcahuano.
@@ -119,7 +119,7 @@
 // </boundary_representation>
 
 // == Boundary Representation Specification Parameters ============
-// Output to Chile_Talcahuano.geo
+// Output to Chile_Talcahuano_http.geo
 // Projection type longlat
 //   1. SouthEastPacificOceanCoast
 //       Path:           /geoid_surface_representation::SouthEastPacificOcean/brep_component::SouthEastPacificOceanCoast

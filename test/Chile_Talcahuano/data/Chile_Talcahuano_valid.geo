@@ -1,6 +1,6 @@
 // Surface Geoid Boundary Representation, for project: Chile_Talcahuano
 // 
-// Created by:  Shingle (v1.2)
+// Created by:  Shingle 
 // 
 //    Shingle:  An approach and software library for the generation of
 //              boundary representation from arbitrary geophysical fields
@@ -10,13 +10,13 @@
 // 
 //              Contact: Dr Adam S. Candy, contact@shingleproject.org
 //     
-// Version: v1.2-446-g14c97ac
+// Version: [Not available]
 // Mesh tool version: 2.11.0
 //                    (on the system where the boundry representation has been created)
 // 
 // Project name: Chile_Talcahuano
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/03/15 12:28:34 
+// Created at: 2017/04/04 22:53:03 
 // Project description:
 //   Example simulation domain for modelling ocean wave propagation and
 //       tsunami inundation in the 2010 Chile M8.8 earthquake, centred at 35.9S 72.7W,
@@ -57,7 +57,11 @@
 //   </output>
 //   <dataset name="Coquimbo">
 //     <form name="Raster">
-//       <source file_name="../../dataset/Coquimbo.nc" name="Local_file"/>
+//       <source url="https://zenodo.org/record/399213/files/Coquimbo.nc" name="HTTP">
+//         <comment>Coquimbo.nc
+// Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.
+// </comment>
+//       </source>
 //     </form>
 //     <projection name="Automatic"/>
 //   </dataset>
