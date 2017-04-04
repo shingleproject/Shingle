@@ -502,7 +502,8 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
         if ( (abs(self.vertices[self.loopstart, 0] - self.vertices[self.loopend, 0]) < 2 * self._source_spacing[0]) and (abs(self.vertices[self.loopstart, 1] - self.vertices[self.loopend, 1]) > 2 * self._source_spacing[1]) ):
             self.report('Path %i skipped (island crossing meridian - code needs modification to include)' % ( self.reference_number ), debug=True)
             self.AddComment('  Skipped (island crossing meridian - code needs modification to include)\n')
-            error('Skipped path. Found an island crossing a bounding meridian. Investigate if further treatment required.', warning=True)
+            # Temporary quiet
+            #error('Skipped path. Found an island crossing a bounding meridian. Investigate if further treatment required.', warning=True)
 
     def CheckPathEndToBeClosed(self):
         if (compare_points(self.vertices[self.loopstart,:], self.vertices[self.loopend,:], self.Spacing())):
