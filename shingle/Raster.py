@@ -97,7 +97,9 @@ class Dataset(object):
                 os.symlink(universe.download_database[self.url], self.location)
             else:
                 report("Downloading: %(name)s (%(size)s)", var = {'name':self.url, 'size':RetrieveDatafileSize(self.url, human=True)})
-                RetrieveDatafile(self.url, self.location)
+                stat = RetrieveDatafile(self.url, self.location)
+                if not stat:
+                    error('Error downloading source dataset from: ' + self.url, fatal=True)
         #else:
         #    report('Dataset already downloaded at: ' + self.location)
 

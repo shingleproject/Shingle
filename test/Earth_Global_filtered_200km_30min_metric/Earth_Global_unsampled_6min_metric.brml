@@ -21,7 +21,11 @@
   <global_parameters/>
   <dataset name="RTopo105b_data_filtered_200km_30min">
     <form name="Raster">
-      <source file_name="../../dataset/SouthernOcean_noshelf_30m_fg.nc" name="Local_file"/>
+      <source url="https://zenodo.org/record/399213/files/SouthernOcean_noshelf_30m_fg.nc" name="HTTP">
+        <comment>SouthernOcean_noshelf_30m_fg.nc
+Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.
+</comment>
+      </source>
     </form>
     <projection name="Automatic"/>
   </dataset>

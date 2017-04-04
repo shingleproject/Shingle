@@ -115,14 +115,26 @@ def RetrieveDatafileSize(url, human=False):
         return size
 
 def RetrieveDatafile(url, filename):
+    base, ext = os.path.splitext(filename)
+    temp = base + '_temp' + ext
     u = urlopen(url)
-    f = open(filename, 'wb')
+    size = RetrieveDatafileSize(url)
+    f = open(temp, 'wb')
+    retrieved = 0
+    chunk = 8192
     while True:
-        buffer = u.read(8192)
+        buffer = u.read(chunk)
         if not buffer:
             break
         f.write(buffer)
+        retrieved += len(buffer)
     f.close()
+    if size == retrieved:
+        os.rename(temp, filename)
+        return True
+    else:
+        os.remove(temp)
+        return False
 
 def Timestamp():
     from datetime import datetime

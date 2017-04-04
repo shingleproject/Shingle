@@ -30,7 +30,11 @@
   </output>
   <dataset name="Coquimbo">
     <form name="Raster">
-      <source file_name="../../dataset/Coquimbo.nc" name="Local_file"/>
+      <source url="https://zenodo.org/record/399213/files/Coquimbo.nc" name="HTTP">
+        <comment>Coquimbo.nc
+Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.
+</comment>
+      </source>
     </form>
     <projection name="Automatic"/>
   </dataset>

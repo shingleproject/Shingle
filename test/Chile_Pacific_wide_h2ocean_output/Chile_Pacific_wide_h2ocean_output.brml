@@ -33,7 +33,14 @@ Use 5% extra on boundaries?</comment>
   </output>
   <dataset name="ChilePacificWide">
     <form name="Raster">
-      <source file_name="../../dataset/ChilePacificWide.nc" name="Local_file"/>
+      <comment>232:290,-40:20
+grdcut -R-128/-70/-40/-20 -fg ../gebco/gebco.nc -GChilePacificWide.nc
+Use 5% extra on boundaries?</comment>
+      <source url="https://zenodo.org/record/399213/files/ChilePacificWide.nc" name="HTTP">
+        <comment>ChilePacificWide.nc
+Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.
+</comment>
+      </source>
     </form>
     <projection name="Automatic"/>
   </dataset>
