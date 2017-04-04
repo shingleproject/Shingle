@@ -27,7 +27,7 @@
   </output>
   <dataset name="Caribbean">
     <form name="Raster">
-      <source file_name="../../dataset/caribbean4.nc" name="Local_file"/>
+      <source file_name="./data/Caribbean_bathymetry.nc" name="Local_file"/>
     </form>
     <projection name="Automatic"/>
   </dataset>
