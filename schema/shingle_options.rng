@@ -256,7 +256,7 @@ from a GIS project, for example.</a:documentation>
 
 (change to define a folder within project for location?)
 
-Default: ~/tmp/dataset/rtopo/RTopo105b_50S.nc</a:documentation>
+e.g.: ~/tmp/dataset/rtopo/RTopo105b_50S.nc</a:documentation>
         <attribute name="name">
           <value>Local_file</value>
         </attribute>
@@ -276,7 +276,22 @@ See: http://www.esrl.noaa.gov/psd/data/gridded/using_dods.html</a:documentation>
         <attribute name="name">
           <value>OPeNDAP</value>
         </attribute>
-        <data type="string"/>
+        <attribute name="url">
+          <data type="string"/>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="source">
+        <a:documentation>Source raster dataset
+
+Download a dataset directly
+from a URL over HTTP.</a:documentation>
+        <attribute name="name">
+          <value>HTTP</value>
+        </attribute>
+        <attribute name="url">
+          <data type="string"/>
+        </attribute>
         <ref name="comment"/>
       </element>
     </choice>
@@ -729,8 +744,7 @@ region</a:documentation>
     </optional>
     <optional>
       <element name="box">
-        <a:documentation>Box 
-Boxes with regions of interest
+        <a:documentation>Bounding boxes containing regions of interest
 
 e.g. -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0
 

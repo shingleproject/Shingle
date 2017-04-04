@@ -36,7 +36,7 @@ from Universe import universe
 from Reporting import report, error
 from StringOperations import expand_boxes
 from Usage import usage
-
+from urllib2 import urlopen
 
 from os import devnull
 DEVNULL = open(devnull, 'wb')
@@ -93,6 +93,36 @@ def RepositoryVersion(full=False, parenthesis=False, not_available_note=True):
     if len(version) > 0 and parenthesis:
         version = '(' + version + ')'
     return version
+
+def Filesize(nbytes, decimal_places = 0):
+  suffixes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
+  from math import log10
+  if nbytes == 0:
+    return 'OB'
+  rank = int((log10(nbytes)) / 3)
+  rank = min(rank, len(suffixes) - 1)
+  human = nbytes / (1024.0 ** rank)
+  f = (('%.'+str(decimal_places)+'f') % human)
+  if '.' in f:
+    f = f.rstrip('0').rstrip('.')
+  return '%s%s' % (f, suffixes[rank])
+
+def RetrieveDatafileSize(url, human=False):
+    size = int(urlopen(url).info().getheaders("Content-Length")[0])
+    if human:
+        return Filesize(size)
+    else:
+        return size
+
+def RetrieveDatafile(url, filename):
+    u = urlopen(url)
+    f = open(filename, 'wb')
+    while True:
+        buffer = u.read(8192)
+        if not buffer:
+            break
+        f.write(buffer)
+    f.close()
 
 def Timestamp():
     from datetime import datetime

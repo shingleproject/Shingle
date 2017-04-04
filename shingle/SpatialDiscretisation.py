@@ -100,9 +100,9 @@ class SpatialDiscretisation(object):
             from Test import VerificationTests
             self.verification = VerificationTests(load_only=True)
             return
+        universe.log = Log(on=universe.log_active, spatial_discretisation=self)
         self.Dataset()
         self.SurfaceGeoidRep()
-        universe.log = Log(on=universe.log_active, spatial_discretisation=self)
         self.Generate()
 
     def Stat(self):
@@ -245,10 +245,13 @@ class SpatialDiscretisation(object):
                 raise NotImplementedError
             else:
                 raise NotImplementedError
-            if d.SourceExists():
-                self._dataset[d.name] = d
+            if d.isLocal() or d.isHttp():
+                if d.SourceExists():
+                    self._dataset[d.name] = d
+                else:
+                    error('Dataset %(name)s source not available at: %(location)s' % {'name':d.name, 'location':d.LocationFull()})
             else:
-                error('Dataset %(name)s source not available at: %(location)s' % {'name':d.name, 'location':d.LocationFull()})
+                self._dataset[d.name] = d
         report('%(brightyellow)sDATASETS%(end)s: Found %(number)d datasets:', var = { 'number':len(self._dataset) })
         for d in self._dataset.keys():
             self._dataset[d].Show()
@@ -294,7 +297,7 @@ class SpatialDiscretisation(object):
         if filename is None:
             filename = self.Output()
         fullpath = self.PathRelative(filename)
-        report('%(blue)sWriting surface geoid representation to file:%(end)s %(yellow)s%(filename)s%(end)s %(grey)s%(fullpath)s%(end)s', var={'filename':filename, 'fullpath':fullpath})
+        report('%(blue)sWriting surface geoid representation to file:%(end)s %(yellow)s%(filename)s%(end)s %(grey)s%(fullpath)s%(end)s', var={'filename':filename, 'fullpath':fullpath}, indent=1)
         self._filehandle = file(fullpath,'w')
 
     def filehandleClose(self):
@@ -419,7 +422,8 @@ Created at: %(timestamp)s
         self.mesh_generated = g.isGenerated()
 
         mesh = Mesh(self)
-        mesh.Show()
+        if self.mesh_generated:
+            mesh.Show()
 
         self.verification = VerificationTests(rep, mesh)
 

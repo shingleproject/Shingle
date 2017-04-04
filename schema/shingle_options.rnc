@@ -206,7 +206,7 @@ dataset_raster_options =
     ##
     ## (change to define a folder within project for location?)
     ##
-    ## Default: ~/tmp/dataset/rtopo/RTopo105b_50S.nc
+    ## e.g.: ~/tmp/dataset/rtopo/RTopo105b_50S.nc
     element source {
       attribute name { "Local_file" },
       attribute file_name { string },
@@ -221,7 +221,16 @@ dataset_raster_options =
     ## See: http://www.esrl.noaa.gov/psd/data/gridded/using_dods.html
     element source {
       attribute name { "OPeNDAP" },
-      string, 
+      attribute url { string },
+      comment
+    }|
+    ## Source raster dataset
+    ##
+    ## Download a dataset directly
+    ## from a URL over HTTP.
+    element source {
+      attribute name { "HTTP" },
+      attribute url { string },
       comment
     }
   )
@@ -611,9 +620,8 @@ geoid_surface_representation_raster_options =
     element region {
       string, 
       comment
-    }?,
-    ## Box 
-    ## Boxes with regions of interest
+    }?, 
+    ## Bounding boxes containing regions of interest
     ##
     ## e.g. -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0
     ##

@@ -31,9 +31,11 @@
 ##########################################################################
 
 import os
+from Scientific.IO import NetCDF
+from pydap.client import open_url
+
 from Universe import universe
 from Reporting import error, report
-from Scientific.IO import NetCDF
 from StringOperations import list_to_comma_separated
 
 class ReadDataNetCDF():
@@ -47,7 +49,7 @@ class ReadDataNetCDF():
 
     _x_names = ['lon', 'longrid', 'x', 'x_range', 'x1']
     _y_names  = ['lat', 'latgrid', 'y', 'y_range', 'y1']
-    _field_names = ['z', 'elevation', 'height', 'z_range']
+    _field_names = ['z', 'elevation', 'topo', 'height', 'z_range']
 
     _x_name = None
     _y_name = None
@@ -57,23 +59,36 @@ class ReadDataNetCDF():
     _x_irange = None
     _y_irange = None
 
-    def __init__(self, brep, rep, filename, subregion = None):
+    def __init__(self, brep, rep, subregion = None):
         self._brep = brep
         self._rep = rep
-        self._filename = filename
-        self._subregion = subregion
+        self._filename = rep.LocationFull()
+        if subregion is not None:
+            self._subregion = subregion
+        else:
+            bounds = self._brep.Region().GetMaxBounds()
+            if len(bounds) == 4:
+                self._subregion = bounds
         self.Load()
         
     def _file(self):
         if self._fileobject is None:
-            self._fileobject = NetCDF.NetCDFFile(self._filename, 'r')
+            if self._rep.isLocal() or self._rep.isLocal():
+                self._fileobject = NetCDF.NetCDFFile(self._filename, 'r')
+            elif self._rep.isOpendap():
+                self._fileobject = open_url(self._filename)
+            else:
+                self._fileobject = NetCDF.NetCDFFile(self._filename, 'r')
         return self._fileobject
 
     def Variables(self):
-        return self._file().variables
+        if self._rep.isOpendap():
+            return self._file()
+        else:
+            return self._file().variables
 
     def VariablesAvailable(self):
-        return self._file().variables.keys()
+        return self.Variables().keys()
 
     def _determine_variable_names(self):
         
@@ -119,11 +134,11 @@ class ReadDataNetCDF():
         self._x_irange = [0, len(self.lon)]
         self._y_irange = [0, len(self.lat)]
 
-        subregion = [(-14, 6), (46, 64)]
+        subregion = self._subregion
 
         # Determine bounding box
         if subregion is not None: 
-            x_range, y_range = subregion
+            x_range, y_range = (subregion[0], subregion[2]), (subregion[1], subregion[3]) 
 
             if x_range[0] is not None:
                 for i, x in enumerate(self.lon):
@@ -156,7 +171,11 @@ class ReadDataNetCDF():
     def LoadField(self, name = None):
         if name is None:
             name = self._field_name
-        return self.Variables()[name][self._y_irange[0]:self._y_irange[1], self._x_irange[0]:self._x_irange[1]] 
+        if self._rep.isOpendap():
+            field = self.Variables()[name].array
+        else:
+            field = self.Variables()[name]
+        return field[self._y_irange[0]:self._y_irange[1], self._x_irange[0]:self._x_irange[1]] 
         
     def Load(self):
         # Take a look at the available variables within the NetCDF file
@@ -336,7 +355,8 @@ def read_shape(filename):
 
     return paths
 
-def read_paths(brep, rep, filename):
+def ReadPaths(brep, rep):
+    filename = rep.LocationFull()
     contour_required = False
     base, ext = os.path.splitext(filename)
     ext = ext.lstrip('.')
@@ -346,7 +366,7 @@ def read_paths(brep, rep, filename):
     elif ext in ['shp']:
         paths = read_shape(filename) 
     else: # NetCDF .nc files
-        r = ReadDataNetCDF(brep, rep, filename)
+        r = ReadDataNetCDF(brep, rep)
         contour_required = True
 
     if (False):

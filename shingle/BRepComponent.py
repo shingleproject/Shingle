@@ -32,16 +32,18 @@
 
 from Universe import universe
 from Reporting import report, error
-from Import import read_paths
+from Import import ReadPaths
 from StringOperations import expand_boxes, bound_by_latitude, list_to_comma_separated, list_to_space_separated
 from RepresentationTools import draw_parallel_explicit
 from RepresentationTools import EnrichedPolyline
 from Projection import project
 from Spud import specification
 from Plot import PlotContours
-
+from Bounds import Bounds
 
 class BRepComponent(object):
+  
+    _bounds = None
 
     def __init__(self, surface_rep, number, pathall=None):
         self._name = None
@@ -52,6 +54,7 @@ class BRepComponent(object):
         self._representation_type = None
 
         self._region = None
+        self._bounds = None
         self._boundary = None
         self._boundary_to_exclude = None
 
@@ -214,22 +217,9 @@ class BRepComponent(object):
     # Raster options
     #if form == 'Raster':
     def Region(self):
-        if self._region is None:
-            region = universe.default.region
-            if specification.have_option(self.FormPath() + 'region'):
-                region = specification.get_option(self.FormPath() + 'region')
-            if specification.have_option(self.FormPath() + 'box'):
-                box = specification.get_option(self.FormPath() + 'box').split()
-                from os import linesep
-                self.AddComment('Imposing box region: ' + (linesep + '  ').join([''] + box))
-                region = expand_boxes(region, box )
-            bounding_latitude = self.BoundingLatitude()
-            if bounding_latitude is not None:
-                self.AddComment('Bounding by latitude: ' + str(bounding_latitude))
-                region = bound_by_latitude(region, bounding_latitude)
-            self.AddComment('Region of interest: ' + region)
-            self._region = region
-        return self._region
+        if self._bounds is None:
+            self._bounds = Bounds(self) 
+        return self._bounds
 
     def MinimumArea(self):
         if specification.have_option(self.FormPath() + 'minimum_area'):
@@ -305,7 +295,7 @@ class BRepComponent(object):
         self._surface_rep.report('Reading boundary representation %(name)s', var = {'name':self.Name()}, indent=1) 
         if len(self.Boundary()) > 0:
             self.report('Boundaries restricted to paths: ' + list_to_comma_separated(self.Boundary()), indent=1)
-        if self.Region() is not 'True':
+        if str(self.Region()) is not 'True':
             self.report('Region defined by ' + str(self.Region()), indent=1)
         self.report('Open contours closed with a line formed by points spaced %(dx)g degrees apart' % {'dx':self.Spacing()}, indent=1)
         self.AddComment('')
@@ -317,10 +307,10 @@ class BRepComponent(object):
         return self._surface_rep.spatial_discretisation.Dataset()[name]
 
     def GenerateContour(self):
-        from Import import read_paths
+        from Import import ReadPaths
         dataset = self.Dataset()
         self.report('Generating contours, from raster: ' + dataset.LocationFull(), include = False, indent = 1)
-        self._pathall = read_paths(self, dataset, dataset.LocationFull())
+        self._pathall = ReadPaths(self, dataset)
 
     def Generate(self):
         import os

@@ -37,6 +37,8 @@ from SpatialDiscretisation import SpatialDiscretisation
 from Spud import specification
 from Support import SourceTestFolder
 
+def isTesting():
+    return universe.testfolder is not None
 
 class VerificationTestEngine(object):
 

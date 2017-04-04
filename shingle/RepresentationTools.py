@@ -483,7 +483,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
         flag = 0
         for point in range(self.PointNumber()):
             position = self.vertices[point, :]
-            if ( check_point_required(self.Region(), self.vertices[point, :]) ):
+            if ( check_point_required(str(self.Region()), self.vertices[point, :]) ):
                 if (self.ValidPointNumber() > 0):
                     self._source_spacing[0] = max(abs(position[0] - position_previous[0]), self._source_spacing[0])
                     self._source_spacing[1] = max(abs(position[1] - position_previous[1]), self._source_spacing[1])

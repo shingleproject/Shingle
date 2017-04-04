@@ -69,6 +69,26 @@ def list_to_sentence(strings):
 def strplusone(number):
     return str(number + 1)
 
+def parse_boxes(string):
+    from Reporting import error
+
+    bounds = []
+    strings = string.split()
+    if (len(strings) > 0):
+        for s in strings:
+            longlat = s.split(',')
+            if (len(longlat) != 2):
+                print 'longlat:', longlat
+                error('Error in splitting around comma in the definition of box: ' + str(s), fatal=True)
+
+            bound = ( [float(x) for x in longlat[0].split(':')], [float(x) for x in longlat[1].split(':')] )
+            if ((len(bound[0]) != 2) and (len(bound[1]) != 2)):
+                error('Error in splitting around a colon in the definition of box: ' + str(s), fatal=True)
+
+            bounds.append(bound)
+
+    return bounds
+
 def expand_boxes(region, boxes):
     from Reporting import error
     def build_function(function, requireand, axis, comparison, number):

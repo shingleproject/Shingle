@@ -37,11 +37,11 @@ def main():
     from Universe import universe
     from Support import ReadArguments
     from SpatialDiscretisation import SpatialDiscretisation
-    from Test import VerificationTestEngine
+    from Test import VerificationTestEngine, isTesting
 
     ReadArguments()
 
-    if universe.testfolder is not None:
+    if isTesting():
         s = VerificationTestEngine()
     else:
         s = SpatialDiscretisation(case=universe.optiontreesource)

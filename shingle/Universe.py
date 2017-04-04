@@ -75,6 +75,7 @@ class universe():
     use_counter_prefix = False
     _all_stages = ['path', 'brep', 'mesh', 'metric', 'verify', 'post']
     pickup = False
+    download_database = {}
 
     # Log
     root = './'

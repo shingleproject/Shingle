@@ -30,11 +30,19 @@
 #
 ##########################################################################
 
+import os
 from Universe import universe
 from Reporting import error, report
+from Support import RetrieveDatafile, RetrieveDatafileSize
 from Spud import specification
 
 class Dataset(object):
+
+    _SOURCE_TYPE_LOCAL = 'Local_file'
+    _SOURCE_TYPE_OPENDAP = 'OPeNDAP'
+    _SOURCE_TYPE_HTTP = 'HTTP'
+
+    _data_download_folder = ['.','data']
 
     def __init__(self, spatial_discretisation=None, number=None):
         self._path = None
@@ -43,6 +51,7 @@ class Dataset(object):
         self.form = None
         self.source = None
         self.location = None
+        self.url = None
         self.projection = None
         self._number = number
         if spatial_discretisation is not None:
@@ -56,17 +65,50 @@ class Dataset(object):
         self._path = '/dataset::%(name)s' % {'name':self.name} 
         self.form = specification.get_option(self._path + '/form[0]/name' )
         self.source = specification.get_option(self._path + '/form[0]/source[0]/name' )
-        if self.source == 'Local_file':
+        if self.isLocal():
             self.SetContourSource(specification.get_option(self._path + '/form[0]/source[0]/file_name' )) 
-        elif self.source == 'OPeNDAP':
-            self.location = specification.get_option(self._path + '/form[0]/source[0]/url' )  
+        elif self.isOpendap():
+            self.SetContourSource(specification.get_option(self._path + '/form[0]/source[0]/url' ) )
+        elif self.isHttp():
+            self.url = specification.get_option(self._path + '/form[0]/source[0]/url')
+            self.SetContourSource(self._spatial_discretisation.PathRelative(os.path.join(os.path.join(*self._data_download_folder), self.name + '.nc')))
+            self.DownloadData()
         self.projection = specification.get_option(self._path + '/projection[0]/name' )
+
+    def isLocal(self):
+        return self.source == self._SOURCE_TYPE_LOCAL
+
+    def isOpendap(self):
+        return self.source == self._SOURCE_TYPE_OPENDAP
+      
+    def isHttp(self):
+        return self.source == self._SOURCE_TYPE_HTTP
+    
+    def DownloadData(self):
+        folder = os.path.dirname(self.location)
+        if not os.path.exists(folder):
+            os.mkdir(folder)
+            
+        if os.path.exists(self.location):
+            universe.download_database[self.url] = self.location
+        else:
+            if self.url in universe.download_database.keys():
+                report('Previously downloaded this data file, linking: %(source)s -> %(dest)s', var = {'source':universe.download_database[self.url], 'dest':self.location})
+                os.symlink(universe.download_database[self.url], self.location)
+            else:
+                report("Downloading: %(name)s (%(size)s)", var = {'name':self.url, 'size':RetrieveDatafileSize(self.url, human=True)})
+                RetrieveDatafile(self.url, self.location)
+        #else:
+        #    report('Dataset already downloaded at: ' + self.location)
 
     def SetContourSource(self, filename):
         self.location = filename
 
     def LocationFull(self):
-        return self._spatial_discretisation.PathRelative(self.location)
+        if self.isLocal() or self.isHttp():
+            return self._spatial_discretisation.PathRelative(self.location)
+        else:
+            return self.location
 
     def Show(self):
         report('  %(blue)s%(number)s.%(end)s %(name)s', var = {'number':self._number + 1, 'name':self.name })
@@ -103,8 +145,9 @@ class Raster(Dataset):
 
     def CheckSource(self):
         from os.path import isfile
-        if not self.SourceExists(): 
-            error('Source NetCDF ' + self.LocationFull() + ' not found!', fatal=True, indent = 1)
+        if self.isLocal() or self.isHttp():
+            if not self.SourceExists(): 
+                error('Source NetCDF ' + self.LocationFull() + ' not found!', fatal=True, indent = 1)
 
     def GetCacheLocation(self):
         if self.cachefile is None:
@@ -158,9 +201,9 @@ class Raster(Dataset):
 
 
 #  def GenerateContour(self):
-#    from Import import read_paths
+#    from Import import ReadPaths
 #    self.report('Generating contours', include = False)
-#    self.pathall = read_paths(self, self.LocationFull())
+#    self.pathall = ReadPaths(self, self.LocationFull())
 #
 #  def Generate(self):
 #    import os
