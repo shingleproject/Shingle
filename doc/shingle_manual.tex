@@ -459,7 +459,7 @@ Integration of Geographic Information System frameworks into domain discretisati
 Install \shingle, Diamond and all Python dependencies with the following:
 \begin{verbatim}
 pip install --user numpy ScientificPython matplotlib shapely
-  GDAL Pillow setuptools shingle spud-diamond
+  GDAL Pydap pyproj Pillow setuptools spud-diamond shingle
 \end{verbatim}
 Note the \verb+--user+ option can be dropped to install system-wide, if you have sufficient system privileges. 
 \vspace{1ex}
@@ -529,6 +529,10 @@ These include:
   (\url{http://toblerity.org/shapely})
 \item GDAL
   (\url{http://www.gdal.org})
+\item Pydap
+  (\url{http://pydap.org})
+\item pyproj
+  (\url{http://proj4.org})
 \item Python Imaging Library (PIL) provided by Pillow
   (\url{https://python-pillow.org})
 \item setuptools
@@ -542,14 +546,14 @@ and this is the recommended way to source these dependencies.
 The following can be used to install these using \verb+pip+:
 \begin{verbatim}
 pip install numpy ScientificPython matplotlib shapely GDAL
-  Pillow setuptools
+  Pydap pyproj Pillow setuptools
 \end{verbatim}
 
 \noindent
 To avoid issues with file permissions, the easiest way is to install these on a user basis with the following:
 \begin{verbatim}
 pip install --user numpy ScientificPython matplotlib shapely GDAL
-  Pillow setuptools
+  Pydap pyproj Pillow setuptools
 \end{verbatim}
 
 \section{Obtaining the source}

@@ -30,7 +30,11 @@ test/legacy/filchner-ronne_back/
 test/*/*.geo
 test/*/*.msh
 test/*/*.png
+test/*/data/*.nc
 
 test/Caribbean/data/Caribbean_valid.geo
 test/Caribbean_main_coastline/data/Caribbean_main_coastline_valid.geo
+
+shingle/unittest/output.brml
+shingle/unittest/output.msh
 
