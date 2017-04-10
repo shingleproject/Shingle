@@ -4,7 +4,7 @@ Shingle
 [![Build Status](https://travis-ci.org/shingleproject/Shingle.svg?branch=master)](http://travis-ci.org/shingleproject/Shingle)
 [![Python2](https://img.shields.io/badge/python-2-blue.svg)](https://www.python.org/downloads/)
 [![PyPI](https://img.shields.io/pypi/v/shingle.svg?maxAge=2592000?style=plastic)](https://pypi.python.org/pypi/shingle/)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.496154.svg)](https://doi.org/10.5281/zenodo.496154)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.496172.svg)](https://doi.org/10.5281/zenodo.496172)
 
 Generalised self-consistent and automated domain discretisation for multi-scale geophysical models.
 
