@@ -1,9 +1,16 @@
 Shingle
 =======
 
+[![Build Status](https://travis-ci.org/shingleproject/Shingle.svg?branch=master)](http://travis-ci.org/shingleproject/Shingle)
+[![Python2](https://img.shields.io/badge/python-2-blue.svg)](https://www.python.org/downloads/)
+[![PyPI](https://img.shields.io/pypi/v/shingle.svg?maxAge=2592000?style=plastic)](https://pypi.python.org/pypi/shingle/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.496154.svg)](https://doi.org/10.5281/zenodo.496154)
+
 Generalised self-consistent and automated domain discretisation for multi-scale geophysical models.
 
 ![Shingle](./data/shingle.png?raw=true "Shingle")
+
+Shingle is a generalised and accessible framework for model-independent and self-consistent geophysical domain discretisation, which accurately conform to fractal-like bounds and at varyingly resolved spatial scales. The full heterogeneous set of constraints are necessarily completely described by an extensible, hierarchical formal grammar with an intuitive natural language basis for geophysical domain features to achieve robust reproduction and consistent model intercomparisons.
 
 LibShingle: Computational research software library providing a high-level abstraction to spatial discretisation, or mesh generation, for domains containing complex, fractal-like boundaries that characterise those in numerical simulations of geophysical dynamics.  This is accompanied by a compact, shareable and necessarily complete description of the domain discretisation.
 
@@ -14,11 +21,6 @@ Outline web page: [http://shingleproject.org](http://shingleproject.org "Shingle
 Further details are provided in the library source and [Shingle project manual](http://homepage.tudelft.nl/w8w0h/4fcf65d8/shingle_manual.pdf "Shingle manual").
 
 For further information and updates, please contact the lead author Dr Adam S. Candy at contact@shingleproject.org.
-
-Build status
-------------
-
-[![Build Status](https://travis-ci.org/shingleproject/Shingle.svg?branch=master)](http://travis-ci.org/shingleproject/Shingle)
 
 Example geophysical domains
 ---------------------------

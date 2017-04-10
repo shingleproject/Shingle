@@ -78,7 +78,7 @@ setup(name='shingle',
         'README.md',
         'AUTHORS',
         'COPYING',
-        'LGPL-3.0',
+        'LICENSE',
     ])],
     package_data={
         'shingle':[
@@ -86,7 +86,7 @@ setup(name='shingle',
              'README.md',
              'AUTHORS',
              'COPYING',
-             'LGPL-3.0',
+             'LICENSE',
              ],
     },
 #    install_requires = [

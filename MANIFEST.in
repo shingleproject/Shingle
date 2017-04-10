@@ -1,4 +1,4 @@
-include MANIFEST MANIFEST.in README.md AUTHORS COPYING LGPL-3.0
+include MANIFEST MANIFEST.in README.md AUTHORS COPYING LICENSE
 include setup.py
 include schema/shingle_options.rng
 recursive-include shingle/ *.py
