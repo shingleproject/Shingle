@@ -385,6 +385,8 @@ Background Field = 2;
 
 class Metric(object):
 
+    # Needs a verification test
+
     _OUTPUT_FORMAT_TYPE_POS = 1
     _OUTPUT_FORMAT_TYPE_STRUCT = 2
  
