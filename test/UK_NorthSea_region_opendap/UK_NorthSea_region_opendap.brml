@@ -125,7 +125,9 @@
     </form>
   </geoid_metric>
   <geoid_mesh>
-    <library name="Gmsh"/>
+    <library name="Gmsh">
+      <extend_metric_from_boundary/>
+    </library>
   </geoid_mesh>
   <validation>
     <test file_name="data/UK_NorthSea_region_opendap_valid.geo" name="BrepDescription"/>

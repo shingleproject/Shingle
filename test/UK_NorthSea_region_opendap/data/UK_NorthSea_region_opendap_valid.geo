@@ -16,7 +16,7 @@
 // 
 // Project name: UK_NorthSea_region_opendap
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/04/11 17:35:52 
+// Created at: 2017/04/11 17:55:11 
 // Project description:
 //   Example simulation domain around the UK and Ireland in the North Sea.
 //       In a latitude-longitude WGS84 projection.
@@ -149,7 +149,9 @@
 //     </form>
 //   </geoid_metric>
 //   <geoid_mesh>
-//     <library name="Gmsh"/>
+//     <library name="Gmsh">
+//       <extend_metric_from_boundary/>
+//     </library>
 //   </geoid_mesh>
 //   <validation>
 //     <test file_name="data/UK_NorthSea_region_opendap_valid.geo" name="BrepDescription"/>
@@ -3418,7 +3420,7 @@ Physical Surface( 10 ) = { 10 };
 
 // == End of contour definitions ==================================
 // Do not extent the elements sizes from the boundary inside the domain
-Mesh.CharacteristicLengthExtendFromBoundary = 0;
+Mesh.CharacteristicLengthExtendFromBoundary = 1;
 
 // input bathymetry
 Field[1] = Structured;
@@ -3429,11 +3431,8 @@ Field[1].TextFormat = 1;
 Field[2] = MathEval;
 Field[2].F = "0.1";
 
-//Dont extent the elements sizes from the boundary inside the domain
-Mesh.CharacteristicLengthExtendFromBoundary = 0;
-
 // Set background field to constant
-Background Field = 2;
+Background Field = 1;
 
 
 
@@ -3454,4 +3453,3 @@ General.RotationX = 0;
 General.RotationY = 0;
 General.RotationZ = 0;
 
-Background Field = 1;

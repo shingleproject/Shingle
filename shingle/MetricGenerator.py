@@ -374,11 +374,8 @@ Field[1].TextFormat = 1;
 Field[2] = MathEval;
 Field[2].F = "0.1";
 
-//Dont extent the elements sizes from the boundary inside the domain
-Mesh.CharacteristicLengthExtendFromBoundary = 0;
-
 // Set background field to constant
-Background Field = 2;
+Background Field = 1;
 
 ''')
         
@@ -429,10 +426,15 @@ class Metric(object):
         #field[field < self.minimumdepth] = self.minimumdepth
         field[field < 0.0] = 0.0
 
+        field = numpy.sqrt(field * 9.81)
+    
+        print field.min(), field.max()
+
+
         # TODO: Add as Python function on field
         field *= 1.0 / field.max()
-        field *= (0.5 - 0.05)
-        field += 0.05
+        field *= (1.0 - 0.1)
+        field += 0.1
 
         if self.globe:
             # needs deepcopy
