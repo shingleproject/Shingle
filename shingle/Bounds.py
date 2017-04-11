@@ -43,16 +43,23 @@ class Bounds():
 
     _expression = None
 
-    def __init__(self, brep):
+    def __init__(self, brep = None, path = None):
         self._bounds = None
         self._brep = brep
-        self._path = self._brep.FormPath()
+        if self._brep is not None:
+            self._path = self._brep.FormPath()
+        else:
+            self._path = path
         self._expression = None
       
     def AddComment(self, *args, **kwargs):
+        if self._brep is None:
+            return None
         return self._brep.AddComment(*args, **kwargs)
 
     def BoundingLatitude(self, *args, **kwargs):
+        if self._brep is None:
+            return None
         return self._brep.BoundingLatitude(*args, **kwargs)
 
     def __str__(self):
@@ -90,13 +97,24 @@ class Bounds():
             box = specification.get_option(self._path + 'box')
             for bound in parse_boxes(specification.get_option(self._path + 'box')):
                 self.Add(bound)
+        
+        #if specification.have_option(self._path + 'region'):
+        total_regions = specification.option_count(self._path + 'region')
+        for number in range(total_regions):
+            path = self._path + 'region[%(number)d]' % {'number':number}
+            long1 = specification.get_option(path + '/longitude/minimum')
+            long2 = specification.get_option(path + '/longitude/maximum')
+            lat1  = specification.get_option(path + '/latitude/minimum')
+            lat2  = specification.get_option(path + '/latitude/maximum')
+            bound = ( [long1, long2], [lat1, lat2] )
+            self.Add(bound)
 
     def ReadExpression(self):
         # Read full bound expression
         region = universe.default.region
 
-        if specification.have_option(self._path + 'region'):
-            region = specification.get_option(self._path + 'region')
+        if specification.have_option(self._path + 'region_description'):
+            region = specification.get_option(self._path + 'region_description')
 
         if specification.have_option(self._path + 'box'):
             box = specification.get_option(self._path + 'box').split()

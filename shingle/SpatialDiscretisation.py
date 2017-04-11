@@ -414,6 +414,7 @@ Created at: %(timestamp)s
         rep = SurfaceGeoidDomainRepresentation(spatial_discretisation=self, name=name)
 
         f = Field(surface_representation = rep )
+        
         self.Postprocess()
         self.WriteContent()
 

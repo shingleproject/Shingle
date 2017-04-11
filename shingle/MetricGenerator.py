@@ -33,7 +33,10 @@
 from Universe import universe
 from Reporting import error
 from StringOperations import list_to_comma_separated
+from Bounds import Bounds
 from Spud import specification
+from copy import deepcopy
+import numpy
 
 
 class Field(object):
@@ -156,7 +159,7 @@ Background Field = %(prefix)s3;
 ''' % { 'boundary_list':list_to_comma_separated(b, prefix = self.CounterPrefix(edgeindex + 'IL')), 'prefix':self.CounterPrefix('IFI'), 'equidistant_node_number':equidistant_node_number, 'edge_length_minimum':edge_length_minimum, 'edge_length_maximum':edge_length_maximum, 'proximity_minimum':proximity_minimum, 'proximity_maximum':proximity_maximum } )
 
 
-    def FromRaster(self):
+    def FromRasterUK(self):
         self.AddContent('''
 // input bathymetry
 Field[1] = Structured;
@@ -215,12 +218,6 @@ Mesh.CharacteristicLengthExtendFromBoundary = 0;
 
 Background Field = 13;
 ''')
-
-
-
-
-
-
 
     def Output(self):
         index = self.index
@@ -346,99 +343,133 @@ General.RotationZ = %(z).0f;
 # General.RotationY = 0;
 # General.RotationZ = 270;
 
+
+    def FromRaster(self):
+        
+
+        dataset_name = specification.get_option('/geoid_metric/form::FromRaster/source/name')
+        field_name = None
+        if specification.have_option('/geoid_metric/form::FromRaster/field_name'):
+            field_name = specification.get_option('/geoid_metric/form::FromRaster/field_name')
+
+        dataset = self._surface_rep.spatial_discretisation.Dataset()[dataset_name]
+
+        bounds = Bounds(path='/geoid_metric/form::FromRaster/')
+        subregion = bounds.GetMaxBounds()
+
+        field_region = dataset.Load(subregion, name_field=field_name)
+        #field = deepcopy(region.Data())
+
+        print 'metric'
+        m = Metric()
+        m.Generate(field_region)
+
+        self.AddContent('''
+// input bathymetry
+Field[1] = Structured;
+Field[1].FileName = "metric.pos";
+Field[1].TextFormat = 1;
+
+// constant edge length to use as initial mesh in testing
+Field[2] = MathEval;
+Field[2].F = "0.1";
+
+//Dont extent the elements sizes from the boundary inside the domain
+Mesh.CharacteristicLengthExtendFromBoundary = 0;
+
+// Set background field to constant
+Background Field = 2;
+
+''')
+        
+
 class Metric(object):
 
-    def __init__(self, output = None):
-        if output == None:
-            self.outputfilename = 'metric.pos'
-        self.sourcefile = None
-        self.fieldname = 'z'
+    _OUTPUT_FORMAT_TYPE_POS = 1
+    _OUTPUT_FORMAT_TYPE_STRUCT = 2
+ 
+    _OUTPUT_FILENAME_DEFAULT = 'metric.pos'
+
+    def __init__(self, output_filename = None):
+        if output_filename is None:
+            self.output_filename = self._OUTPUT_FILENAME_DEFAULT
+        self.output_format = self._OUTPUT_FORMAT_TYPE_STRUCT
+
         self.minimumdepth = 10.0
-        self.outputtype='struct'
-        self.metric_only=True
 
-    def Generate(self, sourcefile, outputfilename=None, fieldname=None, minimumdepth=None, outputtype=None, metric_only=True):
+        self.globe = False
+        self.globallonglat = False
 
-        if not universe.generatemetric: return
+        self._fileobject = None
 
-        self.sourcefile = sourcefile
-        if outputfilename is not None:
-            self.outputfilename = outputfilename
-        if fieldname is not None:
-            self.fieldname = fieldname
-        if minimumdepth is not None:
-            self.minimumdepth = minimumdepth
-        if outputtype is not None:
-            self.outputtype = outputtype
+    def _file(self):
+        if self._fileobject is None:
+            self._fileobject = open(self.output_filename,'w')
+        return self._fileobject
 
+    def Finalise(self):
+        self._fileobject.close()
+        self._fileobject = None
 
-        report('Generating metric...')
+    def WriteLine(self, string, newline=True):
+        self._file().write(string + '\n')
 
-        globallonglat = False
+    def Generate(self, source):
+        #if not universe.generatemetric: return
 
-        globe=True
-        globe=False
+        #field = source.Data()
+        #field = deepcopy(source.Data())
+        field = source.Data().astype(numpy.float32, copy=True)
+        lon = source.lon.astype(numpy.float32, copy=True)
+        lat = source.lat.astype(numpy.float32, copy=True)
 
-        fieldname = 'z'
-        fieldname = 'Band1'
+        field = - field
+        #field[field < self.minimumdepth] = self.minimumdepth
+        field[field < 0.0] = 0.0
 
-        def write(string, newline=True):
-            metric.write(string + '\n')
+        # TODO: Add as Python function on field
+        field *= 1.0 / field.max()
+        field *= (0.5 - 0.05)
+        field += 0.05
 
-        file = NetCDF.NetCDFFile(self.sourcefile, 'r')
-        print file.variables.keys()
-        if 'lon' in file.variables.keys():
-            lon = file.variables['lon'][:]
-            lat = file.variables['lat'][:]
-            globallonglat = True
-        else:
-            lon = file.variables['x'][:] 
-            lat = file.variables['y'][:]
-        field = file.variables[fieldname][:, :] 
-
-        metric = open(outputfilename,'w')
-
-
-        if (globe):
-            field[field > - minimumdepth] = - minimumdepth
+        if self.globe:
+            # needs deepcopy
+            field[field > - self.minimumdepth] = - self.minimumdepth
             field = - field
 
-        if (outputtype == 'pos'):
-            write('View "background_edgelength" {')
+        if (self.output_format == self._OUTPUT_FORMAT_TYPE_POS):
+            self.WriteLine('View "background_edgelength" {')
             for i in range(len(lon)):
                 for j in range(len(lat)):            
-                    # FIXME: The needs to be shored up
+                    # FIXME: The needs to be sured up
                     p = project([lon[i],lat[j]], type=None)
                     if (p[0] == None or p[1] == None):
                         continue
-                    write('SP(' + str(p[0]) + ', ' + str(p[0]) + ', 0.0 ){' + str(field[j][i]) + '};')
-            write('};')
-        elif(outputtype == 'struct'):
-            if (not globe):
-                #x = [ -16.0, 5 ]
-                #y = [ 44.0, 66.0 ]
-                x = [ 256.164, 261.587 ]
-                y = [ -75.519, -74.216 ]
+                    self.WriteLine('SP(' + str(p[0]) + ', ' + str(p[0]) + ', 0.0 ){' + str(field[j][i]) + '};')
+            self.WriteLine('};')
+
+        elif(self.output_format == self._OUTPUT_FORMAT_TYPE_STRUCT):
+            if not self.globe:
 
                 x = [ lon[0], lon[-1] ]
                 y = [ lat[-1], lat[0] ]
 
-                write( str(x[0]) + ' ' + str(y[0]) + ' ' +  '0' )
-                write( str(float(x[-1] - x[0])/len(lon)) + " " + str(float(y[-1] - y[0])/len(lat)) + ' 1')
+                self.WriteLine( str(x[0]) + ' ' + str(y[0]) + ' ' +  '0' )
+                self.WriteLine( str(float(x[-1] - x[0])/len(lon)) + " " + str(float(y[-1] - y[0])/len(lat)) + ' 1')
             else: 
-                if globallonglat:
-                    write( str( lon[0] + 180 ) + ' ' + str( lat[0] + 90 ) + ' 0' )
+                if self.globallonglat:
+                    self.WriteLine( str( lon[0] + 180 ) + ' ' + str( lat[0] + 90 ) + ' 0' )
                 else:
-                    write( str( lon[0] ) + ' ' + str( lat[0] ) + ' 0' )
+                    self.WriteLine( str( lon[0] ) + ' ' + str( lat[0] ) + ' 0' )
 
-                write( str(float(abs(lon[0])+abs(lon[-1]))/len(lon))+" "+ str(float(abs(lat[0])+abs(lat[-1]))/len(lat)) + ' 1')
-            write( str(len(lon))+" "+str(len(lat))+" 1")
+                self.WriteLine( str(float(abs(lon[0])+abs(lon[-1]))/len(lon))+" "+ str(float(abs(lat[0])+abs(lat[-1]))/len(lat)) + ' 1')
+
+            self.WriteLine( str(len(lon))+" "+str(len(lat))+" 1")
+
             for i in range(len(lon)):
                 for j in range(len(lat))[::-1]:         
-                    write(str(field[j][i]))
-                    #write(str(lon[i]))
+                    self.WriteLine(str(field[j][i]))
+                    #self.WriteLine(str(lon[i]))
 
-        metric.close()
+        self.Finalise()
 
-        if metric_only:
-            sys.exit(0)

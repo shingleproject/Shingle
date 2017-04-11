@@ -551,6 +551,7 @@ To be sorted...</a:documentation>
         <ref name="geoid_surface_representation_raster"/>
         <ref name="geoid_surface_representation_polyline"/>
         <ref name="geoid_surface_representation_parallel"/>
+        <ref name="geoid_surface_representation_boundingbox"/>
         <ref name="geoid_surface_representation_extend_to_parallel"/>
         <ref name="geoid_surface_representation_extend_to_meridian"/>
       </choice>
@@ -684,6 +685,18 @@ Enable this to match end to end</a:documentation>
       <ref name="comment"/>
     </element>
   </define>
+  <define name="geoid_surface_representation_boundingbox">
+    <element name="form">
+      <a:documentation>Boundary representation component source</a:documentation>
+      <attribute name="name">
+        <value>BoundingBox</value>
+      </attribute>
+      <oneOrMore>
+        <ref name="region"/>
+      </oneOrMore>
+      <ref name="comment"/>
+    </element>
+  </define>
   <define name="geoid_surface_representation_extend_to_parallel">
     <element name="form">
       <a:documentation>Boundary representation component source</a:documentation>
@@ -719,6 +732,38 @@ Enable this to match end to end</a:documentation>
       <ref name="comment"/>
     </element>
   </define>
+  <define name="region">
+    <element name="region">
+      <a:documentation>Region specification
+
+</a:documentation>
+      <attribute name="name">
+        <data type="string"/>
+      </attribute>
+      <element name="longitude">
+        <element name="minimum">
+          <ref name="real"/>
+          <ref name="comment"/>
+        </element>
+        <element name="maximum">
+          <ref name="real"/>
+          <ref name="comment"/>
+        </element>
+        <ref name="comment"/>
+      </element>
+      <element name="latitude">
+        <element name="minimum">
+          <ref name="real"/>
+          <ref name="comment"/>
+        </element>
+        <element name="maximum">
+          <ref name="real"/>
+          <ref name="comment"/>
+        </element>
+        <ref name="comment"/>
+      </element>
+    </element>
+  </define>
   <define name="geoid_surface_representation_raster_options">
     <element name="source">
       <a:documentation>Dataset to source the raster</a:documentation>
@@ -727,9 +772,12 @@ Enable this to match end to end</a:documentation>
       </attribute>
       <ref name="comment"/>
     </element>
+    <zeroOrMore>
+      <ref name="region"/>
+    </zeroOrMore>
     <optional>
-      <element name="region">
-        <a:documentation>Region specification - multiple?
+      <element name="region_expression">
+        <a:documentation>Region specification
 Function specifying region of interest
 
 e.g. 'latitude &lt;= -60.0'
@@ -771,8 +819,6 @@ Legacy: minarea</a:documentation>
       <element name="boundary">
         <a:documentation>Boundaries
 
-Use a list of integers instead?
-
 Specify paths to include
 
 Default: []
@@ -785,7 +831,7 @@ Legacy: boundaries</a:documentation>
     <optional>
       <element name="boundary_to_exclude">
         <a:documentation>Boundaries to exclude
-Use a list of integers instead?
+
 Specify paths to exclude
 
 Default: []
@@ -970,6 +1016,21 @@ Legacy: elementlength</a:documentation>
               <ref name="comment"/>
             </element>
             <optional>
+              <element name="field_name">
+                <data type="string"/>
+                <ref name="comment"/>
+              </element>
+            </optional>
+            <zeroOrMore>
+              <ref name="region"/>
+            </zeroOrMore>
+            <optional>
+              <element name="scale">
+                <ref name="real"/>
+                <ref name="comment"/>
+              </element>
+            </optional>
+            <optional>
               <element name="filter">
                 <data type="string"/>
                 <ref name="comment"/>
@@ -987,10 +1048,12 @@ Legacy: elementlength</a:documentation>
                 <ref name="comment"/>
               </element>
             </optional>
-            <element name="max_hessian">
-              <ref name="real"/>
-              <ref name="comment"/>
-            </element>
+            <optional>
+              <element name="max_hessian">
+                <ref name="real"/>
+                <ref name="comment"/>
+              </element>
+            </optional>
           </element>
           <optional>
             <element name="form">

@@ -43,7 +43,7 @@ Supplement to: Timmermann, R et al. (2010): A consistent dataset of Antarctic ic
     <brep_component name="AntarcticaAll">
       <form name="Raster">
         <source name="RTopo"/>
-        <region>latitude &lt;= -60</region>
+        <region_description>latitude &lt;= -60</region_description>
         <contourtype field_level="10.0" field_name="amask" name="iceshelfcavity"/>
       </form>
       <identification name="closed"/>

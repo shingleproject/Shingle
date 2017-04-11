@@ -60,8 +60,8 @@ class Dataset(object):
             self._spatial_discretisation = spatial_discretisation
         self.Read()
 
-    def __eq__(self, a, b):
-        return a.LocationFull() == b.LocationFull()
+    def __eq__(self, other):
+        return self.LocationFull() == other.LocationFull()
   
     def Read(self):
         if self._number is None:

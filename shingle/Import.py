@@ -67,12 +67,12 @@ class ReadDataNetCDF():
         ## Automatically load the whole or subregion of a dataset on initialisation
         #self.Load()
         
-    def __eq__(self, a, b):
-        return ((a.dataset == b.dataset) and
-            (a.subregion == b.subregion) and
-            (a.name_field == b.name_field) and
-            (a.name_x == b.name_x) and
-            (a.name_y == b.name_y))
+    def __eq__(self, other):
+        return ((self.dataset == other.dataset) and
+            (self.subregion == other.subregion) and
+            (self.name_field == other.name_field) and
+            (self.name_x == other.name_x) and
+            (self.name_y == other.name_y))
         
     def _file(self):
         if self._fileobject is None:
@@ -424,7 +424,5 @@ def ReadPaths(brep, dataset):
             from pylab import contour
             report("Found raster, sizes: lat %(lat)d, lon %(lon)d, shape %(shape)s", var = {'lon':len(region.lon), 'lat':len(region.lat), 'shape':str(region.Data().shape)}, indent = 2 )
             paths = contour(region.lon,region.lat,field,levels=[0.5]).collections[0].get_paths()
-
-
 
     return paths
