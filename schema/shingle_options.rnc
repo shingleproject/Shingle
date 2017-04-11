@@ -800,6 +800,19 @@ metric_options =
             comment
           }?
         }|
+        element form {
+          ## Resolve gravity waves
+          ##
+          ##
+          attribute name { "GravityWave" },
+          element bathymetry_dataset_name {
+            string
+          }?,
+          element scaling {
+            real,
+            comment
+          }?
+        }|
         ## From Raster
         element form {
           attribute name { "FromRaster" },

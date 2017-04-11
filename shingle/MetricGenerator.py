@@ -92,6 +92,8 @@ class Field(object):
             self.Homogeneous()
         elif self.Form() == 'Proximity':
             self.Proximity()
+        elif self.Form() == 'GravityWave':
+            self.GravityWave()
         elif self.Form() == 'FromRaster':
             self.FromRaster()
         else:

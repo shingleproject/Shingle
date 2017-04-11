@@ -940,6 +940,20 @@ Legacy: elementlength</a:documentation>
             </optional>
           </element>
           <element name="form">
+            <attribute name="name">
+              <value>GravityWave</value>
+            </attribute>
+            <optional>
+              <element name="scaling">
+                <a:documentation>Element edge length
+
+Resolve gravity waves</a:documentation>
+                <ref name="real"/>
+                <ref name="comment"/>
+              </element>
+            </optional>
+          </element>
+          <element name="form">
             <a:documentation>From Raster</a:documentation>
             <attribute name="name">
               <value>FromRaster</value>
