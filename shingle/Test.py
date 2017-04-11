@@ -229,7 +229,12 @@ class VerificationTestEngine(object):
             else:
                 report('%(blue)sGenerating surface geoid representation%(end)s%(grey)s%(end)s', test=True, indent=1) 
 
+            # If updating, only run test if needed
+            #s = SpatialDiscretisation(case=location, load_only=True)
+            #if not (universe.verification_update and os.path.exists(s.PathRelative(s.Output()))):
+            
             s = SpatialDiscretisation(case=location)
+
             name = deepcopy(s.Name())
             if s.verification.result:
                 self.passes.append(name)

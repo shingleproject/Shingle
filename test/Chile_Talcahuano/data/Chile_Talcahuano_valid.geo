@@ -16,7 +16,7 @@
 // 
 // Project name: Chile_Talcahuano
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/04/04 22:53:03 
+// Created at: 2017/04/11 14:02:49 
 // Project description:
 //   Example simulation domain for modelling ocean wave propagation and
 //       tsunami inundation in the 2010 Chile M8.8 earthquake, centred at 35.9S 72.7W,
@@ -59,8 +59,7 @@
 //     <form name="Raster">
 //       <source url="https://zenodo.org/record/399213/files/Coquimbo.nc" name="HTTP">
 //         <comment>Coquimbo.nc
-// Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.
-// </comment>
+// Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
 //       </source>
 //     </form>
 //     <projection name="Automatic"/>
@@ -72,7 +71,7 @@
 //     <brep_component name="SouthEastPacificOceanCoast">
 //       <form name="Raster">
 //         <source name="Coquimbo"/>
-//         <contourtype name="ocean10m"/>
+//         <contourtype field_level="-10.0" field_name="Automatic" name="ocean10m"/>
 //       </form>
 //       <identification name="Coast"/>
 //       <representation_type name="BSplines"/>

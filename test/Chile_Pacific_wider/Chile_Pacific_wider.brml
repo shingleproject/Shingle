@@ -37,8 +37,7 @@ Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.
 
 232:290,-40:20
 grdcut -R-128/-70/-40/-20 -fg ../gebco/gebco.nc -GChilePacificWide.nc
-Use 5% extra on boundaries?
-</comment>
+Use 5% extra on boundaries?</comment>
       </source>
     </form>
     <projection name="Automatic"/>
@@ -52,7 +51,7 @@ Use 5% extra on boundaries?
         <source name="ChilePacificWide"/>
         <box>-128.0:-70.0,-40.0:20.0<comment>232:290,-40:20
 -128:-70,-40:20</comment></box>
-        <contourtype name="ocean10m"/>
+        <contourtype field_level="-10.0" field_name="Automatic" name="ocean10m"/>
         <boundary>1</boundary>
       </form>
       <identification name="coast"/>

@@ -16,7 +16,7 @@
 // 
 // Project name: Chile_Pacific_wide
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/04/04 22:36:47 
+// Created at: 2017/04/11 14:02:29 
 // Project description:
 //   South East Pacific ocean up to the Chilean coastline.
 //       Developed from GEBCO, on the subset region 128W to 70W, 40S to 20N.
@@ -61,8 +61,7 @@
 // Use 5% extra on boundaries?</comment>
 //       <source url="https://zenodo.org/record/399213/files/ChilePacificWide.nc" name="HTTP">
 //         <comment>ChilePacificWide.nc
-// Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.
-// </comment>
+// Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
 //       </source>
 //     </form>
 //     <projection name="Automatic"/>
@@ -76,7 +75,7 @@
 //         <source name="ChilePacificWide"/>
 //         <box>-128.0:-70.0,-40.0:20.0<comment>232:290,-40:20
 // -128:-70,-40:20</comment></box>
-//         <contourtype name="ocean10m"/>
+//         <contourtype field_level="-10.0" field_name="Automatic" name="ocean10m"/>
 //         <boundary>1</boundary>
 //       </form>
 //       <identification name="coast"/>

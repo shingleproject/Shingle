@@ -1530,6 +1530,8 @@ contourtypes =
     }|
     element contourtype {
       attribute name { "iceshelfcavity" },
+      attribute field_name { "amask" },
+      attribute field_level { "10.0" },
       comment,
       ## Exclude iceshelf ocean cavities
       ##
@@ -1544,62 +1546,89 @@ contourtypes =
     }|
     element contourtype {
       attribute name { "icesheet" },
+      attribute field_name { "height" },
+      attribute field_level { "0.001" },
       comment
     }|
     element contourtype {
       attribute name { "z" },
+      attribute field_name { "Automatic" },
+      attribute field_level { "10.0" },
       comment
     }|
     element contourtype {
       attribute name { "ocean10m" },
+      attribute field_name { "Automatic" },
+      attribute field_level { "-10.0" },
       comment
     }|
     element contourtype {
       attribute name { "gebco10m" },
+      attribute field_name { "Automatic" },
+      attribute field_level { "-10.0" },
       comment
     }|
     element contourtype {
       attribute name { "gebco1m" },
+      attribute field_name { "Automatic" },
+      attribute field_level { "-1.0" },
       comment
     }|
     element contourtype {
       attribute name { "gebco0.1m" },
+      attribute field_name { "Automatic" },
+      attribute field_level { "-0.1" },
       comment
     }|
     element contourtype {
       attribute name { "gebco-10m" },
+      attribute field_name { "Automatic" },
+      attribute field_level { "10.0" },
       comment
     }|
     element contourtype {
       attribute name { "zmask" },
+      attribute field_name { "Automatic" },
       comment
     }|
     element contourtype {
       attribute name { "xyz" },
+      attribute field_name { "Automatic" },
+      attribute field_level { "-10.0" },
       comment
     }|
     element contourtype {
       attribute name { "noshelf" },
+      attribute field_name { "noshelf" },
       comment
     }|
     element contourtype {
       attribute name { "gsds" },
+      attribute field_name { "usrf" },
+      attribute field_level { "0.001" },
       comment
     }|
     element contourtype {
       attribute name { "mask" },
+      attribute field_name { "grounding" },
       comment
     }|
     element contourtype {
       attribute name { "gsdsz" },
+      attribute field_name { "thk" },
+      attribute field_level { "10.0" },
       comment
     }|
     element contourtype {
       attribute name { "gebco" },
+      attribute field_name { "z-range" },
+      attribute field_level { "10.0" },
       comment
     }|
     element contourtype {
       attribute name { "gsdszc" },
+      attribute field_name { "usrf-topg" },
+      attribute field_level { "10.0" },
       comment
     }
 

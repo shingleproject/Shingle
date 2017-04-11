@@ -47,7 +47,7 @@ Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
         <minimum_area>
           <real_value rank="0">0.1</real_value>
         </minimum_area>
-        <contourtype name="gebco10m"/>
+        <contourtype field_level="-10.0" field_name="Automatic" name="gebco10m"/>
         <boundary>1</boundary>
       </form>
       <identification name="Coast"/>

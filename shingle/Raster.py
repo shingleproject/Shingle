@@ -35,6 +35,7 @@ from Universe import universe
 from Reporting import error, report
 from Support import RetrieveDatafile, RetrieveDatafileSize
 from Spud import specification
+from Import import ReadDataNetCDF
 
 class Dataset(object):
 
@@ -42,7 +43,7 @@ class Dataset(object):
     _SOURCE_TYPE_OPENDAP = 'OPeNDAP'
     _SOURCE_TYPE_HTTP = 'HTTP'
 
-    _data_download_folder = ['.','data']
+    _DATA_DOWNLOAD_FOLDER = ['.','data']
 
     def __init__(self, spatial_discretisation=None, number=None):
         self._path = None
@@ -54,10 +55,14 @@ class Dataset(object):
         self.url = None
         self.projection = None
         self._number = number
+        self.store = []
         if spatial_discretisation is not None:
             self._spatial_discretisation = spatial_discretisation
         self.Read()
 
+    def __eq__(self, a, b):
+        return a.LocationFull() == b.LocationFull()
+  
     def Read(self):
         if self._number is None:
             return
@@ -71,7 +76,7 @@ class Dataset(object):
             self.SetContourSource(specification.get_option(self._path + '/form[0]/source[0]/url' ) )
         elif self.isHttp():
             self.url = specification.get_option(self._path + '/form[0]/source[0]/url')
-            self.SetContourSource(self._spatial_discretisation.PathRelative(os.path.join(os.path.join(*self._data_download_folder), self.name + '.nc')))
+            self.SetContourSource(self._spatial_discretisation.PathRelative(os.path.join(os.path.join(*self._DATA_DOWNLOAD_FOLDER), self.name + '.nc')))
             self.DownloadData()
         self.projection = specification.get_option(self._path + '/projection[0]/name' )
 
@@ -139,6 +144,9 @@ class Raster(Dataset):
         Dataset.__init__(self, spatial_discretisation=spatial_discretisation, number=number)
         self.cache = cache
 
+    def report(self, *args, **kwargs):
+        return self._spatial_discretisation.report(*args, **kwargs)
+
     def SourceExists(self):
         from os.path import isfile
         if self.location is None:
@@ -150,6 +158,19 @@ class Raster(Dataset):
         if self.isLocal() or self.isHttp():
             if not self.SourceExists(): 
                 error('Source NetCDF ' + self.LocationFull() + ' not found!', fatal=True, indent = 1)
+    
+    def AppendParameters(self):
+        self.report('Source NetCDF located at ' + self.location, indent = 1)
+
+    def Load(self, subregion=None, name_field=None, name_x=None, name_y=None):
+      
+        request = ReadDataNetCDF(self, subregion, name_field, name_x, name_y)
+        for stored in self.store:
+            if request == stored:
+                return stored
+        request.Load()
+        self.store.append(request)
+        return request
 
     def GetCacheLocation(self):
         if self.cachefile is None:
@@ -166,12 +187,6 @@ class Raster(Dataset):
     def isCachePresent(self):
         from os.path import isfile
         return isfile(self.cachefile)
-
-    def report(self, *args, **kwargs):
-        return self._spatial_discretisation.report(*args, **kwargs)
-
-    def AppendParameters(self):
-        self.report('Source NetCDF located at ' + self.location, indent = 1)
 
     def CacheLoad(self):
         import pickle

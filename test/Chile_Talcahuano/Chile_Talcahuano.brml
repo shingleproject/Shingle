@@ -32,8 +32,7 @@
     <form name="Raster">
       <source url="https://zenodo.org/record/399213/files/Coquimbo.nc" name="HTTP">
         <comment>Coquimbo.nc
-Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.
-</comment>
+Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
       </source>
     </form>
     <projection name="Automatic"/>
@@ -45,7 +44,7 @@ Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.
     <brep_component name="SouthEastPacificOceanCoast">
       <form name="Raster">
         <source name="Coquimbo"/>
-        <contourtype name="ocean10m"/>
+        <contourtype field_level="-10.0" field_name="Automatic" name="ocean10m"/>
       </form>
       <identification name="Coast"/>
       <representation_type name="BSplines"/>

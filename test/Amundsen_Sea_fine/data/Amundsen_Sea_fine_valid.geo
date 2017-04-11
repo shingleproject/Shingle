@@ -16,7 +16,7 @@
 // 
 // Project name: Amundsen_Sea_fine
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/04/04 22:31:53 
+// Created at: 2017/04/11 14:00:09 
 // Project description:
 //   Use the RTopo dataset, 50S version (RTopo105b 50S.nc),
 //   selecting the region
@@ -58,8 +58,7 @@
 //       <source url="http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc" name="HTTP">
 //         <comment>RTopo105b_50S.nc
 // Timmermann, Ralph; Le Brocq, Anne M; Deen, Tara J; Domack, Eugene W; Dutrieux, Pierre; Galton-Fenzi, Ben; Hellmer, Hartmut H; Humbert, Angelika; Jansen, Daniela; Jenkins, Adrian; Lambrecht, Astrid; Makinson, Keith; Niederjasper, Fred; Nitsche, Frank-Oliver; Nøst, Ole Anders; Smedsrud, Lars Henrik; Smith, Walter (2010): Antarctic ice sheet topography, cavity geometry, and global bathymetry (RTopo 1.0.5-beta). doi:10.1594/PANGAEA.741917,
-// Supplement to: Timmermann, R et al. (2010): A consistent dataset of Antarctic ice sheet topography, cavity geometry, and global bathymetry. Earth System Science Data, 2(2), 261-273, doi:10.5194/essd-2-261-2010
-// </comment>
+// Supplement to: Timmermann, R et al. (2010): A consistent dataset of Antarctic ice sheet topography, cavity geometry, and global bathymetry. Earth System Science Data, 2(2), 261-273, doi:10.5194/essd-2-261-2010</comment>
 //       </source>
 //     </form>
 //     <projection name="Automatic"/>
@@ -72,7 +71,7 @@
 //       <form name="Raster">
 //         <source name="RTopo"/>
 //         <box>-130.0:-85.0,-85.0:-60.0</box>
-//         <contourtype name="iceshelfcavity"/>
+//         <contourtype field_level="10.0" field_name="amask" name="iceshelfcavity"/>
 //       </form>
 //       <identification name="Coast"/>
 //       <id>

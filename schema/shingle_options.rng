@@ -941,13 +941,18 @@ Legacy: elementlength</a:documentation>
           </element>
           <element name="form">
             <attribute name="name">
+              <a:documentation>Resolve gravity waves
+
+</a:documentation>
               <value>GravityWave</value>
             </attribute>
             <optional>
+              <element name="bathymetry_dataset_name">
+                <data type="string"/>
+              </element>
+            </optional>
+            <optional>
               <element name="scaling">
-                <a:documentation>Element edge length
-
-Resolve gravity waves</a:documentation>
                 <ref name="real"/>
                 <ref name="comment"/>
               </element>
@@ -1823,6 +1828,12 @@ Legacy: contourtype</a:documentation>
         <attribute name="name">
           <value>iceshelfcavity</value>
         </attribute>
+        <attribute name="field_name">
+          <value>amask</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>10.0</value>
+        </attribute>
         <ref name="comment"/>
         <optional>
           <element name="exclude_iceshelf_ocean_cavities">
@@ -1841,11 +1852,23 @@ Legacy: exclude_iceshelf_ocean_cavities</a:documentation>
         <attribute name="name">
           <value>icesheet</value>
         </attribute>
+        <attribute name="field_name">
+          <value>height</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>0.001</value>
+        </attribute>
         <ref name="comment"/>
       </element>
       <element name="contourtype">
         <attribute name="name">
           <value>z</value>
+        </attribute>
+        <attribute name="field_name">
+          <value>Automatic</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>10.0</value>
         </attribute>
         <ref name="comment"/>
       </element>
@@ -1853,11 +1876,23 @@ Legacy: exclude_iceshelf_ocean_cavities</a:documentation>
         <attribute name="name">
           <value>ocean10m</value>
         </attribute>
+        <attribute name="field_name">
+          <value>Automatic</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>-10.0</value>
+        </attribute>
         <ref name="comment"/>
       </element>
       <element name="contourtype">
         <attribute name="name">
           <value>gebco10m</value>
+        </attribute>
+        <attribute name="field_name">
+          <value>Automatic</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>-10.0</value>
         </attribute>
         <ref name="comment"/>
       </element>
@@ -1865,11 +1900,23 @@ Legacy: exclude_iceshelf_ocean_cavities</a:documentation>
         <attribute name="name">
           <value>gebco1m</value>
         </attribute>
+        <attribute name="field_name">
+          <value>Automatic</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>-1.0</value>
+        </attribute>
         <ref name="comment"/>
       </element>
       <element name="contourtype">
         <attribute name="name">
           <value>gebco0.1m</value>
+        </attribute>
+        <attribute name="field_name">
+          <value>Automatic</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>-0.1</value>
         </attribute>
         <ref name="comment"/>
       </element>
@@ -1877,11 +1924,20 @@ Legacy: exclude_iceshelf_ocean_cavities</a:documentation>
         <attribute name="name">
           <value>gebco-10m</value>
         </attribute>
+        <attribute name="field_name">
+          <value>Automatic</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>10.0</value>
+        </attribute>
         <ref name="comment"/>
       </element>
       <element name="contourtype">
         <attribute name="name">
           <value>zmask</value>
+        </attribute>
+        <attribute name="field_name">
+          <value>Automatic</value>
         </attribute>
         <ref name="comment"/>
       </element>
@@ -1889,10 +1945,19 @@ Legacy: exclude_iceshelf_ocean_cavities</a:documentation>
         <attribute name="name">
           <value>xyz</value>
         </attribute>
+        <attribute name="field_name">
+          <value>Automatic</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>-10.0</value>
+        </attribute>
         <ref name="comment"/>
       </element>
       <element name="contourtype">
         <attribute name="name">
+          <value>noshelf</value>
+        </attribute>
+        <attribute name="field_name">
           <value>noshelf</value>
         </attribute>
         <ref name="comment"/>
@@ -1901,11 +1966,20 @@ Legacy: exclude_iceshelf_ocean_cavities</a:documentation>
         <attribute name="name">
           <value>gsds</value>
         </attribute>
+        <attribute name="field_name">
+          <value>usrf</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>0.001</value>
+        </attribute>
         <ref name="comment"/>
       </element>
       <element name="contourtype">
         <attribute name="name">
           <value>mask</value>
+        </attribute>
+        <attribute name="field_name">
+          <value>grounding</value>
         </attribute>
         <ref name="comment"/>
       </element>
@@ -1913,17 +1987,35 @@ Legacy: exclude_iceshelf_ocean_cavities</a:documentation>
         <attribute name="name">
           <value>gsdsz</value>
         </attribute>
+        <attribute name="field_name">
+          <value>thk</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>10.0</value>
+        </attribute>
         <ref name="comment"/>
       </element>
       <element name="contourtype">
         <attribute name="name">
           <value>gebco</value>
         </attribute>
+        <attribute name="field_name">
+          <value>z-range</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>10.0</value>
+        </attribute>
         <ref name="comment"/>
       </element>
       <element name="contourtype">
         <attribute name="name">
           <value>gsdszc</value>
+        </attribute>
+        <attribute name="field_name">
+          <value>usrf-topg</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>10.0</value>
         </attribute>
         <ref name="comment"/>
       </element>

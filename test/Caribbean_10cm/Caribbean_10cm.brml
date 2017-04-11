@@ -48,7 +48,7 @@ Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
           <comment>20.0</comment>
           <comment>20.0</comment>
         </minimum_area>
-        <contourtype name="gebco1m"/>
+        <contourtype field_level="-1.0" field_name="Automatic" name="gebco1m"/>
         <boundary_to_exclude>2</boundary_to_exclude>
         <exterior_boundary>
           <integer_value rank="0">3</integer_value>
@@ -95,7 +95,6 @@ Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
     </form>
   </geoid_metric>
   <geoid_mesh>
-    <library name="Gmsh">
-    </library>
+    <library name="Gmsh"/>
   </geoid_mesh>
 </boundary_representation>

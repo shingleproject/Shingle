@@ -16,7 +16,7 @@
 // 
 // Project name: Earth_Global_filtered_200km_30min_metric
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/04/04 22:53:13 
+// Created at: 2017/04/11 14:02:50 
 // Project description:
 //   -n noshelf.nc -t noshelf -no -a 5000 -el 1.0E5 -mesh
 
@@ -46,8 +46,7 @@
 //     <form name="Raster">
 //       <source url="https://zenodo.org/record/399213/files/SouthernOcean_noshelf_30m_fg.nc" name="HTTP">
 //         <comment>SouthernOcean_noshelf_30m_fg.nc
-// Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.
-// </comment>
+// Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
 //       </source>
 //     </form>
 //     <projection name="Automatic"/>
@@ -66,7 +65,7 @@
 //         <minimum_area>
 //           <real_value rank="0">5000.0</real_value>
 //         </minimum_area>
-//         <contourtype name="zmask"/>
+//         <contourtype field_name="Automatic" name="zmask"/>
 //       </form>
 //       <identification name="Coastline"/>
 //       <representation_type name="BSplines"/>
