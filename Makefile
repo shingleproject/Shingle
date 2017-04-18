@@ -88,7 +88,7 @@ installpackage: package
 	#@$(ECHO) 'INSTALL diamond'
 	#@pip install ./dist/spud-diamond-*.tar.gz
 
-test: bin/shingle datalocal
+test: bin/shingle
 	@./bin/shingle -t test
 
 testimage:
@@ -101,7 +101,7 @@ testimagelabel:
 	@rm -r test/images
 
 unittest:
-	@cd shingle; pytest; cd ..
+	@cd shingle; py.test; cd ..
 
 # ------------------------------------------------------------------------
 
