@@ -24,7 +24,8 @@ libspud = Extension('libspud',
             ],
             library_dirs=[os.path.abspath("spud")],
             include_dirs=[os.path.abspath("spud/include")],
-            extra_link_args=['-flat_namespace', '-lstdc++']
+            extra_link_args=['-lstdc++']
+            #extra_link_args=['-flat_namespace', '-lstdc++']
 )
 
 #libspud = Extension('libspud',
