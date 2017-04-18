@@ -134,6 +134,7 @@ lib/libspud.so:
 	@python setup.py build_ext --inplace
 	@mv libspud.so lib/
 	@cd shingle; ln -sf ../lib/libspud.so .; cd ..
+	@mkdir -p bin
 	@cd bin; ln -sf ../lib/libspud.so .; cd ..
 
 
