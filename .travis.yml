@@ -13,7 +13,7 @@ matrix:
       - docker build -t shingle .
     script:
       - docker run -a stdout -t shingle make unittest
-      - travis_wait docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
+      - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
 
   # Ubuntu Precise 12.04 Docker container build and test
   - env:
@@ -26,7 +26,7 @@ matrix:
       - docker build -f Dockerfile_precise -t shingle .
     script:
       - docker run -a stdout -t shingle make unittest
-      - travis_wait docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
+      - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
 
   # Ubuntu Xenial 16.04 Docker container build and test
   - env:
@@ -39,7 +39,7 @@ matrix:
       - docker build -f Dockerfile_xenial -t shingle .
     script:
       - docker run -a stdout -t shingle make unittest
-      - travis_wait docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
+      - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
 
   # Ubuntu Trusty 14.04 Travis apt base packages build and test
   - env:
@@ -81,7 +81,9 @@ matrix:
     script:
       - make
       - make unittest
-      - travis_wait make test
+      # Pre-download, to best work with Travis timeout
+      - travis_wait curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
+      - make test
 
   # Ubuntu Precise 12.04 Travis apt base packages build and test
   - env:
@@ -123,7 +125,9 @@ matrix:
     script:
       - make
       - make unittest
-      - travis_wait make test
+      # Pre-download, to best work with Travis timeout
+      - travis_wait curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
+      - make test
 
   # Ubuntu Trusty 14.04 Travis pip base packages build and test
   - env:
@@ -151,7 +155,9 @@ matrix:
     script:
       - make
       - make unittest
-      - travis_wait make test
+      # Pre-download, to best work with Travis timeout
+      - travis_wait curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
+      - make test
 
   # Ubuntu Precise 12.04 Travis pip base packages build and test
   - env:
@@ -179,5 +185,7 @@ matrix:
     script:
       - make
       - make unittest
-      - travis_wait make test
+      # Pre-download, to best work with Travis timeout
+      - travis_wait curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
+      - make test
 
