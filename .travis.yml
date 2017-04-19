@@ -44,4 +44,5 @@ script:
   - make unittest
   # Pre-download, to best work with Travis timeout
   - curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
-  - make test
+  #- make test
+  - ./bin/shingle -t ./test/UK_NorthSea_gebco2014_opendap/UK_NorthSea_gebco2014_opendap.brml
