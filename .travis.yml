@@ -45,7 +45,8 @@ matrix:
     virtualenv:
       system_site_packages: true
     install:
-        apt-get update && apt-get install -y \
+        sudo apt-get update
+        sudo apt-get install -y \
           git \
           gcc \
           g++ \
