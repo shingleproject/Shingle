@@ -7,7 +7,7 @@ matrix:
     install:
       - docker build -t shingle .
     script:
-      - docker run -a stdout make unittest
+      - docker run -a stdout -t shingle make unittest
       - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
 
 
