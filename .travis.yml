@@ -20,7 +20,7 @@ matrix:
       - NAME=precise-docker
     services:
       - docker
-    dist: precise
+    dist: trusty
     language: cpp
     install:
       - docker build -f Dockerfile_precise -t shingle .
@@ -33,7 +33,7 @@ matrix:
       - NAME=xenial-docker
     services:
       - docker
-    dist: xenial
+    dist: trusty
     language: cpp
     install:
       - docker build -f Dockerfile_xenial -t shingle .
