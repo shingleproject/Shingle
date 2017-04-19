@@ -3,7 +3,9 @@ matrix:
   include:
   
   # Ubuntu Trusty 14.04 Docker container build and test
-  - services:
+  - env:
+      - NAME=trusty-docker
+    services:
       - docker
     dist: trusty
     language: cpp
@@ -14,7 +16,9 @@ matrix:
       - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
 
   # Ubuntu Trusty 14.04 Travis apt base packages build and test
-  - dist: trusty
+  - env:
+      - NAME=trusty-apt
+    dist: trusty
     language: python
     python: 2.7
     sudo: required
@@ -41,6 +45,23 @@ matrix:
     virtualenv:
       system_site_packages: true
     install:
+        apt-get update && apt-get install -y \
+          git \
+          gcc \
+          g++ \
+          build-essential \
+          python-setuptools \
+          python-dev \
+          python-pip \
+          python-scipy \
+          python-numpy \
+          python-scientific \
+          python-matplotlib \
+          python-shapely \
+          python-pyproj \
+          python-pil \
+          gmsh \
+          python-pytest
       - pip install Pydap
     before_script:
       - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
@@ -51,7 +72,9 @@ matrix:
       - make test
 
   # Ubuntu Precise 12.04 Travis apt base packages build and test
-  - dist: precise
+  - env:
+      - NAME=precise-apt
+    dist: precise
     language: python
     python: 2.7
     sudo: required
@@ -88,7 +111,9 @@ matrix:
       - make test
 
   # Ubuntu Trusty 14.04 Travis pip base packages build and test
-  - dist: trusty
+  - env:
+      - NAME=trusty-pip
+    dist: trusty
     language: python
     python: 2.7
     # Temporarily roll back to Precise
@@ -114,7 +139,9 @@ matrix:
       - make test
 
   # Ubuntu Precise 12.04 Travis pip base packages build and test
-  - dist: precise
+  - env:
+      - NAME=precise-pip
+    dist: precise
     language: python
     python: 2.7
     # Temporarily roll back to Precise
