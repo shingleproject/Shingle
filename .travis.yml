@@ -33,6 +33,7 @@ install:
   - sudo apt-get update
   - sudo apt-get install -y git gcc g++ build-essential python-setuptools python-dev python-pip python-scipy python-numpy python-scientific python-matplotlib python-shapely python-pyproj python-pil gmsh python-pytest
   - pip install Pydap
+  - ls -lhtr /usr/lib/python2.7/dist-packages/Scientific/
 before_script:
   - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
   - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
