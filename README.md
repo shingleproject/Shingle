@@ -8,7 +8,7 @@ Shingle
 
 Generalised self-consistent and automated domain discretisation for multi-scale geophysical models.
 
-![Shingle](./data/shingle.png?raw=true "Shingle")
+![Shingle](./resource/shingle.png?raw=true "Shingle")
 
 Shingle is a generalised and accessible framework for model-independent and self-consistent geophysical domain discretisation, which accurately conform to fractal-like bounds and at varyingly resolved spatial scales. The full heterogeneous set of constraints are necessarily completely described by an extensible, hierarchical formal grammar with an intuitive natural language basis for geophysical domain features to achieve robust reproduction and consistent model intercomparisons.
 
@@ -27,7 +27,7 @@ Example geophysical domains
 
 A selection of geophysical domains where Shingle has been applied to describe and generate geophysical domain spatial discretisation.
 
-![Shingle examples](./data/shingleexamples.jpg?raw=true "Shingle examples")
+![Shingle examples](./resource/shingleexamples.jpg?raw=true "Shingle examples")
 
 Objectives
 ----------
