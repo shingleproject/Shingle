@@ -3,6 +3,7 @@ matrix:
   include:
   - services:
       - docker
+    language: cpp
     install:
       - docker build -t shingle .
     script:
@@ -12,7 +13,7 @@ matrix:
 
   - language: python
     python:
-      - 2.7
+      - "2.7"
     sudo: required
     addons:
       apt:
