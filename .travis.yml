@@ -2,35 +2,8 @@ dist: trusty
 
 matrix:
   include:
-  - language: python
-    python: 2.7
-    sudo: required
-    addons:
-      apt:
-        packages:
-          - python-numpy
-          - python-scientific
-          - python-matplotlib
-          - gcc
-          - g++
-          - gfortran
-          - tree
-    virtualenv:
-      system_site_packages: true
-    install:
-      - pip install numpy matplotlib pyproj Pydap shapely Pillow
-    before_script:
-      - sudo apt-get install -qq python-numpy python-scientific python-matplotlib gmsh
-      - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/:$HOME/build/shingleproject/Shingle/lib/spud/:$HOME/build/shingleproject/Shingle/spud/.libs/:$HOME/build/lib.linux-x86_64-2.7/"
-      - export LIBRARY_PATH="$LIBRARY_PATH:$HOME/build/shingleproject/Shingle/lib/:$HOME/build/shingleproject/Shingle/spud/:$HOME/build/shingleproject/Shingle/spud/.libs/:$HOME/build/lib.linux-x86_64-2.7/"
-    script:
-      - pip install numpy matplotlib pyproj Pydap shapely Pillow pytest
-      - python -c 'import Scientific.IO'
-      - ./configure
-      - make
-      - make unittest
-      - make test
-
+  
+  # Ubuntu Trusty 14.04 Docker container build and test
   - services:
       - docker
     language: cpp
@@ -39,6 +12,66 @@ matrix:
     script:
       - docker run -a stdout -t shingle make unittest
       - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
+
+  # Ubuntu Trusty 14.04 Travis apt base packages build and test
+  - language: python
+    python: 2.7
+    sudo: required
+    addons:
+      apt:
+        packages:
+          - git
+          - gcc
+          - g++
+          - build-essential
+          - python-setuptools
+          - python-dev
+          - python-pip
+          - python-scipy
+          - python-numpy
+          - python-scientific
+          - python-matplotlib 
+          - python-shapely
+          - python-pyproj
+          - python-pil
+          - gmsh
+          - python-pytest
+    virtualenv:
+      system_site_packages: true
+    install:
+      - pip install Pydap
+    before_script:
+      - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
+      - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
+    script:
+      - make
+      - make unittest
+      - make test
+
+  # Ubuntu Trusty 14.04 Travis pip base packages build and test
+  - language: python
+    python: 2.7
+    sudo: required
+    addons:
+      apt:
+        packages:
+          - gcc
+          - g++
+          - python-numpy
+          - python-scientific
+          - python-matplotlib
+          - gmsh
+    virtualenv:
+      system_site_packages: true
+    install:
+      - pip install numpy matplotlib pyproj Pydap shapely Pillow pytest
+    before_script:
+      - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
+      - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
+    script:
+      - make
+      - make unittest
+      - make test
 
 
 
