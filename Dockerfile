@@ -54,12 +54,12 @@ ENV PATH /home/shingle/Shingle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr
 #RUN pip install numpy matplotlib pyproj Pydap shapely Pillow
 
 RUN make
-RUN make unittest
+#RUN make unittest
 
 #WORKDIR /home/shingle/Shingle/shingle/unittest
 #RUN py.test
 
 #RUN python -vc 'import shapely.geometry' 1>&2 | grep shapely
 
-RUN make test
+#RUN make test
 
