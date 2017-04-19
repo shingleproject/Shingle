@@ -14,10 +14,9 @@ matrix:
       - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
 
   # Ubuntu Trusty 14.04 Travis apt base packages build and test
-  - language: python
+  - dist: trusty
+    language: python
     python: 2.7
-    # Temporarily roll back to Precise
-    dist: precise
     sudo: required
     compiler: gcc
     addons:
@@ -51,11 +50,48 @@ matrix:
       - make unittest
       - make test
 
+  # Ubuntu Precise 12.04 Travis apt base packages build and test
+  - dist: precise
+    language: python
+    python: 2.7
+    sudo: required
+    compiler: gcc
+    addons:
+      apt:
+        packages:
+          # - git
+          # - gcc
+          # - g++
+          - build-essential
+          - python-setuptools
+          - python-dev
+          - python-pip
+          - python-scipy
+          - python-numpy
+          - python-scientific
+          - python-matplotlib 
+          - python-shapely
+          - python-pyproj
+          - python-imaging
+          - gmsh
+          - python-py
+    virtualenv:
+      system_site_packages: true
+    install:
+      - pip install Pydap
+    before_script:
+      - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
+      - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
+    script:
+      - make
+      - make unittest
+      - make test
+
   # Ubuntu Trusty 14.04 Travis pip base packages build and test
-  - language: python
+  - dist: trusty
+    language: python
     python: 2.7
     # Temporarily roll back to Precise
-    dist: precise
     sudo: required
     compiler: gcc
     addons:
@@ -77,5 +113,30 @@ matrix:
       - make unittest
       - make test
 
+  # Ubuntu Precise 12.04 Travis pip base packages build and test
+  - dist: precise
+    language: python
+    python: 2.7
+    # Temporarily roll back to Precise
+    sudo: required
+    compiler: gcc
+    addons:
+      apt:
+        packages:
+          # Temporarily install apt Scientific
+          - python-scientific
+          - gmsh
+    virtualenv:
+      system_site_packages: true
+    install:
+      - pip install numpy matplotlib pyproj Pydap shapely Pillow pytest
+      #- pip install ScientificPython
+    before_script:
+      - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
+      - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
+    script:
+      - make
+      - make unittest
+      - make test
 
 
