@@ -1,16 +1,7 @@
+dist: trusty
 
 matrix:
   include:
-  - services:
-      - docker
-    language: cpp
-    install:
-      - docker build -t shingle .
-    script:
-      - docker run -a stdout -t shingle make unittest
-      - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
-
-
   - language: python
     python:
       - "2.7"
@@ -40,4 +31,15 @@ matrix:
       - make
       - make unittest
       - make test
+
+  - services:
+      - docker
+    language: cpp
+    install:
+      - docker build -t shingle .
+    script:
+      - docker run -a stdout -t shingle make unittest
+      - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
+
+
 
