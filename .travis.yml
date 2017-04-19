@@ -68,6 +68,7 @@ matrix:
           - python-pil
           - gmsh
           - python-pytest
+          - curl
     virtualenv:
       system_site_packages: true
     install:
@@ -112,6 +113,7 @@ matrix:
           - python-imaging
           - gmsh
           - python-py
+          - curl
     virtualenv:
       system_site_packages: true
     install:
@@ -144,6 +146,7 @@ matrix:
           # Temporarily install apt Scientific
           - python-scientific
           - gmsh
+          - curl
     virtualenv:
       system_site_packages: true
     install:
@@ -174,6 +177,7 @@ matrix:
           # Temporarily install apt Scientific
           - python-scientific
           - gmsh
+          - curl
     virtualenv:
       system_site_packages: true
     install:
