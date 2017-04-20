@@ -198,3 +198,7 @@ matrix:
       - curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
       - make test
 
+notifications:
+  slack:
+    secure: RRdmxLqjwm5LVcHmeoLs+WAB8FhYEMb+riZMvAoVxt4/7FuSIvyil/oeL8KI7P7g/EPnN8hQlf7duyGwAaih/gWKd47vDnmhir7VbO6fe3zBVvX9TVa/kuqejGSnJlOPw6dFDMLoCqnJ08dwUWzvvAmCHr7wod16PfI557pqvAE=
+
