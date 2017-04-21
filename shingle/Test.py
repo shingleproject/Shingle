@@ -146,7 +146,7 @@ class VerificationTestEngine(object):
 
     def EnableLogging(self):
         universe.log_active = True
-        #universe.verbose = False
+        universe.verbose = False
 
     def GetNames(self, number=None):
         if self.names is None:
