@@ -8,16 +8,33 @@ import sys
 
 # Best to use GCC. Symbols are misnamed using clang.
 os.environ["CC"] = "gcc"
+os.environ["CXX"] = "g++"
 
 # sys.executable = '/usr/bin/env python'
 
 libspud = Extension('libspud',
-    sources = ['spud/python/libspud.c'],
-    libraries=["spud"],
-    library_dirs=[os.path.abspath("spud")],
-    include_dirs=[os.path.abspath("spud/include")],
-    extra_link_args=['-flat_namespace', '-lstdc++'],
+            sources = [
+                'spud/python/libspud.c',
+                'spud/src/spud.cpp',
+                'spud/src/spud_interfaces.cpp',
+                'spud/src/tinystr.cpp',
+                'spud/src/tinyxml.cpp',
+                'spud/src/tinyxmlerror.cpp',
+                'spud/src/tinyxmlparser.cpp'
+            ],
+            library_dirs=[os.path.abspath("spud")],
+            include_dirs=[os.path.abspath("spud/include")],
+            extra_link_args=['-lstdc++']
+            #extra_link_args=['-flat_namespace', '-lstdc++']
 )
+
+#libspud = Extension('libspud',
+#    sources = ['spud/python/libspud.c'],
+#    libraries=["spudcore"],
+#    library_dirs=[os.path.abspath("spud")],
+#    include_dirs=[os.path.abspath("spud/include")],
+#    extra_link_args=['-flat_namespace', '-lstdc++'],
+#)
 
 #setup(name = 'libspud',
 #       version = '1.1.3',
@@ -26,7 +43,7 @@ libspud = Extension('libspud',
 #)
 
 setup(name='shingle',
-    version='2.0.1',
+    version='2.0.2',
     description='Generation of boundary representation and mesh spatial discretisations from arbitrary geophysical fields.',
     author = 'Adam S. Candy',
     author_email='contact@shingleproject.org',

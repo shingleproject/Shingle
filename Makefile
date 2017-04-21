@@ -101,7 +101,7 @@ testimagelabel:
 	@rm -r test/images
 
 unittest:
-	@cd shingle; pytest; cd ..
+	@cd shingle; py.test; cd ..
 
 # ------------------------------------------------------------------------
 
@@ -131,10 +131,14 @@ libspud: lib/libspud.so
 
 lib/libspud.so:
 	@mkdir -p lib
-	@$(MAKE) -C spud install-pyspud
-	@cd lib; ln -sf libspud.so libspud.so.0; cd ..
-	@cd shingle; ln -sf libspud.so libspud.so.0; cd ..
+	@python setup.py build_ext --inplace
+	@mv libspud.so lib/
+	@cd shingle; ln -sf ../lib/libspud.so .; cd ..
+	@mkdir -p bin
+	@cd bin; ln -sf ../lib/libspud.so .; cd ..
 
+
+#@$(MAKE) -C spud install-pyspud
 #@cp lib/python*/site-packages/libspud.so lib/
 #@cp lib/python*/site-packages/libspud.so shingle/
 
