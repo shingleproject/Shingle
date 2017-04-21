@@ -16,7 +16,7 @@
 // 
 // Project name: UK_NorthSea_region_opendap
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/04/21 10:20:46 
+// Created at: 2017/04/21 15:53:56 
 // Project description:
 //   Example simulation domain around the UK and Ireland in the North Sea.
 //       In a latitude-longitude WGS84 projection.
@@ -128,6 +128,24 @@
 //   <geoid_metric>
 //     <form name="FromRaster">
 //       <source name="ETOPO2"/>
+//       <function>
+//         <string_value lines="20" type="code" language="python">field = - field
+// print '1', field.min(), field.max()
+// field[field &lt; 0.0] = 0.0
+// print '2', field.min(), field.max()
+// 
+// field = sqrt(field * 9.81)
+// print '3', field.min(), field.max()
+// 
+// 
+// # TODO: Add as Python function on field
+// field *= 1.0 / field.max()
+// print '4', field.min(), field.max()
+// field *= (1.0 - 0.1)
+// print '5', field.min(), field.max()
+// field += 0.1
+// print '6', field.min(), field.max()</string_value>
+//       </function>
 //       <region name="MainRegionAroundUK">
 //         <longitude>
 //           <minimum>
@@ -152,6 +170,8 @@
 //     <library name="Gmsh">
 //       <extend_metric_from_boundary/>
 //     </library>
+//     <generate/>
+//     <parse/>
 //   </geoid_mesh>
 //   <validation>
 //     <test file_name="data/UK_NorthSea_region_opendap_valid.geo" name="BrepDescription"/>
@@ -3422,7 +3442,7 @@ Physical Surface( 10 ) = { 10 };
 // Do not extent the elements sizes from the boundary inside the domain
 Mesh.CharacteristicLengthExtendFromBoundary = 1;
 
-// input bathymetry
+// External metric field definition
 Field[1] = Structured;
 Field[1].FileName = "metric.pos";
 Field[1].TextFormat = 1;
@@ -3431,7 +3451,7 @@ Field[1].TextFormat = 1;
 Field[2] = MathEval;
 Field[2].F = "0.1";
 
-// Set background field to constant
+// Set background field
 Background Field = 1;
 
 

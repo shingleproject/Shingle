@@ -371,7 +371,6 @@ General.RotationZ = %(z).0f;
         else:
             function = None
 
-        print 'metric'
         m = Metric()
         m.Generate(field_region, function=function)
 
