@@ -16,7 +16,7 @@
 // 
 // Project name: Filchner-Ronne
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/04/11 14:02:51 
+// Created at: 2017/04/21 10:20:28 
 // Project description:
 //   Use the RTopo dataset, 50S version (RTopo105b 50S.nc),
 //   selecting the Filchner-Ronne ice sheet ocean cavity region

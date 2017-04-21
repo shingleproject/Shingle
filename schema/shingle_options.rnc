@@ -866,6 +866,16 @@ metric_options =
             string,
             comment
           }?,
+          ## Python function prescribing consistent processing
+          ## of dataset fields.
+          ## Functions should act on the global 'field'
+          ## and can refer to variables 'lon' and 'lat'
+          ## for longitude and latitude, respectively.
+          ##
+          element function {
+            python_code,
+            comment
+          }?,
           region*,
           element scale {
             real,

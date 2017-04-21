@@ -16,7 +16,7 @@
 // 
 // Project name: Antarctica_main_landmass
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/04/11 14:00:35 
+// Created at: 2017/04/21 10:18:55 
 // Project description:
 //   Use the RTopo dataset (RTopo105b.nc),
 //   considering all land masses up to a latitude of 60S,
@@ -72,7 +72,7 @@
 //     <brep_component name="Antarctica_main_landmass_brep">
 //       <form name="Raster">
 //         <source name="RTopo"/>
-//         <region>latitude &lt;= -60.0</region>
+//         <region_description>latitude &lt;= -60.0</region_description>
 //         <contourtype field_level="10.0" field_name="amask" name="iceshelfcavity"/>
 //         <boundary>1</boundary>
 //       </form>

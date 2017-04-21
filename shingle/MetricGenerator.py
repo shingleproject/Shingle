@@ -38,6 +38,12 @@ from Spud import specification
 from copy import deepcopy
 import numpy
 
+def merge_two_dicts(x, y):
+    """Given two dicts, merge them into a new dict as a shallow copy."""
+    z = x.copy()
+    z.update(y)
+    return z
+
 
 class Field(object):
 
@@ -360,24 +366,16 @@ General.RotationZ = %(z).0f;
         field_region = dataset.Load(subregion, name_field=field_name)
         #field = deepcopy(region.Data())
 
+        if specification.have_option('/geoid_metric/form::FromRaster/function'):
+            function = specification.get_option('/geoid_metric/form::FromRaster/function')
+        else:
+            function = None
+
         print 'metric'
         m = Metric()
-        m.Generate(field_region)
+        m.Generate(field_region, function=function)
 
-        self.AddContent('''
-// input bathymetry
-Field[1] = Structured;
-Field[1].FileName = "metric.pos";
-Field[1].TextFormat = 1;
-
-// constant edge length to use as initial mesh in testing
-Field[2] = MathEval;
-Field[2].F = "0.1";
-
-// Set background field to constant
-Background Field = 1;
-
-''')
+        self.AddContent(m.Import())
         
 
 class Metric(object):
@@ -388,6 +386,10 @@ class Metric(object):
     _OUTPUT_FORMAT_TYPE_STRUCT = 2
  
     _OUTPUT_FILENAME_DEFAULT = 'metric.pos'
+    
+    _function_python_header = '''
+global field
+'''
 
     def __init__(self, output_filename = None):
         if output_filename is None:
@@ -413,28 +415,56 @@ class Metric(object):
     def WriteLine(self, string, newline=True):
         self._file().write(string + '\n')
 
-    def Generate(self, source):
-        #if not universe.generatemetric: return
+    def Import(self):
+        string = '''
+// External metric field definition
+Field[1] = Structured;
+Field[1].FileName = "%(filename)s";
+Field[1].TextFormat = 1;
 
+// constant edge length to use as initial mesh in testing
+Field[2] = MathEval;
+Field[2].F = "0.1";
+
+// Set background field
+Background Field = 1;
+
+''' % {
+        'filename':self.output_filename,
+    }
+        return string
+
+    def Generate(self, source, function=None):
+        #if not universe.generatemetric: return
         #field = source.Data()
         #field = deepcopy(source.Data())
-        field = source.Data().astype(numpy.float32, copy=True)
-        lon = source.lon.astype(numpy.float32, copy=True)
-        lat = source.lat.astype(numpy.float32, copy=True)
 
-        field = - field
-        #field[field < self.minimumdepth] = self.minimumdepth
-        field[field < 0.0] = 0.0
+        # Expose math and numpy definitions to the user in the transformation function
+        import math
+        import numpy
+        user_space = merge_two_dicts(math.__dict__, numpy.__dict__)
 
-        field = numpy.sqrt(field * 9.81)
-    
-        print field.min(), field.max()
+        user_space['field'] = source.Data().astype(numpy.float32, copy=True)
+        user_space['lon'] = source.lon.astype(numpy.float32, copy=True)
+        user_space['lat'] = source.lat.astype(numpy.float32, copy=True)
 
+        #print user_space['field'].min(), user_space['field'].max()
 
-        # TODO: Add as Python function on field
-        field *= 1.0 / field.max()
-        field *= (1.0 - 0.1)
-        field += 0.1
+        if function is not None:
+            try:
+                exec(self._function_python_header + function, user_space)
+            except SyntaxError:
+                error('Error in the syntax of the Python code for metric option')
+                print function
+                raise
+            except:
+                raise
+
+        lon = user_space['lon']
+        lat = user_space['lat']
+        field = user_space['field']
+        
+        #print user_space['field'].min(), user_space['field'].max()
 
         if self.globe:
             # needs deepcopy

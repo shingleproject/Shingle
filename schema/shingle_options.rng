@@ -1021,6 +1021,18 @@ Legacy: elementlength</a:documentation>
                 <ref name="comment"/>
               </element>
             </optional>
+            <optional>
+              <element name="function">
+                <a:documentation>Python function prescribing consistent processing
+of dataset fields.
+Functions should act on the global 'field'
+and can refer to variables 'lon' and 'lat'
+for longitude and latitude, respectively.
+</a:documentation>
+                <ref name="python_code"/>
+                <ref name="comment"/>
+              </element>
+            </optional>
             <zeroOrMore>
               <ref name="region"/>
             </zeroOrMore>

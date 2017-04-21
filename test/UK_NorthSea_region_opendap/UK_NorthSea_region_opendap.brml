@@ -104,6 +104,24 @@
   <geoid_metric>
     <form name="FromRaster">
       <source name="ETOPO2"/>
+      <function>
+        <string_value lines="20" type="code" language="python">field = - field
+print '1', field.min(), field.max()
+field[field &lt; 0.0] = 0.0
+print '2', field.min(), field.max()
+
+field = sqrt(field * 9.81)
+print '3', field.min(), field.max()
+
+
+# TODO: Add as Python function on field
+field *= 1.0 / field.max()
+print '4', field.min(), field.max()
+field *= (1.0 - 0.1)
+print '5', field.min(), field.max()
+field += 0.1
+print '6', field.min(), field.max()</string_value>
+      </function>
       <region name="MainRegionAroundUK">
         <longitude>
           <minimum>
@@ -128,6 +146,8 @@
     <library name="Gmsh">
       <extend_metric_from_boundary/>
     </library>
+    <generate/>
+    <parse/>
   </geoid_mesh>
   <validation>
     <test file_name="data/UK_NorthSea_region_opendap_valid.geo" name="BrepDescription"/>

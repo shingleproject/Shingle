@@ -16,7 +16,7 @@
 // 
 // Project name: UK_NorthSea_gebco2014_opendap
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/04/11 14:02:55 
+// Created at: 2017/04/21 10:20:32 
 // Project description:
 //   Example simulation domain around the UK and Ireland in the North Sea.
 //       In a latitude-longitude WGS84 projection.

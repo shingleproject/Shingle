@@ -16,7 +16,7 @@
 // 
 // Project name: Earth_Global_filtered_200km_30min_metric
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/04/11 14:02:50 
+// Created at: 2017/04/21 10:20:27 
 // Project description:
 //   -n noshelf.nc -t noshelf -no -a 5000 -el 1.0E5 -mesh
 
