@@ -22,7 +22,8 @@
     <dataset name="RTopo105b_data_filtered_200km_30min">
         <form name="Raster">
             <source name="HTTP" url="https://zenodo.org/record/399213/files/SouthernOcean_noshelf_30m_fg.nc">
-                <comment>SouthernOcean_noshelf_30m_fg.nc&#x0A;Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
+                <comment>SouthernOcean_noshelf_30m_fg.nc
+Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
             </source>
         </form>
         <projection name="Automatic"></projection>
@@ -33,7 +34,10 @@
         </id>
         <brep_component name="GlobalCoastlines">
             <form name="Raster">
-                <comment>Boundaries to exclude in previous iteration:&#x0A;77 71 69 57 1 2&#x0A;2 3 12 17 74 76 80&#x0A;2 3 12 17 74 76 80 8 13 22 30 34 36 37 40 42 46 47 50 60 61 72 81 84 90 91 94 99 101</comment>
+                <comment>Boundaries to exclude in previous iteration:
+77 71 69 57 1 2
+2 3 12 17 74 76 80
+2 3 12 17 74 76 80 8 13 22 30 34 36 37 40 42 46 47 50 60 61 72 81 84 90 91 94 99 101</comment>
                 <source name="RTopo105b_data_filtered_200km_30min"></source>
                 <minimum_area>
                     <real_value rank="0">5000</real_value>

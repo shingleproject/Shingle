@@ -2,7 +2,9 @@
 <boundary_representation>
     <model_name>
         <string_value lines="1">Chile_Pacific_wider</string_value>
-        <comment>South East Pacific ocean up to the Chilean coastline.&#x0A;    Developed from GEBCO, on the subset region 128W to 70W, 40S to 20N.&#x0A;    In a latitude-longitude WGS84 projection.</comment>
+        <comment>South East Pacific ocean up to the Chilean coastline.
+    Developed from GEBCO, on the subset region 128W to 70W, 40S to 20N.
+    In a latitude-longitude WGS84 projection.</comment>
     </model_name>
     <reference>
         <author name="ASCandy">
@@ -30,7 +32,12 @@
     <dataset name="ChilePacificWide">
         <form name="Raster">
             <source name="HTTP" url="https://zenodo.org/record/399213/files/ChilePacificWide.nc">
-                <comment>ChilePacificWide.nc&#x0A;Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.&#x0A;&#x0A;232:290,-40:20&#x0A;grdcut -R-128/-70/-40/-20 -fg ../gebco/gebco.nc -GChilePacificWide.nc&#x0A;Use 5% extra on boundaries?</comment>
+                <comment>ChilePacificWide.nc
+Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.
+
+232:290,-40:20
+grdcut -R-128/-70/-40/-20 -fg ../gebco/gebco.nc -GChilePacificWide.nc
+Use 5% extra on boundaries?</comment>
             </source>
         </form>
         <projection name="Automatic"></projection>
@@ -42,8 +49,14 @@
         <brep_component name="SouthEastPacificOceanCoast">
             <form name="Raster">
                 <source name="ChilePacificWide"></source>
-                <box>-128.0:-70.0,-40.0:20.0&#x0A;                    &#x0A;                    &#x0A;                    &#x0A;                    &#x0A;                    
-                    <comment>232:290,-40:20&#x0A;-128:-70,-40:20</comment>
+                <box>-128.0:-70.0,-40.0:20.0
+                    
+                    
+                    
+                    
+                    
+                    <comment>232:290,-40:20
+-128:-70,-40:20</comment>
                 </box>
                 <contourtype name="ocean10m" field_level="-10.0" field_name="Automatic"></contourtype>
                 <boundary>1</boundary>

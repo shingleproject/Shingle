@@ -2,7 +2,8 @@
 <boundary_representation>
     <model_name>
         <string_value lines="1">UK_NorthSea_opendap</string_value>
-        <comment>Example simulation domain around the UK and Ireland in the North Sea.&#x0A;    In a latitude-longitude WGS84 projection.</comment>
+        <comment>Example simulation domain around the UK and Ireland in the North Sea.
+    In a latitude-longitude WGS84 projection.</comment>
     </model_name>
     <reference>
         <author name="ASCandy">
@@ -38,7 +39,12 @@
         <brep_component name="NorthSea">
             <form name="Raster">
                 <source name="ETOPO2"></source>
-                <box>-14.0:6.0,46.0:64.0&#x0A;                    &#x0A;                    &#x0A;                    &#x0A;                    &#x0A;                    
+                <box>-14.0:6.0,46.0:64.0
+                    
+                    
+                    
+                    
+                    
                     <comment></comment>
                 </box>
                 <minimum_area>

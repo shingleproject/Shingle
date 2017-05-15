@@ -27,7 +27,8 @@
     <dataset name="Caribbean">
         <form name="Raster">
             <source name="HTTP" url="https://zenodo.org/record/399213/files/Caribbean.nc">
-                <comment>Caribbean.nc&#x0A;Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
+                <comment>Caribbean.nc
+Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
             </source>
         </form>
         <projection name="Automatic"></projection>
@@ -39,8 +40,17 @@
         <brep_component name="CaribbeanOceanCoast">
             <form name="Raster">
                 <source name="Caribbean"></source>
-                <box>-98.0:-64.2,5.04:46.0 -98.0:-50.8,5.04:45.306 -64.5:-63.4,44.9:45.5&#x0A;                    &#x0A;                    &#x0A;                    &#x0A;                    &#x0A;                    &#x0A;                    &#x0A;                    
-                    <comment>-98.0:-50.8,5.04:45.8&#x0A;-98.0:-61.546,5.04:45.8 -98.0:-50.8,5.04:45.196&#x0A;-98.0:-62,5.04:45.8 -98.0:-50.8,5.04:44.5</comment>
+                <box>-98.0:-64.2,5.04:46.0 -98.0:-50.8,5.04:45.306 -64.5:-63.4,44.9:45.5
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <comment>-98.0:-50.8,5.04:45.8
+-98.0:-61.546,5.04:45.8 -98.0:-50.8,5.04:45.196
+-98.0:-62,5.04:45.8 -98.0:-50.8,5.04:44.5</comment>
                 </box>
                 <minimum_area>
                     <real_value rank="0">0</real_value>

@@ -2,7 +2,9 @@
 <boundary_representation>
     <model_name>
         <string_value lines="1">Caribbean_main_coastline</string_value>
-        <comment>Domain of the Caribbean Sea ocean basin, extended out to the 40W meridian.&#x0A;    Developed from GEBCO.&#x0A;    Contains only the main largest coastline.</comment>
+        <comment>Domain of the Caribbean Sea ocean basin, extended out to the 40W meridian.
+    Developed from GEBCO.
+    Contains only the main largest coastline.</comment>
     </model_name>
     <reference>
         <author name="ASCandy">
@@ -28,7 +30,8 @@
     <dataset name="Caribbean">
         <form name="Raster">
             <source name="HTTP" url="https://zenodo.org/record/399213/files/Caribbean.nc">
-                <comment>Caribbean.nc&#x0A;Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
+                <comment>Caribbean.nc
+Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
             </source>
         </form>
         <projection name="Automatic"></projection>
@@ -40,7 +43,12 @@
         <brep_component name="CaribbeanOceanCoast">
             <form name="Raster">
                 <source name="Caribbean"></source>
-                <box>-98.0:-66.0,5.04:45.8&#x0A;                    &#x0A;                    &#x0A;                    &#x0A;                    &#x0A;                    
+                <box>-98.0:-66.0,5.04:45.8
+                    
+                    
+                    
+                    
+                    
                     <comment>-98.0:-50.8,5.04:45.8</comment>
                 </box>
                 <minimum_area>

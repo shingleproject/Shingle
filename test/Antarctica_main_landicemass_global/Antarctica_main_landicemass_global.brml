@@ -2,7 +2,12 @@
 <boundary_representation>
     <model_name>
         <string_value lines="1">Antarctica_main_landicemass_global</string_value>
-        <comment>Use the RTopo dataset (RTopo105b.nc),&#x0A;considering all land masses up to a latitude of 60S, within a global domain.&#x0A;Only the main largest landmass is included.&#x0A;Ice shelf ocean cavities are excluded.&#x0A;Spatial representation is specified along the open ocean boundary to ensure it is well-represented.&#x0A;Minimum edge-length increased to 100km from 10km, minimum proximity to 400km from 40km, to reduce time for discretisation in verification test.</comment>
+        <comment>Use the RTopo dataset (RTopo105b.nc),
+considering all land masses up to a latitude of 60S, within a global domain.
+Only the main largest landmass is included.
+Ice shelf ocean cavities are excluded.
+Spatial representation is specified along the open ocean boundary to ensure it is well-represented.
+Minimum edge-length increased to 100km from 10km, minimum proximity to 400km from 40km, to reduce time for discretisation in verification test.</comment>
     </model_name>
     <reference>
         <author name="ASCandy">
@@ -25,7 +30,13 @@
     <dataset name="RTopo">
         <form name="Raster">
             <source name="HTTP" url="http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc">
-                <comment>RTopo105b_50S.nc&#x0A;Timmermann, Ralph; Le Brocq, Anne M; Deen, Tara J; Domack, Eugene W; Dutrieux, Pierre; Galton-Fenzi, Ben; Hellmer, Hartmut H; Humbert, Angelika; Jansen, Daniela; Jenkins, Adrian; Lambrecht, Astrid; Makinson, Keith; Niederjasper, Fred; Nitsche, Frank-Oliver; Nøst, Ole Anders; Smedsrud, Lars Henrik; Smith, Walter (2010): Antarctic ice sheet topography, cavity geometry, and global bathymetry (RTopo 1.0.5-beta). doi:10.1594/PANGAEA.741917,&#x0A;Supplement to: Timmermann, R et al. (2010): A consistent dataset of Antarctic ice sheet topography, cavity geometry, and global bathymetry. Earth System Science Data, 2(2), 261-273, doi:10.5194/essd-2-261-2010&#x0A;grdsample -I30m -fg noshelf.nc -GSouthernOcean_noshelf_30m_fg.nc&#x0A;&#x0A;ncks -v noshelf amask2.nc noshelf.nc&#x0A;ncks -v amask /d/dataset/rtopo/RTopo105b_aux.nc amask.nc&quot; ;</comment>
+                <comment>RTopo105b_50S.nc
+Timmermann, Ralph; Le Brocq, Anne M; Deen, Tara J; Domack, Eugene W; Dutrieux, Pierre; Galton-Fenzi, Ben; Hellmer, Hartmut H; Humbert, Angelika; Jansen, Daniela; Jenkins, Adrian; Lambrecht, Astrid; Makinson, Keith; Niederjasper, Fred; Nitsche, Frank-Oliver; Nøst, Ole Anders; Smedsrud, Lars Henrik; Smith, Walter (2010): Antarctic ice sheet topography, cavity geometry, and global bathymetry (RTopo 1.0.5-beta). doi:10.1594/PANGAEA.741917,
+Supplement to: Timmermann, R et al. (2010): A consistent dataset of Antarctic ice sheet topography, cavity geometry, and global bathymetry. Earth System Science Data, 2(2), 261-273, doi:10.5194/essd-2-261-2010
+grdsample -I30m -fg noshelf.nc -GSouthernOcean_noshelf_30m_fg.nc
+
+ncks -v noshelf amask2.nc noshelf.nc
+ncks -v amask /d/dataset/rtopo/RTopo105b_aux.nc amask.nc&quot; ;</comment>
             </source>
         </form>
         <projection name="Automatic"></projection>

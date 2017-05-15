@@ -2,7 +2,11 @@
 <boundary_representation>
     <model_name>
         <string_value lines="1">Chile_Talcahuano</string_value>
-        <comment>Example simulation domain for modelling ocean wave propagation and&#x0A;    tsunami inundation in the 2010 Chile M8.8 earthquake, centred at 35.9S 72.7W,&#x0A;    approximately 100km north of Talcahuano.&#x0A;    This is bounded by the 0m depth coastline from 32S to 40S, extended along parallels to the 77W meridian,&#x0A;    in a latitude-longitude WGS84 projection.</comment>
+        <comment>Example simulation domain for modelling ocean wave propagation and
+    tsunami inundation in the 2010 Chile M8.8 earthquake, centred at 35.9S 72.7W,
+    approximately 100km north of Talcahuano.
+    This is bounded by the 0m depth coastline from 32S to 40S, extended along parallels to the 77W meridian,
+    in a latitude-longitude WGS84 projection.</comment>
     </model_name>
     <reference>
         <author name="ASCandy">
@@ -27,7 +31,8 @@
     <dataset name="Coquimbo">
         <form name="Raster">
             <source name="HTTP" url="https://zenodo.org/record/399213/files/Coquimbo.nc">
-                <comment>Coquimbo.nc&#x0A;Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
+                <comment>Coquimbo.nc
+Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
             </source>
         </form>
         <projection name="Automatic"></projection>

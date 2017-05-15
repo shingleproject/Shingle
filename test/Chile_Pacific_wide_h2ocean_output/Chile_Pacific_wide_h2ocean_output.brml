@@ -2,7 +2,11 @@
 <boundary_representation>
     <model_name>
         <string_value lines="1">Chile_Pacific_wide_h2ocean_output</string_value>
-        <comment>232:290,-40:20&#x0A;&#x0A;grdcut -R-128/-70/-40/-20 -fg ../gebco/gebco.nc -GChilePacificWide.nc&#x0A;&#x0A;Use 5% extra on boundaries?</comment>
+        <comment>232:290,-40:20
+
+grdcut -R-128/-70/-40/-20 -fg ../gebco/gebco.nc -GChilePacificWide.nc
+
+Use 5% extra on boundaries?</comment>
     </model_name>
     <reference>
         <author name="ASCandy">
@@ -29,9 +33,12 @@
     </output>
     <dataset name="ChilePacificWide">
         <form name="Raster">
-            <comment>232:290,-40:20&#x0A;grdcut -R-128/-70/-40/-20 -fg ../gebco/gebco.nc -GChilePacificWide.nc&#x0A;Use 5% extra on boundaries?</comment>
+            <comment>232:290,-40:20
+grdcut -R-128/-70/-40/-20 -fg ../gebco/gebco.nc -GChilePacificWide.nc
+Use 5% extra on boundaries?</comment>
             <source name="HTTP" url="https://zenodo.org/record/399213/files/ChilePacificWide.nc">
-                <comment>ChilePacificWide.nc&#x0A;Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
+                <comment>ChilePacificWide.nc
+Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
             </source>
         </form>
         <projection name="Automatic"></projection>
@@ -43,8 +50,16 @@
         <brep_component name="SouthEastPacificOceanCoast">
             <form name="Raster">
                 <source name="ChilePacificWide"></source>
-                <box>-128.0:-70.0,-40.0:20.0&#x0A;                    &#x0A;                    &#x0A;                    &#x0A;                    &#x0A;                    &#x0A;                    &#x0A;                    
-                    <comment>232:290,-40:20&#x0A;-128:-70,-40:20</comment>
+                <box>-128.0:-70.0,-40.0:20.0
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <comment>232:290,-40:20
+-128:-70,-40:20</comment>
                 </box>
                 <contourtype name="ocean10m" field_level="-10.0" field_name="Automatic"></contourtype>
                 <boundary>1</boundary>

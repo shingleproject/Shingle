@@ -80,6 +80,7 @@ class Tag():
     def Save(self):
         if self.isLoaded():
             specification.write_options(self.filename)
+            restore_linefeed(filename)
 
     def Exists(self, tag):
         return tag in self.tags
@@ -107,6 +108,13 @@ class Tag():
                 self.tags.remove(tag)
                 return True
             
+def restore_linefeed(filename):
+    from re import sub
+    with open(filename, 'r') as f:
+        lines = f.readlines()
+    with open(filename, 'w') as f:
+        for line in lines:
+            f.write(sub(r'&#x0A;', '\n', line))
 
 if __name__ == '__main__':
     args = sys.argv[1:]

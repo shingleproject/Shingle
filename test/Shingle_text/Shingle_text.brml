@@ -2,7 +2,8 @@
 <boundary_representation>
     <model_name>
         <string_value lines="1">Shingle_text</string_value>
-        <comment>A monochromatic raster image with&#x0A;    the word `Shingle&apos; and five small islands developed as a mask.</comment>
+        <comment>A monochromatic raster image with
+    the word `Shingle&apos; and five small islands developed as a mask.</comment>
     </model_name>
     <reference>
         <author name="ASCandy">
@@ -67,7 +68,14 @@
     </geoid_metric>
     <geoid_mesh>
         <library name="Gmsh">
-            <postprocess>// General.SmallAxes = 0; &#x0A;// Mesh.Format=1;&#x0A;// Mesh 2;&#x0A;// Save &quot;m.msh&quot;;&#x0A;// Draw;&#x0A;// Include &quot;m.msh&quot;;&#x0A;// Print Sprintf(&quot;%(name)s.png&quot;);&#x0A;// Exit;</postprocess>
+            <postprocess>// General.SmallAxes = 0; 
+// Mesh.Format=1;
+// Mesh 2;
+// Save &quot;m.msh&quot;;
+// Draw;
+// Include &quot;m.msh&quot;;
+// Print Sprintf(&quot;%(name)s.png&quot;);
+// Exit;</postprocess>
         </library>
         <generate_image></generate_image>
     </geoid_mesh>

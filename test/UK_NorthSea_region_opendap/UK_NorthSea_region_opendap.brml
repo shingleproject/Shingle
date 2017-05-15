@@ -2,7 +2,8 @@
 <boundary_representation>
     <model_name>
         <string_value lines="1">UK_NorthSea_region_opendap</string_value>
-        <comment>Example simulation domain around the UK and Ireland in the North Sea.&#x0A;    In a latitude-longitude WGS84 projection.</comment>
+        <comment>Example simulation domain around the UK and Ireland in the North Sea.
+    In a latitude-longitude WGS84 projection.</comment>
     </model_name>
     <reference>
         <author name="ASCandy">
@@ -104,7 +105,22 @@
         <form name="FromRaster">
             <source name="ETOPO2"></source>
             <function>
-                <string_value lines="20" type="code" language="python">field = - field&#x0A;print &apos;1&apos;, field.min(), field.max()&#x0A;field[field &lt; 0.0] = 0.0&#x0A;print &apos;2&apos;, field.min(), field.max()&#x0A;&#x0A;field = sqrt(field * 9.81)&#x0A;print &apos;3&apos;, field.min(), field.max()&#x0A;&#x0A;&#x0A;# TODO: Add as Python function on field&#x0A;field *= 1.0 / field.max()&#x0A;print &apos;4&apos;, field.min(), field.max()&#x0A;field *= (1.0 - 0.1)&#x0A;print &apos;5&apos;, field.min(), field.max()&#x0A;field += 0.1&#x0A;print &apos;6&apos;, field.min(), field.max()</string_value>
+                <string_value lines="20" type="code" language="python">field = - field
+print &apos;1&apos;, field.min(), field.max()
+field[field &lt; 0.0] = 0.0
+print &apos;2&apos;, field.min(), field.max()
+
+field = sqrt(field * 9.81)
+print &apos;3&apos;, field.min(), field.max()
+
+
+# TODO: Add as Python function on field
+field *= 1.0 / field.max()
+print &apos;4&apos;, field.min(), field.max()
+field *= (1.0 - 0.1)
+print &apos;5&apos;, field.min(), field.max()
+field += 0.1
+print &apos;6&apos;, field.min(), field.max()</string_value>
             </function>
             <region name="MainRegionAroundUK">
                 <longitude>
