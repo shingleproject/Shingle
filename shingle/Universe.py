@@ -72,6 +72,7 @@ class universe():
     generate_mesh_image = False 
     verification_update = False
     stages = None
+    tags = []
     use_counter_prefix = False
     _all_stages = ['path', 'brep', 'mesh', 'metric', 'verify', 'post']
     pickup = False

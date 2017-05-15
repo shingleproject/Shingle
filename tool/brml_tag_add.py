@@ -43,8 +43,8 @@ class Tag():
     _rootpath = '/validation/tag'
 
     def __init__(self, filename):
+        self.loaded = False
         self.Locate(filename)
-        self.tags = []
         self.Load()
 
     def __str__(self):
@@ -56,50 +56,79 @@ class Tag():
             locations = [ x for x in os.listdir(filename) if x.endswith('.brml') ]
             if len(locations) == 1:
                 self.filename = os.path.join(filename, locations[0])
-                return
-        self.filename = filename
+            else:
+                self.filename = None
+        elif os.path.exists(filename):
+            self.filename = filename
+        else:
+            self.filename = None
+
+    def isLoaded(self):
+        return self.loaded
 
     def Load(self):
         self.tags = []
-        specification.clear_options()
-        specification.load_options(self.filename)
-        for n in range(specification.option_count(self._rootpath)):
-            path = self._rootpath + ('[%d]' % n) + '/name'
-            tag = specification.get_option(path)
-            self.tags.append(tag)
-        return self.tags
+        if self.filename is not None:
+            specification.clear_options()
+            specification.load_options(self.filename)
+            for n in range(specification.option_count(self._rootpath)):
+                path = self._rootpath + ('[%d]' % n) + '/name'
+                tag = specification.get_option(path)
+                self.tags.append(tag)
+            self.loaded = True
 
     def Save(self):
-        specification.write_options(self.filename)
+        if self.isLoaded():
+            specification.write_options(self.filename)
 
     def Exists(self, tag):
         return tag in self.tags
 
     def Add(self, tag):
-        if self.Exists(tag):
-            return False
-        else:
-            n = len(self.tags)
-            path = self._rootpath + ('::%s' % tag)
-            try:
-                specification.add_option(path)
-            except specification.SpudNewKeyWarning, e:
-                pass
-            self.tags.append(tag)
+        if self.isLoaded():
+            if self.Exists(tag):
+                return False
+            else:
+                path = self._rootpath + ('::%s' % tag)
+                try:
+                    specification.add_option(path)
+                except specification.SpudNewKeyWarning, e:
+                    pass
+                self.tags.append(tag)
+                return True
+
+    def Remove(self, tag):
+        if self.isLoaded():
+            if not self.Exists(tag):
+                return False
+            else:
+                path = self._rootpath + ('::%s' % tag)
+                specification.delete_option(path)
+                self.tags.remove(tag)
+                return True
             
 
 if __name__ == '__main__':
     args = sys.argv[1:]
+    remove = False
+    if args[0] == '-r':
+        remove = True
+        args = args[1:]
     tag = args[0]
     filenames = args[1:]
     for filename in filenames:
+        print filename
         t = Tag(filename)
-        existing = str(t)
-        stat = t.Add(tag)
-        if stat:
-            print t.filename + ':', existing, '->', t
-        else:
-            print t.filename + ':', t
-        t.Save()
+        if t.isLoaded():
+            existing = str(t)
+            if remove:
+                stat = t.Remove(tag)
+            else:
+                stat = t.Add(tag)
+            if stat:
+                print '  ' + t.filename + ':', existing, '->', t
+            else:
+                print '  ' + t.filename + ':', t
+            t.Save()
 
 

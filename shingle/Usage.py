@@ -47,6 +47,7 @@ def usage(unknown = None):
    -c                          | Use cache
                                |_________________________________________________________________________________
    -stage stagename            | Partial processing, up to given stage from: %(stages)s
+   -tag tagname                | Specify test cases to include by tag, can add multiple -tag options
    -pickup                     | Use existing generated output if exists and  where possible
    -plot                       | Plot contour before representation generation 
    -image                      | Generate image of mesh (forced).

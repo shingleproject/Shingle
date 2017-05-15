@@ -1224,74 +1224,109 @@ validation_tests_old =
 tags =
   (
     (
+      ## Arbitrary tag
+      ##
+      ## Please consider adding tags to the schema
       element tag {
         attribute name { string },
         comment
       }|
+      ## Cases including Antarctica
       element tag {
         attribute name { 'Antarctica' },
         comment
       }|
+      ## Cases including the Arctic
       element tag {
         attribute name { 'Arctic' },
         comment
       }|
+      ## Cases including the Caribbean
       element tag {
         attribute name { 'Caribbean' },
         comment
       }|
+      ## Cases including Chile
       element tag {
         attribute name { 'Chile' },
         comment
       }|
+      ## Cases including global Earth domains
       element tag {
         attribute name { 'Earth' },
         comment
       }|
+      ## Cases including the island of Greenland
       element tag {
         attribute name { 'Greenland' },
         comment
       }|
+      ## Cases including the North Sea
       element tag {
         attribute name { 'NorthSea' },
         comment
       }|
+      ## Cases including the island of the UK
       element tag {
         attribute name { 'UK' },
         comment
       }|
+      ## Cases containing ice sheet domains
       element tag {
         attribute name { 'IceSheet' },
         comment
       }|
+      ## Cases containing domains with ice shelf ocean cavities
       element tag {
         attribute name { 'IceShelfOceanCavity' },
         comment
       }|
+      ## Cases containing ocean domains
       element tag {
         attribute name { 'Ocean' },
         comment
       }|
+      ## Cases accessing datasets through HTTP
+      element tag {
+        attribute name { 'HTTP' },
+        comment
+      }|
+      ## Cases accessing datasets through OPeNDAP
       element tag {
         attribute name { 'OPeNDAP' },
         comment
       }|
+      ## Cases using an arbitrary  metric described in Python
       element tag {
         attribute name { 'MetricPython' },
         comment
       }|
+      ## Cases using the GEBCO dataset
       element tag {
         attribute name { 'GEBCO' },
         comment
       }|
+      ## Cases using the RTopo dataset
       element tag {
         attribute name { 'RTopo' },
         comment
       }|
+      ## Tests executed in the open, online continuous verification suite
+      element tag {
+        attribute name { 'continuous' },
+        comment
+      }|
+      ## Cases in development, will be skipped
+      element tag {
+        attribute name { 'development' },
+        comment
+      }|
+      ## Short tests
       element tag {
         attribute name { 'short' },
         comment
       }|
+      ## Long tests
       element tag {
         attribute name { 'long' },
         comment

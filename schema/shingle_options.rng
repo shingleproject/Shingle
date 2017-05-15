@@ -1399,108 +1399,149 @@ provided above.</a:documentation>
   <define name="tags">
     <choice>
       <element name="tag">
+        <a:documentation>Arbitrary tag
+
+Please consider adding tags to the schema</a:documentation>
         <attribute name="name">
           <data type="string"/>
         </attribute>
         <ref name="comment"/>
       </element>
       <element name="tag">
+        <a:documentation>Cases including Antarctica</a:documentation>
         <attribute name="name">
           <value>Antarctica</value>
         </attribute>
         <ref name="comment"/>
       </element>
       <element name="tag">
+        <a:documentation>Cases including the Arctic</a:documentation>
         <attribute name="name">
           <value>Arctic</value>
         </attribute>
         <ref name="comment"/>
       </element>
       <element name="tag">
+        <a:documentation>Cases including the Caribbean</a:documentation>
         <attribute name="name">
           <value>Caribbean</value>
         </attribute>
         <ref name="comment"/>
       </element>
       <element name="tag">
+        <a:documentation>Cases including Chile</a:documentation>
         <attribute name="name">
           <value>Chile</value>
         </attribute>
         <ref name="comment"/>
       </element>
       <element name="tag">
+        <a:documentation>Cases including global Earth domains</a:documentation>
         <attribute name="name">
           <value>Earth</value>
         </attribute>
         <ref name="comment"/>
       </element>
       <element name="tag">
+        <a:documentation>Cases including the island of Greenland</a:documentation>
         <attribute name="name">
           <value>Greenland</value>
         </attribute>
         <ref name="comment"/>
       </element>
       <element name="tag">
+        <a:documentation>Cases including the North Sea</a:documentation>
         <attribute name="name">
           <value>NorthSea</value>
         </attribute>
         <ref name="comment"/>
       </element>
       <element name="tag">
+        <a:documentation>Cases including the island of the UK</a:documentation>
         <attribute name="name">
           <value>UK</value>
         </attribute>
         <ref name="comment"/>
       </element>
       <element name="tag">
+        <a:documentation>Cases containing ice sheet domains</a:documentation>
         <attribute name="name">
           <value>IceSheet</value>
         </attribute>
         <ref name="comment"/>
       </element>
       <element name="tag">
+        <a:documentation>Cases containing domains with ice shelf ocean cavities</a:documentation>
         <attribute name="name">
           <value>IceShelfOceanCavity</value>
         </attribute>
         <ref name="comment"/>
       </element>
       <element name="tag">
+        <a:documentation>Cases containing ocean domains</a:documentation>
         <attribute name="name">
           <value>Ocean</value>
         </attribute>
         <ref name="comment"/>
       </element>
       <element name="tag">
+        <a:documentation> Cases accessing datasets through HTTP</a:documentation>
+        <attribute name="name">
+          <value>HTTP</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <a:documentation> Cases accessing datasets through OPeNDAP</a:documentation>
         <attribute name="name">
           <value>OPeNDAP</value>
         </attribute>
         <ref name="comment"/>
       </element>
       <element name="tag">
+        <a:documentation>Cases using an arbitrary  metric described in Python</a:documentation>
         <attribute name="name">
           <value>MetricPython</value>
         </attribute>
         <ref name="comment"/>
       </element>
       <element name="tag">
+        <a:documentation>Cases using the GEBCO dataset</a:documentation>
         <attribute name="name">
           <value>GEBCO</value>
         </attribute>
         <ref name="comment"/>
       </element>
       <element name="tag">
+        <a:documentation>Cases using the RTopo dataset</a:documentation>
         <attribute name="name">
           <value>RTopo</value>
         </attribute>
         <ref name="comment"/>
       </element>
       <element name="tag">
+        <a:documentation>Tests executed in the open, online continuous verification suite</a:documentation>
+        <attribute name="name">
+          <value>continuous</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <a:documentation>Cases in development, will be skipped</a:documentation>
+        <attribute name="name">
+          <value>development</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <a:documentation>Short tests</a:documentation>
         <attribute name="name">
           <value>short</value>
         </attribute>
         <ref name="comment"/>
       </element>
       <element name="tag">
+        <a:documentation> Long tests</a:documentation>
         <attribute name="name">
           <value>long</value>
         </attribute>
