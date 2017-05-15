@@ -1,85 +1,78 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8" ?>
 <boundary_representation>
-  <model_name>
-    <string_value lines="1">Shingle_text</string_value>
-    <comment>A monochromatic raster image with
-    the word `Shingle' and five small islands developed as a mask.</comment>
-  </model_name>
-  <reference>
-    <author name="ASCandy">
-      <string_value lines="1">Adam S. Candy</string_value>
-      <email_address>
-        <string_value lines="1">A.S.Candy@tudelft.nl</string_value>
-      </email_address>
-      <institution>
-        <string_value lines="1">Technische Universiteit Delft</string_value>
-      </institution>
-    </author>
-  </reference>
-  <domain_type>
-    <string_value lines="1">geophysical</string_value>
-  </domain_type>
-  <global_parameters/>
-  <output>
-    <projection>
-      <string_value>longlat</string_value>
-    </projection>
-  </output>
-  <dataset name="Shingle_text">
-    <form name="Raster">
-      <source file_name="data/shingle_logo_base.png" name="Local_file"/>
-    </form>
-    <projection name="Automatic"/>
-  </dataset>
-  <geoid_surface_representation name="Shingle_text">
-    <id>
-      <integer_value rank="0">9</integer_value>
-    </id>
-    <brep_component name="Shingle_text">
-      <form name="Raster">
-        <source name="Shingle_text"/>
-        <contourtype field_level="10.0" field_name="amask" name="iceshelfcavity"/>
-      </form>
-      <identification name="Coast"/>
-      <representation_type name="BSplines"/>
-    </brep_component>
-    <boundary name="Coast">
-      <identification_number>
-        <integer_value rank="0">3</integer_value>
-      </identification_number>
-    </boundary>
-  </geoid_surface_representation>
-  <geoid_metric>
-    <form name="Proximity">
-      <boundary name="Coast"/>
-      <edge_length_minimum>
-        <real_value rank="0">10</real_value>
-      </edge_length_minimum>
-      <edge_length_maximum>
-        <real_value rank="0">500</real_value>
-      </edge_length_maximum>
-      <proximity_minimum>
-        <real_value rank="0">10</real_value>
-      </proximity_minimum>
-      <proximity_maximum>
-        <real_value rank="0">400</real_value>
-      </proximity_maximum>
-    </form>
-  </geoid_metric>
-  <geoid_mesh>
-    <library name="Gmsh">
-      <postprocess>// General.SmallAxes = 0; 
-// Mesh.Format=1;
-// Mesh 2;
-// Save "m.msh";
-// Draw;
-// Include "m.msh";
-// Print Sprintf("%(name)s.png");
-// Exit;</postprocess>
-    </library>
-    <generate_image/>
-  </geoid_mesh>
-  <validation>
-    <test file_name="data/Shingle_text_valid.geo" name="BrepDescription"/>
-  </validation>
+    <model_name>
+        <string_value lines="1">Shingle_text</string_value>
+        <comment>A monochromatic raster image with&#x0A;    the word `Shingle&apos; and five small islands developed as a mask.</comment>
+    </model_name>
+    <reference>
+        <author name="ASCandy">
+            <string_value lines="1">Adam S. Candy</string_value>
+            <email_address>
+                <string_value lines="1">A.S.Candy@tudelft.nl</string_value>
+            </email_address>
+            <institution>
+                <string_value lines="1">Technische Universiteit Delft</string_value>
+            </institution>
+        </author>
+    </reference>
+    <domain_type>
+        <string_value lines="1">geophysical</string_value>
+    </domain_type>
+    <global_parameters></global_parameters>
+    <output>
+        <projection>
+            <string_value>longlat</string_value>
+        </projection>
+    </output>
+    <dataset name="Shingle_text">
+        <form name="Raster">
+            <source name="Local_file" file_name="data/shingle_logo_base.png"></source>
+        </form>
+        <projection name="Automatic"></projection>
+    </dataset>
+    <geoid_surface_representation name="Shingle_text">
+        <id>
+            <integer_value rank="0">9</integer_value>
+        </id>
+        <brep_component name="Shingle_text">
+            <form name="Raster">
+                <source name="Shingle_text"></source>
+                <contourtype name="iceshelfcavity" field_level="10.0" field_name="amask"></contourtype>
+            </form>
+            <identification name="Coast"></identification>
+            <representation_type name="BSplines"></representation_type>
+        </brep_component>
+        <boundary name="Coast">
+            <identification_number>
+                <integer_value rank="0">3</integer_value>
+            </identification_number>
+        </boundary>
+    </geoid_surface_representation>
+    <geoid_metric>
+        <form name="Proximity">
+            <boundary name="Coast"></boundary>
+            <edge_length_minimum>
+                <real_value rank="0">10</real_value>
+            </edge_length_minimum>
+            <edge_length_maximum>
+                <real_value rank="0">500</real_value>
+            </edge_length_maximum>
+            <proximity_minimum>
+                <real_value rank="0">10</real_value>
+            </proximity_minimum>
+            <proximity_maximum>
+                <real_value rank="0">400</real_value>
+            </proximity_maximum>
+        </form>
+    </geoid_metric>
+    <geoid_mesh>
+        <library name="Gmsh">
+            <postprocess>// General.SmallAxes = 0; &#x0A;// Mesh.Format=1;&#x0A;// Mesh 2;&#x0A;// Save &quot;m.msh&quot;;&#x0A;// Draw;&#x0A;// Include &quot;m.msh&quot;;&#x0A;// Print Sprintf(&quot;%(name)s.png&quot;);&#x0A;// Exit;</postprocess>
+        </library>
+        <generate_image></generate_image>
+    </geoid_mesh>
+    <validation>
+        <test name="BrepDescription" file_name="data/Shingle_text_valid.geo"></test>
+        <tag name="development"></tag>
+    </validation>
 </boundary_representation>
