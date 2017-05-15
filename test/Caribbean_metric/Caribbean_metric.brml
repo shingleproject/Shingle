@@ -107,7 +107,7 @@ Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
         <library name="Gmsh"></library>
     </geoid_mesh>
     <validation>
-        <test name="BrepDescription" file_name="data/Caribbean_valid.geo.bz2">
+        <test name="BrepDescription" file_name="data/Caribbean_metric_valid.geo.bz2">
             <compressed></compressed>
         </test>
         <tag name="Caribbean"></tag>

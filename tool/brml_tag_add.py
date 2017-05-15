@@ -80,7 +80,7 @@ class Tag():
     def Save(self):
         if self.isLoaded():
             specification.write_options(self.filename)
-            restore_linefeed(filename)
+            restore_linefeed(self.filename)
 
     def Exists(self, tag):
         return tag in self.tags

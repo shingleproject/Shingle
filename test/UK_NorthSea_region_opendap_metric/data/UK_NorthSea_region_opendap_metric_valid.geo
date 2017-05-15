@@ -1,4 +1,4 @@
-// Surface Geoid Boundary Representation, for project: UK_NorthSea_region_opendap
+// Surface Geoid Boundary Representation, for project: UK_NorthSea_region_opendap_metric
 // 
 // Created by:  Shingle 
 // 
@@ -14,9 +14,9 @@
 // Mesh tool version: 2.11.0
 //                    (on the system where the boundry representation has been created)
 // 
-// Project name: UK_NorthSea_region_opendap
+// Project name: UK_NorthSea_region_opendap_metric
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/05/15 17:39:56 
+// Created at: 2017/05/15 17:40:01 
 // Project description:
 //   Example simulation domain around the UK and Ireland in the North Sea.
 //       In a latitude-longitude WGS84 projection.
@@ -25,7 +25,7 @@
 // <?xml version="1.0" encoding="utf-8" ?>
 // <boundary_representation>
 //     <model_name>
-//         <string_value lines="1">UK_NorthSea_region_opendap</string_value>
+//         <string_value lines="1">UK_NorthSea_region_opendap_metric</string_value>
 //         <comment>Example simulation domain around the UK and Ireland in the North Sea.
 //     In a latitude-longitude WGS84 projection.</comment>
 //     </model_name>
@@ -126,36 +126,65 @@
 //         </boundary>
 //     </geoid_surface_representation>
 //     <geoid_metric>
-//         <form name="Proximity">
-//             <boundary name="Coast"></boundary>
-//             <edge_length_minimum>
-//                 <real_value rank="0">0.01</real_value>
-//             </edge_length_minimum>
-//             <edge_length_maximum>
-//                 <real_value rank="0">2</real_value>
-//             </edge_length_maximum>
-//             <proximity_minimum>
-//                 <real_value rank="0">0.05</real_value>
-//             </proximity_minimum>
-//             <proximity_maximum>
-//                 <real_value rank="0">5</real_value>
-//             </proximity_maximum>
+//         <form name="FromRaster">
+//             <source name="ETOPO2"></source>
+//             <function>
+//                 <string_value lines="20" type="code" language="python">field = - field
+// print &apos;1&apos;, field.min(), field.max()
+// field[field &lt; 0.0] = 0.0
+// print &apos;2&apos;, field.min(), field.max()
+// 
+// field = sqrt(field * 9.81)
+// print &apos;3&apos;, field.min(), field.max()
+// 
+// 
+// # TODO: Add as Python function on field
+// field *= 1.0 / field.max()
+// print &apos;4&apos;, field.min(), field.max()
+// field *= (1.0 - 0.1)
+// print &apos;5&apos;, field.min(), field.max()
+// field += 0.1
+// print &apos;6&apos;, field.min(), field.max()</string_value>
+//             </function>
+//             <region name="MainRegionAroundUK">
+//                 <longitude>
+//                     <minimum>
+//                         <real_value rank="0">-14</real_value>
+//                     </minimum>
+//                     <maximum>
+//                         <real_value rank="0">6</real_value>
+//                     </maximum>
+//                 </longitude>
+//                 <latitude>
+//                     <minimum>
+//                         <real_value rank="0">46</real_value>
+//                     </minimum>
+//                     <maximum>
+//                         <real_value rank="0">64</real_value>
+//                     </maximum>
+//                 </latitude>
+//             </region>
 //         </form>
 //     </geoid_metric>
 //     <geoid_mesh>
-//         <library name="Gmsh"></library>
+//         <library name="Gmsh">
+//             <extend_metric_from_boundary></extend_metric_from_boundary>
+//         </library>
+//         <generate></generate>
+//         <parse></parse>
 //     </geoid_mesh>
 //     <validation>
-//         <test name="BrepDescription" file_name="data/UK_NorthSea_region_opendap_valid.geo"></test>
+//         <test name="BrepDescription" file_name="data/UK_NorthSea_region_opendap_metric_valid.geo"></test>
 //         <tag name="UK"></tag>
 //         <tag name="NorthSea"></tag>
 //         <tag name="OPeNDAP"></tag>
 //         <tag name="continuous"></tag>
+//         <tag name="MetricPython"></tag>
 //     </validation>
 // </boundary_representation>
 
 // == Boundary Representation Specification Parameters ============
-// Output to UK_NorthSea_region_opendap.geo
+// Output to UK_NorthSea_region_opendap_metric.geo
 // Projection type longlat
 //   1. NorthSea
 //       Path:           /geoid_surface_representation::NorthSea/brep_component::NorthSea
@@ -3416,22 +3445,20 @@ Physical Surface( 10 ) = { 10 };
 
 // == End of contour definitions ==================================
 // Do not extent the elements sizes from the boundary inside the domain
-Mesh.CharacteristicLengthExtendFromBoundary = 0;
+Mesh.CharacteristicLengthExtendFromBoundary = 1;
 
-// == Field definitions ===========================================
+// External metric field definition
+Field[1] = Structured;
+Field[1].FileName = "metric.pos";
+Field[1].TextFormat = 1;
 
-Field[ 2 ] = Attractor;
-Field[ 2 ].EdgesList = { 0 };
-Field[ 2 ].NNodesByEdge = 20000;
+// constant edge length to use as initial mesh in testing
+Field[2] = MathEval;
+Field[2].F = "0.1";
 
-Field[ 3 ] = Threshold;
-Field[ 3 ].IField = 2;
-Field[ 3 ].LcMin = 1.000000e-02;
-Field[ 3 ].LcMax = 2.000000e+00;
-Field[ 3 ].DistMin = 5.000000e-02;
-Field[ 3 ].DistMax = 5.000000e+00;
+// Set background field
+Background Field = 1;
 
-Background Field = 3;
 
 
 // Set general options for default view and improved PNG output
