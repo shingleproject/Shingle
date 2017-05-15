@@ -81,7 +81,6 @@ class Tag():
         else:
             n = len(self.tags)
             path = self._rootpath + ('::%s' % tag)
-            print path
             try:
                 specification.add_option(path)
             except specification.SpudNewKeyWarning, e:

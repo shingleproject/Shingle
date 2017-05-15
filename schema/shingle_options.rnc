@@ -1229,11 +1229,63 @@ tags =
         comment
       }|
       element tag {
+        attribute name { 'Antarctica' },
+        comment
+      }|
+      element tag {
+        attribute name { 'Arctic' },
+        comment
+      }|
+      element tag {
         attribute name { 'Caribbean' },
         comment
       }|
       element tag {
+        attribute name { 'Chile' },
+        comment
+      }|
+      element tag {
+        attribute name { 'Earth' },
+        comment
+      }|
+      element tag {
+        attribute name { 'Greenland' },
+        comment
+      }|
+      element tag {
+        attribute name { 'NorthSea' },
+        comment
+      }|
+      element tag {
+        attribute name { 'UK' },
+        comment
+      }|
+      element tag {
+        attribute name { 'IceSheet' },
+        comment
+      }|
+      element tag {
         attribute name { 'IceShelfOceanCavity' },
+        comment
+      }|
+      element tag {
+        attribute name { 'Ocean' },
+        comment
+      }|
+      element tag {
+        attribute name { 'OPeNDAP' },
+        comment
+      }|
+      element tag {
+        attribute name { 'MetricPython' },
+        comment
+      }|
+      element tag {
+        attribute name { 'GEBCO' },
+        comment
+      }|
+      element tag {
+        attribute name { 'RTopo' },
         comment
       }|
       element tag {

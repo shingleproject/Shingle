@@ -1406,13 +1406,91 @@ provided above.</a:documentation>
       </element>
       <element name="tag">
         <attribute name="name">
+          <value>Antarctica</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <attribute name="name">
+          <value>Arctic</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <attribute name="name">
           <value>Caribbean</value>
         </attribute>
         <ref name="comment"/>
       </element>
       <element name="tag">
         <attribute name="name">
+          <value>Chile</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <attribute name="name">
+          <value>Earth</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <attribute name="name">
+          <value>Greenland</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <attribute name="name">
+          <value>NorthSea</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <attribute name="name">
+          <value>UK</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <attribute name="name">
+          <value>IceSheet</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <attribute name="name">
           <value>IceShelfOceanCavity</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <attribute name="name">
+          <value>Ocean</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <attribute name="name">
+          <value>OPeNDAP</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <attribute name="name">
+          <value>MetricPython</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <attribute name="name">
+          <value>GEBCO</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <attribute name="name">
+          <value>RTopo</value>
         </attribute>
         <ref name="comment"/>
       </element>
