@@ -320,6 +320,14 @@ class BRepComponent(object):
         self.AddSection('BRep component: ' + self.Name())
 
         if self.isRaster():
+            p = self.PreviousBRepComponent()
+            print p, p.Name()
+            # Pick up previous BRep component
+            if len(p.components) > 0:
+                n = EnrichedPolyline(self)
+                n.CopyOpenPart(p.components[-1])
+                error('** BRep to be glued to existing, unclosed brep', warning=True)
+
             self.AppendParameters()
             dataset = self.Dataset()
             dataset.AppendParameters()
@@ -632,6 +640,7 @@ Delete { Point{ %(prefix)s1 }; }
             self.index = p.Generate(self.index)
         if p:
           self.components.append(p)
+        
 
     def output_open_boundaries(self):
         

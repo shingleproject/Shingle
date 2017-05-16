@@ -350,39 +350,83 @@ def read_shape(filename):
     from osgeo import ogr
     from shapely.wkb import loads
 
-    def ReadShapefile(path_to_shp):
+    def ReadShapefile(filename):
         """Reads shapefile file and generates a dictionary of shapefile elements
         """
-        data = ogr.Open(path_to_shp)
-        elements = data.GetLayer()
-        return dict([GetFieldPolygon(element) for element in elements])
+        data = ogr.Open(filename)
+        # Obtain the ESRI Shapefile driver
+        driver = ogr.GetDriverByName('ESRI Shapefile')
+
+        # Open the source shapefile
+        #data = driver.Open('data/OpenOcean.shp', 0)
+        if data is None:
+            error('Unable to open shapefile: ' + filename, fatal=True)
+
+        layer = data.GetLayer()
+    
+        #features = [GetFieldPolygon(element) for element in layer]
+
+        features = []
+        for feature in layer:
+            p = GetFieldPolygon(feature)
+            #print p
+            if p is not None:
+                features.append(p)
+            
+
+        #feature = layer.GetNextFeature()
+        #while feature:
+        #    p = GetFieldPolygon(feature)
+        #    if p is not None:
+        #        features.append(p)
+            
+        #return dict(features)
+        return features
 
     def GetFieldPolygon(element):
         """Processes shapefile elements and returns a shapefile MultiPolygon
         """
-        feild = element.GetField(0)
-        polygon = loads(element.GetGeometryRef().ExportToWkb())
-        return (field, polygon)
+        geometry_reference = element.GetGeometryRef()
+        if geometry_reference is not None:
+            field = element.GetField(0)
+            polygon = loads(geometry_reference.ExportToWkb())
+            #return (field, polygon)
+            #print field
+            return polygon
+        return None
 
     paths = []
     shapes = ReadShapefile(filename)
-    shape = shapes[shapes.keys()[0]]
 
     from matplotlib.path import Path
     #class PPath(object):
     #  def __init__(self, vertices):
     #    self.vertices = vertices
 
-    try:
-        p = Path(vertices=shape.exterior.coords[:])
-        #print p.vertices
-        paths.append(p)
-    except:
-        pass
-    for interior in shape.interiors:
-        p = Path(vertices=interior.coords[:])
-        #print p.vertices
-        paths.append(p)
+    #import code
+    #code.interact(local=locals())
+
+    #shape = shapes[shapes.keys()[0]]
+    for shape in shapes:
+        print shape.type
+
+        if shape.type == 'Polygon':
+            try:
+                p = Path(vertices=shape.exterior.coords[:])
+                #print p.vertices
+                paths.append(p)
+            except:
+                pass
+            for interior in shape.interiors:
+                p = Path(vertices=interior.coords[:])
+                #print p.vertices
+                paths.append(p)
+        elif shape.type == 'LineString':
+                p = Path(vertices=shape.coords[:])
+                #print p.vertices
+                paths.append(p)
+        else:
+            error("Unable to process a %(type)s feature contained in shapefile: %(filename)s" % {'type': shape.type, 'filename': filename}, fatal=True) 
 
     return paths
 
