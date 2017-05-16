@@ -321,12 +321,12 @@ class BRepComponent(object):
 
         if self.isRaster():
             p = self.PreviousBRepComponent()
-            print p, p.Name()
+            
             # Pick up previous BRep component
             if len(p.components) > 0:
                 n = EnrichedPolyline(self)
                 n.CopyOpenPart(p.components[-1])
-                error('** BRep to be glued to existing, unclosed brep', warning=True)
+                error('** BRep %(name)s to be glued to existing, unclosed brep (%(previous)s)' % {'name':p.Name(), 'previous':n.Name()}, warning=True)
 
             self.AppendParameters()
             dataset = self.Dataset()
