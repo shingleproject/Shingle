@@ -89,7 +89,7 @@ installpackage: package
 	#@pip install ./dist/spud-diamond-*.tar.gz
 
 test: bin/shingle
-	@./bin/shingle -t test
+	@./bin/shingle -t test -tag continuous
 
 testimage:
 	@./bin/shingle -t test -image

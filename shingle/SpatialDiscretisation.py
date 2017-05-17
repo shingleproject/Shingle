@@ -81,6 +81,7 @@ class SpatialDiscretisation(object):
         self._dataset_read = False
         self._surface_geoid_rep_read = False
         self._filename = None
+        self.tags = None
 
         self._dataset = {}
         self._surface_geoid_rep = {}
@@ -96,6 +97,7 @@ class SpatialDiscretisation(object):
             case = self.Legacy()
         self.LocateOptionFile(case)
         self.LoadOptions()
+        self.GetTags()
         if load_only:
             from Test import VerificationTests
             self.verification = VerificationTests(load_only=True)
@@ -132,6 +134,16 @@ class SpatialDiscretisation(object):
         if not authors:
             authors.append('None identified')
         return list_to_sentence(authors)
+
+    def GetTags(self):
+        _rootpath = '/validation/tag'
+        tags = []
+        for n in range(specification.option_count(_rootpath)):
+            path = _rootpath + ('[%d]' % n) + '/name'
+            tag = specification.get_option(path)
+            tags.append(tag)
+        self.tags = tags
+        return self.tags
 
     def GetComment(self):
         from os import linesep
@@ -414,6 +426,7 @@ Created at: %(timestamp)s
         rep = SurfaceGeoidDomainRepresentation(spatial_discretisation=self, name=name)
 
         f = Field(surface_representation = rep )
+        
         self.Postprocess()
         self.WriteContent()
 

@@ -92,6 +92,10 @@ class VerificationTestEngine(object):
             for failure in self.failures:
                 report(failure, indent=1, test=True)
 
+    def GetTags(self, filename):
+        s = SpatialDiscretisation(case=filename, load_only=True)
+        return s.tags
+
     def LocateTestProblems(self):
         for root, dirs, files in os.walk(self._folder):
             for f in files:
@@ -102,6 +106,18 @@ class VerificationTestEngine(object):
                     if os.path.exists(os.path.join(os.path.dirname(fullpath), 'skip')):
                         self.skipped.append(fullpath)
                         continue
+                    if 'development' in self.GetTags(fullpath):
+                        self.skipped.append(fullpath)
+                        continue
+                    if len(universe.tags) > 0:
+                        include = False
+                        for tag in self.GetTags(fullpath):
+                            if tag in universe.tags:
+                                include = True
+                                break
+                        if not include:
+                            self.skipped.append(fullpath)
+                            continue
                     self.locations.append(fullpath)
         self.total_number = len(self.locations)
 
@@ -229,7 +245,12 @@ class VerificationTestEngine(object):
             else:
                 report('%(blue)sGenerating surface geoid representation%(end)s%(grey)s%(end)s', test=True, indent=1) 
 
+            # If updating, only run test if needed
+            #s = SpatialDiscretisation(case=location, load_only=True)
+            #if not (universe.verification_update and os.path.exists(s.PathRelative(s.Output()))):
+            
             s = SpatialDiscretisation(case=location)
+
             name = deepcopy(s.Name())
             if s.verification.result:
                 self.passes.append(name)

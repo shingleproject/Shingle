@@ -218,6 +218,7 @@ class ReadArguments(object):
                 if ((len(self.arguments) > 0) and (self.arguments[0][0] != '-')):
                     universe.logfilename = self.NextArgument()
 
+            elif (self.argument == '-tag'): universe.tags.append(self.NextArgument())
             elif (self.argument == '-c'): universe.cache = True
             elif (self.argument == '-plot'): universe.plotcontour = True; universe.plotcontouronly = True
             elif (self.argument == '-image'): universe.generate_mesh_image = True

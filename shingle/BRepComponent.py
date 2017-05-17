@@ -187,7 +187,7 @@ class BRepComponent(object):
         # Useful to catch this at the moment:
         if self._form_type in 'Polyline':
             raise NotImplementedError
-        if self._form_type not in ['Raster', 'Parallel', 'ExtendToParallel', 'ExtendToMeridian']:
+        if self._form_type not in ['Raster', 'Parallel', 'ExtendToParallel', 'ExtendToMeridian', 'BoundingBox']:
             raise NotImplementedError
         return self._form_type
 
@@ -196,6 +196,9 @@ class BRepComponent(object):
 
     def isParallel(self):
         return self.FormType() == 'Parallel'
+
+    def isBoundingBox(self):
+        return self.FormType() == 'BoundingBox'
 
     def isExtendToParallel(self):
         return self.FormType() == 'ExtendToParallel'
@@ -218,7 +221,7 @@ class BRepComponent(object):
     #if form == 'Raster':
     def Region(self):
         if self._bounds is None:
-            self._bounds = Bounds(self) 
+            self._bounds = Bounds(brep=self) 
         return self._bounds
 
     def MinimumArea(self):
@@ -317,6 +320,14 @@ class BRepComponent(object):
         self.AddSection('BRep component: ' + self.Name())
 
         if self.isRaster():
+            p = self.PreviousBRepComponent()
+            
+            # Pick up previous BRep component
+            if len(p.components) > 0:
+                n = EnrichedPolyline(self)
+                n.CopyOpenPart(p.components[-1])
+                error('** BRep %(name)s to be glued to existing, unclosed brep (%(previous)s)' % {'name':p.Name(), 'previous':n.Name()}, warning=True)
+
             self.AppendParameters()
             dataset = self.Dataset()
             dataset.AppendParameters()
@@ -336,6 +347,30 @@ class BRepComponent(object):
 
         elif self.isParallel():
             self.output_open_boundaries()
+
+        elif self.isBoundingBox():
+           
+            bounds = Bounds(path=self.FormPath())
+            bounds = bounds.GetMaxBounds()
+
+            index = self.index
+            
+            index.start = index.point + 1
+            loopstartpoint = index.start
+
+            p = EnrichedPolyline(self, reference_number = None, is_exterior = True)
+
+            a = [ bounds[0], bounds[1] ]
+            b = [ bounds[2], bounds[1] ]
+            c = [ bounds[2], bounds[3] ]
+            d = [ bounds[0], bounds[3] ]
+
+            index = draw_parallel_explicit(self, a, b, index, self.Spacing(), None)
+            index = draw_parallel_explicit(self, b, c, index, self.Spacing(), None)
+            index = draw_parallel_explicit(self, c, d, index, self.Spacing(), None)
+            #index = draw_parallel_explicit(self, d, a, index, self.Spacing(), None)
+
+            index = p.AddLoop(index, loopstartpoint, True)
 
         elif self.isExtendToParallel():
             latitude = specification.get_option(self.FormPath() + 'latitude')
@@ -605,6 +640,7 @@ Delete { Point{ %(prefix)s1 }; }
             self.index = p.Generate(self.index)
         if p:
           self.components.append(p)
+        
 
     def output_open_boundaries(self):
         

@@ -450,6 +450,7 @@ geoid_surface_representation_brep =
       geoid_surface_representation_raster
       |geoid_surface_representation_polyline
       |geoid_surface_representation_parallel
+      |geoid_surface_representation_boundingbox
       |geoid_surface_representation_extend_to_parallel
       |geoid_surface_representation_extend_to_meridian
       ),
@@ -565,6 +566,16 @@ geoid_surface_representation_parallel =
     }
   )
 
+geoid_surface_representation_boundingbox =
+  (
+    ## Boundary representation component source
+    element form {
+      attribute name { "BoundingBox" },
+      region+,
+      comment
+    }
+  )
+
 geoid_surface_representation_extend_to_parallel =
   (
     ## Boundary representation component source
@@ -601,6 +612,38 @@ geoid_surface_representation_polyline_options =
     }
   )
 
+region =
+  (
+    ## Region specification
+    ##
+    ##
+    element region {
+      attribute name { string },
+      element longitude {
+        element minimum {
+          real,
+          comment
+        },
+        element maximum {
+          real,
+          comment
+        },
+        comment
+      },
+      element latitude {
+        element minimum {
+          real,
+          comment
+        },
+        element maximum {
+          real,
+          comment
+        },
+        comment
+      }
+    } 
+  )
+
 geoid_surface_representation_raster_options =
   (
     ## Dataset to source the raster
@@ -608,7 +651,8 @@ geoid_surface_representation_raster_options =
       attribute name { string },
       comment
     },
-    ## Region specification - multiple?
+    region*,
+    ## Region specification
     ## Function specifying region of interest
     ##
     ## e.g. 'latitude <= -60.0'
@@ -617,7 +661,7 @@ geoid_surface_representation_raster_options =
     ##
     ## Legacy: 
     ## region
-    element region {
+    element region_expression {
       string, 
       comment
     }?, 
@@ -644,8 +688,6 @@ geoid_surface_representation_raster_options =
     contourtypes,
     ## Boundaries
     ##
-    ## Use a list of integers instead?
-    ##
     ## Specify paths to include
     ##
     ## Default: []
@@ -656,7 +698,7 @@ geoid_surface_representation_raster_options =
       comment
     }?,
     ## Boundaries to exclude
-    ## Use a list of integers instead?
+    ## 
     ## Specify paths to exclude
     ##
     ## Default: []
@@ -800,6 +842,19 @@ metric_options =
             comment
           }?
         }|
+        element form {
+          ## Resolve gravity waves
+          ##
+          ##
+          attribute name { "GravityWave" },
+          element bathymetry_dataset_name {
+            string
+          }?,
+          element scaling {
+            real,
+            comment
+          }?
+        }|
         ## From Raster
         element form {
           attribute name { "FromRaster" },
@@ -807,6 +862,25 @@ metric_options =
             attribute name { string },
             comment
           },
+          element field_name {
+            string,
+            comment
+          }?,
+          ## Python function prescribing consistent processing
+          ## of dataset fields.
+          ## Functions should act on the global 'field'
+          ## and can refer to variables 'lon' and 'lat'
+          ## for longitude and latitude, respectively.
+          ##
+          element function {
+            python_code,
+            comment
+          }?,
+          region*,
+          element scale {
+            real,
+            comment
+          }?,
           element filter {
             string,
             comment
@@ -826,7 +900,7 @@ metric_options =
           element max_hessian {
             real,
             comment
-          }
+          }?
         }|
         ## Metric generation options
         element form {
@@ -1150,22 +1224,109 @@ validation_tests_old =
 tags =
   (
     (
+      ## Arbitrary tag
+      ##
+      ## Please consider adding tags to the schema
       element tag {
         attribute name { string },
         comment
       }|
+      ## Cases including Antarctica
+      element tag {
+        attribute name { 'Antarctica' },
+        comment
+      }|
+      ## Cases including the Arctic
+      element tag {
+        attribute name { 'Arctic' },
+        comment
+      }|
+      ## Cases including the Caribbean
       element tag {
         attribute name { 'Caribbean' },
         comment
       }|
+      ## Cases including Chile
+      element tag {
+        attribute name { 'Chile' },
+        comment
+      }|
+      ## Cases including global Earth domains
+      element tag {
+        attribute name { 'Earth' },
+        comment
+      }|
+      ## Cases including the island of Greenland
+      element tag {
+        attribute name { 'Greenland' },
+        comment
+      }|
+      ## Cases including the North Sea
+      element tag {
+        attribute name { 'NorthSea' },
+        comment
+      }|
+      ## Cases including the island of the UK
+      element tag {
+        attribute name { 'UK' },
+        comment
+      }|
+      ## Cases containing ice sheet domains
+      element tag {
+        attribute name { 'IceSheet' },
+        comment
+      }|
+      ## Cases containing domains with ice shelf ocean cavities
       element tag {
         attribute name { 'IceShelfOceanCavity' },
         comment
       }|
+      ## Cases containing ocean domains
+      element tag {
+        attribute name { 'Ocean' },
+        comment
+      }|
+      ## Cases accessing datasets through HTTP
+      element tag {
+        attribute name { 'HTTP' },
+        comment
+      }|
+      ## Cases accessing datasets through OPeNDAP
+      element tag {
+        attribute name { 'OPeNDAP' },
+        comment
+      }|
+      ## Cases using an arbitrary  metric described in Python
+      element tag {
+        attribute name { 'MetricPython' },
+        comment
+      }|
+      ## Cases using the GEBCO dataset
+      element tag {
+        attribute name { 'GEBCO' },
+        comment
+      }|
+      ## Cases using the RTopo dataset
+      element tag {
+        attribute name { 'RTopo' },
+        comment
+      }|
+      ## Tests executed in the open, online continuous verification suite
+      element tag {
+        attribute name { 'continuous' },
+        comment
+      }|
+      ## Cases in development, will be skipped
+      element tag {
+        attribute name { 'development' },
+        comment
+      }|
+      ## Short tests
       element tag {
         attribute name { 'short' },
         comment
       }|
+      ## Long tests
       element tag {
         attribute name { 'long' },
         comment
@@ -1517,6 +1678,8 @@ contourtypes =
     }|
     element contourtype {
       attribute name { "iceshelfcavity" },
+      attribute field_name { "amask" },
+      attribute field_level { "10.0" },
       comment,
       ## Exclude iceshelf ocean cavities
       ##
@@ -1531,62 +1694,89 @@ contourtypes =
     }|
     element contourtype {
       attribute name { "icesheet" },
+      attribute field_name { "height" },
+      attribute field_level { "0.001" },
       comment
     }|
     element contourtype {
       attribute name { "z" },
+      attribute field_name { "Automatic" },
+      attribute field_level { "10.0" },
       comment
     }|
     element contourtype {
       attribute name { "ocean10m" },
+      attribute field_name { "Automatic" },
+      attribute field_level { "-10.0" },
       comment
     }|
     element contourtype {
       attribute name { "gebco10m" },
+      attribute field_name { "Automatic" },
+      attribute field_level { "-10.0" },
       comment
     }|
     element contourtype {
       attribute name { "gebco1m" },
+      attribute field_name { "Automatic" },
+      attribute field_level { "-1.0" },
       comment
     }|
     element contourtype {
       attribute name { "gebco0.1m" },
+      attribute field_name { "Automatic" },
+      attribute field_level { "-0.1" },
       comment
     }|
     element contourtype {
       attribute name { "gebco-10m" },
+      attribute field_name { "Automatic" },
+      attribute field_level { "10.0" },
       comment
     }|
     element contourtype {
       attribute name { "zmask" },
+      attribute field_name { "Automatic" },
       comment
     }|
     element contourtype {
       attribute name { "xyz" },
+      attribute field_name { "Automatic" },
+      attribute field_level { "-10.0" },
       comment
     }|
     element contourtype {
       attribute name { "noshelf" },
+      attribute field_name { "noshelf" },
       comment
     }|
     element contourtype {
       attribute name { "gsds" },
+      attribute field_name { "usrf" },
+      attribute field_level { "0.001" },
       comment
     }|
     element contourtype {
       attribute name { "mask" },
+      attribute field_name { "grounding" },
       comment
     }|
     element contourtype {
       attribute name { "gsdsz" },
+      attribute field_name { "thk" },
+      attribute field_level { "10.0" },
       comment
     }|
     element contourtype {
       attribute name { "gebco" },
+      attribute field_name { "z-range" },
+      attribute field_level { "10.0" },
       comment
     }|
     element contourtype {
       attribute name { "gsdszc" },
+      attribute field_name { "usrf-topg" },
+      attribute field_level { "10.0" },
       comment
     }
 

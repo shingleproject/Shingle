@@ -16,7 +16,7 @@
 // 
 // Project name: Chile_Talcahuano_http
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/04/04 22:53:08 
+// Created at: 2017/05/15 17:39:32 
 // Project description:
 //   Example simulation domain for modelling ocean wave propagation and
 //       tsunami inundation in the 2010 Chile M8.8 earthquake, centred at 35.9S 72.7W,
@@ -25,97 +25,100 @@
 //       in a latitude-longitude WGS84 projection.
 
 // == Source Shingle surface geoid boundnary representation =======
-// <?xml version='1.0' encoding='utf-8'?>
+// <?xml version="1.0" encoding="utf-8" ?>
 // <boundary_representation>
-//   <model_name>
-//     <string_value lines="1">Chile_Talcahuano_http</string_value>
-//     <comment>Example simulation domain for modelling ocean wave propagation and
+//     <model_name>
+//         <string_value lines="1">Chile_Talcahuano_http</string_value>
+//         <comment>Example simulation domain for modelling ocean wave propagation and
 //     tsunami inundation in the 2010 Chile M8.8 earthquake, centred at 35.9S 72.7W,
 //     approximately 100km north of Talcahuano.
 //     This is bounded by the 0m depth coastline from 32S to 40S, extended along parallels to the 77W meridian,
 //     in a latitude-longitude WGS84 projection.</comment>
-//   </model_name>
-//   <reference>
-//     <author name="ASCandy">
-//       <string_value lines="1">Adam S. Candy</string_value>
-//       <email_address>
-//         <string_value lines="1">A.S.Candy@tudelft.nl</string_value>
-//       </email_address>
-//       <institution>
-//         <string_value lines="1">Technische Universiteit Delft</string_value>
-//       </institution>
-//     </author>
-//   </reference>
-//   <domain_type>
-//     <string_value lines="1">geophysical</string_value>
-//   </domain_type>
-//   <global_parameters/>
-//   <output>
-//     <projection>
-//       <string_value>longlat</string_value>
-//     </projection>
-//   </output>
-//   <dataset name="Coquimbo">
-//     <form name="Raster">
-//       <source url="https://zenodo.org/record/399213/files/Coquimbo.nc" name="HTTP"/>
-//     </form>
-//     <projection name="Automatic"/>
-//   </dataset>
-//   <geoid_surface_representation name="SouthEastPacificOcean">
-//     <id>
-//       <integer_value rank="0">9</integer_value>
-//     </id>
-//     <brep_component name="SouthEastPacificOceanCoast">
-//       <form name="Raster">
-//         <source name="Coquimbo"/>
-//         <contourtype name="ocean10m"/>
-//       </form>
-//       <identification name="Coast"/>
-//       <representation_type name="BSplines"/>
-//     </brep_component>
-//     <brep_component name="ExtendToMeridian">
-//       <form name="ExtendToMeridian">
-//         <longitude>
-//           <real_value rank="0">-77.0</real_value>
-//         </longitude>
-//       </form>
-//       <identification name="OpenOcean"/>
-//       <representation_type name="BSplines"/>
-//     </brep_component>
-//     <boundary name="Coast">
-//       <identification_number>
-//         <integer_value rank="0">3</integer_value>
-//       </identification_number>
-//     </boundary>
-//     <boundary name="OpenOcean">
-//       <identification_number>
-//         <integer_value rank="0">4</integer_value>
-//       </identification_number>
-//     </boundary>
-//   </geoid_surface_representation>
-//   <geoid_metric>
-//     <form name="Proximity">
-//       <boundary name="Coast"/>
-//       <edge_length_minimum>
-//         <real_value rank="0">1.0E-2</real_value>
-//       </edge_length_minimum>
-//       <edge_length_maximum>
-//         <real_value rank="0">2.0</real_value>
-//       </edge_length_maximum>
-//       <proximity_minimum>
-//         <real_value rank="0">5.0E-2</real_value>
-//       </proximity_minimum>
-//       <proximity_maximum>
-//         <real_value rank="0">5.0</real_value>
-//       </proximity_maximum>
-//     </form>
-//   </geoid_metric>
-//   <geoid_mesh>
-//     <library name="Gmsh"/>
-//   </geoid_mesh>
-//   <validation>
-//     <test file_name="data/Chile_Talcahuano_http_valid.geo" name="BrepDescription"/>
-//   </validation>
+//     </model_name>
+//     <reference>
+//         <author name="ASCandy">
+//             <string_value lines="1">Adam S. Candy</string_value>
+//             <email_address>
+//                 <string_value lines="1">A.S.Candy@tudelft.nl</string_value>
+//             </email_address>
+//             <institution>
+//                 <string_value lines="1">Technische Universiteit Delft</string_value>
+//             </institution>
+//         </author>
+//     </reference>
+//     <domain_type>
+//         <string_value lines="1">geophysical</string_value>
+//     </domain_type>
+//     <global_parameters></global_parameters>
+//     <output>
+//         <projection>
+//             <string_value>longlat</string_value>
+//         </projection>
+//     </output>
+//     <dataset name="Coquimbo">
+//         <form name="Raster">
+//             <source name="HTTP" url="https://zenodo.org/record/399213/files/Coquimbo.nc"></source>
+//         </form>
+//         <projection name="Automatic"></projection>
+//     </dataset>
+//     <geoid_surface_representation name="SouthEastPacificOcean">
+//         <id>
+//             <integer_value rank="0">9</integer_value>
+//         </id>
+//         <brep_component name="SouthEastPacificOceanCoast">
+//             <form name="Raster">
+//                 <source name="Coquimbo"></source>
+//                 <contourtype name="ocean10m" field_level="-10.0" field_name="Automatic"></contourtype>
+//             </form>
+//             <identification name="Coast"></identification>
+//             <representation_type name="BSplines"></representation_type>
+//         </brep_component>
+//         <brep_component name="ExtendToMeridian">
+//             <form name="ExtendToMeridian">
+//                 <longitude>
+//                     <real_value rank="0">-77</real_value>
+//                 </longitude>
+//             </form>
+//             <identification name="OpenOcean"></identification>
+//             <representation_type name="BSplines"></representation_type>
+//         </brep_component>
+//         <boundary name="Coast">
+//             <identification_number>
+//                 <integer_value rank="0">3</integer_value>
+//             </identification_number>
+//         </boundary>
+//         <boundary name="OpenOcean">
+//             <identification_number>
+//                 <integer_value rank="0">4</integer_value>
+//             </identification_number>
+//         </boundary>
+//     </geoid_surface_representation>
+//     <geoid_metric>
+//         <form name="Proximity">
+//             <boundary name="Coast"></boundary>
+//             <edge_length_minimum>
+//                 <real_value rank="0">0.01</real_value>
+//             </edge_length_minimum>
+//             <edge_length_maximum>
+//                 <real_value rank="0">2</real_value>
+//             </edge_length_maximum>
+//             <proximity_minimum>
+//                 <real_value rank="0">0.05</real_value>
+//             </proximity_minimum>
+//             <proximity_maximum>
+//                 <real_value rank="0">5</real_value>
+//             </proximity_maximum>
+//         </form>
+//     </geoid_metric>
+//     <geoid_mesh>
+//         <library name="Gmsh"></library>
+//     </geoid_mesh>
+//     <validation>
+//         <test name="BrepDescription" file_name="data/Chile_Talcahuano_http_valid.geo"></test>
+//         <tag name="Chile"></tag>
+//         <tag name="HTTP"></tag>
+//         <tag name="continuous"></tag>
+//     </validation>
 // </boundary_representation>
 
 // == Boundary Representation Specification Parameters ============

@@ -551,6 +551,7 @@ To be sorted...</a:documentation>
         <ref name="geoid_surface_representation_raster"/>
         <ref name="geoid_surface_representation_polyline"/>
         <ref name="geoid_surface_representation_parallel"/>
+        <ref name="geoid_surface_representation_boundingbox"/>
         <ref name="geoid_surface_representation_extend_to_parallel"/>
         <ref name="geoid_surface_representation_extend_to_meridian"/>
       </choice>
@@ -684,6 +685,18 @@ Enable this to match end to end</a:documentation>
       <ref name="comment"/>
     </element>
   </define>
+  <define name="geoid_surface_representation_boundingbox">
+    <element name="form">
+      <a:documentation>Boundary representation component source</a:documentation>
+      <attribute name="name">
+        <value>BoundingBox</value>
+      </attribute>
+      <oneOrMore>
+        <ref name="region"/>
+      </oneOrMore>
+      <ref name="comment"/>
+    </element>
+  </define>
   <define name="geoid_surface_representation_extend_to_parallel">
     <element name="form">
       <a:documentation>Boundary representation component source</a:documentation>
@@ -719,6 +732,38 @@ Enable this to match end to end</a:documentation>
       <ref name="comment"/>
     </element>
   </define>
+  <define name="region">
+    <element name="region">
+      <a:documentation>Region specification
+
+</a:documentation>
+      <attribute name="name">
+        <data type="string"/>
+      </attribute>
+      <element name="longitude">
+        <element name="minimum">
+          <ref name="real"/>
+          <ref name="comment"/>
+        </element>
+        <element name="maximum">
+          <ref name="real"/>
+          <ref name="comment"/>
+        </element>
+        <ref name="comment"/>
+      </element>
+      <element name="latitude">
+        <element name="minimum">
+          <ref name="real"/>
+          <ref name="comment"/>
+        </element>
+        <element name="maximum">
+          <ref name="real"/>
+          <ref name="comment"/>
+        </element>
+        <ref name="comment"/>
+      </element>
+    </element>
+  </define>
   <define name="geoid_surface_representation_raster_options">
     <element name="source">
       <a:documentation>Dataset to source the raster</a:documentation>
@@ -727,9 +772,12 @@ Enable this to match end to end</a:documentation>
       </attribute>
       <ref name="comment"/>
     </element>
+    <zeroOrMore>
+      <ref name="region"/>
+    </zeroOrMore>
     <optional>
-      <element name="region">
-        <a:documentation>Region specification - multiple?
+      <element name="region_expression">
+        <a:documentation>Region specification
 Function specifying region of interest
 
 e.g. 'latitude &lt;= -60.0'
@@ -771,8 +819,6 @@ Legacy: minarea</a:documentation>
       <element name="boundary">
         <a:documentation>Boundaries
 
-Use a list of integers instead?
-
 Specify paths to include
 
 Default: []
@@ -785,7 +831,7 @@ Legacy: boundaries</a:documentation>
     <optional>
       <element name="boundary_to_exclude">
         <a:documentation>Boundaries to exclude
-Use a list of integers instead?
+
 Specify paths to exclude
 
 Default: []
@@ -940,6 +986,25 @@ Legacy: elementlength</a:documentation>
             </optional>
           </element>
           <element name="form">
+            <attribute name="name">
+              <a:documentation>Resolve gravity waves
+
+</a:documentation>
+              <value>GravityWave</value>
+            </attribute>
+            <optional>
+              <element name="bathymetry_dataset_name">
+                <data type="string"/>
+              </element>
+            </optional>
+            <optional>
+              <element name="scaling">
+                <ref name="real"/>
+                <ref name="comment"/>
+              </element>
+            </optional>
+          </element>
+          <element name="form">
             <a:documentation>From Raster</a:documentation>
             <attribute name="name">
               <value>FromRaster</value>
@@ -950,6 +1015,33 @@ Legacy: elementlength</a:documentation>
               </attribute>
               <ref name="comment"/>
             </element>
+            <optional>
+              <element name="field_name">
+                <data type="string"/>
+                <ref name="comment"/>
+              </element>
+            </optional>
+            <optional>
+              <element name="function">
+                <a:documentation>Python function prescribing consistent processing
+of dataset fields.
+Functions should act on the global 'field'
+and can refer to variables 'lon' and 'lat'
+for longitude and latitude, respectively.
+</a:documentation>
+                <ref name="python_code"/>
+                <ref name="comment"/>
+              </element>
+            </optional>
+            <zeroOrMore>
+              <ref name="region"/>
+            </zeroOrMore>
+            <optional>
+              <element name="scale">
+                <ref name="real"/>
+                <ref name="comment"/>
+              </element>
+            </optional>
             <optional>
               <element name="filter">
                 <data type="string"/>
@@ -968,10 +1060,12 @@ Legacy: elementlength</a:documentation>
                 <ref name="comment"/>
               </element>
             </optional>
-            <element name="max_hessian">
-              <ref name="real"/>
-              <ref name="comment"/>
-            </element>
+            <optional>
+              <element name="max_hessian">
+                <ref name="real"/>
+                <ref name="comment"/>
+              </element>
+            </optional>
           </element>
           <optional>
             <element name="form">
@@ -1305,30 +1399,149 @@ provided above.</a:documentation>
   <define name="tags">
     <choice>
       <element name="tag">
+        <a:documentation>Arbitrary tag
+
+Please consider adding tags to the schema</a:documentation>
         <attribute name="name">
           <data type="string"/>
         </attribute>
         <ref name="comment"/>
       </element>
       <element name="tag">
+        <a:documentation>Cases including Antarctica</a:documentation>
+        <attribute name="name">
+          <value>Antarctica</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <a:documentation>Cases including the Arctic</a:documentation>
+        <attribute name="name">
+          <value>Arctic</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <a:documentation>Cases including the Caribbean</a:documentation>
         <attribute name="name">
           <value>Caribbean</value>
         </attribute>
         <ref name="comment"/>
       </element>
       <element name="tag">
+        <a:documentation>Cases including Chile</a:documentation>
+        <attribute name="name">
+          <value>Chile</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <a:documentation>Cases including global Earth domains</a:documentation>
+        <attribute name="name">
+          <value>Earth</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <a:documentation>Cases including the island of Greenland</a:documentation>
+        <attribute name="name">
+          <value>Greenland</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <a:documentation>Cases including the North Sea</a:documentation>
+        <attribute name="name">
+          <value>NorthSea</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <a:documentation>Cases including the island of the UK</a:documentation>
+        <attribute name="name">
+          <value>UK</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <a:documentation>Cases containing ice sheet domains</a:documentation>
+        <attribute name="name">
+          <value>IceSheet</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <a:documentation>Cases containing domains with ice shelf ocean cavities</a:documentation>
         <attribute name="name">
           <value>IceShelfOceanCavity</value>
         </attribute>
         <ref name="comment"/>
       </element>
       <element name="tag">
+        <a:documentation>Cases containing ocean domains</a:documentation>
+        <attribute name="name">
+          <value>Ocean</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <a:documentation> Cases accessing datasets through HTTP</a:documentation>
+        <attribute name="name">
+          <value>HTTP</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <a:documentation> Cases accessing datasets through OPeNDAP</a:documentation>
+        <attribute name="name">
+          <value>OPeNDAP</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <a:documentation>Cases using an arbitrary  metric described in Python</a:documentation>
+        <attribute name="name">
+          <value>MetricPython</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <a:documentation>Cases using the GEBCO dataset</a:documentation>
+        <attribute name="name">
+          <value>GEBCO</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <a:documentation>Cases using the RTopo dataset</a:documentation>
+        <attribute name="name">
+          <value>RTopo</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <a:documentation>Tests executed in the open, online continuous verification suite</a:documentation>
+        <attribute name="name">
+          <value>continuous</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <a:documentation>Cases in development, will be skipped</a:documentation>
+        <attribute name="name">
+          <value>development</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
+        <a:documentation>Short tests</a:documentation>
         <attribute name="name">
           <value>short</value>
         </attribute>
         <ref name="comment"/>
       </element>
       <element name="tag">
+        <a:documentation> Long tests</a:documentation>
         <attribute name="name">
           <value>long</value>
         </attribute>
@@ -1809,6 +2022,12 @@ Legacy: contourtype</a:documentation>
         <attribute name="name">
           <value>iceshelfcavity</value>
         </attribute>
+        <attribute name="field_name">
+          <value>amask</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>10.0</value>
+        </attribute>
         <ref name="comment"/>
         <optional>
           <element name="exclude_iceshelf_ocean_cavities">
@@ -1827,11 +2046,23 @@ Legacy: exclude_iceshelf_ocean_cavities</a:documentation>
         <attribute name="name">
           <value>icesheet</value>
         </attribute>
+        <attribute name="field_name">
+          <value>height</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>0.001</value>
+        </attribute>
         <ref name="comment"/>
       </element>
       <element name="contourtype">
         <attribute name="name">
           <value>z</value>
+        </attribute>
+        <attribute name="field_name">
+          <value>Automatic</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>10.0</value>
         </attribute>
         <ref name="comment"/>
       </element>
@@ -1839,11 +2070,23 @@ Legacy: exclude_iceshelf_ocean_cavities</a:documentation>
         <attribute name="name">
           <value>ocean10m</value>
         </attribute>
+        <attribute name="field_name">
+          <value>Automatic</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>-10.0</value>
+        </attribute>
         <ref name="comment"/>
       </element>
       <element name="contourtype">
         <attribute name="name">
           <value>gebco10m</value>
+        </attribute>
+        <attribute name="field_name">
+          <value>Automatic</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>-10.0</value>
         </attribute>
         <ref name="comment"/>
       </element>
@@ -1851,11 +2094,23 @@ Legacy: exclude_iceshelf_ocean_cavities</a:documentation>
         <attribute name="name">
           <value>gebco1m</value>
         </attribute>
+        <attribute name="field_name">
+          <value>Automatic</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>-1.0</value>
+        </attribute>
         <ref name="comment"/>
       </element>
       <element name="contourtype">
         <attribute name="name">
           <value>gebco0.1m</value>
+        </attribute>
+        <attribute name="field_name">
+          <value>Automatic</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>-0.1</value>
         </attribute>
         <ref name="comment"/>
       </element>
@@ -1863,11 +2118,20 @@ Legacy: exclude_iceshelf_ocean_cavities</a:documentation>
         <attribute name="name">
           <value>gebco-10m</value>
         </attribute>
+        <attribute name="field_name">
+          <value>Automatic</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>10.0</value>
+        </attribute>
         <ref name="comment"/>
       </element>
       <element name="contourtype">
         <attribute name="name">
           <value>zmask</value>
+        </attribute>
+        <attribute name="field_name">
+          <value>Automatic</value>
         </attribute>
         <ref name="comment"/>
       </element>
@@ -1875,10 +2139,19 @@ Legacy: exclude_iceshelf_ocean_cavities</a:documentation>
         <attribute name="name">
           <value>xyz</value>
         </attribute>
+        <attribute name="field_name">
+          <value>Automatic</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>-10.0</value>
+        </attribute>
         <ref name="comment"/>
       </element>
       <element name="contourtype">
         <attribute name="name">
+          <value>noshelf</value>
+        </attribute>
+        <attribute name="field_name">
           <value>noshelf</value>
         </attribute>
         <ref name="comment"/>
@@ -1887,11 +2160,20 @@ Legacy: exclude_iceshelf_ocean_cavities</a:documentation>
         <attribute name="name">
           <value>gsds</value>
         </attribute>
+        <attribute name="field_name">
+          <value>usrf</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>0.001</value>
+        </attribute>
         <ref name="comment"/>
       </element>
       <element name="contourtype">
         <attribute name="name">
           <value>mask</value>
+        </attribute>
+        <attribute name="field_name">
+          <value>grounding</value>
         </attribute>
         <ref name="comment"/>
       </element>
@@ -1899,17 +2181,35 @@ Legacy: exclude_iceshelf_ocean_cavities</a:documentation>
         <attribute name="name">
           <value>gsdsz</value>
         </attribute>
+        <attribute name="field_name">
+          <value>thk</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>10.0</value>
+        </attribute>
         <ref name="comment"/>
       </element>
       <element name="contourtype">
         <attribute name="name">
           <value>gebco</value>
         </attribute>
+        <attribute name="field_name">
+          <value>z-range</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>10.0</value>
+        </attribute>
         <ref name="comment"/>
       </element>
       <element name="contourtype">
         <attribute name="name">
           <value>gsdszc</value>
+        </attribute>
+        <attribute name="field_name">
+          <value>usrf-topg</value>
+        </attribute>
+        <attribute name="field_level">
+          <value>10.0</value>
         </attribute>
         <ref name="comment"/>
       </element>

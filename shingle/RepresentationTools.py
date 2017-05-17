@@ -479,6 +479,11 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
             self._valid_vertices_number = sum(self._valid_vertices)
         return self._valid_vertices_number
 
+    #def EnsureMinimumSpacing(self):
+    #    for point in range(self.PointNumber()):
+    #        position = self.vertices[point, :]
+        
+
     def ConstrainPoints(self):
         flag = 0
         for point in range(self.PointNumber()):
