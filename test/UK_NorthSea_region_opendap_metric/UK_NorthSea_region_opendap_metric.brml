@@ -1,160 +1,164 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version='1.0' encoding='utf-8'?>
 <boundary_representation>
-    <model_name>
-        <string_value lines="1">UK_NorthSea_region_opendap_metric</string_value>
-        <comment>Example simulation domain around the UK and Ireland in the North Sea.
+  <model_name>
+    <string_value lines="1">UK_NorthSea_region_opendap_metric</string_value>
+    <comment>Example simulation domain around the UK and Ireland in the North Sea.
     In a latitude-longitude WGS84 projection.</comment>
-    </model_name>
-    <reference>
-        <author name="ASCandy">
-            <string_value lines="1">Adam S. Candy</string_value>
-            <email_address>
-                <string_value lines="1">A.S.Candy@tudelft.nl</string_value>
-            </email_address>
-            <institution>
-                <string_value lines="1">Technische Universiteit Delft</string_value>
-            </institution>
-        </author>
-    </reference>
-    <domain_type>
-        <string_value lines="1">oceans</string_value>
-    </domain_type>
-    <global_parameters></global_parameters>
-    <output>
-        <projection>
-            <string_value>longlat</string_value>
-        </projection>
-        <orientation name="LongLat"></orientation>
-    </output>
-    <dataset name="ETOPO2">
-        <form name="Raster">
-            <source name="OPeNDAP" url="http://geoport.whoi.edu/thredds/dodsC/bathy/etopo2_v2c.nc"></source>
-        </form>
-        <projection name="Automatic"></projection>
-    </dataset>
-    <geoid_surface_representation name="NorthSea">
-        <id>
-            <integer_value rank="0">9</integer_value>
-        </id>
-        <brep_component name="NorthSea">
-            <form name="Raster">
-                <source name="ETOPO2"></source>
-                <region name="MainRegionAroundUK">
-                    <longitude>
-                        <minimum>
-                            <real_value rank="0">-14</real_value>
-                        </minimum>
-                        <maximum>
-                            <real_value rank="0">6</real_value>
-                        </maximum>
-                    </longitude>
-                    <latitude>
-                        <minimum>
-                            <real_value rank="0">46</real_value>
-                        </minimum>
-                        <maximum>
-                            <real_value rank="0">64</real_value>
-                        </maximum>
-                    </latitude>
-                </region>
-                <minimum_area>
-                    <real_value rank="0">0.1</real_value>
-                </minimum_area>
-                <contourtype name="gebco10m" field_level="-10.0" field_name="Automatic"></contourtype>
-                <boundary>1</boundary>
-            </form>
-            <identification name="Coast"></identification>
-            <representation_type name="BSplines"></representation_type>
-        </brep_component>
-        <brep_component name="OpenBoundary">
-            <form name="BoundingBox">
-                <region name="MainRegionAroundUK">
-                    <longitude>
-                        <minimum>
-                            <real_value rank="0">-14</real_value>
-                        </minimum>
-                        <maximum>
-                            <real_value rank="0">6</real_value>
-                        </maximum>
-                    </longitude>
-                    <latitude>
-                        <minimum>
-                            <real_value rank="0">46</real_value>
-                        </minimum>
-                        <maximum>
-                            <real_value rank="0">64</real_value>
-                        </maximum>
-                    </latitude>
-                </region>
-            </form>
-            <identification name="OpenOcean"></identification>
-            <representation_type name="BSplines"></representation_type>
-        </brep_component>
-        <boundary name="Coast">
-            <identification_number>
-                <integer_value rank="0">3</integer_value>
-            </identification_number>
-        </boundary>
-        <boundary name="OpenOcean">
-            <identification_number>
-                <integer_value rank="0">4</integer_value>
-            </identification_number>
-        </boundary>
-    </geoid_surface_representation>
-    <geoid_metric>
-        <form name="FromRaster">
-            <source name="ETOPO2"></source>
-            <function>
-                <string_value lines="20" type="code" language="python">field = - field
-print &apos;1&apos;, field.min(), field.max()
+  </model_name>
+  <reference>
+    <author name="ASCandy">
+      <string_value lines="1">Adam S. Candy</string_value>
+      <email_address>
+        <string_value lines="1">A.S.Candy@tudelft.nl</string_value>
+      </email_address>
+      <institution>
+        <string_value lines="1">Technische Universiteit Delft</string_value>
+      </institution>
+    </author>
+  </reference>
+  <domain_type>
+    <string_value lines="1">oceans</string_value>
+  </domain_type>
+  <global_parameters/>
+  <output>
+    <projection>
+      <string_value>longlat</string_value>
+    </projection>
+    <orientation name="LongLat"/>
+  </output>
+  <dataset name="ETOPO2">
+    <form name="Raster">
+      <source url="http://geoport.whoi.edu/thredds/dodsC/bathy/etopo2_v2c.nc" name="OPeNDAP"/>
+    </form>
+    <projection name="Automatic"/>
+  </dataset>
+  <geoid_surface_representation name="NorthSea">
+    <id>
+      <integer_value rank="0">9</integer_value>
+    </id>
+    <brep_component name="NorthSea">
+      <form name="Raster">
+        <source name="ETOPO2"/>
+        <region name="MainRegionAroundUK">
+          <longitude>
+            <minimum>
+              <real_value rank="0">-14</real_value>
+            </minimum>
+            <maximum>
+              <real_value rank="0">6</real_value>
+            </maximum>
+          </longitude>
+          <latitude>
+            <minimum>
+              <real_value rank="0">46</real_value>
+            </minimum>
+            <maximum>
+              <real_value rank="0">64</real_value>
+            </maximum>
+          </latitude>
+        </region>
+        <minimum_area>
+          <real_value rank="0">0.1</real_value>
+        </minimum_area>
+        <contourtype field_level="-10.0" field_name="Automatic" name="gebco10m"/>
+        <boundary>1</boundary>
+      </form>
+      <identification name="Coast"/>
+      <representation_type name="BSplines"/>
+    </brep_component>
+    <brep_component name="OpenBoundary">
+      <form name="BoundingBox">
+        <region name="MainRegionAroundUK">
+          <longitude>
+            <minimum>
+              <real_value rank="0">-14</real_value>
+            </minimum>
+            <maximum>
+              <real_value rank="0">6</real_value>
+            </maximum>
+          </longitude>
+          <latitude>
+            <minimum>
+              <real_value rank="0">46</real_value>
+            </minimum>
+            <maximum>
+              <real_value rank="0">64</real_value>
+            </maximum>
+          </latitude>
+        </region>
+      </form>
+      <identification name="OpenOcean"/>
+      <representation_type name="BSplines"/>
+    </brep_component>
+    <boundary name="Coast">
+      <identification_number>
+        <integer_value rank="0">3</integer_value>
+      </identification_number>
+    </boundary>
+    <boundary name="OpenOcean">
+      <identification_number>
+        <integer_value rank="0">4</integer_value>
+      </identification_number>
+    </boundary>
+  </geoid_surface_representation>
+  <geoid_metric>
+    <form name="FromRaster">
+      <source name="ETOPO2"/>
+      <function>
+        <string_value lines="20" type="code" language="python"># Change depth to distance to bottom
+field = - field
+# print '1', field.min(), field.max()
+# Remove influence of bathymetric values above zero datum
 field[field &lt; 0.0] = 0.0
-print &apos;2&apos;, field.min(), field.max()
+# print '2', field.min(), field.max()
 
+# Calculate sqrt(gh)
 field = sqrt(field * 9.81)
-print &apos;3&apos;, field.min(), field.max()
+# print '3', field.min(), field.max()
 
-
-# TODO: Add as Python function on field
+# Scale to [0, 1]
 field *= 1.0 / field.max()
-print &apos;4&apos;, field.min(), field.max()
+# print '4', field.min(), field.max()
+
+# Scale to [0.1, 1.0]
 field *= (1.0 - 0.1)
-print &apos;5&apos;, field.min(), field.max()
+# print '5', field.min(), field.max()
 field += 0.1
-print &apos;6&apos;, field.min(), field.max()</string_value>
-            </function>
-            <region name="MainRegionAroundUK">
-                <longitude>
-                    <minimum>
-                        <real_value rank="0">-14</real_value>
-                    </minimum>
-                    <maximum>
-                        <real_value rank="0">6</real_value>
-                    </maximum>
-                </longitude>
-                <latitude>
-                    <minimum>
-                        <real_value rank="0">46</real_value>
-                    </minimum>
-                    <maximum>
-                        <real_value rank="0">64</real_value>
-                    </maximum>
-                </latitude>
-            </region>
-        </form>
-    </geoid_metric>
-    <geoid_mesh>
-        <library name="Gmsh">
-            <extend_metric_from_boundary></extend_metric_from_boundary>
-        </library>
-        <generate></generate>
-        <parse></parse>
-    </geoid_mesh>
-    <validation>
-        <test name="BrepDescription" file_name="data/UK_NorthSea_region_opendap_metric_valid.geo"></test>
-        <tag name="UK"></tag>
-        <tag name="NorthSea"></tag>
-        <tag name="OPeNDAP"></tag>
-        <tag name="continuous"></tag>
-        <tag name="MetricPython"></tag>
-    </validation>
+# print '6', field.min(), field.max()</string_value>
+      </function>
+      <region name="MainRegionAroundUK">
+        <longitude>
+          <minimum>
+            <real_value rank="0">-14</real_value>
+          </minimum>
+          <maximum>
+            <real_value rank="0">6</real_value>
+          </maximum>
+        </longitude>
+        <latitude>
+          <minimum>
+            <real_value rank="0">46</real_value>
+          </minimum>
+          <maximum>
+            <real_value rank="0">64</real_value>
+          </maximum>
+        </latitude>
+      </region>
+    </form>
+  </geoid_metric>
+  <geoid_mesh>
+    <library name="Gmsh">
+      <extend_metric_from_boundary/>
+    </library>
+    <generate/>
+    <parse/>
+  </geoid_mesh>
+  <validation>
+    <test file_name="data/UK_NorthSea_region_opendap_metric_valid.geo" name="BrepDescription"/>
+    <tag name="UK"/>
+    <tag name="NorthSea"/>
+    <tag name="OPeNDAP"/>
+    <tag name="continuous"/>
+    <tag name="MetricPython"/>
+  </validation>
 </boundary_representation>
