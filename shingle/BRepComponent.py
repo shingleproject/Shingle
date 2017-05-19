@@ -314,6 +314,7 @@ class BRepComponent(object):
         dataset = self.Dataset()
         self.report('Generating contours, from raster: ' + dataset.LocationFull(), include = False, indent = 1)
         self._pathall = ReadPaths(self, dataset)
+            
 
     def Generate(self):
         import os

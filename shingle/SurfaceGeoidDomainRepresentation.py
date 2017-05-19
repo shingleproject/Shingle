@@ -270,9 +270,18 @@ Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'surface':self.Surface
 
 
     def Generate(self):
-        
+
+        #exterior = None
+        #interior = []
+
+        # incomplete?
+
+        # make global to class
+        components = []
+
         for brep in self.BRepComponentsOrder():
             brep.Generate()
+            components = components + brep._valid_paths
 
         self.output_surfaces()
 

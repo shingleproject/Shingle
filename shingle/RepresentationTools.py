@@ -229,8 +229,13 @@ def draw_meridian_explicit(rep, start, end, index, dx, to_meridian=None):
 
 class EnrichedPolyline(object):
 
-    def __init__(self, rep, contour=None, vertices=None, shape=None, reference_number=None, is_exterior=False, initialise_only = False):
+    _TYPE_UNDFINED = 0
+    _TYPE_EXTERIOR = 1
+    _TYPE_INTERIOR = 2
+
+    def __init__(self, rep=None, contour=None, vertices=None, shape=None, reference_number=None, is_exterior=False, initialise_only = False):
         self.vertices = []
+        self.type = self._TYPE_UNDFINED
         self.shape = None
         self._valid = False
 
