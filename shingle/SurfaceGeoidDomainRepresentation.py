@@ -280,8 +280,20 @@ Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'surface':self.Surface
         components = []
 
         for brep in self.BRepComponentsOrder():
-            brep.Generate()
-            components = components + brep._valid_paths
+            
+            # Generates children BRepComponent objects, one for each distinct physical object
+            # e.g. pathline, closed or open  -- to later be merged, interior/exterior determination
+            components = components + brep.Generate(components=components)
+
+
+            # carry list generated so far, complete and incomplete
+            # mark 
+            #components = components + brep._valid_paths
+        
+        if len(components) > 0:
+            report('Component boundary representions identified:', indent=1)
+        for i, component in enumerate(components):
+            report('%(number)d: %(name)s ', var = {'number':i+1, 'name':component.Name()}, indent=2)
 
         self.output_surfaces()
 

@@ -41,11 +41,49 @@ from Spud import specification
 from Plot import PlotContours
 from Bounds import Bounds
 
+from copy import copy, deepcopy
+
+# class BRepComponentGroup(object):
+#     """ Object for organising BRepComponents into complete boundary representations
+#         for use in SurfaceGeoidDomainRepresentation objects"""
+# 
+# 
+#     def __init__(self):
+#         # Ordered list of BRepComponent objects that contribute to an exterior boundary
+#         exterior = []
+#         # List of interior boundaries
+#         # The interior boundaries contain ordered lists of BRepComponent objects that contribute to an interior boundary
+#         interiors = []
+# 
+#     def isComplete(self):
+# 
+# 
+#     def Add(self, components):
+#         # components is a list of EnrichedPolylines
+#         for component in components:
+#             if component.isExterior():
+#                 # add to exterior
+# 
+#             else:
+# 
+# 
+# 
+#     def Merge(self, other):
+
+
+# Split to form BRepComponentReader(BRepComponent):
+
 class BRepComponent(object):
   
     _bounds = None
 
-    def __init__(self, surface_rep, number, pathall=None):
+    def __init__(self,
+            # Original
+            surface_rep=None, number=None, pathall=None,
+            # New 
+            component=None
+            ):
+ 
         self._name = None
         self._path = None
         self._formpath = None
@@ -72,11 +110,24 @@ class BRepComponent(object):
         self.exterior = []
         self.components = []
 
+        self.parent = None
+
         self.number = number
         self._surface_rep = surface_rep
         self._path = '/geoid_surface_representation::%(name)s/brep_component::%(brep_name)s' % {'name':self._surface_rep.name, 'brep_name':self.Name()}
-        self.index = self._surface_rep.index
+        if self._surface_rep is not None:
+            self.index = self._surface_rep.index
         self._pathall = pathall
+
+    def Reproduce(self, components=None):
+        # Improve to limit copy of attributes intelligently
+        #   use deepcopy if necessary                                         
+        child = copy(self)                                                         
+        child._name = "Part of " + self._name
+        child.parent = self
+        if components is not None:
+            child.components = components
+        return child
 
     # Imports:
     def report(self, *args, **kwargs):
@@ -316,7 +367,7 @@ class BRepComponent(object):
         self._pathall = ReadPaths(self, dataset)
             
 
-    def Generate(self):
+    def Generate(self, components=None):
         import os
         self.AddSection('BRep component: ' + self.Name())
 
@@ -344,7 +395,38 @@ class BRepComponent(object):
             
             if (universe.plotcontour):
                 self.PlotFoundPaths()
-            self.PathProcess()
+
+            for p in self._valid_paths:
+                p.SetExterior(self.isExterior(p.reference_number, valid_paths = self._valid_paths))
+                if p.isValid():
+                    if p.isExterior():
+                        self.exterior.append(p)
+                    else:
+                        if p.shape.type == 'Polygon':
+                            self.interior.append(p)
+                        else:
+                            report('Interior path %(number)s skipped, not a complete island', var = {'number':p.reference_number}, indent=2)
+                            
+
+            report('Processing paths:', indent=1)
+            # Examine all EnrichedPathlines p
+            p = None
+            for p in self.interior:
+                if p.isClosed():
+                    area_string = '   area %(area)g' % {'area':p.AreaEnclosed()}
+                else:
+                    area_string = ''
+                report('Interior path %(number)s%(area)s', var = {'number':p.reference_number, 'area':area_string}, indent=2)
+                self.index = p.Generate(self.index)
+                self.components.append(p)
+            for p in self.exterior:
+                if p.isClosed():
+                    area_string = '   area %(area)g' % {'area':p.AreaEnclosed()}
+                else:
+                    area_string = ''
+                report('Exterior path %(number)s%(area)s', var = {'number':p.reference_number, 'area':area_string}, indent=2)
+                self.index = p.Generate(self.index)
+                self.components.append(p)
 
         elif self.isParallel():
             self.output_open_boundaries()
@@ -403,7 +485,7 @@ class BRepComponent(object):
             # Close BRep and complete
             self.index = n.ClosePathEndToStartLongitude(self.index, extend_to_longitude = longitude)
 
-
+        return [self.Reproduce(components=[p]) for p in self.components]
 
 
 
@@ -610,37 +692,6 @@ Delete { Point{ %(prefix)s1 }; }
 
         PlotContours(self._pathall_enriched, boxes=boxes)
     
-    def PathProcess(self):
-        for p in self._valid_paths:
-            p.SetExterior(self.isExterior(p.reference_number, valid_paths = self._valid_paths))
-            if p.isValid():
-                if p.isExterior():
-                    self.exterior.append(p)
-                else:
-                    if p.shape.type == 'Polygon':
-                        self.interior.append(p)
-                    else:
-                        report('Interior path %(number)s skipped, not a complete island', var = {'number':p.reference_number}, indent=2)
-                        
-
-        report('Processing paths:', indent=1)
-        p = None
-        for p in self.interior:
-            if p.isClosed():
-                area_string = '   area %(area)g' % {'area':p.AreaEnclosed()}
-            else:
-                area_string = ''
-            report('Interior path %(number)s%(area)s', var = {'number':p.reference_number, 'area':area_string}, indent=2)
-            self.index = p.Generate(self.index)
-        for p in self.exterior:
-            if p.isClosed():
-                area_string = '   area %(area)g' % {'area':p.AreaEnclosed()}
-            else:
-                area_string = ''
-            report('Exterior path %(number)s%(area)s', var = {'number':p.reference_number, 'area':area_string}, indent=2)
-            self.index = p.Generate(self.index)
-        if p:
-          self.components.append(p)
         
 
     def output_open_boundaries(self):
