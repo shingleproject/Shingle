@@ -313,6 +313,7 @@ Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'surface':self.Surface
             for p in component.components:
                 for comment in p.comment:
                     self.AddComment(comment)
+                # if multiple, need to connect
                 self.index = p.Generate(self.index)
 
         #for a in components:
