@@ -90,6 +90,7 @@ class BRepComponent(object):
         self._form_type = None
         self._surface_rep = None
         self._representation_type = None
+        self.comment = []
 
         self._region = None
         self._bounds = None
@@ -111,6 +112,7 @@ class BRepComponent(object):
         self.components = []
 
         self.parent = None
+        self.children = []
 
         self.number = number
         self._surface_rep = surface_rep
@@ -119,11 +121,21 @@ class BRepComponent(object):
             self.index = self._surface_rep.index
         self._pathall = pathall
 
-    def Reproduce(self, components=None):
+    def Reproduce(self, components=None, total=None):
         # Improve to limit copy of attributes intelligently
         #   use deepcopy if necessary                                         
-        child = copy(self)                                                         
-        child._name = "Part of " + self._name
+        child = copy(self)
+        self.children.append(child)
+        if total:
+            output_format = '%(name)s (part %(part)d of %(total)d)'
+        else:
+            output_format = '%(name)s (part %(part)d)'
+        child._name = output_format % {
+            'name': self._name,
+            'part': len(self.children),
+            'total': total,
+        }
+
         child.parent = self
         if components is not None:
             child.components = components
@@ -366,18 +378,25 @@ class BRepComponent(object):
         self.report('Generating contours, from raster: ' + dataset.LocationFull(), include = False, indent = 1)
         self._pathall = ReadPaths(self, dataset)
             
+    def identifyOpen(self, components):
+        open_components = []
+        for i, component in enumerate(components):
+            #continue
+            #print i, len(component.components[0].valid_location), component.components[0].isClosed() 
+            if not component.components[0].isClosed():
+                open_components.append(component)
+        return open_components
 
-    def Generate(self, components=None):
+    def Generate(self, components=[]):
         import os
-        self.AddSection('BRep component: ' + self.Name())
+        #self.AddSection('BRep component: ' + self.Name())
 
         if self.isRaster():
             p = self.PreviousBRepComponent()
             
             # Pick up previous BRep component
             if len(p.components) > 0:
-                n = EnrichedPolyline(self)
-                n.CopyOpenPart(p.components[-1])
+                n = p.components[-1].CopyOpenPart()
                 error('** BRep %(name)s to be glued to existing, unclosed brep (%(previous)s)' % {'name':p.Name(), 'previous':n.Name()}, warning=True)
 
             self.AppendParameters()
@@ -402,7 +421,7 @@ class BRepComponent(object):
                     if p.isExterior():
                         self.exterior.append(p)
                     else:
-                        if p.shape.type == 'Polygon':
+                        if p.shape.type == 'LinearRing':
                             self.interior.append(p)
                         else:
                             report('Interior path %(number)s skipped, not a complete island', var = {'number':p.reference_number}, indent=2)
@@ -417,7 +436,7 @@ class BRepComponent(object):
                 else:
                     area_string = ''
                 report('Interior path %(number)s%(area)s', var = {'number':p.reference_number, 'area':area_string}, indent=2)
-                self.index = p.Generate(self.index)
+                #self.index = p.Generate(self.index)
                 self.components.append(p)
             for p in self.exterior:
                 if p.isClosed():
@@ -425,7 +444,7 @@ class BRepComponent(object):
                 else:
                     area_string = ''
                 report('Exterior path %(number)s%(area)s', var = {'number':p.reference_number, 'area':area_string}, indent=2)
-                self.index = p.Generate(self.index)
+                #self.index = p.Generate(self.index)
                 self.components.append(p)
 
         elif self.isParallel():
@@ -457,35 +476,87 @@ class BRepComponent(object):
 
         elif self.isExtendToParallel():
             latitude = specification.get_option(self.FormPath() + 'latitude')
-            p = self.PreviousBRepComponent()
-            self.report('Extending exterior boundary developed in %(previous_brep)s to parallel %(parallel)s', var = {'previous_brep':p.Name(), 'parallel':latitude}, include = True, indent = 1)
-            # Check past BRep component is not complete
-            if p.isComplete():
-                error('Mesh model misconfiguration. Previous boundary representation %(previous_brep)s is complete.  Unable to now extend this boundary to the parallel %(parallel)s' % {'previous_brep':p.Name(), 'parallel':latitude}, fatal = True)
+            #print 'here'
+            open_components = self.identifyOpen(components)
+            #print 'here1'
+            if not open_components:
+                error("No open components available to close with an extension to parallel", fatal=True)
+            #print len(open_components)
+            p = open_components[-1] 
+            #print 'here2'
 
+            #p = self.PreviousBRepComponent()
+            self.comment.append('Extending exterior boundary developed in %(previous_brep)s to parallel %(parallel)s' % {'previous_brep':p.Name(), 'parallel':latitude})
+            self.report('Extending exterior boundary developed in %(previous_brep)s to parallel %(parallel)s', var = {'previous_brep':p.Name(), 'parallel':latitude}, indent = 1)
+            # Check past BRep component is not complete
+            #if p.isComplete():
+            #    error('Mesh model misconfiguration. Previous boundary representation %(previous_brep)s is complete.  Unable to now extend this boundary to the parallel %(parallel)s' % {'previous_brep':p.Name(), 'parallel':latitude}, fatal = True)
+
+            #print self.Identification()
             # Pick up previous BRep component
             n = EnrichedPolyline(self)
             n.CopyOpenPart(p.components[-1])
+           
+            print project(n.valid_location[0], projection_type=self.Projection()) 
+            print project(n.valid_location[1], projection_type=self.Projection()) 
+
+            print n.valid_location
+
+            p._name = p.Name() + ' AND ' + self.Name()
+            
+            #n = p.components[-1].CopyOpenPart()
+            #print n.Identification()
 
             # Close BRep and complete
-            self.index = n.ClosePathEndToStart(self.index, extend_to_latitude = latitude)
+            self.index, paths = n.ClosePathEndToStart(self.index, extend_to_latitude = latitude)
+
+            #print p.components
+            for path in paths:
+                p.components.append(path)
+            #print p.components
 
         elif self.isExtendToMeridian():
             longitude = specification.get_option(self.FormPath() + 'longitude')
             p = self.PreviousBRepComponent()
+            self.comment.append('Extending exterior boundary developed in %(previous_brep)s to meridian %(meridian)s' % {'previous_brep':p.Name(), 'meridian':longitude})
             self.report('Extending exterior boundary developed in %(previous_brep)s to meridian %(meridian)s', var = {'previous_brep':p.Name(), 'meridian':longitude}, include = True, indent = 1)
             # Check past BRep component is not complete
             if p.isComplete():
                 error('Mesh model misconfiguration. Previous boundary representation %(previous_brep)s is complete.  Unable to now extend this boundary to the meridian %(meridian)s' % {'previous_brep':p.Name(), 'meridian':longitude}, fatal = True)
 
             # Pick up previous BRep component
-            n = EnrichedPolyline(self)
-            n.CopyOpenPart(p.components[-1])
+            #n = EnrichedPolyline(self)
+            n = p.components[-1].CopyOpenPart()
 
             # Close BRep and complete
             self.index = n.ClosePathEndToStartLongitude(self.index, extend_to_longitude = longitude)
 
-        return [self.Reproduce(components=[p]) for p in self.components]
+
+        #print self.components
+        #print
+        #print [self.Reproduce(components=[p]) for p in self.components]
+
+        #print 1+len(self.components)
+        #print 1+len([self.Reproduce(components=[p]) for p in self.components])
+
+
+        #for p in self.components:
+        #    a = self.Reproduce(components=[p])
+        #    print '**', p
+        #    print len(p.valid_location)
+        #    print a
+        #    print a.components
+        #    print len(a.components)
+        #    print len(a.components[0].valid_location)
+        #    #print p.valid_location
+        
+        components_new = [self.Reproduce(components=[p], total=len(self.components)) for p in self.components]
+
+        #print
+        #print len(components), components
+        #print len(components_new), components_new
+
+        return components + components_new
 
 
 
@@ -494,49 +565,49 @@ class BRepComponent(object):
 
 
 
-    def AddHeader(self):
-        self.AddSection('Boundary Representation description')
-        self.AddSection('Header')
-        if self.isCompound():
-            edgeindex = ' + 1000000'
-        else:
-            edgeindex = ''
-        # TODO: Only include if using CounterPrefix
-        if universe.use_counter_prefix:
-            if not self.isCompound():
-                header = '''\
-  IP%(fileid)s = newp;
-  IL%(fileid)s = newl;
-  ILL%(fileid)s = newll;
-  IS%(fileid)s = news;
-  IFI%(fileid)s = newf;
-  ''' % { 'fileid':self.Fileid(), 'edgeindex':edgeindex }
-            else:
-                header = '''\
-  IP%(fileid)s = 0;
-  IL%(fileid)s = 0%(edgeindex)s;
-  ILL%(fileid)s = 0;
-  IS%(fileid)s = news;
-  IFI%(fileid)s = newf;
-  ''' % { 'fileid':self.Fileid(), 'edgeindex':edgeindex }
-            self.AddContent(header)
+#    def AddHeader(self):
+#        self.AddSection('Boundary Representation description')
+#        self.AddSection('Header')
+#        if self.isCompound():
+#            edgeindex = ' + 1000000'
+#        else:
+#            edgeindex = ''
+#        # TODO: Only include if using CounterPrefix
+#        if universe.use_counter_prefix:
+#            if not self.isCompound():
+#                header = '''\
+#  IP%(fileid)s = newp;
+#  IL%(fileid)s = newl;
+#  ILL%(fileid)s = newll;
+#  IS%(fileid)s = news;
+#  IFI%(fileid)s = newf;
+#  ''' % { 'fileid':self.Fileid(), 'edgeindex':edgeindex }
+#            else:
+#                header = '''\
+#  IP%(fileid)s = 0;
+#  IL%(fileid)s = 0%(edgeindex)s;
+#  ILL%(fileid)s = 0;
+#  IS%(fileid)s = news;
+#  IFI%(fileid)s = newf;
+#  ''' % { 'fileid':self.Fileid(), 'edgeindex':edgeindex }
+#            self.AddContent(header)
+#
+#        if (self.Projection() not in ['longlat','proj_cartesian'] ):
+#            header_polar = '''Point ( %(prefix)s0 ) = { 0, 0, 0 };
+#Point ( %(prefix)s1 ) = { 0, 0, %(planet_radius)g };
+#PolarSphere ( %(surface_prefix)s0 ) = { %(prefix)s0, %(prefix)s1 };
+#''' % { 'planet_radius': self._surface_rep.spatial_discretisation.PlanetRadius(), 'prefix': self.CounterPrefix('IP'), 'surface_prefix':self.CounterPrefix('IS') }
+#            self.AddContent(header_polar)
+#
+#        self.RemoveProjectionPoints()
 
-        if (self.Projection() not in ['longlat','proj_cartesian'] ):
-            header_polar = '''Point ( %(prefix)s0 ) = { 0, 0, 0 };
-Point ( %(prefix)s1 ) = { 0, 0, %(planet_radius)g };
-PolarSphere ( %(surface_prefix)s0 ) = { %(prefix)s0, %(prefix)s1 };
-''' % { 'planet_radius': self._surface_rep.spatial_discretisation.PlanetRadius(), 'prefix': self.CounterPrefix('IP'), 'surface_prefix':self.CounterPrefix('IS') }
-            self.AddContent(header_polar)
-
-        self.RemoveProjectionPoints()
-
-    def RemoveProjectionPoints(self):
-        #FIXME: Apply just in specific case?  - i.e. I need the opposite here
-        if self.Projection() == 'longlat':
-            return
-        self.AddContent( '''Delete { Point{ %(prefix)s0 }; }
-Delete { Point{ %(prefix)s1 }; }
-''' % { 'prefix':self.CounterPrefix('IP') } )
+#    def RemoveProjectionPoints(self):
+#        #FIXME: Apply just in specific case?  - i.e. I need the opposite here
+#        if self.Projection() == 'longlat':
+#            return
+#        self.AddContent( '''Delete { Point{ %(prefix)s0 }; }
+#Delete { Point{ %(prefix)s1 }; }
+#''' % { 'prefix':self.CounterPrefix('IP') } )
 
 
     def AddFormattedPoint(self, index, loc, z, project_to_output_projection_type=True):
@@ -546,6 +617,15 @@ Delete { Point{ %(prefix)s1 }; }
         else:
             output_location = loc
         self.AddContent(output_format % (index, output_location[0], output_location[1], z))
+
+    def FormatPoint(self, index, loc, z, project_to_output_projection_type=True):
+        #output_format = 'Point ( %(prefix)s%%i ) = { %%.%(dp)sf, %%.%(dp)sf, %%.%(dp)sf };' % { 'dp': universe.default.output_accuracy, 'prefix':self.CounterPrefix('IP') }
+        if project_to_output_projection_type:
+            output_location = project(loc, projection_type=self.Projection())
+        else:
+            output_location = loc
+        #self.AddContent(output_format % (index, output_location[0], output_location[1], z))
+        return (output_location[0], output_location[1], z)
 
     def output_boundaries(self):
         import pickle
@@ -557,7 +637,7 @@ Delete { Point{ %(prefix)s1 }; }
 
         latitude_max = self.ExtendToLatitude()
 
-        self.AddHeader()
+        #self.AddHeader()
         splinenumber = 0
         indexbase = 1
         self.index.point = indexbase

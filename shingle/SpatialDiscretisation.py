@@ -216,6 +216,60 @@ class SpatialDiscretisation(object):
         specification.load_options(self._filename)
         self._loaded = True
 
+    def RemoveProjectionPoints(self):
+        #FIXME: Apply just in specific case?  - i.e. I need the opposite here
+        if self.Projection() == 'longlat':
+            return
+        self.AddContent( '''Delete { Point{ %(prefix)s0 }; }
+Delete { Point{ %(prefix)s1 }; }
+''' % { 'prefix':self.CounterPrefix('IP') } )
+
+    def CounterPrefix(self, prefix):
+        if universe.use_counter_prefix:
+            return '%(prefix)s%(fileid)s + ' % { 'prefix':prefix, 'fileid':self.Fileid() }
+        else:
+            return ''
+
+    def isCompound(self):
+        return False
+
+    def AddHeader(self):
+        self.AddSection('Boundary Representation description')
+        self.AddSection('Header')
+        if self.isCompound():
+            edgeindex = ' + 1000000'
+        else:
+            edgeindex = ''
+        # TODO: Only include if using CounterPrefix
+        if universe.use_counter_prefix:
+            if not self.isCompound():
+                header = '''\
+  IP%(fileid)s = newp;
+  IL%(fileid)s = newl;
+  ILL%(fileid)s = newll;
+  IS%(fileid)s = news;
+  IFI%(fileid)s = newf;
+  ''' % { 'fileid':self.Fileid(), 'edgeindex':edgeindex }
+            else:
+                header = '''\
+  IP%(fileid)s = 0;
+  IL%(fileid)s = 0%(edgeindex)s;
+  ILL%(fileid)s = 0;
+  IS%(fileid)s = news;
+  IFI%(fileid)s = newf;
+  ''' % { 'fileid':self.Fileid(), 'edgeindex':edgeindex }
+            self.AddContent(header)
+
+        if (self.Projection() not in ['longlat','proj_cartesian'] ):
+            header_polar = '''Point ( %(prefix)s0 ) = { 0, 0, 0 };
+Point ( %(prefix)s1 ) = { 0, 0, %(planet_radius)g };
+PolarSphere ( %(surface_prefix)s0 ) = { %(prefix)s0, %(prefix)s1 };
+''' % { 'planet_radius': self.PlanetRadius(), 'prefix': self.CounterPrefix('IP'), 'surface_prefix':self.CounterPrefix('IS') }
+            self.AddContent(header_polar)
+
+        self.RemoveProjectionPoints()
+
+
     def PlanetRadius(self):
         if self._loaded and specification.have_option('/global_parameters/planetary_radius'):
             return specification.get_option('/global_parameters/planetary_radius')
@@ -419,11 +473,14 @@ Created at: %(timestamp)s
 
 
         self.AppendHeader()
-
+        
         # For now limit to the first surface geoid representation
         name = self.SurfaceGeoidRepFirstName()
 
         rep = SurfaceGeoidDomainRepresentation(spatial_discretisation=self, name=name)
+        self.AddHeader()
+        rep.Generate()
+
 
         f = Field(surface_representation = rep )
         

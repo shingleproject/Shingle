@@ -34,6 +34,11 @@ import os
 import sys
 #for path in ['~/bin/common/shingle/']: sys.path.append(os.path.expanduser(path))
 
+try:
+    import colored_traceback.auto
+except ImportError:
+    pass
+
 shingle_path = os.path.realpath(os.path.join(os.path.realpath(os.path.dirname(os.path.realpath(__file__))), os.path.pardir))
 sys.path.insert(0, shingle_path)
 

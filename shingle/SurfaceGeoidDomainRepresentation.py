@@ -80,8 +80,8 @@ class SurfaceGeoidDomainRepresentation(object):
 
         self.AppendParameters()
         self.Boundary()
-        if not self.spatial_discretisation.isGenerated():
-            self.Generate()
+        #if not self.spatial_discretisation.isGenerated():
+        #    self.Generate()
 
     def SurfaceId(self):
         if specification.have_option(self._path + '/id'):
@@ -279,21 +279,48 @@ Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'surface':self.Surface
         # make global to class
         components = []
 
+        self.AddSection('BRep component pre-scan')
         for brep in self.BRepComponentsOrder():
+            
+            self.AddSection('BRep component: ' + brep.Name())
             
             # Generates children BRepComponent objects, one for each distinct physical object
             # e.g. pathline, closed or open  -- to later be merged, interior/exterior determination
-            components = components + brep.Generate(components=components)
-
+            components = brep.Generate(components=components)
 
             # carry list generated so far, complete and incomplete
             # mark 
             #components = components + brep._valid_paths
+       
         
         if len(components) > 0:
-            report('Component boundary representions identified:', indent=1)
+            self.AddComment('Component boundary representations identified:', indent=1)
         for i, component in enumerate(components):
-            report('%(number)d: %(name)s ', var = {'number':i+1, 'name':component.Name()}, indent=2)
+            self.AddComment('%(number)d: %(name)s (components: %(components)s)' %
+                {
+                    'number': i + 1,
+                    'name': component.Name(),
+                    'components': len(component.components)
+                }, indent=2)
+
+
+        for i, component in enumerate(components):
+
+            #component.AddHeader()
+            self.AddSection('BRep component: ' + component.Name())
+            for comment in component.comment:
+                self.AddComment(comment)
+            for p in component.components:
+                for comment in p.comment:
+                    self.AddComment(comment)
+                self.index = p.Generate(self.index)
+
+        #for a in components:
+        #    print a
+        #    print a.components
+        #    print len(a.components)
+        #    print len(a.components[0].valid_location)
+        #    #print p.valid_location
 
         self.output_surfaces()
 
