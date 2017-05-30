@@ -549,12 +549,18 @@ class BRepComponent(object):
         #    print len(a.components)
         #    print len(a.components[0].valid_location)
         #    #print p.valid_location
-        
+
+        # Multi-component BReps are split up
+        #  note these may become multi-enrichedlines later
+        #  e.g. when extended to an orthodrome
         components_new = [self.Reproduce(components=[p], total=len(self.components)) for p in self.components]
 
         #print
         #print len(components), components
         #print len(components_new), components_new
+
+        # Run through all components and link children
+
 
         return components + components_new
 

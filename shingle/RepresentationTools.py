@@ -285,6 +285,9 @@ class EnrichedPolyline(object):
         self.point = None
         self.closingrequirednumber = 0
 
+        self.before = None
+        self.after = None
+
         # Parent boundary representation component
         self._parent_brep_component = None
 
@@ -687,9 +690,13 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
         return index
 
 
-    def Generate(self, index):
+    def Generate(self, index, first=True, last=True):
         #if not self._valid:
         #    return index
+
+        # asc: Treat first, last
+
+
         self.AddSection('Ice-Land mass number %s' % (self.reference_number))
 
         index.start = index.point + 1

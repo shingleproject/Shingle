@@ -292,7 +292,17 @@ Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'surface':self.Surface
             # mark 
             #components = components + brep._valid_paths
        
-        
+        # Run through all components and link children
+        for brep in components:
+            if len(brep.components) > 1:
+                for i, component in enumerate(brep.components):
+                    #print i
+                    #print ' ', i, (i - 1) % len(brep.components)
+                    component.before = brep.components[(i - 1) % len(brep.components)]
+                    #print ' ', i, (i + 1) % len(brep.components)
+                    component.after = brep.components[(i + 1) % len(brep.components)]
+
+
         if len(components) > 0:
             self.AddComment('Component boundary representations identified:', indent=1)
         for i, component in enumerate(components):
@@ -310,11 +320,27 @@ Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'surface':self.Surface
             self.AddSection('BRep component: ' + component.Name())
             for comment in component.comment:
                 self.AddComment(comment)
-            for p in component.components:
+
+            # component.components are enriched lines, need to link
+            #  here?  or in BRepComponent.Generate
+
+            for i, p in enumerate(component.components):
+                #print component, component.components
                 for comment in p.comment:
                     self.AddComment(comment)
                 # if multiple, need to connect
-                self.index = p.Generate(self.index)
+                # Better to link child breps and handle in Generate
+                first = True
+                last = True
+                if len(component.components) > 1:
+                    if i > 0:
+                        # Need to connect to previous
+                        first = False
+                    if i == (len(component.components) - 1):
+                        # Need to connect to first
+                        last = False
+
+                self.index = p.Generate(self.index, first=first, last=last)
 
         #for a in components:
         #    print a
