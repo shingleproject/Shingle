@@ -3,4 +3,5 @@
 ./bin/shingle test/Filchner-Ronne/Filchner-Ronne.brml; icdiff -U 0 ~/src/Shingle/test/Filchner-Ronne/data/Filchner-Ronne_valid2.geo ~/src/Shingle/test/Filchner-Ronne/Filchner-Ronne.geo
 
 
+shingle UK_NorthSea_region_opendap.brml
 
