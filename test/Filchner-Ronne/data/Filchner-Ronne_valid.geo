@@ -16,7 +16,7 @@
 // 
 // Project name: Filchner-Ronne
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/05/15 17:39:33 
+// Created at: 2017/05/31 14:35:50 
 // Project description:
 //   Use the RTopo dataset, 50S version (RTopo105b 50S.nc),
 //   selecting the Filchner-Ronne ice sheet ocean cavity region
@@ -141,6 +141,19 @@
 // Output to Filchner-Ronne.geo
 // Projection type cartesian
 // Extending region to meet parallel on latitude -65.0
+
+// == Boundary Representation description =========================
+
+// == Header ======================================================
+Point ( 0 ) = { 0, 0, 0 };
+Point ( 1 ) = { 0, 0, 6.37101e+06 };
+PolarSphere ( 0 ) = { 0, 1 };
+
+Delete { Point{ 0 }; }
+Delete { Point{ 1 }; }
+
+
+// == BRep component pre-scan =====================================
 //   1. filchner_ronne_ice_ocean_brep
 //       Path:           /geoid_surface_representation::filchner_ronne_ice_ocean/brep_component::filchner_ronne_ice_ocean_brep
 //       Form:           Raster
@@ -160,81 +173,43 @@
 // Region defined by ((longitude >= -85.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0)) or ((longitude >= -64.0) and (longitude <= -30.0) and (latitude >= -89.0) and (latitude <= -70.0)) or ((longitude >= -30.0) and (longitude <= -20.0) and (latitude >= -89.0) and (latitude <= -75.0))
 // Open contours closed with a line formed by points spaced 0.1 degrees apart
 // Paths found: 20
-
-// == Boundary Representation description =========================
-
-// == Header ======================================================
-Point ( 0 ) = { 0, 0, 0 };
-Point ( 1 ) = { 0, 0, 6.37101e+06 };
-PolarSphere ( 0 ) = { 0, 1 };
-
-Delete { Point{ 0 }; }
-Delete { Point{ 1 }; }
-
 // Merged paths that cross the date line: 
-
-// == Ice-Land mass number 1 ======================================
 // Path 1: points 12317 (of 12317) area 1.71566e+07
-
-// == Ice-Land mass number 2 ======================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 3 ======================================
 // Path 3: points 2192 (of 2193) area 372732 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 4 ======================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 5 ======================================
 // Path 5: points 1204 (of 1205) area 85846.4 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 6 ======================================
 // Path 6: points 834 (of 835) area 16929.5 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 7 ======================================
 // Path 7: points 564 (of 565) area 23435.8 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 8 ======================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 9 ======================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 10 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 11 =====================================
 // Path 11: points 350 (of 351) area 976.81 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 12 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 13 =====================================
 // Path 13: points 148 (of 149) area 556.475 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 14 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 15 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 16 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 17 =====================================
 // Path 17: points 92 (of 93) area 134.49 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 18 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 19 =====================================
 // Path 19: points 68 (of 69) area 134.925 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 20 =====================================
 //   Skipped (no points found in region)
 // Paths found valid (renumbered order): 9, including 1 3 5 6 7 11 13 17 19
 
-// == Ice-Land mass number 3 ======================================
+// == BRep component: ExtendTo65S =================================
+// Extending exterior boundary developed in filchner_ronne_ice_ocean_brep (part 9 of 9) to parallel -65.0
+//   Component boundary representations identified:
+//     1: filchner_ronne_ice_ocean_brep (part 1 of 9) (components: 1)
+//     2: filchner_ronne_ice_ocean_brep (part 2 of 9) (components: 1)
+//     3: filchner_ronne_ice_ocean_brep (part 3 of 9) (components: 1)
+//     4: filchner_ronne_ice_ocean_brep (part 4 of 9) (components: 1)
+//     5: filchner_ronne_ice_ocean_brep (part 5 of 9) (components: 1)
+//     6: filchner_ronne_ice_ocean_brep (part 6 of 9) (components: 1)
+//     7: filchner_ronne_ice_ocean_brep (part 7 of 9) (components: 1)
+//     8: filchner_ronne_ice_ocean_brep (part 8 of 9) (components: 1)
+//     9: filchner_ronne_ice_ocean_brep (part 9 of 9) AND ExtendTo65S (components: 4)
+
+// == BRep component: filchner_ronne_ice_ocean_brep (part 1 of 9) =
 Point ( 2 ) = { -7.57228847, 10.04268551, 0.00000000 };
 Point ( 3 ) = { -7.57520873, 10.04048294, 0.00000000 };
 Point ( 4 ) = { -7.57812969, 10.03827850, 0.00000000 };
@@ -2431,7 +2406,7 @@ BSpline ( 0 ) = { 2 : 2193, 2 };
 Line Loop( 0 ) = { 0 };
 
 
-// == Ice-Land mass number 5 ======================================
+// == BRep component: filchner_ronne_ice_ocean_brep (part 2 of 9) =
 Point ( 2194 ) = { -6.08003430, 11.09008953, 0.00000000 };
 Point ( 2195 ) = { -6.08326071, 11.08832007, 0.00000000 };
 Point ( 2196 ) = { -6.08648660, 11.08654968, 0.00000000 };
@@ -3640,7 +3615,7 @@ BSpline ( 1 ) = { 2194 : 3397, 2194 };
 Line Loop( 1 ) = { 1 };
 
 
-// == Ice-Land mass number 6 ======================================
+// == BRep component: filchner_ronne_ice_ocean_brep (part 3 of 9) =
 Point ( 3398 ) = { -3.70065054, 10.46966789, 0.00000000 };
 Point ( 3399 ) = { -3.70369515, 10.46859123, 0.00000000 };
 Point ( 3400 ) = { -3.70674083, 10.46751320, 0.00000000 };
@@ -4479,7 +4454,7 @@ BSpline ( 2 ) = { 3398 : 4231, 3398 };
 Line Loop( 2 ) = { 2 };
 
 
-// == Ice-Land mass number 7 ======================================
+// == BRep component: filchner_ronne_ice_ocean_brep (part 4 of 9) =
 Point ( 4232 ) = { -4.63362594, 10.52241007, 0.00000000 };
 Point ( 4233 ) = { -4.63668584, 10.52106209, 0.00000000 };
 Point ( 4234 ) = { -4.63974675, 10.51971260, 0.00000000 };
@@ -5048,7 +5023,7 @@ BSpline ( 3 ) = { 4232 : 4795, 4232 };
 Line Loop( 3 ) = { 3 };
 
 
-// == Ice-Land mass number 11 =====================================
+// == BRep component: filchner_ronne_ice_ocean_brep (part 5 of 9) =
 Point ( 4796 ) = { -8.77026488, 6.19438674, 0.00000000 };
 Point ( 4797 ) = { -8.77206759, 6.19183360, 0.00000000 };
 Point ( 4798 ) = { -8.77386791, 6.18928227, 0.00000000 };
@@ -5403,7 +5378,7 @@ BSpline ( 4 ) = { 4796 : 5145, 4796 };
 Line Loop( 4 ) = { 4 };
 
 
-// == Ice-Land mass number 13 =====================================
+// == BRep component: filchner_ronne_ice_ocean_brep (part 6 of 9) =
 Point ( 5146 ) = { -4.07015022, 9.89943676, 0.00000000 };
 Point ( 5147 ) = { -4.07303029, 9.89825213, 0.00000000 };
 Point ( 5148 ) = { -4.07590870, 9.89706721, 0.00000000 };
@@ -5556,7 +5531,7 @@ BSpline ( 5 ) = { 5146 : 5293, 5146 };
 Line Loop( 5 ) = { 5 };
 
 
-// == Ice-Land mass number 17 =====================================
+// == BRep component: filchner_ronne_ice_ocean_brep (part 7 of 9) =
 Point ( 5294 ) = { -2.87043293, 5.13603563, 0.00000000 };
 Point ( 5295 ) = { -2.87192714, 5.13520026, 0.00000000 };
 Point ( 5296 ) = { -2.87342043, 5.13436484, 0.00000000 };
@@ -5653,7 +5628,7 @@ BSpline ( 6 ) = { 5294 : 5385, 5294 };
 Line Loop( 6 ) = { 6 };
 
 
-// == Ice-Land mass number 19 =====================================
+// == BRep component: filchner_ronne_ice_ocean_brep (part 8 of 9) =
 Point ( 5386 ) = { -2.91729741, 5.23060191, 0.00000000 };
 Point ( 5387 ) = { -2.91881843, 5.22975329, 0.00000000 };
 Point ( 5388 ) = { -2.92033991, 5.22890384, 0.00000000 };
@@ -5726,7 +5701,7 @@ BSpline ( 7 ) = { 5386 : 5453, 5386 };
 Line Loop( 7 ) = { 7 };
 
 
-// == Ice-Land mass number 1 ======================================
+// == BRep component: filchner_ronne_ice_ocean_brep (part 9 of 9) AND ExtendTo65S 
 Point ( 5454 ) = { -7.39791249, 2.69749611, 0.00000000 };
 Point ( 5455 ) = { -7.39712770, 2.69964744, 0.00000000 };
 Point ( 5456 ) = { -7.39634229, 2.70179853, 0.00000000 };
@@ -18046,11 +18021,8 @@ Point ( 17769 ) = { -2.65941638, 5.02276317, 0.00000000 };
 Point ( 17770 ) = { -2.65755302, 5.02101006, 0.00000000 };
 BSpline ( 8 ) = { 5454 : 17770 };
 
-
-// == BRep component: ExtendTo65S =================================
-// Extending exterior boundary developed in filchner_ronne_ice_ocean_brep to parallel -65.0
 // Closing path with parallels and meridians, from (-62.10833359, -70.03333282) to  (-20.03334045, -75.52499771)
-// Drawing meridian to latitude index 17770 at -62.11, -70.03 (to match -65.00)
+// Drawing meridian to latitude index 1 at -62.11, -70.03 (to match -65.00)
 Point ( 17771 ) = { -2.64403681, 4.99547340, 0.00000000 };
 Point ( 17772 ) = { -2.63065328, 4.97018743, 0.00000000 };
 Point ( 17773 ) = { -2.61740047, 4.94514841, 0.00000000 };
@@ -18101,7 +18073,9 @@ Point ( 17817 ) = { -2.13954925, 4.04232699, 0.00000000 };
 Point ( 17818 ) = { -2.13063712, 4.02548899, 0.00000000 };
 Point ( 17819 ) = { -2.12179556, 4.00878431, 0.00000000 };
 Point ( 17820 ) = { -2.11011515, 3.98671610, 0.00000000 };
-// Drawing parallel index 17820 at -62.11 (to match -20.03), -65.00
+BSpline ( 9 ) = { 17770 : 17820 };
+
+// Drawing parallel index 1 at -62.11 (to match -20.03), -65.00
 Point ( 17821 ) = { -2.11707007, 3.98302718, 0.00000000 };
 Point ( 17822 ) = { -2.12401853, 3.97932613, 0.00000000 };
 Point ( 17823 ) = { -2.13096053, 3.97561296, 0.00000000 };
@@ -18523,7 +18497,10 @@ Point ( 18238 ) = { -4.23031593, 1.56554090, 0.00000000 };
 Point ( 18239 ) = { -4.23304187, 1.55815523, 0.00000000 };
 Point ( 18240 ) = { -4.23575492, 1.55076481, 0.00000000 };
 Point ( 18241 ) = { -4.23778105, 1.54521940, 0.00000000 };
-// Drawing meridian to end index 18241 at -20.03, -65.00 (to match -75.52)
+BSpline ( 10 ) = { 17820 : 18241 };
+
+// Drawing meridian to end index 1 at -20.03, -65.00 (to match -75.52)
+// Closed path with parallels and meridians, from (-20.03334045, -75.52499771) to  (-20.03334045, -75.52499771)
 Point ( 18242 ) = { -4.25535141, 1.55162607, 0.00000000 };
 Point ( 18243 ) = { -4.27306122, 1.55808358, 0.00000000 };
 Point ( 18244 ) = { -4.29091217, 1.56459257, 0.00000000 };
@@ -18628,13 +18605,13 @@ Point ( 18342 ) = { -7.18460452, 2.61971776, 0.00000000 };
 Point ( 18343 ) = { -7.23369879, 2.63761897, 0.00000000 };
 Point ( 18344 ) = { -7.28345728, 2.65576238, 0.00000000 };
 Point ( 18345 ) = { -7.33389362, 2.67415295, 0.00000000 };
-BSpline ( 9 ) = { 17770 : 18345, 5454 };
-Line Loop( 8 ) = { 8, 9 };
+BSpline ( 11 ) = { 18241 : 18345, 5454 };
+Line Loop( 8 ) = { 8, 9, 10, 11 };
 
 
 // == Physical entities ===========================================
-// Boundary OpenOcean (ID 4): 10
-Physical Line( 4 ) = { 9 };
+// Boundary OpenOcean (ID 4): 10 11 12
+Physical Line( 4 ) = { 9, 10, 11 };
 // Boundary Coast (ID 3): 1 2 3 4 5 6 7 8 9
 Physical Line( 3 ) = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 Plane Surface( 10 ) = { 8, 0, 1, 2, 3, 4, 5, 6, 7 };

@@ -41,6 +41,7 @@ from Spud import specification
 from Plot import PlotContours
 from Bounds import Bounds
 
+from shapely.geometry.polygon import LinearRing
 from copy import copy, deepcopy
 
 # class BRepComponentGroup(object):
@@ -421,7 +422,7 @@ class BRepComponent(object):
                     if p.isExterior():
                         self.exterior.append(p)
                     else:
-                        if p.shape.type == 'LinearRing':
+                        if p.isClosed():
                             self.interior.append(p)
                         else:
                             report('Interior path %(number)s skipped, not a complete island', var = {'number':p.reference_number}, indent=2)
@@ -460,30 +461,34 @@ class BRepComponent(object):
             index.start = index.point + 1
             loopstartpoint = index.start
 
-            p = EnrichedPolyline(self, reference_number = None, is_exterior = True)
-
             a = [ bounds[0], bounds[1] ]
             b = [ bounds[2], bounds[1] ]
             c = [ bounds[2], bounds[3] ]
             d = [ bounds[0], bounds[3] ]
+            
+            bounds = (a, b, c, d)
+            p = EnrichedPolyline(self, shape=LinearRing(bounds), initialise_only=True, is_exterior=True)
+            p.Interpolate()
 
-            index = draw_parallel_explicit(self, a, b, index, self.Spacing(), None)
-            index = draw_parallel_explicit(self, b, c, index, self.Spacing(), None)
-            index = draw_parallel_explicit(self, c, d, index, self.Spacing(), None)
+            #p = EnrichedPolyline(self, reference_number = None, is_exterior = True)
+
+
+            #index = draw_parallel_explicit(self, a, b, index, self.Spacing(), None)
+            #index = draw_parallel_explicit(self, b, c, index, self.Spacing(), None)
+            #index = draw_parallel_explicit(self, c, d, index, self.Spacing(), None)
             #index = draw_parallel_explicit(self, d, a, index, self.Spacing(), None)
 
-            index = p.AddLoop(index, loopstartpoint, True)
+            #index = p.AddLoop(index, loopstartpoint, True)
+
+            self.components.append(p)
 
         elif self.isExtendToParallel():
             latitude = specification.get_option(self.FormPath() + 'latitude')
-            #print 'here'
+            
             open_components = self.identifyOpen(components)
-            #print 'here1'
             if not open_components:
                 error("No open components available to close with an extension to parallel", fatal=True)
-            #print len(open_components)
             p = open_components[-1] 
-            #print 'here2'
 
             #p = self.PreviousBRepComponent()
             self.comment.append('Extending exterior boundary developed in %(previous_brep)s to parallel %(parallel)s' % {'previous_brep':p.Name(), 'parallel':latitude})
@@ -517,19 +522,40 @@ class BRepComponent(object):
 
         elif self.isExtendToMeridian():
             longitude = specification.get_option(self.FormPath() + 'longitude')
-            p = self.PreviousBRepComponent()
+            
+            #p = self.PreviousBRepComponent()
+            open_components = self.identifyOpen(components)
+            if not open_components:
+                error("No open components available to close with an extension to parallel", fatal=True)
+            p = open_components[-1] 
+            
             self.comment.append('Extending exterior boundary developed in %(previous_brep)s to meridian %(meridian)s' % {'previous_brep':p.Name(), 'meridian':longitude})
             self.report('Extending exterior boundary developed in %(previous_brep)s to meridian %(meridian)s', var = {'previous_brep':p.Name(), 'meridian':longitude}, include = True, indent = 1)
             # Check past BRep component is not complete
-            if p.isComplete():
-                error('Mesh model misconfiguration. Previous boundary representation %(previous_brep)s is complete.  Unable to now extend this boundary to the meridian %(meridian)s' % {'previous_brep':p.Name(), 'meridian':longitude}, fatal = True)
+            #if p.isComplete():
+            #    error('Mesh model misconfiguration. Previous boundary representation %(previous_brep)s is complete.  Unable to now extend this boundary to the meridian %(meridian)s' % {'previous_brep':p.Name(), 'meridian':longitude}, fatal = True)
 
+            #  # Pick up previous BRep component
+            #  #n = EnrichedPolyline(self)
+            #  n = p.components[-1].CopyOpenPart()
+
+            #print self.Identification()
             # Pick up previous BRep component
-            #n = EnrichedPolyline(self)
-            n = p.components[-1].CopyOpenPart()
+            n = EnrichedPolyline(self)
+            n.CopyOpenPart(p.components[-1])
+           
+            #print project(n.valid_location[0], projection_type=self.Projection()) 
+            #print project(n.valid_location[1], projection_type=self.Projection()) 
+
+            #print n.valid_location
+
+            p._name = p.Name() + ' AND ' + self.Name()
 
             # Close BRep and complete
-            self.index = n.ClosePathEndToStartLongitude(self.index, extend_to_longitude = longitude)
+            self.index, paths = n.ClosePathEndToStartLongitude(self.index, extend_to_longitude = longitude)
+            
+            for path in paths:
+                p.components.append(path)
 
 
         #print self.components

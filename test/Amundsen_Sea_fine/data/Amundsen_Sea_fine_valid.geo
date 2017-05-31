@@ -16,7 +16,7 @@
 // 
 // Project name: Amundsen_Sea_fine
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/05/15 17:37:20 
+// Created at: 2017/05/31 14:46:29 
 // Project description:
 //   Use the RTopo dataset, 50S version (RTopo105b 50S.nc),
 //   selecting the region
@@ -142,6 +142,19 @@
 // Output to Amundsen_Sea_fine.geo
 // Projection type cartesian
 // Extending region to meet parallel on latitude -64.0
+
+// == Boundary Representation description =========================
+
+// == Header ======================================================
+Point ( 0 ) = { 0, 0, 0 };
+Point ( 1 ) = { 0, 0, 6.37101e+06 };
+PolarSphere ( 0 ) = { 0, 1 };
+
+Delete { Point{ 0 }; }
+Delete { Point{ 1 }; }
+
+
+// == BRep component pre-scan =====================================
 //   1. Amundsen_Sea_brep
 //       Path:           /geoid_surface_representation::Amundsen_Sea/brep_component::Amundsen_Sea_brep
 //       Form:           Raster
@@ -159,66 +172,44 @@
 // Region defined by ((longitude >= -130.0) and (longitude <= -85.0) and (latitude >= -85.0) and (latitude <= -60.0))
 // Open contours closed with a line formed by points spaced 0.1 degrees apart
 // Paths found: 15
-
-// == Boundary Representation description =========================
-
-// == Header ======================================================
-Point ( 0 ) = { 0, 0, 0 };
-Point ( 1 ) = { 0, 0, 6.37101e+06 };
-PolarSphere ( 0 ) = { 0, 1 };
-
-Delete { Point{ 0 }; }
-Delete { Point{ 1 }; }
-
 // Merged paths that cross the date line: 
-
-// == Ice-Land mass number 1 ======================================
 // Path 1: points 5160 (of 5160) area 3.82806e+06
-
-// == Ice-Land mass number 2 ======================================
 // Path 2: points 1274 (of 1275) area 25276.9 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 3 ======================================
 // Path 3: points 680 (of 681) area 58481.4 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 4 ======================================
 // Path 4: points 512 (of 513) area 8103.48 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 5 ======================================
 // Path 5: points 240 (of 241) area 2238.38 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 6 ======================================
 // Path 6: points 212 (of 213) area 1205.91 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 7 ======================================
 // Path 7: points 180 (of 181) area 1374.98 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 8 ======================================
 // Path 8: points 172 (of 173) area 1082.44 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 9 ======================================
 // Path 9: points 158 (of 159) area 2191.14 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 10 =====================================
 // Path 10: points 130 (of 131) area 913.168 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 11 =====================================
 // Path 11: points 104 (of 105) area 800.669 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 12 =====================================
 // Path 12: points 108 (of 109) area 538.654 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 13 =====================================
 // Path 13: points 60 (of 61) area 225.112 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 14 =====================================
 // Path 14: points 60 (of 61) area 65.104 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 15 =====================================
 // Path 15: points 18 (of 19) area 5.40939 (required closing in 2 parts of the path)
 // Paths found valid (renumbered order): 15, including 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
 
-// == Ice-Land mass number 2 ======================================
+// == BRep component: ExtendTo64S =================================
+// Extending exterior boundary developed in Amundsen_Sea_brep (part 15 of 15) to parallel -64.0
+//   Component boundary representations identified:
+//     1: Amundsen_Sea_brep (part 1 of 15) (components: 1)
+//     2: Amundsen_Sea_brep (part 2 of 15) (components: 1)
+//     3: Amundsen_Sea_brep (part 3 of 15) (components: 1)
+//     4: Amundsen_Sea_brep (part 4 of 15) (components: 1)
+//     5: Amundsen_Sea_brep (part 5 of 15) (components: 1)
+//     6: Amundsen_Sea_brep (part 6 of 15) (components: 1)
+//     7: Amundsen_Sea_brep (part 7 of 15) (components: 1)
+//     8: Amundsen_Sea_brep (part 8 of 15) (components: 1)
+//     9: Amundsen_Sea_brep (part 9 of 15) (components: 1)
+//     10: Amundsen_Sea_brep (part 10 of 15) (components: 1)
+//     11: Amundsen_Sea_brep (part 11 of 15) (components: 1)
+//     12: Amundsen_Sea_brep (part 12 of 15) (components: 1)
+//     13: Amundsen_Sea_brep (part 13 of 15) (components: 1)
+//     14: Amundsen_Sea_brep (part 14 of 15) (components: 1)
+//     15: Amundsen_Sea_brep (part 15 of 15) AND ExtendTo64S (components: 4)
+
+// == BRep component: Amundsen_Sea_brep (part 1 of 15) ============
 Point ( 2 ) = { 0.95983106, 6.46094589, 0.00000000 };
 Point ( 3 ) = { 0.95795207, 6.46122476, 0.00000000 };
 Point ( 4 ) = { 0.95607213, 6.46150320, 0.00000000 };
@@ -1497,7 +1488,7 @@ BSpline ( 0 ) = { 2 : 1275, 2 };
 Line Loop( 0 ) = { 0 };
 
 
-// == Ice-Land mass number 3 ======================================
+// == BRep component: Amundsen_Sea_brep (part 2 of 15) ============
 Point ( 1276 ) = { 4.05895397, 5.98754404, 0.00000000 };
 Point ( 1277 ) = { 4.05721252, 5.98872420, 0.00000000 };
 Point ( 1278 ) = { 4.05546993, 5.98990440, 0.00000000 };
@@ -2182,7 +2173,7 @@ BSpline ( 1 ) = { 1276 : 1955, 1276 };
 Line Loop( 1 ) = { 1 };
 
 
-// == Ice-Land mass number 4 ======================================
+// == BRep component: Amundsen_Sea_brep (part 3 of 15) ============
 Point ( 1956 ) = { 3.89703542, 6.19637771, 0.00000000 };
 Point ( 1957 ) = { 3.89523242, 6.19751129, 0.00000000 };
 Point ( 1958 ) = { 3.89342909, 6.19864435, 0.00000000 };
@@ -2699,7 +2690,7 @@ BSpline ( 2 ) = { 1956 : 2467, 1956 };
 Line Loop( 2 ) = { 2 };
 
 
-// == Ice-Land mass number 5 ======================================
+// == BRep component: Amundsen_Sea_brep (part 4 of 15) ============
 Point ( 2468 ) = { 1.12032250, 6.51989292, 0.00000000 };
 Point ( 2469 ) = { 1.11842549, 6.52021860, 0.00000000 };
 Point ( 2470 ) = { 1.11652925, 6.52054359, 0.00000000 };
@@ -2944,7 +2935,7 @@ BSpline ( 3 ) = { 2468 : 2707, 2468 };
 Line Loop( 3 ) = { 3 };
 
 
-// == Ice-Land mass number 6 ======================================
+// == BRep component: Amundsen_Sea_brep (part 5 of 15) ============
 Point ( 2708 ) = { 0.17521212, 6.76631211, 0.00000000 };
 Point ( 2709 ) = { 0.17324436, 6.76636277, 0.00000000 };
 Point ( 2710 ) = { 0.17127567, 6.76641289, 0.00000000 };
@@ -3161,7 +3152,7 @@ BSpline ( 4 ) = { 2708 : 2919, 2708 };
 Line Loop( 4 ) = { 4 };
 
 
-// == Ice-Land mass number 7 ======================================
+// == BRep component: Amundsen_Sea_brep (part 6 of 15) ============
 Point ( 2920 ) = { 3.30148275, 6.41022486, 0.00000000 };
 Point ( 2921 ) = { 3.29961840, 6.41118472, 0.00000000 };
 Point ( 2922 ) = { 3.29775293, 6.41214447, 0.00000000 };
@@ -3346,7 +3337,7 @@ BSpline ( 5 ) = { 2920 : 3099, 2920 };
 Line Loop( 5 ) = { 5 };
 
 
-// == Ice-Land mass number 8 ======================================
+// == BRep component: Amundsen_Sea_brep (part 7 of 15) ============
 Point ( 3100 ) = { 3.57160041, 6.21957344, 0.00000000 };
 Point ( 3101 ) = { 3.56979068, 6.22061234, 0.00000000 };
 Point ( 3102 ) = { 3.56798063, 6.22165071, 0.00000000 };
@@ -3523,7 +3514,7 @@ BSpline ( 6 ) = { 3100 : 3271, 3100 };
 Line Loop( 6 ) = { 6 };
 
 
-// == Ice-Land mass number 9 ======================================
+// == BRep component: Amundsen_Sea_brep (part 8 of 15) ============
 Point ( 3272 ) = { 4.52512208, 5.87599111, 0.00000000 };
 Point ( 3273 ) = { 4.52341227, 5.87730744, 0.00000000 };
 Point ( 3274 ) = { 4.52170285, 5.87862268, 0.00000000 };
@@ -3686,7 +3677,7 @@ BSpline ( 7 ) = { 3272 : 3429, 3272 };
 Line Loop( 7 ) = { 7 };
 
 
-// == Ice-Land mass number 10 =====================================
+// == BRep component: Amundsen_Sea_brep (part 9 of 15) ============
 Point ( 3430 ) = { 0.01957054, 6.72793965, 0.00000000 };
 Point ( 3431 ) = { 0.01761394, 6.72794506, 0.00000000 };
 Point ( 3432 ) = { 0.01565644, 6.72794990, 0.00000000 };
@@ -3821,7 +3812,7 @@ BSpline ( 8 ) = { 3430 : 3559, 3430 };
 Line Loop( 8 ) = { 8 };
 
 
-// == Ice-Land mass number 11 =====================================
+// == BRep component: Amundsen_Sea_brep (part 10 of 15) ===========
 Point ( 3560 ) = { 0.58291105, 6.53139226, 0.00000000 };
 Point ( 3561 ) = { 0.58101159, 6.53156150, 0.00000000 };
 Point ( 3562 ) = { 0.57911120, 6.53173027, 0.00000000 };
@@ -3930,7 +3921,7 @@ BSpline ( 9 ) = { 3560 : 3663, 3560 };
 Line Loop( 9 ) = { 9 };
 
 
-// == Ice-Land mass number 12 =====================================
+// == BRep component: Amundsen_Sea_brep (part 11 of 15) ===========
 Point ( 3664 ) = { 1.74027149, 6.54808684, 0.00000000 };
 Point ( 3665 ) = { 1.73836712, 6.54859267, 0.00000000 };
 Point ( 3666 ) = { 1.73646173, 6.54909817, 0.00000000 };
@@ -4043,7 +4034,7 @@ BSpline ( 10 ) = { 3664 : 3771, 3664 };
 Line Loop( 10 ) = { 10 };
 
 
-// == Ice-Land mass number 13 =====================================
+// == BRep component: Amundsen_Sea_brep (part 12 of 15) ===========
 Point ( 3772 ) = { 0.45307241, 6.64590334, 0.00000000 };
 Point ( 3773 ) = { 0.45113877, 6.64603488, 0.00000000 };
 Point ( 3774 ) = { 0.44920597, 6.64616580, 0.00000000 };
@@ -4108,7 +4099,7 @@ BSpline ( 11 ) = { 3772 : 3831, 3772 };
 Line Loop( 11 ) = { 11 };
 
 
-// == Ice-Land mass number 14 =====================================
+// == BRep component: Amundsen_Sea_brep (part 13 of 15) ===========
 Point ( 3832 ) = { 0.06254953, 5.37551442, 0.00000000 };
 Point ( 3833 ) = { 0.06098624, 5.37553239, 0.00000000 };
 Point ( 3834 ) = { 0.05942222, 5.37554990, 0.00000000 };
@@ -4173,7 +4164,7 @@ BSpline ( 12 ) = { 3832 : 3891, 3832 };
 Line Loop( 12 ) = { 12 };
 
 
-// == Ice-Land mass number 15 =====================================
+// == BRep component: Amundsen_Sea_brep (part 14 of 15) ===========
 Point ( 3892 ) = { 3.32430956, 6.46840768, 0.00000000 };
 Point ( 3893 ) = { 3.32242830, 6.46937417, 0.00000000 };
 Point ( 3894 ) = { 3.32054675, 6.47034012, 0.00000000 };
@@ -4196,7 +4187,7 @@ BSpline ( 13 ) = { 3892 : 3909, 3892 };
 Line Loop( 13 ) = { 13 };
 
 
-// == Ice-Land mass number 1 ======================================
+// == BRep component: Amundsen_Sea_brep (part 15 of 15) AND ExtendTo64S 
 Point ( 3910 ) = { -0.59679993, 6.86746777, 0.00000000 };
 Point ( 3911 ) = { -0.59480181, 6.86764112, 0.00000000 };
 Point ( 3912 ) = { -0.59280456, 6.86781381, 0.00000000 };
@@ -9359,11 +9350,8 @@ Point ( 9068 ) = { 4.84368199, 5.77929867, 0.00000000 };
 Point ( 9069 ) = { 4.84536250, 5.77788980, 0.00000000 };
 BSpline ( 14 ) = { 3910 : 9069 };
 
-
-// == BRep component: ExtendTo64S =================================
-// Extending exterior boundary developed in Amundsen_Sea_brep to parallel -64.0
 // Closing path with parallels and meridians, from (-129.98333740, -74.89166641) to  (-85.03333282, -73.49166870)
-// Drawing meridian to latitude index 9069 at -129.98, -74.89 (to match -64.00)
+// Drawing meridian to latitude index 1 at -129.98, -74.89 (to match -64.00)
 Point ( 9070 ) = { 4.81312911, 5.73945284, 0.00000000 };
 Point ( 9071 ) = { 4.78131439, 5.70151513, 0.00000000 };
 Point ( 9072 ) = { 4.74991017, 5.66406693, 0.00000000 };
@@ -9473,7 +9461,9 @@ Point ( 9175 ) = { 2.81593456, 3.35788283, 0.00000000 };
 Point ( 9176 ) = { 2.80464797, 3.34442405, 0.00000000 };
 Point ( 9177 ) = { 2.79344704, 3.33106741, 0.00000000 };
 Point ( 9178 ) = { 2.78325394, 3.31891258, 0.00000000 };
-// Drawing parallel index 9178 at -129.98 (to match -85.03), -64.00
+BSpline ( 15 ) = { 9069 : 9178 };
+
+// Drawing parallel index 1 at -129.98 (to match -85.03), -64.00
 Point ( 9179 ) = { 2.77745711, 3.32376522, 0.00000000 };
 Point ( 9180 ) = { 2.77165182, 3.32860773, 0.00000000 };
 Point ( 9181 ) = { 2.76583809, 3.33344010, 0.00000000 };
@@ -9923,7 +9913,10 @@ Point ( 9624 ) = { -0.34863530, 4.31742246, 0.00000000 };
 Point ( 9625 ) = { -0.35617009, 4.31680740, 0.00000000 };
 Point ( 9626 ) = { -0.36370379, 4.31617919, 0.00000000 };
 Point ( 9627 ) = { -0.37500261, 4.31521220, 0.00000000 };
-// Drawing meridian to end index 9627 at -85.03, -64.00 (to match -73.49)
+BSpline ( 16 ) = { 9178 : 9627 };
+
+// Drawing meridian to end index 1 at -85.03, -64.00 (to match -73.49)
+// Closed path with parallels and meridians, from (-85.03333282, -73.49166870) to  (-85.03333282, -73.49166870)
 Point ( 9628 ) = { -0.37650131, 4.33245796, 0.00000000 };
 Point ( 9629 ) = { -0.37801143, 4.34983511, 0.00000000 };
 Point ( 9630 ) = { -0.37953310, 4.36734520, 0.00000000 };
@@ -10018,13 +10011,13 @@ Point ( 9718 ) = { -0.58277315, 6.70605950, 0.00000000 };
 Point ( 9719 ) = { -0.58629270, 6.74655952, 0.00000000 };
 Point ( 9720 ) = { -0.58985410, 6.78754107, 0.00000000 };
 Point ( 9721 ) = { -0.59345810, 6.82901285, 0.00000000 };
-BSpline ( 15 ) = { 9069 : 9721, 3910 };
-Line Loop( 14 ) = { 14, 15 };
+BSpline ( 17 ) = { 9627 : 9721, 3910 };
+Line Loop( 14 ) = { 14, 15, 16, 17 };
 
 
 // == Physical entities ===========================================
-// Boundary OpenOcean (ID 4): 16
-Physical Line( 4 ) = { 15 };
+// Boundary OpenOcean (ID 4): 16 17 18
+Physical Line( 4 ) = { 15, 16, 17 };
 // Boundary Coast (ID 3): 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
 Physical Line( 3 ) = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
 Plane Surface( 10 ) = { 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };

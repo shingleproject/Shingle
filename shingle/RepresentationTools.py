@@ -41,6 +41,7 @@ from numpy import asarray
 
 from shapely.geometry import LineString
 from shapely.geometry import Polygon
+from shapely.geometry import Point
 from shapely.geometry.polygon import LinearRing
 
 def check_point_required(region, location):
@@ -65,6 +66,7 @@ def draw_parallel_explicit(rep, start, end, index, dx, to_parallel=None):
     # Replace below by shapely bounding box
     if (to_parallel is None):
         to_parallel = max(start[1], end[1])
+        up_to_parallel = None
     else:
         # Generalise:
         # to_parallel = max(to_parallel, start[1], end[1])
@@ -76,6 +78,8 @@ def draw_parallel_explicit(rep, start, end, index, dx, to_parallel=None):
             to_parallel = min(to_parallel, start[1], end[1])
         else:
             error('Extension of domain to parallel %(parallel)s failed: Parallel appears to be contained within the domain (start: %(start).2f, end: %(end).2f).' % {'parallel':to_parallel, 'start':start[1], 'end':end[1]}, fatal=True)
+
+    print start, end, up_to_parallel, to_parallel
 
     current = start 
     tolerance = dx * 0.6
@@ -90,8 +94,6 @@ def draw_parallel_explicit(rep, start, end, index, dx, to_parallel=None):
         comment.append('Closing path with parallels and meridians, from (%.8f, %.8f) to  (%.8f, %.8f)' % ( start[0], start[1], end[0], end[1] ) )
 
     loopstart = index
-
-    comment.append('HERE ' + str(project(current, projection_type=rep.Projection())))
 
     # Extend to latitude
     if (current[1] != to_parallel):
@@ -111,6 +113,7 @@ def draw_parallel_explicit(rep, start, end, index, dx, to_parallel=None):
         point = rep.FormatPoint(index.point, current, 0.0, project_to_output_projection_type=False)
         path.append(point)
 
+    print path
     paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment))
     path = []
     comment = []
@@ -191,36 +194,45 @@ def draw_meridian_explicit(rep, start, end, index, dx, to_meridian=None):
 
     current = start 
     tolerance = dx * 0.6
+    path = []
+    paths = []
+    comment = []
 
     if (compare_points(current, end, dx)):
-        rep.AddComment('Points already close enough, no need to draw parallels and meridians after all')
+        comment.append('Points already close enough, no need to draw parallels and meridians after all')
         return index
     else:
-        rep.AddComment('Closing path with parallels and meridians, from (%.8f, %.8f) to  (%.8f, %.8f)' % ( start[0], start[1], end[0], end[1] ) )
+        comment.append('Closing path with parallels and meridians, from (%.8f, %.8f) to  (%.8f, %.8f)' % ( start[0], start[1], end[0], end[1] ) )
 
     loopstart = index
 
     # Extend to longitude
     if (current[0] != to_meridian):
-        rep.AddComment('Drawing parallel to longitude index %s at %.2f, %.2f (to match %.2f)' % (index.point, current[0], current[1], to_meridian))
+        comment.append('Drawing parallel to longitude index %s at %.2f, %.2f (to match %.2f)' % (index.point, current[0], current[1], to_meridian))
     while (current[0] != to_meridian):
         if (longitude_diff(current[0], to_meridian) < 0):
             current[0] = current[0] + dx
         else:
             current[0] = current[0] - dx
         if (abs(current[0] - to_meridian) < tolerance): current[0] = to_meridian
-        if (compare_points(current, end, dx)): return index
-        index.point += 1
+        if (compare_points(current, end, dx)):
+            break
+        #index.point += 1
         rep.report('Drawing parallel to longitude index %s at %.2f, %.2f (to match %.2f)' % (index.point, current[0], current[1], to_meridian), debug=True)
-        rep.FormatPoint(index.point, current, 0.0, project_to_output_projection_type=True)
+        #rep.FormatPoint(index.point, current, 0.0, project_to_output_projection_type=True)
+        point = rep.FormatPoint(index.point, current, 0.0, project_to_output_projection_type=False)
+        path.append(point)
 
+    paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment))
+    path = []
+    comment = []
 
     if rep.MoreBSplines():
         index, loopstart = complete_as_bspline(index, loopstart)
 
     # Draw meridian
     if (current[1] != end[1]):
-        rep.AddComment('Drawing meridian index %s at %.2f (to match %.2f), %.2f' % (index.point, current[1], end[1], current[0]))
+        comment.append('Drawing meridian index %s at %.2f (to match %.2f), %.2f' % (index.point, current[1], end[1], current[0]))
     while (current[1] != end[1]):
         if (current[1] < end[1]):
             current[1] = current[1] + dx
@@ -228,10 +240,17 @@ def draw_meridian_explicit(rep, start, end, index, dx, to_meridian=None):
             current[1] = current[1] - dx
         #if (abs(current[0] - end[0]) < tolerance): current[0] = end[0]
         if (abs(current[1] - end[1]) < tolerance): current[1] = end[1]
-        if (compare_points(current, end, dx)): return index
-        index.point += 1
+        if (compare_points(current, end, dx)):
+            break
+        #index.point += 1
         rep.report('Drawing meridian index %s at %.2f (to match %.2f), %.2f' % (index.point, current[0], end[0], current[1]), debug=True)
-        rep.FormatPoint(index.point, current, 0.0, project_to_output_projection_type=True)
+        #rep.FormatPoint(index.point, current, 0.0, project_to_output_projection_type=True)
+        point = rep.FormatPoint(index.point, current, 0.0, project_to_output_projection_type=False)
+        path.append(point)
+
+    paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment))
+    path = []
+    comment = []
 
     if rep.MoreBSplines():
         index, loopstart = complete_as_bspline(index, loopstart)
@@ -245,15 +264,22 @@ def draw_meridian_explicit(rep, start, end, index, dx, to_meridian=None):
         else:
             current[0] = current[0] - dx
         if (abs(current[0] - end[0]) < tolerance): current[0] = end[0]
-        if (compare_points(current, end, dx)): return index
-        index.point += 1
+        if (compare_points(current, end, dx)):
+            break
+        #index.point += 1
         rep.report('Drawing parallel to end index %s at %.2f, %.2f (to match %.2f)' % (index.point, current[0], current[1], end[0]), debug=True)
-        rep.FormatPoint(index.point, current, 0.0, project_to_output_projection_type=True)
+        #rep.FormatPoint(index.point, current, 0.0, project_to_output_projection_type=True)
+        point = rep.FormatPoint(index.point, current, 0.0, project_to_output_projection_type=False)
+        path.append(point)
+    
+    comment.append('Closed path with parallels and meridians, from (%.8f, %.8f) to  (%.8f, %.8f)' % ( start[0], start[1], end[0], end[1] ) )
+    paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment))
+    path = []
+    comment = []
 
-    index = rep.AddLoop(index, loopstart, last=True)
-    rep.AddComment( 'Closed path with parallels and meridians, from (%.8f, %.8f) to  (%.8f, %.8f)' % ( start[0], start[1], end[0], end[1] ) )
+    #index = rep.AddLoop(index, loopstart, last=True)
 
-    return index
+    return index, paths
 
 
 
@@ -265,7 +291,11 @@ class EnrichedPolyline(object):
     _TYPE_EXTERIOR = 1
     _TYPE_INTERIOR = 2
 
-    def __init__(self, rep=None, contour=None, vertices=None, shape=None, reference_number=None, is_exterior=False, initialise_only = False, comment=[]):
+    _FORM_LINE = 'LineString'
+    _FORM_RING = 'LinearRing'
+    _FORM_POLYGON = 'Polygon'
+
+    def __init__(self, rep=None, contour=None, vertices=None, shape=None, reference_number=-1, is_exterior=False, initialise_only = False, comment=[]):
         self.vertices = []
         self.type = self._TYPE_UNDFINED
         self.shape = None
@@ -295,8 +325,6 @@ class EnrichedPolyline(object):
 
         # Data spacing
         self._source_spacing = [ 0.0, 0.0 ]
-
-        self.reference_number = None
 
         self._parent_brep_component = rep
         self._is_exterior = is_exterior
@@ -337,7 +365,7 @@ class EnrichedPolyline(object):
         if initialise_only:
             return
 
-        self.AddSection('Ice-Land mass number %s' % (self.reference_number))
+        #self.AddSection('Ice-Land mass number %s' % (self.reference_number))
         if (self.loopend is not None):
             self.isIslandCrossingMeridian()
 
@@ -351,7 +379,8 @@ class EnrichedPolyline(object):
             self.AddComment('  Skipped (area too small)\n')
             return
 
-        self.ReportClosingRequired()
+        if universe.debug:
+            self.ReportClosingRequired()
         self._valid = True
 
     def __str__(self):
@@ -362,6 +391,21 @@ class EnrichedPolyline(object):
             return self.shape.bounds[0] < other.shape.bounds[0]
         else:
             return self.shape.length < other.shape.length
+
+    def isLine(self):
+        return self.shape.geom_type == self._FORM_LINE
+
+    def isRing(self):
+        return self.shape.geom_type == self._FORM_RING
+    
+    def isPolygon(self):
+        return self.shape.geom_type == self._FORM_POLYGON
+
+    def isClosed(self):
+        return self.isRing or self.isPolygon
+        #return self.close_last
+
+
 
     def CopyOpenPart(self, source):
         self._is_exterior = source._is_exterior
@@ -507,7 +551,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
             else:
                 pointend = '%i' % (index.point)
 
-            print '****', first, last, prefix, suffix, pointstart, pointend
+            #print '****', first, last, prefix, suffix, pointstart, pointend
 
             #self.AddContent( '''BSpline ( %(prefix_line)s%(loopnumber)i ) = { %(prefix)s%(pointstart)s : %(prefix)s%(pointend)s%(loopstartpoint)s };''' %
             self.AddContent( '''BSpline ( %(prefix_line)s%(loopnumber)i ) = { %(prefix)s%(pointstart)s : %(prefix)s%(pointend)s };''' %
@@ -593,6 +637,37 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
     #    for point in range(self.PointNumber()):
     #        position = self.vertices[point, :]
         
+    def Interpolate(self, spacing=None):
+        from math import ceil
+        if not spacing:
+            spacing = self.Spacing()
+        coords = []
+        #print self.shape.coords[:]
+        for i, coord in enumerate(self.shape.coords[:]):
+            #print i, coord
+            coords.append(coord)
+            if i >= len(self.shape.coords[:]) - 1:
+                break
+            heading = self.shape.coords[i+1]
+            d = Point(coord).distance(Point(heading))
+            points_to_add = int(ceil((d / spacing) - 1.0))
+            #dx =  LineString((heading[0] - coord[0], heading[1] - coord[0] ))
+            s =  LineString((coord, heading ))
+            dx = s / points_to_add
+            
+            shapely.affinity.affine_transform
+            shapely.affinity.scale
+
+            print d, points_to_add, s, dx 
+        
+
+
+        for i, coord in enumerate(coords):
+            print i, coord
+
+
+        import sys
+        sys.exit()
 
     def ConstrainPoints(self):
         flag = 0
@@ -629,9 +704,6 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
 
     def getEnds(self):
         return (self.Vertex(self.loopstart), self.Vertex(self.loopend))
-
-    def isClosed(self):
-        return self.close_last
 
     def AreaEnclosed(self):
         # Use shapely
@@ -695,16 +767,17 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
         longitude = extend_to_longitude
 
         point = -1
+        self.loopstartpoint = 0
 
-        loopstartpoint = self.loopstartpoint
-        start_point = self.valid_location[point]
-        end_point = self.valid_location[0]
+        #loopstartpoint = self.loopstartpoint
+        #start_point = self.valid_location[point]
+        #end_point = self.valid_location[0]
 
-        index = self.AddLoop(index, self.loopstartpoint)
-        index = draw_meridian_explicit(self._parent_brep_component, start_point, end_point, index, self.Spacing(), longitude)
-        index = self.AddLoop(index, self.loopstartpoint, last=True)
+        #index = self.AddLoop(index, self.loopstartpoint)
+        index, paths = draw_meridian_explicit(self._parent_brep_component, self.valid_location[point], self.valid_location[0], index, self.Spacing(), longitude)
+        #index = self.AddLoop(index, self.loopstartpoint, last=True)
 
-        return index
+        return index, paths
 
 
     def ClosePathEndToStart(self, index, extend_to_latitude = None):
@@ -717,11 +790,11 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
         
         self.loopstartpoint = 0
 
-        print index.point
+        #print index.point
         #index = self.AddLoop(index, self.loopstartpoint)
         index, paths = draw_parallel_explicit(self._parent_brep_component, self.valid_location[point], self.valid_location[0], index, self.Spacing(), latitude)
         #index = self.AddLoop(index, self.loopstartpoint, last=True)
-        print index.point
+        #print index.point
 
         return index, paths
 
@@ -743,7 +816,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
         # asc: Treat first, last
 
 
-        self.AddSection('Ice-Land mass number %s' % (self.reference_number))
+        #self.AddSection('Ice-Land mass number %s' % (self.reference_number))
 
         index.start = index.point + 1
         self.loopstartpoint = index.start

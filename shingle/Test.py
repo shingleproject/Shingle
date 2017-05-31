@@ -562,8 +562,3 @@ def ResultToString(result, total=None, show_failures=False, failures=None):
         string = '  %(brightred)sFAIL%(end)s' + failreport
     return string
 
-
-
-
-
-

@@ -16,7 +16,7 @@
 // 
 // Project name: Chile_Talcahuano
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/05/15 17:39:31 
+// Created at: 2017/05/31 14:33:31 
 // Project description:
 //   Example simulation domain for modelling ocean wave propagation and
 //       tsunami inundation in the 2010 Chile M8.8 earthquake, centred at 35.9S 72.7W,
@@ -128,6 +128,12 @@
 // == Boundary Representation Specification Parameters ============
 // Output to Chile_Talcahuano.geo
 // Projection type longlat
+
+// == Boundary Representation description =========================
+
+// == Header ======================================================
+
+// == BRep component pre-scan =====================================
 //   1. SouthEastPacificOceanCoast
 //       Path:           /geoid_surface_representation::SouthEastPacificOcean/brep_component::SouthEastPacificOceanCoast
 //       Form:           Raster
@@ -139,59 +145,45 @@
 
 // == BRep component: SouthEastPacificOceanCoast ==================
 // Reading boundary representation SouthEastPacificOceanCoast
-// Region of interest: True
 // Open contours closed with a line formed by points spaced 0.1 degrees apart
 // Paths found: 14
-
-// == Boundary Representation description =========================
-
-// == Header ======================================================
 // Merged paths that cross the date line: 
-
-// == Ice-Land mass number 1 ======================================
 // Path 1: points 1701 (of 1701) area 211635
-
-// == Ice-Land mass number 2 ======================================
 // Path 2: points 62 (of 63) area 200.907 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 3 ======================================
 // Path 3: points 58 (of 59) area 75.1276 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 4 ======================================
 // Path 4: points 16 (of 17) area 10.0397 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 5 ======================================
 // Path 5: points 14 (of 15) area 8.77193 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 6 ======================================
 // Path 6: points 12 (of 13) area 5.45549 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 7 ======================================
 // Path 7: points 10 (of 11) area 5.36627 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 8 ======================================
 // Path 8: points 8 (of 9) area 1.17062 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 9 ======================================
 // Path 9: points 6 (of 7) area 0.761649 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 10 =====================================
 // Path 10: points 4 (of 5) area 0.151198 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 11 =====================================
 // Path 11: points 4 (of 5) area 0.15158 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 12 =====================================
 // Path 12: points 4 (of 5) area 0.434288 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 13 =====================================
 // Path 13: points 4 (of 5) area 0.460712 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 14 =====================================
 // Path 14: points 4 (of 5) area 0.151719 (required closing in 2 parts of the path)
 // Paths found valid (renumbered order): 14, including 1 2 3 4 5 6 7 8 9 10 11 12 13 14
 
-// == Ice-Land mass number 2 ======================================
+// == BRep component: ExtendToMeridian ============================
+// Extending exterior boundary developed in SouthEastPacificOceanCoast (part 14 of 14) to meridian -77.0
+// Drawing parallel to end index 1 at -77.00, -40.00 (to match -73.71)
+//   Component boundary representations identified:
+//     1: SouthEastPacificOceanCoast (part 1 of 14) (components: 1)
+//     2: SouthEastPacificOceanCoast (part 2 of 14) (components: 1)
+//     3: SouthEastPacificOceanCoast (part 3 of 14) (components: 1)
+//     4: SouthEastPacificOceanCoast (part 4 of 14) (components: 1)
+//     5: SouthEastPacificOceanCoast (part 5 of 14) (components: 1)
+//     6: SouthEastPacificOceanCoast (part 6 of 14) (components: 1)
+//     7: SouthEastPacificOceanCoast (part 7 of 14) (components: 1)
+//     8: SouthEastPacificOceanCoast (part 8 of 14) (components: 1)
+//     9: SouthEastPacificOceanCoast (part 9 of 14) (components: 1)
+//     10: SouthEastPacificOceanCoast (part 10 of 14) (components: 1)
+//     11: SouthEastPacificOceanCoast (part 11 of 14) (components: 1)
+//     12: SouthEastPacificOceanCoast (part 12 of 14) (components: 1)
+//     13: SouthEastPacificOceanCoast (part 13 of 14) (components: 1)
+//     14: SouthEastPacificOceanCoast (part 14 of 14) AND ExtendToMeridian (components: 4)
+
+// == BRep component: SouthEastPacificOceanCoast (part 1 of 14) ===
 Point ( 2 ) = { -73.89583333, -38.45833333, 0.00000000 };
 Point ( 3 ) = { -73.90000000, -38.45416667, 0.00000000 };
 Point ( 4 ) = { -73.90416667, -38.45000000, 0.00000000 };
@@ -258,7 +250,7 @@ BSpline ( 0 ) = { 2 : 63, 2 };
 Line Loop( 0 ) = { 0 };
 
 
-// == Ice-Land mass number 3 ======================================
+// == BRep component: SouthEastPacificOceanCoast (part 2 of 14) ===
 Point ( 64 ) = { -73.53750000, -37.08333333, 0.00000000 };
 Point ( 65 ) = { -73.54166667, -37.07916667, 0.00000000 };
 Point ( 66 ) = { -73.54583333, -37.07500000, 0.00000000 };
@@ -321,7 +313,7 @@ BSpline ( 1 ) = { 64 : 121, 64 };
 Line Loop( 1 ) = { 1 };
 
 
-// == Ice-Land mass number 4 ======================================
+// == BRep component: SouthEastPacificOceanCoast (part 3 of 14) ===
 Point ( 122 ) = { -73.07083333, -36.65000000, 0.00000000 };
 Point ( 123 ) = { -73.07500000, -36.64583333, 0.00000000 };
 Point ( 124 ) = { -73.07500000, -36.63750000, 0.00000000 };
@@ -342,7 +334,7 @@ BSpline ( 2 ) = { 122 : 137, 122 };
 Line Loop( 2 ) = { 2 };
 
 
-// == Ice-Land mass number 5 ======================================
+// == BRep component: SouthEastPacificOceanCoast (part 4 of 14) ===
 Point ( 138 ) = { -73.71250000, -38.38333333, 0.00000000 };
 Point ( 139 ) = { -73.71666667, -38.37916667, 0.00000000 };
 Point ( 140 ) = { -73.72083333, -38.37500000, 0.00000000 };
@@ -361,7 +353,7 @@ BSpline ( 3 ) = { 138 : 151, 138 };
 Line Loop( 3 ) = { 3 };
 
 
-// == Ice-Land mass number 6 ======================================
+// == BRep component: SouthEastPacificOceanCoast (part 5 of 14) ===
 Point ( 152 ) = { -72.74583333, -35.17500000, 0.00000000 };
 Point ( 153 ) = { -72.75000000, -35.17083333, 0.00000000 };
 Point ( 154 ) = { -72.75416667, -35.16666667, 0.00000000 };
@@ -378,7 +370,7 @@ BSpline ( 4 ) = { 152 : 163, 152 };
 Line Loop( 4 ) = { 4 };
 
 
-// == Ice-Land mass number 7 ======================================
+// == BRep component: SouthEastPacificOceanCoast (part 6 of 14) ===
 Point ( 164 ) = { -73.54583333, -36.95833333, 0.00000000 };
 Point ( 165 ) = { -73.55000000, -36.95416667, 0.00000000 };
 Point ( 166 ) = { -73.55416667, -36.95000000, 0.00000000 };
@@ -393,7 +385,7 @@ BSpline ( 5 ) = { 164 : 173, 164 };
 Line Loop( 5 ) = { 5 };
 
 
-// == Ice-Land mass number 8 ======================================
+// == BRep component: SouthEastPacificOceanCoast (part 7 of 14) ===
 Point ( 174 ) = { -73.41250000, -39.89166667, 0.00000000 };
 Point ( 175 ) = { -73.40416667, -39.89166667, 0.00000000 };
 Point ( 176 ) = { -73.40000000, -39.88750000, 0.00000000 };
@@ -406,7 +398,7 @@ BSpline ( 6 ) = { 174 : 181, 174 };
 Line Loop( 6 ) = { 6 };
 
 
-// == Ice-Land mass number 9 ======================================
+// == BRep component: SouthEastPacificOceanCoast (part 8 of 14) ===
 Point ( 182 ) = { -73.72083333, -38.34166667, 0.00000000 };
 Point ( 183 ) = { -73.72500000, -38.33750000, 0.00000000 };
 Point ( 184 ) = { -73.72083333, -38.33333333, 0.00000000 };
@@ -417,7 +409,7 @@ BSpline ( 7 ) = { 182 : 187, 182 };
 Line Loop( 7 ) = { 7 };
 
 
-// == Ice-Land mass number 10 =====================================
+// == BRep component: SouthEastPacificOceanCoast (part 9 of 14) ===
 Point ( 188 ) = { -73.46250000, -37.18333333, 0.00000000 };
 Point ( 189 ) = { -73.45833333, -37.17916667, 0.00000000 };
 Point ( 190 ) = { -73.46250000, -37.17500000, 0.00000000 };
@@ -426,7 +418,7 @@ BSpline ( 8 ) = { 188 : 191, 188 };
 Line Loop( 8 ) = { 8 };
 
 
-// == Ice-Land mass number 11 =====================================
+// == BRep component: SouthEastPacificOceanCoast (part 10 of 14) ==
 Point ( 192 ) = { -73.55416667, -37.18333333, 0.00000000 };
 Point ( 193 ) = { -73.55000000, -37.17916667, 0.00000000 };
 Point ( 194 ) = { -73.55416667, -37.17500000, 0.00000000 };
@@ -435,7 +427,7 @@ BSpline ( 9 ) = { 192 : 195, 192 };
 Line Loop( 9 ) = { 9 };
 
 
-// == Ice-Land mass number 12 =====================================
+// == BRep component: SouthEastPacificOceanCoast (part 11 of 14) ==
 Point ( 196 ) = { -71.52916667, -32.70833333, 0.00000000 };
 Point ( 197 ) = { -71.53333333, -32.70416667, 0.00000000 };
 Point ( 198 ) = { -71.52916667, -32.70000000, 0.00000000 };
@@ -444,7 +436,7 @@ BSpline ( 10 ) = { 196 : 199, 196 };
 Line Loop( 10 ) = { 10 };
 
 
-// == Ice-Land mass number 13 =====================================
+// == BRep component: SouthEastPacificOceanCoast (part 12 of 14) ==
 Point ( 200 ) = { -73.43750000, -37.14166667, 0.00000000 };
 Point ( 201 ) = { -73.44166667, -37.13750000, 0.00000000 };
 Point ( 202 ) = { -73.43750000, -37.13333333, 0.00000000 };
@@ -453,7 +445,7 @@ BSpline ( 11 ) = { 200 : 203, 200 };
 Line Loop( 11 ) = { 11 };
 
 
-// == Ice-Land mass number 14 =====================================
+// == BRep component: SouthEastPacificOceanCoast (part 13 of 14) ==
 Point ( 204 ) = { -73.47916667, -37.07500000, 0.00000000 };
 Point ( 205 ) = { -73.47500000, -37.07083333, 0.00000000 };
 Point ( 206 ) = { -73.47916667, -37.06666667, 0.00000000 };
@@ -462,7 +454,7 @@ BSpline ( 12 ) = { 204 : 207, 204 };
 Line Loop( 12 ) = { 12 };
 
 
-// == Ice-Land mass number 1 ======================================
+// == BRep component: SouthEastPacificOceanCoast (part 14 of 14) AND ExtendToMeridian 
 Point ( 208 ) = { -73.70833333, -40.00416667, 0.00000000 };
 Point ( 209 ) = { -73.70833333, -39.99583333, 0.00000000 };
 Point ( 210 ) = { -73.70416667, -39.99166667, 0.00000000 };
@@ -2166,11 +2158,8 @@ Point ( 1907 ) = { -71.52500000, -32.01250000, 0.00000000 };
 Point ( 1908 ) = { -71.52500000, -32.00416667, 0.00000000 };
 BSpline ( 13 ) = { 208 : 1908 };
 
-
-// == BRep component: ExtendToMeridian ============================
-// Extending exterior boundary developed in SouthEastPacificOceanCoast to meridian -77.0
 // Closing path with parallels and meridians, from (-71.52500000, -32.00416667) to  (-73.70833333, -40.00416667)
-// Drawing parallel to longitude index 1908 at -71.53, -32.00 (to match -77.00)
+// Drawing parallel to longitude index 1 at -71.53, -32.00 (to match -77.00)
 Point ( 1909 ) = { -71.62500000, -32.00416667, 0.00000000 };
 Point ( 1910 ) = { -71.72500000, -32.00416667, 0.00000000 };
 Point ( 1911 ) = { -71.82500000, -32.00416667, 0.00000000 };
@@ -2226,7 +2215,9 @@ Point ( 1960 ) = { -76.72500000, -32.00416667, 0.00000000 };
 Point ( 1961 ) = { -76.82500000, -32.00416667, 0.00000000 };
 Point ( 1962 ) = { -76.92500000, -32.00416667, 0.00000000 };
 Point ( 1963 ) = { -77.00000000, -32.00416667, 0.00000000 };
-// Drawing meridian index 1963 at -32.00 (to match -40.00), -77.00
+BSpline ( 14 ) = { 1908 : 1963 };
+
+// Drawing meridian index 1 at -32.00 (to match -40.00), -77.00
 Point ( 1964 ) = { -77.00000000, -32.10416667, 0.00000000 };
 Point ( 1965 ) = { -77.00000000, -32.20416667, 0.00000000 };
 Point ( 1966 ) = { -77.00000000, -32.30416667, 0.00000000 };
@@ -2307,7 +2298,9 @@ Point ( 2040 ) = { -77.00000000, -39.70416667, 0.00000000 };
 Point ( 2041 ) = { -77.00000000, -39.80416667, 0.00000000 };
 Point ( 2042 ) = { -77.00000000, -39.90416667, 0.00000000 };
 Point ( 2043 ) = { -77.00000000, -40.00416667, 0.00000000 };
-// Drawing parallel to end index 2043 at -77.00, -40.00 (to match -73.71)
+BSpline ( 15 ) = { 1963 : 2043 };
+
+// Closed path with parallels and meridians, from (-73.70833333, -40.00416667) to  (-73.70833333, -40.00416667)
 Point ( 2044 ) = { -76.90000000, -40.00416667, 0.00000000 };
 Point ( 2045 ) = { -76.80000000, -40.00416667, 0.00000000 };
 Point ( 2046 ) = { -76.70000000, -40.00416667, 0.00000000 };
@@ -2340,13 +2333,13 @@ Point ( 2072 ) = { -74.10000000, -40.00416667, 0.00000000 };
 Point ( 2073 ) = { -74.00000000, -40.00416667, 0.00000000 };
 Point ( 2074 ) = { -73.90000000, -40.00416667, 0.00000000 };
 Point ( 2075 ) = { -73.80000000, -40.00416667, 0.00000000 };
-BSpline ( 14 ) = { 1908 : 2075, 208 };
-Line Loop( 13 ) = { 13, 14 };
+BSpline ( 16 ) = { 2043 : 2075, 208 };
+Line Loop( 13 ) = { 13, 14, 15, 16 };
 
 
 // == Physical entities ===========================================
-// Boundary OpenOcean (ID 4): 15
-Physical Line( 4 ) = { 14 };
+// Boundary OpenOcean (ID 4): 15 16 17
+Physical Line( 4 ) = { 14, 15, 16 };
 // Boundary Coast (ID 3): 1 2 3 4 5 6 7 8 9 10 11 12 13 14
 Physical Line( 3 ) = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
 Plane Surface( 10 ) = { 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
