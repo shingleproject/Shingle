@@ -285,8 +285,10 @@ class EnrichedPolyline(object):
         self.point = None
         self.closingrequirednumber = 0
 
-        self.before = None
-        self.after = None
+        self.before = self
+        self.after = self
+
+        self.point_index = []
 
         # Parent boundary representation component
         self._parent_brep_component = None
@@ -450,9 +452,23 @@ class EnrichedPolyline(object):
     # ---------------------------------------- 
 
 
-    def AddLoop(self, index, loopstartpoint, last=False):
+    #def AddLoop(self, index, loopstartpoint, last=False, first=True, last=True):
+    def AddLoop(self, index, loopstartpoint=-1, last=True, first=True):
         if (index.point <= index.start):
             return index
+
+        # To edit
+        if not first:
+            prefix = self.before.point_index[-1]
+        else:
+            prefix = None
+
+        if last:
+            suffix = self.after.point_index[0]
+        else:
+            suffix = None
+        # To edit
+
 
         add_start_end_note = False
         compound_edgeindex = 100000
@@ -474,7 +490,37 @@ class EnrichedPolyline(object):
 LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start, 'pointend':index.point, 'loopnumber':index.path, 'loopstartpoint':closure, 'type':type, 'prefix':self.CounterPrefix('IP') } )
 
         if not self.isCompound():
-            self.AddContent( '''BSpline ( %(prefix_line)s%(loopnumber)i ) = { %(prefix)s%(pointstart)i : %(prefix)s%(pointend)i%(loopstartpoint)s };''' % { 'pointstart':index.start, 'pointend':index.point, 'loopnumber':index.path, 'loopstartpoint':closure, 'type':type, 'prefix':self.CounterPrefix('IP'), 'prefix_line':self.CounterPrefix('IL') } )
+            pointstart = index.start
+            pointend = index.point
+            if prefix:
+                if prefix == (index.start - 1):
+                    pointstart = '%i' % (index.start - 1)
+                else:
+                    pointstart = '%i, %i' % (prefix, index.start)
+            else:
+                pointstart = '%i' % (index.start)
+            if suffix:
+                if suffix == (index.point + 1):
+                    pointend = '%i' % (index.point + 1)
+                else:
+                    pointend = '%i, %i' % (index.point, suffix)
+            else:
+                pointend = '%i' % (index.point)
+
+            print '****', first, last, prefix, suffix, pointstart, pointend
+
+            #self.AddContent( '''BSpline ( %(prefix_line)s%(loopnumber)i ) = { %(prefix)s%(pointstart)s : %(prefix)s%(pointend)s%(loopstartpoint)s };''' %
+            self.AddContent( '''BSpline ( %(prefix_line)s%(loopnumber)i ) = { %(prefix)s%(pointstart)s : %(prefix)s%(pointend)s };''' %
+                {
+                    'pointstart': pointstart,
+                    'pointend': pointend,
+                    'loopnumber': index.path,
+                    'loopstartpoint': closure,
+                    'loopstartpoint': closure,
+                    'type': type,
+                    'prefix': self.CounterPrefix('IP'),
+                    'prefix_line': self.CounterPrefix('IL')
+                } )
 
         compoundpoints = False
         if (last):
@@ -713,9 +759,10 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
 
             else:
                 index.point += 1
+                self.point_index.append(index.point)
                 self.AddFormattedPoint(index.point, self.valid_location[point,:], 0)
 
-        index = self.AddLoop(index, self.loopstartpoint, (self.close_last and (point == self.ValidPointNumber() - 1)))
+        index = self.AddLoop(index, self.loopstartpoint, last, first)
 
         return index
 

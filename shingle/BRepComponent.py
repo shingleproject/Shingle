@@ -497,10 +497,10 @@ class BRepComponent(object):
             n = EnrichedPolyline(self)
             n.CopyOpenPart(p.components[-1])
            
-            print project(n.valid_location[0], projection_type=self.Projection()) 
-            print project(n.valid_location[1], projection_type=self.Projection()) 
+            #print project(n.valid_location[0], projection_type=self.Projection()) 
+            #print project(n.valid_location[1], projection_type=self.Projection()) 
 
-            print n.valid_location
+            #print n.valid_location
 
             p._name = p.Name() + ' AND ' + self.Name()
             
