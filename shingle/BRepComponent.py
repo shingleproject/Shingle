@@ -42,6 +42,7 @@ from Plot import PlotContours
 from Bounds import Bounds
 
 from shapely.geometry.polygon import LinearRing
+from shapely.geometry.polygon import LineString
 from copy import copy, deepcopy
 
 # class BRepComponentGroup(object):
@@ -452,6 +453,12 @@ class BRepComponent(object):
             self.output_open_boundaries()
 
         elif self.isBoundingBox():
+
+            from itertools import izip
+
+            def pairwise(t):
+                it = iter(t)
+                return izip(it,it)
            
             bounds = Bounds(path=self.FormPath())
             bounds = bounds.GetMaxBounds()
@@ -467,20 +474,39 @@ class BRepComponent(object):
             d = [ bounds[0], bounds[3] ]
             
             bounds = (a, b, c, d)
-            p = EnrichedPolyline(self, shape=LinearRing(bounds), initialise_only=True, is_exterior=True)
-            p.Interpolate()
+
+            for bound in zip(*[bounds[i:]+bounds[:i] for i in range(2)]):
+                print '++++', bound
+                #paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment))
+                p = EnrichedPolyline(self, shape=LineString(bound), initialise_only=True, is_exterior=True)
+                p.Interpolate()
+                p.Project()
+
+                #print p.shape.coords[:]
+
+                self.components.append(p)
+
+            # When joining paths, eliminate repeated Point definitions
+
+
+            #import sys
+            #sys.exit()
+
 
             #p = EnrichedPolyline(self, reference_number = None, is_exterior = True)
 
 
-            #index = draw_parallel_explicit(self, a, b, index, self.Spacing(), None)
-            #index = draw_parallel_explicit(self, b, c, index, self.Spacing(), None)
-            #index = draw_parallel_explicit(self, c, d, index, self.Spacing(), None)
-            #index = draw_parallel_explicit(self, d, a, index, self.Spacing(), None)
+            #index, paths = draw_parallel_explicit(self, a, b, index, self.Spacing(), None)
+            #for path in paths: p.components.append(path)
+            #index, paths = draw_parallel_explicit(self, b, c, index, self.Spacing(), None)
+            #for path in paths: p.components.append(path)
+            #index, paths = draw_parallel_explicit(self, c, d, index, self.Spacing(), None)
+            #for path in paths: p.components.append(path)
+            #index, paths = draw_parallel_explicit(self, d, a, index, self.Spacing(), None)
+            #for path in paths: p.components.append(path)
 
             #index = p.AddLoop(index, loopstartpoint, True)
 
-            self.components.append(p)
 
         elif self.isExtendToParallel():
             latitude = specification.get_option(self.FormPath() + 'latitude')

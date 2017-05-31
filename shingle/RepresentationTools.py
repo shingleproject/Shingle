@@ -44,6 +44,9 @@ from shapely.geometry import Polygon
 from shapely.geometry import Point
 from shapely.geometry.polygon import LinearRing
 
+from shapely.affinity import translate
+
+
 def check_point_required(region, location):
     import math
     # make all definitions of the math module available to the function
@@ -649,27 +652,58 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
             if i >= len(self.shape.coords[:]) - 1:
                 break
             heading = self.shape.coords[i+1]
+
             d = Point(coord).distance(Point(heading))
             points_to_add = int(ceil((d / spacing) - 1.0))
             #dx =  LineString((heading[0] - coord[0], heading[1] - coord[0] ))
-            s =  LineString((coord, heading ))
-            dx = s / points_to_add
+            s = (heading[0] - coord[0]) / (points_to_add + 1), (heading[1] - coord[1]) / (points_to_add + 1)
+
+            #s =  LineString((coord, heading ))
+            #dx = s / points_to_add
             
-            shapely.affinity.affine_transform
-            shapely.affinity.scale
+            #shapely.affinity.affine_transform
+            #n = translate(d, xoff=s[0], yoff=s[1])
 
-            print d, points_to_add, s, dx 
-        
+            #print coord, '->', heading, 'distance', d, 'points', points_to_add, 'vec', s
+            
+            for j in range(points_to_add):
+                coord = (coord[0] + s[0], coord[1] + s[1])
+                coords.append(coord)
 
 
-        for i, coord in enumerate(coords):
-            print i, coord
+        #for i, coord in enumerate(coords):
+        #    print i, coord
 
+        if self.isLine():
+            self.shape = LineString(coords)
+        if self.isRing():
+            self.shape = LinearRing(coords)
+        if self.isPolygon():
+            self.shape = Polygon(coords)
 
-        import sys
-        sys.exit()
+        self._valid_vertices = [False]*self.PointNumber()
+        self.ConstrainPoints()
+        #self.CheckPathEndToBeClosed()
+        self.GetValidLocations()
+
+    def Project(self):
+        coords = [ project(loc, projection_type=self.Projection()) for loc in self.shape.coords[:]]
+
+        if self.isLine():
+            self.shape = LineString(coords)
+        if self.isRing():
+            self.shape = LinearRing(coords)
+        if self.isPolygon():
+            self.shape = Polygon(coords)
+
+        self._valid_vertices = [False]*self.PointNumber()
+        self.ConstrainPoints()
+        #self.CheckPathEndToBeClosed()
+        self.GetValidLocations()
+        #return coords
 
     def ConstrainPoints(self):
+        self.ValidPointNumber(refresh=True)
         flag = 0
         for point in range(self.PointNumber()):
             position = self.Vertex(point)
