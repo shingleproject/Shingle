@@ -16,7 +16,7 @@
 // 
 // Project name: Chile_Pacific_wide
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/06/01 15:11:06 
+// Created at: 2017/06/01 22:04:24 
 // Project description:
 //   South East Pacific ocean up to the Chilean coastline.
 //       Developed from GEBCO, on the subset region 128W to 70W, 40S to 20N.
@@ -168,7 +168,7 @@
 //   Skipped (island crossing meridian - code needs modification to include)
 //   Skipped (island crossing meridian - code needs modification to include)
 //   Skipped (island crossing meridian - code needs modification to include)
-// Paths found valid (renumbered order): 1, including 
+// Paths found valid (renumbered order): 1, including 1
 
 // == BRep component: ExtendTo128W ================================
 // Extending exterior boundary developed in SouthEastPacificOceanCoast (part 1 of 1) to meridian -128.0
@@ -20906,9 +20906,9 @@ Line Loop( 0 ) = { 0, 1, 2, 3 };
 
 
 // == Physical entities ===========================================
-// Boundary ocean (ID 3): 
+// Boundary ocean (ID 3): 2-4
 Physical Line( 3 ) = { 1, 2, 3 };
-// Boundary coast (ID 1): 
+// Boundary coast (ID 1): 1
 Physical Line( 1 ) = { 0 };
 Plane Surface( 10 ) = { 0 };
 Physical Surface( 10 ) = { 10 };

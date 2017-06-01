@@ -16,7 +16,7 @@
 // 
 // Project name: Antarctica_main_landmass
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/06/01 15:02:06 
+// Created at: 2017/06/01 22:03:53 
 // Project description:
 //   Use the RTopo dataset (RTopo105b.nc),
 //   considering all land masses up to a latitude of 60S,
@@ -275,7 +275,7 @@ Delete { Point{ 1 }; }
 //   Skipped (no points found in region)
 //   Skipped (no points found in region)
 //   Skipped (no points found in region)
-// Paths found valid (renumbered order): 1, including 
+// Paths found valid (renumbered order): 1, including 1
 
 // == BRep component: Parallel_60S ================================
 // Bounding by latitude: -60.0
@@ -60256,9 +60256,9 @@ Line Loop( 1 ) = { 1, 2 };
 
 
 // == Physical entities ===========================================
-// Boundary Open (ID 4): 
+// Boundary Open (ID 4): 2-3
 Physical Line( 4 ) = { 1, 2 };
-// Boundary Coast (ID 3): 
+// Boundary Coast (ID 3): 1
 Physical Line( 3 ) = { 0 };
 Plane Surface( 10 ) = { 0, 1 };
 Physical Surface( 10 ) = { 10 };

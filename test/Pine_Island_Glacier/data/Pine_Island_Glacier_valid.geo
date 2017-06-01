@@ -16,7 +16,7 @@
 // 
 // Project name: Pine_Island_Glacier
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/06/01 15:38:57 
+// Created at: 2017/06/01 22:04:50 
 // Project description:
 //   Use the RTopo dataset, 50S version (RTopo105b 50S.nc),
 //   selecting the region
@@ -175,7 +175,7 @@ Delete { Point{ 1 }; }
 // Open contours closed with a line formed by points spaced 0.1 degrees apart
 // Paths found: 1
 // Merged paths that cross the date line: 
-// Paths found valid (renumbered order): 1, including 
+// Paths found valid (renumbered order): 1, including 1
 
 // == BRep component: ExtendTo64S =================================
 // Extending exterior boundary developed in Amundsen_Sea_brep (part 1 of 1) to meridian -105.0
@@ -879,9 +879,9 @@ Line Loop( 0 ) = { 0, 1, 2, 3 };
 
 
 // == Physical entities ===========================================
-// Boundary OpenOcean (ID 4): 
+// Boundary OpenOcean (ID 4): 2-4
 Physical Line( 4 ) = { 1, 2, 3 };
-// Boundary Coast (ID 3): 
+// Boundary Coast (ID 3): 1
 Physical Line( 3 ) = { 0 };
 Plane Surface( 10 ) = { 0 };
 Physical Surface( 10 ) = { 10 };

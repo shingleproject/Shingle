@@ -16,7 +16,7 @@
 // 
 // Project name: Antarctica_main_landicemass_global
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/06/01 15:01:06 
+// Created at: 2017/06/01 22:03:45 
 // Project description:
 //   Use the RTopo dataset (RTopo105b.nc),
 //   considering all land masses up to a latitude of 60S, within a global domain.
@@ -251,7 +251,7 @@ Delete { Point{ 1 }; }
 //   Skipped (no points found in region)
 //   Skipped (no points found in region)
 //   Skipped (no points found in region)
-// Paths found valid (renumbered order): 1, including 
+// Paths found valid (renumbered order): 1, including 1
 //   Component boundary representations identified:
 //     1: Antarctica_main_landicemass_brep (part 1 of 1) (components: 1)
 
@@ -38749,7 +38749,7 @@ Line Loop( 0 ) = { 0 };
 
 
 // == Physical entities ===========================================
-// Boundary Coast (ID 3): 
+// Boundary Coast (ID 3): 1
 Physical Line( 3 ) = { 0 };
 Plane Surface( 10 ) = { 0 };
 Physical Surface( 10 ) = { 10 };

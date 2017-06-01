@@ -16,7 +16,7 @@
 // 
 // Project name: Chile_Talcahuano
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/05/31 14:33:31 
+// Created at: 2017/06/01 22:04:44 
 // Project description:
 //   Example simulation domain for modelling ocean wave propagation and
 //       tsunami inundation in the 2010 Chile M8.8 earthquake, centred at 35.9S 72.7W,
@@ -148,21 +148,7 @@
 // Open contours closed with a line formed by points spaced 0.1 degrees apart
 // Paths found: 14
 // Merged paths that cross the date line: 
-// Path 1: points 1701 (of 1701) area 211635
-// Path 2: points 62 (of 63) area 200.907 (required closing in 2 parts of the path)
-// Path 3: points 58 (of 59) area 75.1276 (required closing in 2 parts of the path)
-// Path 4: points 16 (of 17) area 10.0397 (required closing in 2 parts of the path)
-// Path 5: points 14 (of 15) area 8.77193 (required closing in 2 parts of the path)
-// Path 6: points 12 (of 13) area 5.45549 (required closing in 2 parts of the path)
-// Path 7: points 10 (of 11) area 5.36627 (required closing in 2 parts of the path)
-// Path 8: points 8 (of 9) area 1.17062 (required closing in 2 parts of the path)
-// Path 9: points 6 (of 7) area 0.761649 (required closing in 2 parts of the path)
-// Path 10: points 4 (of 5) area 0.151198 (required closing in 2 parts of the path)
-// Path 11: points 4 (of 5) area 0.15158 (required closing in 2 parts of the path)
-// Path 12: points 4 (of 5) area 0.434288 (required closing in 2 parts of the path)
-// Path 13: points 4 (of 5) area 0.460712 (required closing in 2 parts of the path)
-// Path 14: points 4 (of 5) area 0.151719 (required closing in 2 parts of the path)
-// Paths found valid (renumbered order): 14, including 1 2 3 4 5 6 7 8 9 10 11 12 13 14
+// Paths found valid (renumbered order): 14, including 1-14
 
 // == BRep component: ExtendToMeridian ============================
 // Extending exterior boundary developed in SouthEastPacificOceanCoast (part 14 of 14) to meridian -77.0
@@ -2338,9 +2324,9 @@ Line Loop( 13 ) = { 13, 14, 15, 16 };
 
 
 // == Physical entities ===========================================
-// Boundary OpenOcean (ID 4): 15 16 17
+// Boundary OpenOcean (ID 4): 15-17
 Physical Line( 4 ) = { 14, 15, 16 };
-// Boundary Coast (ID 3): 1 2 3 4 5 6 7 8 9 10 11 12 13 14
+// Boundary Coast (ID 3): 1-14
 Physical Line( 3 ) = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
 Plane Surface( 10 ) = { 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
 Physical Surface( 10 ) = { 10 };

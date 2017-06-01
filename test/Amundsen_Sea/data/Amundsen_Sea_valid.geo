@@ -16,7 +16,7 @@
 // 
 // Project name: Amundsen_Sea
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/06/01 20:58:53 
+// Created at: 2017/06/01 22:03:26 
 // Project description:
 //   Use the RTopo dataset, 50S version (RTopo105b 50S.nc),
 //   selecting the region

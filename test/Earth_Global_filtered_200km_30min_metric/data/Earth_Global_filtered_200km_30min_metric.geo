@@ -16,7 +16,7 @@
 // 
 // Project name: Earth_Global_filtered_200km_30min_metric
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/06/01 15:37:31 
+// Created at: 2017/06/01 22:04:44 
 // Project description:
 //   -n noshelf.nc -t noshelf -no -a 5000 -el 1.0E5 -mesh
 
@@ -9252,7 +9252,7 @@ Line Loop( 18 ) = { 18 };
 
 
 // == Physical entities ===========================================
-// Boundary Coastline (ID 3): 
+// Boundary Coastline (ID 3): 1-19
 Physical Line( 3 ) = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 };
 Plane Surface( 10 ) = { 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
 Physical Surface( 10 ) = { 10 };

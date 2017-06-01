@@ -16,7 +16,7 @@
 // 
 // Project name: Filchner-Ronne
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/06/01 13:48:53 
+// Created at: 2017/06/01 22:04:46 
 // Project description:
 //   Use the RTopo dataset, 50S version (RTopo105b 50S.nc),
 //   selecting the Filchner-Ronne ice sheet ocean cavity region
@@ -185,7 +185,7 @@ Delete { Point{ 1 }; }
 //   Skipped (no points found in region)
 //   Skipped (no points found in region)
 //   Skipped (no points found in region)
-// Paths found valid (renumbered order): 9, including 1 3 5 6 7 11 13 17 19
+// Paths found valid (renumbered order): 9, including 1 5-7 13 19
 
 // == BRep component: ExtendTo65S =================================
 // Extending exterior boundary developed in filchner_ronne_ice_ocean_brep (part 9 of 9) to parallel -65.0
@@ -18601,9 +18601,9 @@ Line Loop( 8 ) = { 8, 9, 10, 11 };
 
 
 // == Physical entities ===========================================
-// Boundary OpenOcean (ID 4): 10 11 12
+// Boundary OpenOcean (ID 4): 10-12
 Physical Line( 4 ) = { 9, 10, 11 };
-// Boundary Coast (ID 3): 1 2 3 4 5 6 7 8 9
+// Boundary Coast (ID 3): 1-9
 Physical Line( 3 ) = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 Plane Surface( 10 ) = { 8, 0, 1, 2, 3, 4, 5, 6, 7 };
 Physical Surface( 10 ) = { 10 };
