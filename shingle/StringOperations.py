@@ -45,6 +45,8 @@ def list_to_comma_separated(numbers, prefix='', add=0):
     return string
 
 def list_to_space_separated_concatenate(numbers, prefix='', add=0):
+    if not numbers:
+        return ''
     groups = []
     group = []
     group.append(numbers[0])
@@ -53,7 +55,7 @@ def list_to_space_separated_concatenate(numbers, prefix='', add=0):
             group.append(number)
         elif number == group[-1] + 1:
             group.append(number)
-        else:
+        elif group:
             groups.append(group)
             group = []
     if group:
