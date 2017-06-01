@@ -66,6 +66,8 @@ def draw_parallel_explicit(rep, start, end, index, dx, to_parallel=None):
     #print start, end, index.point
     # Note start is actually start - 1
 
+    #print rep, start, end, index, dx, to_parallel
+
     # Replace below by shapely bounding box
     if (to_parallel is None):
         to_parallel = max(start[1], end[1])
@@ -82,7 +84,7 @@ def draw_parallel_explicit(rep, start, end, index, dx, to_parallel=None):
         else:
             error('Extension of domain to parallel %(parallel)s failed: Parallel appears to be contained within the domain (start: %(start).2f, end: %(end).2f).' % {'parallel':to_parallel, 'start':start[1], 'end':end[1]}, fatal=True)
 
-    print start, end, up_to_parallel, to_parallel
+    #print start, end, up_to_parallel, to_parallel
 
     current = start 
     tolerance = dx * 0.6
@@ -116,10 +118,10 @@ def draw_parallel_explicit(rep, start, end, index, dx, to_parallel=None):
         point = rep.FormatPoint(index.point, current, 0.0, project_to_output_projection_type=False)
         path.append(point)
 
-    print path
-    paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment))
-    path = []
-    comment = []
+    if path:
+        paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment))
+        path = []
+        comment = []
 
     if rep.MoreBSplines():
         index, loopstart = complete_as_bspline(index, loopstart)
@@ -142,9 +144,10 @@ def draw_parallel_explicit(rep, start, end, index, dx, to_parallel=None):
         point = rep.FormatPoint(index.point, current, 0.0, project_to_output_projection_type=False)
         path.append(point)
 
-    paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment))
-    path = []
-    comment = []
+    if path:
+        paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment))
+        path = []
+        comment = []
 
     if rep.MoreBSplines():
         index, loopstart = complete_as_bspline(index, loopstart)
@@ -167,9 +170,11 @@ def draw_parallel_explicit(rep, start, end, index, dx, to_parallel=None):
         path.append(point)
     
     comment.append('Closed path with parallels and meridians, from (%.8f, %.8f) to  (%.8f, %.8f)' % ( start[0], start[1], end[0], end[1] ) )
-    paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment))
-    path = []
-    comment = []
+    
+    if path:
+        paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment))
+        path = []
+        comment = []
 
     # FIXME
     #index = rep.AddLoop(index, loopstart, last=True)
@@ -405,7 +410,9 @@ class EnrichedPolyline(object):
         return self.shape.geom_type == self._FORM_POLYGON
 
     def isClosed(self):
-        return self.isRing or self.isPolygon
+        #print self.shape.geom_type
+        #print self.isRing() or self.isPolygon(), self.isRing(), self.isPolygon()
+        return self.isRing() or self.isPolygon()
         #return self.close_last
 
 
@@ -856,6 +863,13 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
         self.loopstartpoint = index.start
 
         for point in range(self.ValidPointNumber()):
+            #print point, first
+
+            if not first and point == 0:
+                if (compare_points(self.valid_location[point,:], self.before.valid_location[-1,:], self.Spacing())):
+                    #print 'skipped', point, self.valid_location[point,:]
+                    continue
+
             self.point = point
 
             if self.atEndOfValidPath(point):

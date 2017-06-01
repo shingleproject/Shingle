@@ -393,6 +393,7 @@ class BRepComponent(object):
         import os
         #self.AddSection('BRep component: ' + self.Name())
 
+        components_new = []
         if self.isRaster():
             p = self.PreviousBRepComponent()
             
@@ -449,21 +450,50 @@ class BRepComponent(object):
                 #self.index = p.Generate(self.index)
                 self.components.append(p)
 
+            components_new = [self.Reproduce(components=[p], total=len(self.components)) for p in self.components]
+
         elif self.isParallel():
-            self.output_open_boundaries()
+            #self.output_open_boundaries()
+
+            index = self.index
+
+            index.start = index.point + 1
+            loopstartpoint = index.start
+
+            #p = EnrichedPolyline(self, reference_number = None, is_exterior = True)
+
+            #print '----'
+            index, paths = draw_parallel_explicit(self, [   -0.01, self.BoundingLatitude()], [ 179.99, self.BoundingLatitude()], index, self.Spacing()/10.0, None)
+            #print 'A', paths
+            for path in paths:
+                self.components.append(path)
+            index, paths = draw_parallel_explicit(self, [-179.99,  self.BoundingLatitude()], [   0.01, self.BoundingLatitude()], index, self.Spacing()/10.0, None)
+            #print 'B', paths
+            for path in paths:
+                self.components.append(path)
+            
+            components_new = [self]
+            #components_new = [self.Reproduce(components=self.components)]
+
+            #index, paths = draw_parallel_explicit(self, a, b, index, self.Spacing(), None)
+            #for path in paths: p.components.append(path)
+
+            #index = p.AddLoop(index, loopstartpoint, True)
 
         elif self.isBoundingBox():
-
+            comment = []
             from itertools import izip
-
             def pairwise(t):
                 it = iter(t)
                 return izip(it,it)
+
            
             bounds = Bounds(path=self.FormPath())
             bounds = bounds.GetMaxBounds()
 
             index = self.index
+
+            comment.append('Creating a bounding box to enclose ' + str(bounds))
             
             index.start = index.point + 1
             loopstartpoint = index.start
@@ -476,15 +506,19 @@ class BRepComponent(object):
             bounds = (a, b, c, d)
 
             for bound in zip(*[bounds[i:]+bounds[:i] for i in range(2)]):
-                print '++++', bound
+                comment = []
+                comment.append('Drawing bounding box line ' + str(bound))
+                #print '++++', bound
                 #paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment))
-                p = EnrichedPolyline(self, shape=LineString(bound), initialise_only=True, is_exterior=True)
+                p = EnrichedPolyline(self, shape=LineString(bound), initialise_only=True, is_exterior=True, comment=comment)
                 p.Interpolate()
                 p.Project()
 
                 #print p.shape.coords[:]
 
                 self.components.append(p)
+
+            components_new = [self.Reproduce(components=self.components)]
 
             # When joining paths, eliminate repeated Point definitions
 
@@ -605,7 +639,7 @@ class BRepComponent(object):
         # Multi-component BReps are split up
         #  note these may become multi-enrichedlines later
         #  e.g. when extended to an orthodrome
-        components_new = [self.Reproduce(components=[p], total=len(self.components)) for p in self.components]
+        #components_new = [self.Reproduce(components=[p], total=len(self.components)) for p in self.components]
 
         #print
         #print len(components), components

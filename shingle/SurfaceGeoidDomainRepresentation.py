@@ -84,6 +84,9 @@ class SurfaceGeoidDomainRepresentation(object):
         #if not self.spatial_discretisation.isGenerated():
         #    self.Generate()
 
+    def Name(self):
+        return self.name
+
     def SurfaceId(self):
         if specification.have_option(self._path + '/id'):
             return specification.get_option(self._path + '/id')
@@ -326,13 +329,16 @@ Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'surface':self.Surface
 
         if len(self.getComponentsComplete()) > 0:
             self.AddComment('Component boundary representations identified:', indent=1)
+            report('Component boundary representations identified:', indent=1)
         for i, component in enumerate(self.getComponentsComplete()):
-            self.AddComment('%(number)d: %(name)s (components: %(components)s)' %
+            c= ('%(number)d: %(name)s (components: %(components)s)' %
                 {
                     'number': i + 1,
                     'name': component.Name(),
                     'components': len(component.components)
-                }, indent=2)
+                })
+            self.AddComment(c, indent=2)
+            report(c, indent=2)
 
 
         for i, component in enumerate(self.getComponentsComplete()):
