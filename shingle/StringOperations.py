@@ -56,6 +56,9 @@ def list_to_space_separated_concatenate(numbers, prefix='', add=0):
         else:
             groups.append(group)
             group = []
+    if group:
+        groups.append(group)
+        group = []
     string = []
     for group in groups:
         if len(group) > 1:
@@ -69,6 +72,7 @@ def list_to_space_separated(numbers, prefix='', add=0, concatenate=False):
     if concatenate:
         return list_to_space_separated_concatenate(numbers, prefix=prefix, add=add)
         
+    print numbers
     requirespace = False
     string = ''
     for number in numbers:
@@ -78,6 +82,7 @@ def list_to_space_separated(numbers, prefix='', add=0, concatenate=False):
             requirespace = True
         string += prefix
         string += str(number + add)
+    print string
     return string
 
 def list_to_sentence(strings):

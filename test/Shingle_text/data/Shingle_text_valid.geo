@@ -1,6 +1,6 @@
 // Surface Geoid Boundary Representation, for project: Shingle_text
 // 
-// Created by:  Shingle (v1.2)
+// Created by:  Shingle 
 // 
 //    Shingle:  An approach and software library for the generation of
 //              boundary representation from arbitrary geophysical fields
@@ -10,107 +10,114 @@
 // 
 //              Contact: Dr Adam S. Candy, contact@shingleproject.org
 //     
-// Version: v1.2-446-g14c97ac
+// Version: [Not available]
 // Mesh tool version: 2.11.0
 //                    (on the system where the boundry representation has been created)
 // 
 // Project name: Shingle_text
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/03/15 12:29:07 
+// Created at: 2017/06/01 21:22:34 
 // Project description:
 //   A monochromatic raster image with
 //       the word `Shingle' and five small islands developed as a mask.
 
 // == Source Shingle surface geoid boundnary representation =======
-// <?xml version='1.0' encoding='utf-8'?>
+// <?xml version="1.0" encoding="utf-8" ?>
 // <boundary_representation>
-//   <model_name>
-//     <string_value lines="1">Shingle_text</string_value>
-//     <comment>A monochromatic raster image with
-//     the word `Shingle' and five small islands developed as a mask.</comment>
-//   </model_name>
-//   <reference>
-//     <author name="ASCandy">
-//       <string_value lines="1">Adam S. Candy</string_value>
-//       <email_address>
-//         <string_value lines="1">A.S.Candy@tudelft.nl</string_value>
-//       </email_address>
-//       <institution>
-//         <string_value lines="1">Technische Universiteit Delft</string_value>
-//       </institution>
-//     </author>
-//   </reference>
-//   <domain_type>
-//     <string_value lines="1">geophysical</string_value>
-//   </domain_type>
-//   <global_parameters/>
-//   <output>
-//     <projection>
-//       <string_value>longlat</string_value>
-//     </projection>
-//   </output>
-//   <dataset name="Shingle_text">
-//     <form name="Raster">
-//       <source file_name="data/shingle_logo_base.png" name="Local_file"/>
-//     </form>
-//     <projection name="Automatic"/>
-//   </dataset>
-//   <geoid_surface_representation name="Shingle_text">
-//     <id>
-//       <integer_value rank="0">9</integer_value>
-//     </id>
-//     <brep_component name="Shingle_text">
-//       <form name="Raster">
-//         <source name="Shingle_text"/>
-//         <contourtype name="iceshelfcavity"/>
-//       </form>
-//       <identification name="Coast"/>
-//       <representation_type name="BSplines"/>
-//     </brep_component>
-//     <boundary name="Coast">
-//       <identification_number>
-//         <integer_value rank="0">3</integer_value>
-//       </identification_number>
-//     </boundary>
-//   </geoid_surface_representation>
-//   <geoid_metric>
-//     <form name="Proximity">
-//       <boundary name="Coast"/>
-//       <edge_length_minimum>
-//         <real_value rank="0">10</real_value>
-//       </edge_length_minimum>
-//       <edge_length_maximum>
-//         <real_value rank="0">500</real_value>
-//       </edge_length_maximum>
-//       <proximity_minimum>
-//         <real_value rank="0">10</real_value>
-//       </proximity_minimum>
-//       <proximity_maximum>
-//         <real_value rank="0">400</real_value>
-//       </proximity_maximum>
-//     </form>
-//   </geoid_metric>
-//   <geoid_mesh>
-//     <library name="Gmsh">
-//       <postprocess>// General.SmallAxes = 0; 
+//     <model_name>
+//         <string_value lines="1">Shingle_text</string_value>
+//         <comment>A monochromatic raster image with
+//     the word `Shingle&apos; and five small islands developed as a mask.</comment>
+//     </model_name>
+//     <reference>
+//         <author name="ASCandy">
+//             <string_value lines="1">Adam S. Candy</string_value>
+//             <email_address>
+//                 <string_value lines="1">A.S.Candy@tudelft.nl</string_value>
+//             </email_address>
+//             <institution>
+//                 <string_value lines="1">Technische Universiteit Delft</string_value>
+//             </institution>
+//         </author>
+//     </reference>
+//     <domain_type>
+//         <string_value lines="1">geophysical</string_value>
+//     </domain_type>
+//     <global_parameters></global_parameters>
+//     <output>
+//         <projection>
+//             <string_value>longlat</string_value>
+//         </projection>
+//     </output>
+//     <dataset name="Shingle_text">
+//         <form name="Raster">
+//             <source name="Local_file" file_name="data/shingle_logo_base.png"></source>
+//         </form>
+//         <projection name="Automatic"></projection>
+//     </dataset>
+//     <geoid_surface_representation name="Shingle_text">
+//         <id>
+//             <integer_value rank="0">9</integer_value>
+//         </id>
+//         <brep_component name="Shingle_text">
+//             <form name="Raster">
+//                 <source name="Shingle_text"></source>
+//                 <contourtype name="iceshelfcavity" field_level="10.0" field_name="amask"></contourtype>
+//             </form>
+//             <identification name="Coast"></identification>
+//             <representation_type name="BSplines"></representation_type>
+//         </brep_component>
+//         <boundary name="Coast">
+//             <identification_number>
+//                 <integer_value rank="0">3</integer_value>
+//             </identification_number>
+//         </boundary>
+//     </geoid_surface_representation>
+//     <geoid_metric>
+//         <form name="Proximity">
+//             <boundary name="Coast"></boundary>
+//             <edge_length_minimum>
+//                 <real_value rank="0">10</real_value>
+//             </edge_length_minimum>
+//             <edge_length_maximum>
+//                 <real_value rank="0">500</real_value>
+//             </edge_length_maximum>
+//             <proximity_minimum>
+//                 <real_value rank="0">10</real_value>
+//             </proximity_minimum>
+//             <proximity_maximum>
+//                 <real_value rank="0">400</real_value>
+//             </proximity_maximum>
+//         </form>
+//     </geoid_metric>
+//     <geoid_mesh>
+//         <library name="Gmsh">
+//             <postprocess>// General.SmallAxes = 0; 
 // // Mesh.Format=1;
 // // Mesh 2;
-// // Save "m.msh";
+// // Save &quot;m.msh&quot;;
 // // Draw;
-// // Include "m.msh";
-// // Print Sprintf("%(name)s.png");
+// // Include &quot;m.msh&quot;;
+// // Print Sprintf(&quot;%(name)s.png&quot;);
 // // Exit;</postprocess>
-//     </library>
-//     <generate_image/>
-//   </geoid_mesh>
-//   <validation>
-//     <test file_name="data/Shingle_text_valid.geo" name="BrepDescription"/>
-//   </validation>
+//         </library>
+//         <generate_image></generate_image>
+//     </geoid_mesh>
+//     <validation>
+//         <test name="BrepDescription" file_name="data/Shingle_text_valid.geo"></test>
+//         <tag name="development"></tag>
+//     </validation>
 // </boundary_representation>
 
 // == Boundary Representation Specification Parameters ============
 // Output to Shingle_text.geo
 // Projection type longlat
+
+// == Boundary Representation description =========================
+
+// == Header ======================================================
+
+// == BRep component pre-scan =====================================
 //   1. Shingle_text
 //       Path:           /geoid_surface_representation::Shingle_text/brep_component::Shingle_text
 //       Form:           Raster
@@ -118,65 +125,29 @@
 
 // == BRep component: Shingle_text ================================
 // Reading boundary representation Shingle_text
-// Region of interest: True
 // Open contours closed with a line formed by points spaced 0.1 degrees apart
 // Paths found: 16
-
-// == Boundary Representation description =========================
-
-// == Header ======================================================
 // Merged paths that cross the date line: 
+// Paths found valid (renumbered order): 16, including 1-16
+//   Component boundary representations identified:
+//     1: Shingle_text (part 1 of 16) (components: 1)
+//     2: Shingle_text (part 2 of 16) (components: 1)
+//     3: Shingle_text (part 3 of 16) (components: 1)
+//     4: Shingle_text (part 4 of 16) (components: 1)
+//     5: Shingle_text (part 5 of 16) (components: 1)
+//     6: Shingle_text (part 6 of 16) (components: 1)
+//     7: Shingle_text (part 7 of 16) (components: 1)
+//     8: Shingle_text (part 8 of 16) (components: 1)
+//     9: Shingle_text (part 9 of 16) (components: 1)
+//     10: Shingle_text (part 10 of 16) (components: 1)
+//     11: Shingle_text (part 11 of 16) (components: 1)
+//     12: Shingle_text (part 12 of 16) (components: 1)
+//     13: Shingle_text (part 13 of 16) (components: 1)
+//     14: Shingle_text (part 14 of 16) (components: 1)
+//     15: Shingle_text (part 15 of 16) (components: 1)
+//     16: Shingle_text (part 16 of 16) (components: 1)
 
-// == Ice-Land mass number 1 ======================================
-// Path 1: points 4538 (of 4539) area 3.74586e+07 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 2 ======================================
-// Path 2: points 1864 (of 1865) area 1.38932e+08 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 3 ======================================
-// Path 3: points 1894 (of 1895) area 2.49736e+07 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 4 ======================================
-// Path 4: points 1522 (of 1523) area 5.26374e+07 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 5 ======================================
-// Path 5: points 1312 (of 1313) area 4.10165e+07 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 6 ======================================
-// Path 6: points 1018 (of 1019) area 6.93463e+07 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 7 ======================================
-// Path 7: points 862 (of 863) area 8.48867e+07 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 8 ======================================
-// Path 8: points 632 (of 633) area 2.32649e+07 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 9 ======================================
-// Path 9: points 290 (of 291) area 6.18384e+06 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 10 =====================================
-// Path 10: points 258 (of 259) area 4.59408e+06 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 11 =====================================
-// Path 11: points 234 (of 235) area 3.91431e+06 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 12 =====================================
-// Path 12: points 240 (of 241) area 2.15579e+06 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 13 =====================================
-// Path 13: points 152 (of 153) area 1.29103e+06 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 14 =====================================
-// Path 14: points 132 (of 133) area 1.25316e+06 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 15 =====================================
-// Path 15: points 104 (of 105) area 619305 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 16 =====================================
-// Path 16: points 104 (of 105) area 649724 (required closing in 2 parts of the path)
-// Paths found valid (renumbered order): 16, including 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
-
-// == Ice-Land mass number 2 ======================================
+// == BRep component: Shingle_text (part 1 of 16) =================
 Point ( 2 ) = { 1064.00000000, -282.99803922, 0.00000000 };
 Point ( 3 ) = { 1063.99803922, -283.00000000, 0.00000000 };
 Point ( 4 ) = { 1063.00000000, -283.99803922, 0.00000000 };
@@ -2045,7 +2016,7 @@ BSpline ( 0 ) = { 2 : 1864, 2 };
 Line Loop( 0 ) = { 0 };
 
 
-// == Ice-Land mass number 3 ======================================
+// == BRep component: Shingle_text (part 2 of 16) =================
 Point ( 1865 ) = { 210.00000000, -175.99803922, 0.00000000 };
 Point ( 1866 ) = { 209.99803922, -176.00000000, 0.00000000 };
 Point ( 1867 ) = { 209.00000000, -176.99803922, 0.00000000 };
@@ -3944,7 +3915,7 @@ BSpline ( 1 ) = { 1865 : 3757, 1865 };
 Line Loop( 1 ) = { 1 };
 
 
-// == Ice-Land mass number 4 ======================================
+// == BRep component: Shingle_text (part 3 of 16) =================
 Point ( 3758 ) = { 436.00000000, -175.99803922, 0.00000000 };
 Point ( 3759 ) = { 435.99803922, -176.00000000, 0.00000000 };
 Point ( 3760 ) = { 435.00000000, -176.99803922, 0.00000000 };
@@ -5471,7 +5442,7 @@ BSpline ( 2 ) = { 3758 : 5278, 3758 };
 Line Loop( 2 ) = { 2 };
 
 
-// == Ice-Land mass number 5 ======================================
+// == BRep component: Shingle_text (part 4 of 16) =================
 Point ( 5279 ) = { 809.00000000, -282.99803922, 0.00000000 };
 Point ( 5280 ) = { 808.99803922, -283.00000000, 0.00000000 };
 Point ( 5281 ) = { 808.00000000, -283.99803922, 0.00000000 };
@@ -6788,7 +6759,7 @@ BSpline ( 3 ) = { 5279 : 6589, 5279 };
 Line Loop( 3 ) = { 3 };
 
 
-// == Ice-Land mass number 6 ======================================
+// == BRep component: Shingle_text (part 5 of 16) =================
 Point ( 6590 ) = { 1425.00000000, -282.99803922, 0.00000000 };
 Point ( 6591 ) = { 1424.99803922, -283.00000000, 0.00000000 };
 Point ( 6592 ) = { 1424.00000000, -283.99803922, 0.00000000 };
@@ -7811,7 +7782,7 @@ BSpline ( 4 ) = { 6590 : 7606, 6590 };
 Line Loop( 4 ) = { 4 };
 
 
-// == Ice-Land mass number 7 ======================================
+// == BRep component: Shingle_text (part 6 of 16) =================
 Point ( 7607 ) = { 1283.00000000, -175.99803922, 0.00000000 };
 Point ( 7608 ) = { 1282.99803922, -176.00000000, 0.00000000 };
 Point ( 7609 ) = { 1282.00000000, -176.99803922, 0.00000000 };
@@ -8678,7 +8649,7 @@ BSpline ( 5 ) = { 7607 : 8467, 7607 };
 Line Loop( 5 ) = { 5 };
 
 
-// == Ice-Land mass number 8 ======================================
+// == BRep component: Shingle_text (part 7 of 16) =================
 Point ( 8468 ) = { 687.00000000, -281.99803922, 0.00000000 };
 Point ( 8469 ) = { 686.99803922, -282.00000000, 0.00000000 };
 Point ( 8470 ) = { 686.00000000, -282.99803922, 0.00000000 };
@@ -9315,7 +9286,7 @@ BSpline ( 6 ) = { 8468 : 9098, 8468 };
 Line Loop( 6 ) = { 6 };
 
 
-// == Ice-Land mass number 9 ======================================
+// == BRep component: Shingle_text (part 8 of 16) =================
 Point ( 9099 ) = { 1074.00000000, -300.00196078, 0.00000000 };
 Point ( 9100 ) = { 1075.00000000, -300.00196078, 0.00000000 };
 Point ( 9101 ) = { 1076.00000000, -300.00196078, 0.00000000 };
@@ -9610,7 +9581,7 @@ BSpline ( 7 ) = { 9099 : 9387, 9099 };
 Line Loop( 7 ) = { 7 };
 
 
-// == Ice-Land mass number 10 =====================================
+// == BRep component: Shingle_text (part 9 of 16) =================
 Point ( 9388 ) = { 1497.00000000, -493.99803922, 0.00000000 };
 Point ( 9389 ) = { 1496.99803922, -494.00000000, 0.00000000 };
 Point ( 9390 ) = { 1496.00000000, -494.99803922, 0.00000000 };
@@ -9873,7 +9844,7 @@ BSpline ( 8 ) = { 9388 : 9644, 9388 };
 Line Loop( 8 ) = { 8 };
 
 
-// == Ice-Land mass number 11 =====================================
+// == BRep component: Shingle_text (part 10 of 16) ================
 Point ( 9645 ) = { 1429.00000000, -302.00196078, 0.00000000 };
 Point ( 9646 ) = { 1430.00000000, -302.00196078, 0.00000000 };
 Point ( 9647 ) = { 1431.00000000, -302.00196078, 0.00000000 };
@@ -10112,7 +10083,7 @@ BSpline ( 9 ) = { 9645 : 9877, 9645 };
 Line Loop( 9 ) = { 9 };
 
 
-// == Ice-Land mass number 12 =====================================
+// == BRep component: Shingle_text (part 11 of 16) ================
 Point ( 9878 ) = { 656.00000000, -173.99803922, 0.00000000 };
 Point ( 9879 ) = { 655.99803922, -174.00000000, 0.00000000 };
 Point ( 9880 ) = { 655.00000000, -174.99803922, 0.00000000 };
@@ -10357,7 +10328,7 @@ BSpline ( 10 ) = { 9878 : 10116, 9878 };
 Line Loop( 10 ) = { 10 };
 
 
-// == Ice-Land mass number 13 =====================================
+// == BRep component: Shingle_text (part 12 of 16) ================
 Point ( 10117 ) = { 1551.00000000, -523.99803922, 0.00000000 };
 Point ( 10118 ) = { 1550.99803922, -524.00000000, 0.00000000 };
 Point ( 10119 ) = { 1550.00000000, -524.99803922, 0.00000000 };
@@ -10514,7 +10485,7 @@ BSpline ( 11 ) = { 10117 : 10267, 10117 };
 Line Loop( 11 ) = { 11 };
 
 
-// == Ice-Land mass number 14 =====================================
+// == BRep component: Shingle_text (part 13 of 16) ================
 Point ( 10268 ) = { 1594.00000000, -491.99803922, 0.00000000 };
 Point ( 10269 ) = { 1593.99803922, -492.00000000, 0.00000000 };
 Point ( 10270 ) = { 1593.00000000, -492.99803922, 0.00000000 };
@@ -10651,7 +10622,7 @@ BSpline ( 12 ) = { 10268 : 10398, 10268 };
 Line Loop( 12 ) = { 12 };
 
 
-// == Ice-Land mass number 15 =====================================
+// == BRep component: Shingle_text (part 14 of 16) ================
 Point ( 10399 ) = { 1641.00000000, -559.99803922, 0.00000000 };
 Point ( 10400 ) = { 1640.99803922, -560.00000000, 0.00000000 };
 Point ( 10401 ) = { 1640.00000000, -560.99803922, 0.00000000 };
@@ -10760,7 +10731,7 @@ BSpline ( 13 ) = { 10399 : 10501, 10399 };
 Line Loop( 13 ) = { 13 };
 
 
-// == Ice-Land mass number 16 =====================================
+// == BRep component: Shingle_text (part 15 of 16) ================
 Point ( 10502 ) = { 1582.00000000, -566.99803922, 0.00000000 };
 Point ( 10503 ) = { 1581.99803922, -567.00000000, 0.00000000 };
 Point ( 10504 ) = { 1581.00000000, -567.99803922, 0.00000000 };
@@ -10869,7 +10840,7 @@ BSpline ( 14 ) = { 10502 : 10604, 10502 };
 Line Loop( 14 ) = { 14 };
 
 
-// == Ice-Land mass number 1 ======================================
+// == BRep component: Shingle_text (part 16 of 16) ================
 Point ( 10605 ) = { 31.00000000, -30.00196078, 0.00000000 };
 Point ( 10606 ) = { 32.00000000, -30.00196078, 0.00000000 };
 Point ( 10607 ) = { 33.00000000, -30.00196078, 0.00000000 };
@@ -15413,7 +15384,7 @@ Line Loop( 15 ) = { 15 };
 
 
 // == Physical entities ===========================================
-// Boundary Coast (ID 3): 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+// Boundary Coast (ID 3): 1-16
 Physical Line( 3 ) = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
 Plane Surface( 10 ) = { 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
 Physical Surface( 10 ) = { 10 };

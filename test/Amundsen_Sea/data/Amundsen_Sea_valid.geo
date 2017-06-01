@@ -16,7 +16,7 @@
 // 
 // Project name: Amundsen_Sea
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/06/01 13:51:36 
+// Created at: 2017/06/01 20:58:53 
 // Project description:
 //   Use the RTopo dataset, 50S version (RTopo105b 50S.nc),
 //   selecting the region
@@ -173,7 +173,7 @@ Delete { Point{ 1 }; }
 // Open contours closed with a line formed by points spaced 0.1 degrees apart
 // Paths found: 15
 // Merged paths that cross the date line: 
-// Paths found valid (renumbered order): 15, including 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+// Paths found valid (renumbered order): 15, including 1-15
 
 // == BRep component: ExtendTo64S =================================
 // Extending exterior boundary developed in Amundsen_Sea_brep (part 15 of 15) to parallel -64.0
@@ -10001,9 +10001,9 @@ Line Loop( 14 ) = { 14, 15, 16, 17 };
 
 
 // == Physical entities ===========================================
-// Boundary OpenOcean (ID 4): 16 17 18
+// Boundary OpenOcean (ID 4): 16-18
 Physical Line( 4 ) = { 15, 16, 17 };
-// Boundary Coast (ID 3): 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+// Boundary Coast (ID 3): 1-15
 Physical Line( 3 ) = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
 Plane Surface( 10 ) = { 14, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
 Physical Surface( 10 ) = { 10 };

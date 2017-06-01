@@ -470,7 +470,12 @@ def ReadPaths(brep, dataset):
             universe.plot_backend = matplotlib.get_backend()
             matplotlib.use('Agg')
             from pylab import contour
-            report("Found raster, sizes: lat %(lat)d, lon %(lon)d, shape %(shape)s", var = {'lon':len(region.lon), 'lat':len(region.lat), 'shape':str(region.Data().shape)}, indent = 2 )
+            try:
+                shape = ", shape %(shape)s" % {'shape':str(region.Data().shape)}
+            except:
+                shape = ""
+                pass
+            report("Found raster, sizes: lat %(lat)d, lon %(lon)d%(shape)s", var = {'lon':len(region.lon), 'lat':len(region.lat), 'shape':shape}, indent = 2 )
             paths = contour(region.lon,region.lat,field,levels=[0.5]).collections[0].get_paths()
 
     return paths
