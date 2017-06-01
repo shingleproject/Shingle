@@ -16,7 +16,7 @@
 // 
 // Project name: Antarctica_main_landicemass_30s
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/05/15 17:37:31 
+// Created at: 2017/06/01 14:59:16 
 // Project description:
 //   Use the RTopo dataset (RTopo105b.nc),
 //   considering all land masses up to a latitude of 60S,
@@ -151,6 +151,19 @@
 // == Boundary Representation Specification Parameters ============
 // Output to Antarctica_main_landicemass_30s.geo
 // Projection type cartesian
+
+// == Boundary Representation description =========================
+
+// == Header ======================================================
+Point ( 0 ) = { 0, 0, 0 };
+Point ( 1 ) = { 0, 0, 6.37101e+06 };
+PolarSphere ( 0 ) = { 0, 1 };
+
+Delete { Point{ 0 }; }
+Delete { Point{ 1 }; }
+
+
+// == BRep component pre-scan =====================================
 //   1. Antarctica_main_landicemass_30s_brep
 //       Path:           /geoid_surface_representation::Antarctica_main_landicemass_30s/brep_component::Antarctica_main_landicemass_30s_brep
 //       Form:           Raster
@@ -168,828 +181,112 @@
 // Region defined by ((latitude <= -60.0) and (latitude <= -30.0))
 // Open contours closed with a line formed by points spaced 10 degrees apart
 // Paths found: 269
-
-// == Boundary Representation description =========================
-
-// == Header ======================================================
-Point ( 0 ) = { 0, 0, 0 };
-Point ( 1 ) = { 0, 0, 6.37101e+06 };
-PolarSphere ( 0 ) = { 0, 1 };
-
-Delete { Point{ 0 }; }
-Delete { Point{ 1 }; }
-
 // Merged paths that cross the date line: 
-
-// == Ice-Land mass number 1 ======================================
-// Path 1: points 38488 (of 38489) area 2.44976e+08 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 2 ======================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 3 ======================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 4 ======================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 5 ======================================
-// Path 5: points 406 (of 407) area 244.582 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 6 ======================================
-// Path 6: points 346 (of 347) area 2486.99 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 7 ======================================
-// Path 7: points 346 (of 347) area 3107.52 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 8 ======================================
-// Path 8: points 338 (of 339) area 1300.9 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 9 ======================================
-// Path 9: points 292 (of 293) area 5324.48 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 10 =====================================
-// Path 10: points 256 (of 257) area 1367.42 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 11 =====================================
-// Path 11: points 260 (of 261) area 4159.97 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 12 =====================================
-// Path 12: points 258 (of 259) area 616.628 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 13 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 14 =====================================
-// Path 14: points 226 (of 227) area 1618.94 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 15 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 16 =====================================
-// Path 16: points 178 (of 179) area 562.957 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 17 =====================================
-// Path 17: points 140 (of 141) area 321.759 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 18 =====================================
-// Path 18: points 118 (of 119) area 76.4444 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 19 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 20 =====================================
-// Path 20: points 108 (of 109) area 538.654 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 21 =====================================
-// Path 21: points 94 (of 95) area 466.573 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 22 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 23 =====================================
-// Path 23: points 94 (of 95) area 80.6313 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 24 =====================================
-// Path 24: points 98 (of 99) area 1312.88 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 25 =====================================
-// Path 25: points 88 (of 89) area 113.711 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 26 =====================================
-// Path 26: points 90 (of 91) area 89.639 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 27 =====================================
-// Path 27: points 78 (of 79) area 699.413 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 28 =====================================
-// Path 28: points 78 (of 79) area 222.495 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 29 =====================================
-// Path 29: points 72 (of 73) area 85.1487 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 30 =====================================
-// Path 30: points 78 (of 79) area 414.615 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 31 =====================================
-// Path 31: points 66 (of 67) area 383.642 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 32 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 33 =====================================
-// Path 33: points 64 (of 65) area 65.1601 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 34 =====================================
-// Path 34: points 60 (of 61) area 65.104 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 35 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 36 =====================================
-// Path 36: points 56 (of 57) area 34.5516 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 37 =====================================
-// Path 37: points 58 (of 59) area 184.778 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 38 =====================================
-// Path 38: points 56 (of 57) area 25.6821 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 39 =====================================
-// Path 39: points 52 (of 53) area 398.693 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 40 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 41 =====================================
-// Path 41: points 52 (of 53) area 45.2923 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 42 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 43 =====================================
-// Path 43: points 48 (of 49) area 56.1703 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 44 =====================================
-// Path 44: points 48 (of 49) area 100.649 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 45 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 46 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 47 =====================================
-// Path 47: points 44 (of 45) area 22.8392 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 48 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 49 =====================================
-// Path 49: points 40 (of 41) area 101.081 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 50 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 51 =====================================
-// Path 51: points 40 (of 41) area 0.796796 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 52 =====================================
-// Path 52: points 40 (of 41) area 48.5051 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 53 =====================================
-// Path 53: points 38 (of 39) area 21.6148 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 54 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 55 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 56 =====================================
-// Path 56: points 34 (of 35) area 17.0094 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 57 =====================================
-// Path 57: points 32 (of 33) area 39.6776 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 58 =====================================
-// Path 58: points 32 (of 33) area 4.3966 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 59 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 60 =====================================
-// Path 60: points 30 (of 31) area 40.1218 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 61 =====================================
-// Path 61: points 30 (of 31) area 28.2447 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 62 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 63 =====================================
-// Path 63: points 28 (of 29) area 21.7077 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 64 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 65 =====================================
-// Path 65: points 26 (of 27) area 23.6814 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 66 =====================================
-// Path 66: points 26 (of 27) area 19.7497 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 67 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 68 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 69 =====================================
-// Path 69: points 24 (of 25) area 19.6011 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 70 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 71 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 72 =====================================
-// Path 72: points 24 (of 25) area 18.4425 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 73 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 74 =====================================
-// Path 74: points 24 (of 25) area 6.58455 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 75 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 76 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 77 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 78 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 79 =====================================
-// Path 79: points 20 (of 21) area 38.8859 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 80 =====================================
-// Path 80: points 20 (of 21) area 35.4307 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 81 =====================================
-// Path 81: points 18 (of 19) area 19.2655 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 82 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 83 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 84 =====================================
-// Path 84: points 18 (of 19) area 16.4171 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 85 =====================================
-// Path 85: points 18 (of 19) area 6.72085 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 86 =====================================
-// Path 86: points 18 (of 19) area 17.3596 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 87 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 88 =====================================
-// Path 88: points 18 (of 19) area 12.3379 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 89 =====================================
-// Path 89: points 18 (of 19) area 2.68564 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 90 =====================================
-// Path 90: points 18 (of 19) area 16.7769 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 91 =====================================
-// Path 91: points 16 (of 17) area 0.196299 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 92 =====================================
-// Path 92: points 16 (of 17) area 10.0913 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 93 =====================================
-// Path 93: points 14 (of 15) area 8.67096 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 94 =====================================
-// Path 94: points 14 (of 15) area 9.1622 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 95 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 96 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 97 =====================================
-// Path 97: points 14 (of 15) area 9.69516 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 98 =====================================
-// Path 98: points 14 (of 15) area 1.21628 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 99 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 100 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 101 ====================================
-// Path 101: points 14 (of 15) area 10.5851 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 102 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 103 ====================================
-// Path 103: points 14 (of 15) area 10.9684 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 104 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 105 ====================================
-// Path 105: points 14 (of 15) area 14.2605 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 106 ====================================
-// Path 106: points 14 (of 15) area 8.95052 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 107 ====================================
-// Path 107: points 14 (of 15) area 0.00773669 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 108 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 109 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 110 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 111 ====================================
-// Path 111: points 12 (of 13) area 3.66464 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 112 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 113 ====================================
-// Path 113: points 12 (of 13) area 19.2698 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 114 ====================================
-// Path 114: points 12 (of 13) area 13.0497 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 115 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 116 ====================================
-// Path 116: points 12 (of 13) area 13.9388 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 117 ====================================
-// Path 117: points 12 (of 13) area 2.08873 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 118 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 119 ====================================
-// Path 119: points 12 (of 13) area 4.48539 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 120 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 121 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 122 ====================================
-// Path 122: points 10 (of 11) area 6.53678 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 123 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 124 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 125 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 126 ====================================
-// Path 126: points 10 (of 11) area 8.7189 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 127 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 128 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 129 ====================================
-// Path 129: points 10 (of 11) area 4.67842 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 130 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 131 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 132 ====================================
-// Path 132: points 8 (of 9) area 3.29218 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 133 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 134 ====================================
-// Path 134: points 8 (of 9) area 9.71436 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 135 ====================================
-// Path 135: points 8 (of 9) area 1.06676 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 136 ====================================
-// Path 136: points 8 (of 9) area 0.0332209 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 137 ====================================
-// Path 137: points 8 (of 9) area 0.152695 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 138 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 139 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 140 ====================================
-// Path 140: points 8 (of 9) area 5.57572 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 141 ====================================
-// Path 141: points 6 (of 7) area 4.93455 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 142 ====================================
-// Path 142: points 6 (of 7) area 7.31609 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 143 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 144 ====================================
-// Path 144: points 6 (of 7) area 1.89253 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 145 ====================================
-// Path 145: points 6 (of 7) area 1.09734 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 146 ====================================
-// Path 146: points 6 (of 7) area 1.18053 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 147 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 148 ====================================
-// Path 148: points 6 (of 7) area 1.17453 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 149 ====================================
-// Path 149: points 6 (of 7) area 1.09565 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 150 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 151 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 152 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 153 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 154 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 155 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 156 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 157 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 158 ====================================
-// Path 158: points 6 (of 7) area 2.22184 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 159 ====================================
-// Path 159: points 6 (of 7) area 2.22434 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 160 ====================================
-// Path 160: points 6 (of 7) area 1.1132 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 161 ====================================
-// Path 161: points 6 (of 7) area 1.06708 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 162 ====================================
-// Path 162: points 6 (of 7) area 2.19145 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 163 ====================================
-// Path 163: points 6 (of 7) area 1.18849 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 164 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 165 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 166 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 167 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 168 ====================================
-// Path 168: points 4 (of 5) area 1.90611 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 169 ====================================
-// Path 169: points 4 (of 5) area 1.90431 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 170 ====================================
-// Path 170: points 4 (of 5) area 0.909569 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 171 ====================================
-// Path 171: points 4 (of 5) area 0.0223534 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 172 ====================================
-// Path 172: points 4 (of 5) area 0.909216 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 173 ====================================
-// Path 173: points 4 (of 5) area 0.119627 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 174 ====================================
-// Path 174: points 4 (of 5) area 0.120878 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 175 ====================================
-// Path 175: points 4 (of 5) area 0.0465798 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 176 ====================================
-// Path 176: points 4 (of 5) area 0.0467624 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 177 ====================================
-// Path 177: points 4 (of 5) area 0.0178674 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 178 ====================================
-// Path 178: points 4 (of 5) area 0.00869693 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 179 ====================================
-// Path 179: points 4 (of 5) area 0.00480625 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 180 ====================================
-// Path 180: points 4 (of 5) area 0.00563832 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 181 ====================================
-// Path 181: points 4 (of 5) area 0.00380825 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 182 ====================================
-// Path 182: points 4 (of 5) area 0.0068653 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 183 ====================================
-// Path 183: points 4 (of 5) area 0.00533485 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 184 ====================================
-// Path 184: points 4 (of 5) area 0.0031377 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 185 ====================================
-// Path 185: points 4 (of 5) area 0.00355497 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 186 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 187 ====================================
-// Path 187: points 4 (of 5) area 0.0547389 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 188 ====================================
-// Path 188: points 4 (of 5) area 0.0591814 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 189 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 190 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 191 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 192 ====================================
-// Path 192: points 4 (of 5) area 1.98661 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 193 ====================================
-// Path 193: points 4 (of 5) area 1.9062 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 194 ====================================
-// Path 194: points 4 (of 5) area 0.0527075 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 195 ====================================
-// Path 195: points 4 (of 5) area 0.0456243 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 196 ====================================
-// Path 196: points 4 (of 5) area 0.0468743 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 197 ====================================
-// Path 197: points 4 (of 5) area 0.0457632 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 198 ====================================
-// Path 198: points 4 (of 5) area 0.0242357 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 199 ====================================
-// Path 199: points 4 (of 5) area 0.0209025 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 200 ====================================
-// Path 200: points 4 (of 5) area 0.0172914 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 201 ====================================
-// Path 201: points 4 (of 5) area 0.0107637 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 202 ====================================
-// Path 202: points 4 (of 5) area 0.00493052 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 203 ====================================
-// Path 203: points 4 (of 5) area 0.0045138 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 204 ====================================
-// Path 204: points 4 (of 5) area 6.94582e-05 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 205 ====================================
-// Path 205: points 4 (of 5) area 0.00576382 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 206 ====================================
-// Path 206: points 4 (of 5) area 0.00187496 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 207 ====================================
-// Path 207: points 4 (of 5) area 0.00215276 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 208 ====================================
-// Path 208: points 4 (of 5) area 0.00215273 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 209 ====================================
-// Path 209: points 4 (of 5) area 0.00506934 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 210 ====================================
-// Path 210: points 4 (of 5) area 0.0110415 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 211 ====================================
-// Path 211: points 4 (of 5) area 0.00923597 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 212 ====================================
-// Path 212: points 4 (of 5) area 0.00590271 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 213 ====================================
-// Path 213: points 4 (of 5) area 0.0200691 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 214 ====================================
-// Path 214: points 4 (of 5) area 0.0215969 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 215 ====================================
-// Path 215: points 4 (of 5) area 0.0210413 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 216 ====================================
-// Path 216: points 4 (of 5) area 0.048541 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 217 ====================================
-// Path 217: points 4 (of 5) area 0.0554852 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 218 ====================================
-// Path 218: points 4 (of 5) area 0.0431244 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 219 ====================================
-// Path 219: points 4 (of 5) area 0.0454854 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 220 ====================================
-// Path 220: points 4 (of 5) area 0.047291 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 221 ====================================
-// Path 221: points 4 (of 5) area 0.0465965 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 222 ====================================
-// Path 222: points 4 (of 5) area 0.0109026 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 223 ====================================
-// Path 223: points 4 (of 5) area 0.00645822 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 224 ====================================
-// Path 224: points 4 (of 5) area 0.00618048 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 225 ====================================
-// Path 225: points 4 (of 5) area 0.00590268 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 226 ====================================
-// Path 226: points 4 (of 5) area 0.00562494 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 227 ====================================
-// Path 227: points 4 (of 5) area 0.00534717 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 228 ====================================
-// Path 228: points 4 (of 5) area 0.00409718 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 229 ====================================
-// Path 229: points 4 (of 5) area 0.0065971 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 230 ====================================
-// Path 230: points 4 (of 5) area 0.00506937 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 231 ====================================
-// Path 231: points 4 (of 5) area 0.00104165 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 232 ====================================
-// Path 232: points 4 (of 5) area 0.00173611 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 233 ====================================
-// Path 233: points 4 (of 5) area 0.00284715 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 234 ====================================
-// Path 234: points 4 (of 5) area 0.00201388 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 235 ====================================
-// Path 235: points 4 (of 5) area 0.000347196 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 236 ====================================
-// Path 236: points 4 (of 5) area 0.000486112 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 237 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 238 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 239 ====================================
-// Path 239: points 4 (of 5) area 0.0307634 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 240 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 241 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 242 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 243 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 244 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 245 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 246 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 247 ====================================
-// Path 247: points 4 (of 5) area 0.0724294 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 248 ====================================
-// Path 248: points 4 (of 5) area 0.0500687 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 249 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 250 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 251 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 252 ====================================
-// Path 252: points 4 (of 5) area 0.00993038 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 253 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 254 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 255 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 256 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 257 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 258 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 259 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 260 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 261 ====================================
-// Path 261: points 4 (of 5) area 1.90436 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 262 ====================================
-// Path 262: points 4 (of 5) area 0.00758007 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 263 ====================================
-// Path 263: points 4 (of 5) area 1.9038 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 264 ====================================
-// Path 264: points 4 (of 5) area 0.908673 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 265 ====================================
-// Path 265: points 4 (of 5) area 0.891176 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 266 ====================================
-// Path 266: points 4 (of 5) area 0.0110227 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 267 ====================================
-// Path 267: points 4 (of 5) area 0.0124117 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 268 ====================================
-// Path 268: points 4 (of 5) area 0.0058893 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 269 ====================================
 //   Skipped (no points found in region)
-// Paths found valid (renumbered order): 1, including 1
+// Paths found valid (renumbered order): 1, including 
 
-// == Ice-Land mass number 1 ======================================
+// == BRep component: Parallel_30S ================================
+// Bounding by latitude: -30.0
+// Region of interest: latitude <= -30.0
+//   Component boundary representations identified:
+//     1: Antarctica_main_landicemass_30s_brep (part 1 of 1) (components: 1)
+//     2: Parallel_30S (components: 2)
+
+// == BRep component: Antarctica_main_landicemass_30s_brep (part 1 of 1) 
 Point ( 2 ) = { 9.40253226, -0.00000000, 0.00000000 };
 Point ( 3 ) = { 9.40903991, -0.00136816, 0.00000000 };
 Point ( 4 ) = { 9.41555328, -0.00273820, 0.00000000 };
@@ -39483,52 +38780,377 @@ Line Loop( 0 ) = { 0 };
 
 
 // == BRep component: Parallel_30S ================================
-// Closing path with parallels and meridians, from (-1.00000000, -30.00000000) to  (179.00000000, -30.00000000)
-// Drawing parallel index 38489 at -1.00 (to match 179.00), -30.00
-Point ( 38490 ) = { -1.71072639, -0.27095244, 0.00000000 };
-Point ( 38491 ) = { -1.63768621, -0.56390058, 0.00000000 };
-Point ( 38492 ) = { -1.51488577, -0.83971489, 0.00000000 };
-Point ( 38493 ) = { -1.34605629, -1.09001489, 0.00000000 };
-Point ( 38494 ) = { -1.13632757, -1.30719534, 0.00000000 };
-Point ( 38495 ) = { -0.89207211, -1.48465732, 0.00000000 };
-Point ( 38496 ) = { -0.62071150, -1.61700873, 0.00000000 };
-Point ( 38497 ) = { -0.33049087, -1.70022816, 0.00000000 };
-Point ( 38498 ) = { -0.03022845, -1.73178701, 0.00000000 };
-Point ( 38499 ) = { 0.27095244, -1.71072639, 0.00000000 };
-Point ( 38500 ) = { 0.56390058, -1.63768621, 0.00000000 };
-Point ( 38501 ) = { 0.83971489, -1.51488577, 0.00000000 };
-Point ( 38502 ) = { 1.09001489, -1.34605629, 0.00000000 };
-Point ( 38503 ) = { 1.30719534, -1.13632757, 0.00000000 };
-Point ( 38504 ) = { 1.48465732, -0.89207211, 0.00000000 };
-Point ( 38505 ) = { 1.61700873, -0.62071150, 0.00000000 };
-Point ( 38506 ) = { 1.70022816, -0.33049087, 0.00000000 };
-// Closing path with parallels and meridians, from (-179.00000000, -30.00000000) to  (1.00000000, -30.00000000)
-// Drawing parallel index 38506 at -179.00 (to match 1.00), -30.00
-Point ( 38507 ) = { 1.70022816, 0.33049087, 0.00000000 };
-Point ( 38508 ) = { 1.61700873, 0.62071150, 0.00000000 };
-Point ( 38509 ) = { 1.48465732, 0.89207211, 0.00000000 };
-Point ( 38510 ) = { 1.30719534, 1.13632757, 0.00000000 };
-Point ( 38511 ) = { 1.09001489, 1.34605629, 0.00000000 };
-Point ( 38512 ) = { 0.83971489, 1.51488577, 0.00000000 };
-Point ( 38513 ) = { 0.56390058, 1.63768621, 0.00000000 };
-Point ( 38514 ) = { 0.27095244, 1.71072639, 0.00000000 };
-Point ( 38515 ) = { -0.03022845, 1.73178701, 0.00000000 };
-Point ( 38516 ) = { -0.33049087, 1.70022816, 0.00000000 };
-Point ( 38517 ) = { -0.62071150, 1.61700873, 0.00000000 };
-Point ( 38518 ) = { -0.89207211, 1.48465732, 0.00000000 };
-Point ( 38519 ) = { -1.13632757, 1.30719534, 0.00000000 };
-Point ( 38520 ) = { -1.34605629, 1.09001489, 0.00000000 };
-Point ( 38521 ) = { -1.51488577, 0.83971489, 0.00000000 };
-Point ( 38522 ) = { -1.63768621, 0.56390058, 0.00000000 };
-Point ( 38523 ) = { -1.71072639, 0.27095244, 0.00000000 };
-BSpline ( 1 ) = { 38490 : 38523, 38490 };
-Line Loop( 1 ) = { 1 };
+// Closing path with parallels and meridians, from (-0.01000000, -30.00000000) to  (179.99000000, -30.00000000)
+// Drawing parallel index 1 at -0.01 (to match 179.99), -30.00
+Point ( 38490 ) = { -1.73179226, -0.02992620, 0.00000000 };
+Point ( 38491 ) = { -1.73100621, -0.06014558, 0.00000000 };
+Point ( 38492 ) = { -1.72969289, -0.09034665, 0.00000000 };
+Point ( 38493 ) = { -1.72785268, -0.12052019, 0.00000000 };
+Point ( 38494 ) = { -1.72548615, -0.15065702, 0.00000000 };
+Point ( 38495 ) = { -1.72259402, -0.18074796, 0.00000000 };
+Point ( 38496 ) = { -1.71917718, -0.21078384, 0.00000000 };
+Point ( 38497 ) = { -1.71523665, -0.24075552, 0.00000000 };
+Point ( 38498 ) = { -1.71077365, -0.27065386, 0.00000000 };
+Point ( 38499 ) = { -1.70578953, -0.30046975, 0.00000000 };
+Point ( 38500 ) = { -1.70028581, -0.33019412, 0.00000000 };
+Point ( 38501 ) = { -1.69426417, -0.35981791, 0.00000000 };
+Point ( 38502 ) = { -1.68772643, -0.38933210, 0.00000000 };
+Point ( 38503 ) = { -1.68067460, -0.41872769, 0.00000000 };
+Point ( 38504 ) = { -1.67311082, -0.44799573, 0.00000000 };
+Point ( 38505 ) = { -1.66503740, -0.47712731, 0.00000000 };
+Point ( 38506 ) = { -1.65645678, -0.50611355, 0.00000000 };
+Point ( 38507 ) = { -1.64737160, -0.53494562, 0.00000000 };
+Point ( 38508 ) = { -1.63778461, -0.56361475, 0.00000000 };
+Point ( 38509 ) = { -1.62769873, -0.59211219, 0.00000000 };
+Point ( 38510 ) = { -1.61711704, -0.62042927, 0.00000000 };
+Point ( 38511 ) = { -1.60604276, -0.64855736, 0.00000000 };
+Point ( 38512 ) = { -1.59447927, -0.67648789, 0.00000000 };
+Point ( 38513 ) = { -1.58243008, -0.70421236, 0.00000000 };
+Point ( 38514 ) = { -1.56989887, -0.73172231, 0.00000000 };
+Point ( 38515 ) = { -1.55688945, -0.75900938, 0.00000000 };
+Point ( 38516 ) = { -1.54340579, -0.78606525, 0.00000000 };
+Point ( 38517 ) = { -1.52945199, -0.81288167, 0.00000000 };
+Point ( 38518 ) = { -1.51503230, -0.83945048, 0.00000000 };
+Point ( 38519 ) = { -1.50015113, -0.86576359, 0.00000000 };
+Point ( 38520 ) = { -1.48481299, -0.89181298, 0.00000000 };
+Point ( 38521 ) = { -1.46902256, -0.91759071, 0.00000000 };
+Point ( 38522 ) = { -1.45278466, -0.94308894, 0.00000000 };
+Point ( 38523 ) = { -1.43610422, -0.96829989, 0.00000000 };
+Point ( 38524 ) = { -1.41898633, -0.99321589, 0.00000000 };
+Point ( 38525 ) = { -1.40143620, -1.01782934, 0.00000000 };
+Point ( 38526 ) = { -1.38345919, -1.04213275, 0.00000000 };
+Point ( 38527 ) = { -1.36506076, -1.06611872, 0.00000000 };
+Point ( 38528 ) = { -1.34624651, -1.08977994, 0.00000000 };
+Point ( 38529 ) = { -1.32702219, -1.11310921, 0.00000000 };
+Point ( 38530 ) = { -1.30739364, -1.13609941, 0.00000000 };
+Point ( 38531 ) = { -1.28736685, -1.15874354, 0.00000000 };
+Point ( 38532 ) = { -1.26694792, -1.18103470, 0.00000000 };
+Point ( 38533 ) = { -1.24614306, -1.20296612, 0.00000000 };
+Point ( 38534 ) = { -1.22495861, -1.22453109, 0.00000000 };
+Point ( 38535 ) = { -1.20340103, -1.24572307, 0.00000000 };
+Point ( 38536 ) = { -1.18147688, -1.26653558, 0.00000000 };
+Point ( 38537 ) = { -1.15919284, -1.28696230, 0.00000000 };
+Point ( 38538 ) = { -1.13655570, -1.30699699, 0.00000000 };
+Point ( 38539 ) = { -1.11357236, -1.32663356, 0.00000000 };
+Point ( 38540 ) = { -1.09024981, -1.34586603, 0.00000000 };
+Point ( 38541 ) = { -1.06659515, -1.36468853, 0.00000000 };
+Point ( 38542 ) = { -1.04261561, -1.38309533, 0.00000000 };
+Point ( 38543 ) = { -1.01831847, -1.40108083, 0.00000000 };
+Point ( 38544 ) = { -0.99371114, -1.41863955, 0.00000000 };
+Point ( 38545 ) = { -0.96880112, -1.43576613, 0.00000000 };
+Point ( 38546 ) = { -0.94359600, -1.45245537, 0.00000000 };
+Point ( 38547 ) = { -0.91810344, -1.46870217, 0.00000000 };
+Point ( 38548 ) = { -0.89233122, -1.48450160, 0.00000000 };
+Point ( 38549 ) = { -0.86628719, -1.49984883, 0.00000000 };
+Point ( 38550 ) = { -0.83997928, -1.51473919, 0.00000000 };
+Point ( 38551 ) = { -0.81341550, -1.52916815, 0.00000000 };
+Point ( 38552 ) = { -0.78660395, -1.54313130, 0.00000000 };
+Point ( 38553 ) = { -0.75955279, -1.55662441, 0.00000000 };
+Point ( 38554 ) = { -0.73227027, -1.56964335, 0.00000000 };
+Point ( 38555 ) = { -0.70476469, -1.58218417, 0.00000000 };
+Point ( 38556 ) = { -0.67704442, -1.59424303, 0.00000000 };
+Point ( 38557 ) = { -0.64911793, -1.60581628, 0.00000000 };
+Point ( 38558 ) = { -0.62099371, -1.61690037, 0.00000000 };
+Point ( 38559 ) = { -0.59268033, -1.62749195, 0.00000000 };
+Point ( 38560 ) = { -0.56418641, -1.63758777, 0.00000000 };
+Point ( 38561 ) = { -0.53552063, -1.64718477, 0.00000000 };
+Point ( 38562 ) = { -0.50669173, -1.65628002, 0.00000000 };
+Point ( 38563 ) = { -0.47770849, -1.66487075, 0.00000000 };
+Point ( 38564 ) = { -0.44857973, -1.67295434, 0.00000000 };
+Point ( 38565 ) = { -0.41931433, -1.68052834, 0.00000000 };
+Point ( 38566 ) = { -0.38992120, -1.68759043, 0.00000000 };
+Point ( 38567 ) = { -0.36040930, -1.69413846, 0.00000000 };
+Point ( 38568 ) = { -0.33078762, -1.70017045, 0.00000000 };
+Point ( 38569 ) = { -0.30106517, -1.70568454, 0.00000000 };
+Point ( 38570 ) = { -0.27125102, -1.71067907, 0.00000000 };
+Point ( 38571 ) = { -0.24135424, -1.71515251, 0.00000000 };
+Point ( 38572 ) = { -0.21138394, -1.71910350, 0.00000000 };
+Point ( 38573 ) = { -0.18134925, -1.72253083, 0.00000000 };
+Point ( 38574 ) = { -0.15125932, -1.72543346, 0.00000000 };
+Point ( 38575 ) = { -0.12112332, -1.72781051, 0.00000000 };
+Point ( 38576 ) = { -0.09095042, -1.72966124, 0.00000000 };
+Point ( 38577 ) = { -0.06074982, -1.73098511, 0.00000000 };
+Point ( 38578 ) = { -0.03053071, -1.73178171, 0.00000000 };
+Point ( 38579 ) = { -0.00030230, -1.73205078, 0.00000000 };
+Point ( 38580 ) = { 0.02992620, -1.73179226, 0.00000000 };
+Point ( 38581 ) = { 0.06014558, -1.73100621, 0.00000000 };
+Point ( 38582 ) = { 0.09034665, -1.72969289, 0.00000000 };
+Point ( 38583 ) = { 0.12052019, -1.72785268, 0.00000000 };
+Point ( 38584 ) = { 0.15065702, -1.72548615, 0.00000000 };
+Point ( 38585 ) = { 0.18074796, -1.72259402, 0.00000000 };
+Point ( 38586 ) = { 0.21078384, -1.71917718, 0.00000000 };
+Point ( 38587 ) = { 0.24075552, -1.71523665, 0.00000000 };
+Point ( 38588 ) = { 0.27065386, -1.71077365, 0.00000000 };
+Point ( 38589 ) = { 0.30046975, -1.70578953, 0.00000000 };
+Point ( 38590 ) = { 0.33019412, -1.70028581, 0.00000000 };
+Point ( 38591 ) = { 0.35981791, -1.69426417, 0.00000000 };
+Point ( 38592 ) = { 0.38933210, -1.68772643, 0.00000000 };
+Point ( 38593 ) = { 0.41872769, -1.68067460, 0.00000000 };
+Point ( 38594 ) = { 0.44799573, -1.67311082, 0.00000000 };
+Point ( 38595 ) = { 0.47712731, -1.66503740, 0.00000000 };
+Point ( 38596 ) = { 0.50611355, -1.65645678, 0.00000000 };
+Point ( 38597 ) = { 0.53494562, -1.64737160, 0.00000000 };
+Point ( 38598 ) = { 0.56361475, -1.63778461, 0.00000000 };
+Point ( 38599 ) = { 0.59211219, -1.62769873, 0.00000000 };
+Point ( 38600 ) = { 0.62042927, -1.61711704, 0.00000000 };
+Point ( 38601 ) = { 0.64855736, -1.60604276, 0.00000000 };
+Point ( 38602 ) = { 0.67648789, -1.59447927, 0.00000000 };
+Point ( 38603 ) = { 0.70421236, -1.58243008, 0.00000000 };
+Point ( 38604 ) = { 0.73172231, -1.56989887, 0.00000000 };
+Point ( 38605 ) = { 0.75900938, -1.55688945, 0.00000000 };
+Point ( 38606 ) = { 0.78606525, -1.54340579, 0.00000000 };
+Point ( 38607 ) = { 0.81288167, -1.52945199, 0.00000000 };
+Point ( 38608 ) = { 0.83945048, -1.51503230, 0.00000000 };
+Point ( 38609 ) = { 0.86576359, -1.50015113, 0.00000000 };
+Point ( 38610 ) = { 0.89181298, -1.48481299, 0.00000000 };
+Point ( 38611 ) = { 0.91759071, -1.46902256, 0.00000000 };
+Point ( 38612 ) = { 0.94308894, -1.45278466, 0.00000000 };
+Point ( 38613 ) = { 0.96829989, -1.43610422, 0.00000000 };
+Point ( 38614 ) = { 0.99321589, -1.41898633, 0.00000000 };
+Point ( 38615 ) = { 1.01782934, -1.40143620, 0.00000000 };
+Point ( 38616 ) = { 1.04213275, -1.38345919, 0.00000000 };
+Point ( 38617 ) = { 1.06611872, -1.36506076, 0.00000000 };
+Point ( 38618 ) = { 1.08977994, -1.34624651, 0.00000000 };
+Point ( 38619 ) = { 1.11310921, -1.32702219, 0.00000000 };
+Point ( 38620 ) = { 1.13609941, -1.30739364, 0.00000000 };
+Point ( 38621 ) = { 1.15874354, -1.28736685, 0.00000000 };
+Point ( 38622 ) = { 1.18103470, -1.26694792, 0.00000000 };
+Point ( 38623 ) = { 1.20296612, -1.24614306, 0.00000000 };
+Point ( 38624 ) = { 1.22453109, -1.22495861, 0.00000000 };
+Point ( 38625 ) = { 1.24572307, -1.20340103, 0.00000000 };
+Point ( 38626 ) = { 1.26653558, -1.18147688, 0.00000000 };
+Point ( 38627 ) = { 1.28696230, -1.15919284, 0.00000000 };
+Point ( 38628 ) = { 1.30699699, -1.13655570, 0.00000000 };
+Point ( 38629 ) = { 1.32663356, -1.11357236, 0.00000000 };
+Point ( 38630 ) = { 1.34586603, -1.09024981, 0.00000000 };
+Point ( 38631 ) = { 1.36468853, -1.06659515, 0.00000000 };
+Point ( 38632 ) = { 1.38309533, -1.04261561, 0.00000000 };
+Point ( 38633 ) = { 1.40108083, -1.01831847, 0.00000000 };
+Point ( 38634 ) = { 1.41863955, -0.99371114, 0.00000000 };
+Point ( 38635 ) = { 1.43576613, -0.96880112, 0.00000000 };
+Point ( 38636 ) = { 1.45245537, -0.94359600, 0.00000000 };
+Point ( 38637 ) = { 1.46870217, -0.91810344, 0.00000000 };
+Point ( 38638 ) = { 1.48450160, -0.89233122, 0.00000000 };
+Point ( 38639 ) = { 1.49984883, -0.86628719, 0.00000000 };
+Point ( 38640 ) = { 1.51473919, -0.83997928, 0.00000000 };
+Point ( 38641 ) = { 1.52916815, -0.81341550, 0.00000000 };
+Point ( 38642 ) = { 1.54313130, -0.78660395, 0.00000000 };
+Point ( 38643 ) = { 1.55662441, -0.75955279, 0.00000000 };
+Point ( 38644 ) = { 1.56964335, -0.73227027, 0.00000000 };
+Point ( 38645 ) = { 1.58218417, -0.70476469, 0.00000000 };
+Point ( 38646 ) = { 1.59424303, -0.67704442, 0.00000000 };
+Point ( 38647 ) = { 1.60581628, -0.64911793, 0.00000000 };
+Point ( 38648 ) = { 1.61690037, -0.62099371, 0.00000000 };
+Point ( 38649 ) = { 1.62749195, -0.59268033, 0.00000000 };
+Point ( 38650 ) = { 1.63758777, -0.56418641, 0.00000000 };
+Point ( 38651 ) = { 1.64718477, -0.53552063, 0.00000000 };
+Point ( 38652 ) = { 1.65628002, -0.50669173, 0.00000000 };
+Point ( 38653 ) = { 1.66487075, -0.47770849, 0.00000000 };
+Point ( 38654 ) = { 1.67295434, -0.44857973, 0.00000000 };
+Point ( 38655 ) = { 1.68052834, -0.41931433, 0.00000000 };
+Point ( 38656 ) = { 1.68759043, -0.38992120, 0.00000000 };
+Point ( 38657 ) = { 1.69413846, -0.36040930, 0.00000000 };
+Point ( 38658 ) = { 1.70017045, -0.33078762, 0.00000000 };
+Point ( 38659 ) = { 1.70568454, -0.30106517, 0.00000000 };
+Point ( 38660 ) = { 1.71067907, -0.27125102, 0.00000000 };
+Point ( 38661 ) = { 1.71515251, -0.24135424, 0.00000000 };
+Point ( 38662 ) = { 1.71910350, -0.21138394, 0.00000000 };
+Point ( 38663 ) = { 1.72253083, -0.18134925, 0.00000000 };
+Point ( 38664 ) = { 1.72543346, -0.15125932, 0.00000000 };
+Point ( 38665 ) = { 1.72781051, -0.12112332, 0.00000000 };
+Point ( 38666 ) = { 1.72966124, -0.09095042, 0.00000000 };
+Point ( 38667 ) = { 1.73098511, -0.06074982, 0.00000000 };
+Point ( 38668 ) = { 1.73178171, -0.03053071, 0.00000000 };
+BSpline ( 1 ) = { 38490 : 38668 };
+
+// Closing path with parallels and meridians, from (-179.99000000, -30.00000000) to  (0.01000000, -30.00000000)
+// Drawing parallel index 1 at -179.99 (to match 0.01), -30.00
+Point ( 38669 ) = { 1.73098511, 0.06074982, 0.00000000 };
+Point ( 38670 ) = { 1.72966124, 0.09095042, 0.00000000 };
+Point ( 38671 ) = { 1.72781051, 0.12112332, 0.00000000 };
+Point ( 38672 ) = { 1.72543346, 0.15125932, 0.00000000 };
+Point ( 38673 ) = { 1.72253083, 0.18134925, 0.00000000 };
+Point ( 38674 ) = { 1.71910350, 0.21138394, 0.00000000 };
+Point ( 38675 ) = { 1.71515251, 0.24135424, 0.00000000 };
+Point ( 38676 ) = { 1.71067907, 0.27125102, 0.00000000 };
+Point ( 38677 ) = { 1.70568454, 0.30106517, 0.00000000 };
+Point ( 38678 ) = { 1.70017045, 0.33078762, 0.00000000 };
+Point ( 38679 ) = { 1.69413846, 0.36040930, 0.00000000 };
+Point ( 38680 ) = { 1.68759043, 0.38992120, 0.00000000 };
+Point ( 38681 ) = { 1.68052834, 0.41931433, 0.00000000 };
+Point ( 38682 ) = { 1.67295434, 0.44857973, 0.00000000 };
+Point ( 38683 ) = { 1.66487075, 0.47770849, 0.00000000 };
+Point ( 38684 ) = { 1.65628002, 0.50669173, 0.00000000 };
+Point ( 38685 ) = { 1.64718477, 0.53552063, 0.00000000 };
+Point ( 38686 ) = { 1.63758777, 0.56418641, 0.00000000 };
+Point ( 38687 ) = { 1.62749195, 0.59268033, 0.00000000 };
+Point ( 38688 ) = { 1.61690037, 0.62099371, 0.00000000 };
+Point ( 38689 ) = { 1.60581628, 0.64911793, 0.00000000 };
+Point ( 38690 ) = { 1.59424303, 0.67704442, 0.00000000 };
+Point ( 38691 ) = { 1.58218417, 0.70476469, 0.00000000 };
+Point ( 38692 ) = { 1.56964335, 0.73227027, 0.00000000 };
+Point ( 38693 ) = { 1.55662441, 0.75955279, 0.00000000 };
+Point ( 38694 ) = { 1.54313130, 0.78660395, 0.00000000 };
+Point ( 38695 ) = { 1.52916815, 0.81341550, 0.00000000 };
+Point ( 38696 ) = { 1.51473919, 0.83997928, 0.00000000 };
+Point ( 38697 ) = { 1.49984883, 0.86628719, 0.00000000 };
+Point ( 38698 ) = { 1.48450160, 0.89233122, 0.00000000 };
+Point ( 38699 ) = { 1.46870217, 0.91810344, 0.00000000 };
+Point ( 38700 ) = { 1.45245537, 0.94359600, 0.00000000 };
+Point ( 38701 ) = { 1.43576613, 0.96880112, 0.00000000 };
+Point ( 38702 ) = { 1.41863955, 0.99371114, 0.00000000 };
+Point ( 38703 ) = { 1.40108083, 1.01831847, 0.00000000 };
+Point ( 38704 ) = { 1.38309533, 1.04261561, 0.00000000 };
+Point ( 38705 ) = { 1.36468853, 1.06659515, 0.00000000 };
+Point ( 38706 ) = { 1.34586603, 1.09024981, 0.00000000 };
+Point ( 38707 ) = { 1.32663356, 1.11357236, 0.00000000 };
+Point ( 38708 ) = { 1.30699699, 1.13655570, 0.00000000 };
+Point ( 38709 ) = { 1.28696230, 1.15919284, 0.00000000 };
+Point ( 38710 ) = { 1.26653558, 1.18147688, 0.00000000 };
+Point ( 38711 ) = { 1.24572307, 1.20340103, 0.00000000 };
+Point ( 38712 ) = { 1.22453109, 1.22495861, 0.00000000 };
+Point ( 38713 ) = { 1.20296612, 1.24614306, 0.00000000 };
+Point ( 38714 ) = { 1.18103470, 1.26694792, 0.00000000 };
+Point ( 38715 ) = { 1.15874354, 1.28736685, 0.00000000 };
+Point ( 38716 ) = { 1.13609941, 1.30739364, 0.00000000 };
+Point ( 38717 ) = { 1.11310921, 1.32702219, 0.00000000 };
+Point ( 38718 ) = { 1.08977994, 1.34624651, 0.00000000 };
+Point ( 38719 ) = { 1.06611872, 1.36506076, 0.00000000 };
+Point ( 38720 ) = { 1.04213275, 1.38345919, 0.00000000 };
+Point ( 38721 ) = { 1.01782934, 1.40143620, 0.00000000 };
+Point ( 38722 ) = { 0.99321589, 1.41898633, 0.00000000 };
+Point ( 38723 ) = { 0.96829989, 1.43610422, 0.00000000 };
+Point ( 38724 ) = { 0.94308894, 1.45278466, 0.00000000 };
+Point ( 38725 ) = { 0.91759071, 1.46902256, 0.00000000 };
+Point ( 38726 ) = { 0.89181298, 1.48481299, 0.00000000 };
+Point ( 38727 ) = { 0.86576359, 1.50015113, 0.00000000 };
+Point ( 38728 ) = { 0.83945048, 1.51503230, 0.00000000 };
+Point ( 38729 ) = { 0.81288167, 1.52945199, 0.00000000 };
+Point ( 38730 ) = { 0.78606525, 1.54340579, 0.00000000 };
+Point ( 38731 ) = { 0.75900938, 1.55688945, 0.00000000 };
+Point ( 38732 ) = { 0.73172231, 1.56989887, 0.00000000 };
+Point ( 38733 ) = { 0.70421236, 1.58243008, 0.00000000 };
+Point ( 38734 ) = { 0.67648789, 1.59447927, 0.00000000 };
+Point ( 38735 ) = { 0.64855736, 1.60604276, 0.00000000 };
+Point ( 38736 ) = { 0.62042927, 1.61711704, 0.00000000 };
+Point ( 38737 ) = { 0.59211219, 1.62769873, 0.00000000 };
+Point ( 38738 ) = { 0.56361475, 1.63778461, 0.00000000 };
+Point ( 38739 ) = { 0.53494562, 1.64737160, 0.00000000 };
+Point ( 38740 ) = { 0.50611355, 1.65645678, 0.00000000 };
+Point ( 38741 ) = { 0.47712731, 1.66503740, 0.00000000 };
+Point ( 38742 ) = { 0.44799573, 1.67311082, 0.00000000 };
+Point ( 38743 ) = { 0.41872769, 1.68067460, 0.00000000 };
+Point ( 38744 ) = { 0.38933210, 1.68772643, 0.00000000 };
+Point ( 38745 ) = { 0.35981791, 1.69426417, 0.00000000 };
+Point ( 38746 ) = { 0.33019412, 1.70028581, 0.00000000 };
+Point ( 38747 ) = { 0.30046975, 1.70578953, 0.00000000 };
+Point ( 38748 ) = { 0.27065386, 1.71077365, 0.00000000 };
+Point ( 38749 ) = { 0.24075552, 1.71523665, 0.00000000 };
+Point ( 38750 ) = { 0.21078384, 1.71917718, 0.00000000 };
+Point ( 38751 ) = { 0.18074796, 1.72259402, 0.00000000 };
+Point ( 38752 ) = { 0.15065702, 1.72548615, 0.00000000 };
+Point ( 38753 ) = { 0.12052019, 1.72785268, 0.00000000 };
+Point ( 38754 ) = { 0.09034665, 1.72969289, 0.00000000 };
+Point ( 38755 ) = { 0.06014558, 1.73100621, 0.00000000 };
+Point ( 38756 ) = { 0.02992620, 1.73179226, 0.00000000 };
+Point ( 38757 ) = { -0.00030230, 1.73205078, 0.00000000 };
+Point ( 38758 ) = { -0.03053071, 1.73178171, 0.00000000 };
+Point ( 38759 ) = { -0.06074982, 1.73098511, 0.00000000 };
+Point ( 38760 ) = { -0.09095042, 1.72966124, 0.00000000 };
+Point ( 38761 ) = { -0.12112332, 1.72781051, 0.00000000 };
+Point ( 38762 ) = { -0.15125932, 1.72543346, 0.00000000 };
+Point ( 38763 ) = { -0.18134925, 1.72253083, 0.00000000 };
+Point ( 38764 ) = { -0.21138394, 1.71910350, 0.00000000 };
+Point ( 38765 ) = { -0.24135424, 1.71515251, 0.00000000 };
+Point ( 38766 ) = { -0.27125102, 1.71067907, 0.00000000 };
+Point ( 38767 ) = { -0.30106517, 1.70568454, 0.00000000 };
+Point ( 38768 ) = { -0.33078762, 1.70017045, 0.00000000 };
+Point ( 38769 ) = { -0.36040930, 1.69413846, 0.00000000 };
+Point ( 38770 ) = { -0.38992120, 1.68759043, 0.00000000 };
+Point ( 38771 ) = { -0.41931433, 1.68052834, 0.00000000 };
+Point ( 38772 ) = { -0.44857973, 1.67295434, 0.00000000 };
+Point ( 38773 ) = { -0.47770849, 1.66487075, 0.00000000 };
+Point ( 38774 ) = { -0.50669173, 1.65628002, 0.00000000 };
+Point ( 38775 ) = { -0.53552063, 1.64718477, 0.00000000 };
+Point ( 38776 ) = { -0.56418641, 1.63758777, 0.00000000 };
+Point ( 38777 ) = { -0.59268033, 1.62749195, 0.00000000 };
+Point ( 38778 ) = { -0.62099371, 1.61690037, 0.00000000 };
+Point ( 38779 ) = { -0.64911793, 1.60581628, 0.00000000 };
+Point ( 38780 ) = { -0.67704442, 1.59424303, 0.00000000 };
+Point ( 38781 ) = { -0.70476469, 1.58218417, 0.00000000 };
+Point ( 38782 ) = { -0.73227027, 1.56964335, 0.00000000 };
+Point ( 38783 ) = { -0.75955279, 1.55662441, 0.00000000 };
+Point ( 38784 ) = { -0.78660395, 1.54313130, 0.00000000 };
+Point ( 38785 ) = { -0.81341550, 1.52916815, 0.00000000 };
+Point ( 38786 ) = { -0.83997928, 1.51473919, 0.00000000 };
+Point ( 38787 ) = { -0.86628719, 1.49984883, 0.00000000 };
+Point ( 38788 ) = { -0.89233122, 1.48450160, 0.00000000 };
+Point ( 38789 ) = { -0.91810344, 1.46870217, 0.00000000 };
+Point ( 38790 ) = { -0.94359600, 1.45245537, 0.00000000 };
+Point ( 38791 ) = { -0.96880112, 1.43576613, 0.00000000 };
+Point ( 38792 ) = { -0.99371114, 1.41863955, 0.00000000 };
+Point ( 38793 ) = { -1.01831847, 1.40108083, 0.00000000 };
+Point ( 38794 ) = { -1.04261561, 1.38309533, 0.00000000 };
+Point ( 38795 ) = { -1.06659515, 1.36468853, 0.00000000 };
+Point ( 38796 ) = { -1.09024981, 1.34586603, 0.00000000 };
+Point ( 38797 ) = { -1.11357236, 1.32663356, 0.00000000 };
+Point ( 38798 ) = { -1.13655570, 1.30699699, 0.00000000 };
+Point ( 38799 ) = { -1.15919284, 1.28696230, 0.00000000 };
+Point ( 38800 ) = { -1.18147688, 1.26653558, 0.00000000 };
+Point ( 38801 ) = { -1.20340103, 1.24572307, 0.00000000 };
+Point ( 38802 ) = { -1.22495861, 1.22453109, 0.00000000 };
+Point ( 38803 ) = { -1.24614306, 1.20296612, 0.00000000 };
+Point ( 38804 ) = { -1.26694792, 1.18103470, 0.00000000 };
+Point ( 38805 ) = { -1.28736685, 1.15874354, 0.00000000 };
+Point ( 38806 ) = { -1.30739364, 1.13609941, 0.00000000 };
+Point ( 38807 ) = { -1.32702219, 1.11310921, 0.00000000 };
+Point ( 38808 ) = { -1.34624651, 1.08977994, 0.00000000 };
+Point ( 38809 ) = { -1.36506076, 1.06611872, 0.00000000 };
+Point ( 38810 ) = { -1.38345919, 1.04213275, 0.00000000 };
+Point ( 38811 ) = { -1.40143620, 1.01782934, 0.00000000 };
+Point ( 38812 ) = { -1.41898633, 0.99321589, 0.00000000 };
+Point ( 38813 ) = { -1.43610422, 0.96829989, 0.00000000 };
+Point ( 38814 ) = { -1.45278466, 0.94308894, 0.00000000 };
+Point ( 38815 ) = { -1.46902256, 0.91759071, 0.00000000 };
+Point ( 38816 ) = { -1.48481299, 0.89181298, 0.00000000 };
+Point ( 38817 ) = { -1.50015113, 0.86576359, 0.00000000 };
+Point ( 38818 ) = { -1.51503230, 0.83945048, 0.00000000 };
+Point ( 38819 ) = { -1.52945199, 0.81288167, 0.00000000 };
+Point ( 38820 ) = { -1.54340579, 0.78606525, 0.00000000 };
+Point ( 38821 ) = { -1.55688945, 0.75900938, 0.00000000 };
+Point ( 38822 ) = { -1.56989887, 0.73172231, 0.00000000 };
+Point ( 38823 ) = { -1.58243008, 0.70421236, 0.00000000 };
+Point ( 38824 ) = { -1.59447927, 0.67648789, 0.00000000 };
+Point ( 38825 ) = { -1.60604276, 0.64855736, 0.00000000 };
+Point ( 38826 ) = { -1.61711704, 0.62042927, 0.00000000 };
+Point ( 38827 ) = { -1.62769873, 0.59211219, 0.00000000 };
+Point ( 38828 ) = { -1.63778461, 0.56361475, 0.00000000 };
+Point ( 38829 ) = { -1.64737160, 0.53494562, 0.00000000 };
+Point ( 38830 ) = { -1.65645678, 0.50611355, 0.00000000 };
+Point ( 38831 ) = { -1.66503740, 0.47712731, 0.00000000 };
+Point ( 38832 ) = { -1.67311082, 0.44799573, 0.00000000 };
+Point ( 38833 ) = { -1.68067460, 0.41872769, 0.00000000 };
+Point ( 38834 ) = { -1.68772643, 0.38933210, 0.00000000 };
+Point ( 38835 ) = { -1.69426417, 0.35981791, 0.00000000 };
+Point ( 38836 ) = { -1.70028581, 0.33019412, 0.00000000 };
+Point ( 38837 ) = { -1.70578953, 0.30046975, 0.00000000 };
+Point ( 38838 ) = { -1.71077365, 0.27065386, 0.00000000 };
+Point ( 38839 ) = { -1.71523665, 0.24075552, 0.00000000 };
+Point ( 38840 ) = { -1.71917718, 0.21078384, 0.00000000 };
+Point ( 38841 ) = { -1.72259402, 0.18074796, 0.00000000 };
+Point ( 38842 ) = { -1.72548615, 0.15065702, 0.00000000 };
+Point ( 38843 ) = { -1.72785268, 0.12052019, 0.00000000 };
+Point ( 38844 ) = { -1.72969289, 0.09034665, 0.00000000 };
+Point ( 38845 ) = { -1.73100621, 0.06014558, 0.00000000 };
+Point ( 38846 ) = { -1.73179226, 0.02992620, 0.00000000 };
+BSpline ( 2 ) = { 38668 : 38846, 38490 };
+Line Loop( 1 ) = { 1, 2 };
 
 
 // == Physical entities ===========================================
-// Boundary Open (ID 4): 2
-Physical Line( 4 ) = { 1 };
-// Boundary Coast (ID 3): 1
+// Boundary Open (ID 4): 
+Physical Line( 4 ) = { 1, 2 };
+// Boundary Coast (ID 3): 
 Physical Line( 3 ) = { 0 };
 Plane Surface( 10 ) = { 0, 1 };
 Physical Surface( 10 ) = { 10 };

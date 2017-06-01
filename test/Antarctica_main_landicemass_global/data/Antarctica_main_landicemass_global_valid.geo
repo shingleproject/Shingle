@@ -16,7 +16,7 @@
 // 
 // Project name: Antarctica_main_landicemass_global
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/05/15 17:37:41 
+// Created at: 2017/06/01 15:01:06 
 // Project description:
 //   Use the RTopo dataset (RTopo105b.nc),
 //   considering all land masses up to a latitude of 60S, within a global domain.
@@ -130,6 +130,19 @@
 // == Boundary Representation Specification Parameters ============
 // Output to Antarctica_main_landicemass_global.geo
 // Projection type cartesian
+
+// == Boundary Representation description =========================
+
+// == Header ======================================================
+Point ( 0 ) = { 0, 0, 0 };
+Point ( 1 ) = { 0, 0, 6.37101e+06 };
+PolarSphere ( 0 ) = { 0, 1 };
+
+Delete { Point{ 0 }; }
+Delete { Point{ 1 }; }
+
+
+// == BRep component pre-scan =====================================
 //   1. Antarctica_main_landicemass_brep
 //       Path:           /geoid_surface_representation::Antarctica_main_landicemass/brep_component::Antarctica_main_landicemass_brep
 //       Form:           Raster
@@ -142,828 +155,107 @@
 // Region defined by latitude <= -60.0
 // Open contours closed with a line formed by points spaced 10 degrees apart
 // Paths found: 269
-
-// == Boundary Representation description =========================
-
-// == Header ======================================================
-Point ( 0 ) = { 0, 0, 0 };
-Point ( 1 ) = { 0, 0, 6.37101e+06 };
-PolarSphere ( 0 ) = { 0, 1 };
-
-Delete { Point{ 0 }; }
-Delete { Point{ 1 }; }
-
 // Merged paths that cross the date line: 
-
-// == Ice-Land mass number 1 ======================================
-// Path 1: points 38488 (of 38489) area 2.44976e+08 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 2 ======================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 3 ======================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 4 ======================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 5 ======================================
-// Path 5: points 406 (of 407) area 244.582 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 6 ======================================
-// Path 6: points 346 (of 347) area 2486.99 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 7 ======================================
-// Path 7: points 346 (of 347) area 3107.52 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 8 ======================================
-// Path 8: points 338 (of 339) area 1300.9 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 9 ======================================
-// Path 9: points 292 (of 293) area 5324.48 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 10 =====================================
-// Path 10: points 256 (of 257) area 1367.42 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 11 =====================================
-// Path 11: points 260 (of 261) area 4159.97 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 12 =====================================
-// Path 12: points 258 (of 259) area 616.628 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 13 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 14 =====================================
-// Path 14: points 226 (of 227) area 1618.94 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 15 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 16 =====================================
-// Path 16: points 178 (of 179) area 562.957 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 17 =====================================
-// Path 17: points 140 (of 141) area 321.759 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 18 =====================================
-// Path 18: points 118 (of 119) area 76.4444 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 19 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 20 =====================================
-// Path 20: points 108 (of 109) area 538.654 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 21 =====================================
-// Path 21: points 94 (of 95) area 466.573 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 22 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 23 =====================================
-// Path 23: points 94 (of 95) area 80.6313 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 24 =====================================
-// Path 24: points 98 (of 99) area 1312.88 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 25 =====================================
-// Path 25: points 88 (of 89) area 113.711 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 26 =====================================
-// Path 26: points 90 (of 91) area 89.639 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 27 =====================================
-// Path 27: points 78 (of 79) area 699.413 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 28 =====================================
-// Path 28: points 78 (of 79) area 222.495 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 29 =====================================
-// Path 29: points 72 (of 73) area 85.1487 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 30 =====================================
-// Path 30: points 78 (of 79) area 414.615 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 31 =====================================
-// Path 31: points 66 (of 67) area 383.642 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 32 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 33 =====================================
-// Path 33: points 64 (of 65) area 65.1601 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 34 =====================================
-// Path 34: points 60 (of 61) area 65.104 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 35 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 36 =====================================
-// Path 36: points 56 (of 57) area 34.5516 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 37 =====================================
-// Path 37: points 58 (of 59) area 184.778 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 38 =====================================
-// Path 38: points 56 (of 57) area 25.6821 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 39 =====================================
-// Path 39: points 52 (of 53) area 398.693 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 40 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 41 =====================================
-// Path 41: points 52 (of 53) area 45.2923 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 42 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 43 =====================================
-// Path 43: points 48 (of 49) area 56.1703 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 44 =====================================
-// Path 44: points 48 (of 49) area 100.649 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 45 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 46 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 47 =====================================
-// Path 47: points 44 (of 45) area 22.8392 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 48 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 49 =====================================
-// Path 49: points 40 (of 41) area 101.081 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 50 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 51 =====================================
-// Path 51: points 40 (of 41) area 0.796796 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 52 =====================================
-// Path 52: points 40 (of 41) area 48.5051 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 53 =====================================
-// Path 53: points 38 (of 39) area 21.6148 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 54 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 55 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 56 =====================================
-// Path 56: points 34 (of 35) area 17.0094 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 57 =====================================
-// Path 57: points 32 (of 33) area 39.6776 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 58 =====================================
-// Path 58: points 32 (of 33) area 4.3966 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 59 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 60 =====================================
-// Path 60: points 30 (of 31) area 40.1218 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 61 =====================================
-// Path 61: points 30 (of 31) area 28.2447 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 62 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 63 =====================================
-// Path 63: points 28 (of 29) area 21.7077 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 64 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 65 =====================================
-// Path 65: points 26 (of 27) area 23.6814 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 66 =====================================
-// Path 66: points 26 (of 27) area 19.7497 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 67 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 68 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 69 =====================================
-// Path 69: points 24 (of 25) area 19.6011 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 70 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 71 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 72 =====================================
-// Path 72: points 24 (of 25) area 18.4425 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 73 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 74 =====================================
-// Path 74: points 24 (of 25) area 6.58455 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 75 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 76 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 77 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 78 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 79 =====================================
-// Path 79: points 20 (of 21) area 38.8859 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 80 =====================================
-// Path 80: points 20 (of 21) area 35.4307 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 81 =====================================
-// Path 81: points 18 (of 19) area 19.2655 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 82 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 83 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 84 =====================================
-// Path 84: points 18 (of 19) area 16.4171 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 85 =====================================
-// Path 85: points 18 (of 19) area 6.72085 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 86 =====================================
-// Path 86: points 18 (of 19) area 17.3596 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 87 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 88 =====================================
-// Path 88: points 18 (of 19) area 12.3379 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 89 =====================================
-// Path 89: points 18 (of 19) area 2.68564 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 90 =====================================
-// Path 90: points 18 (of 19) area 16.7769 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 91 =====================================
-// Path 91: points 16 (of 17) area 0.196299 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 92 =====================================
-// Path 92: points 16 (of 17) area 10.0913 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 93 =====================================
-// Path 93: points 14 (of 15) area 8.67096 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 94 =====================================
-// Path 94: points 14 (of 15) area 9.1622 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 95 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 96 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 97 =====================================
-// Path 97: points 14 (of 15) area 9.69516 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 98 =====================================
-// Path 98: points 14 (of 15) area 1.21628 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 99 =====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 100 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 101 ====================================
-// Path 101: points 14 (of 15) area 10.5851 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 102 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 103 ====================================
-// Path 103: points 14 (of 15) area 10.9684 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 104 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 105 ====================================
-// Path 105: points 14 (of 15) area 14.2605 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 106 ====================================
-// Path 106: points 14 (of 15) area 8.95052 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 107 ====================================
-// Path 107: points 14 (of 15) area 0.00773669 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 108 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 109 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 110 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 111 ====================================
-// Path 111: points 12 (of 13) area 3.66464 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 112 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 113 ====================================
-// Path 113: points 12 (of 13) area 19.2698 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 114 ====================================
-// Path 114: points 12 (of 13) area 13.0497 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 115 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 116 ====================================
-// Path 116: points 12 (of 13) area 13.9388 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 117 ====================================
-// Path 117: points 12 (of 13) area 2.08873 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 118 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 119 ====================================
-// Path 119: points 12 (of 13) area 4.48539 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 120 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 121 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 122 ====================================
-// Path 122: points 10 (of 11) area 6.53678 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 123 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 124 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 125 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 126 ====================================
-// Path 126: points 10 (of 11) area 8.7189 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 127 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 128 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 129 ====================================
-// Path 129: points 10 (of 11) area 4.67842 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 130 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 131 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 132 ====================================
-// Path 132: points 8 (of 9) area 3.29218 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 133 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 134 ====================================
-// Path 134: points 8 (of 9) area 9.71436 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 135 ====================================
-// Path 135: points 8 (of 9) area 1.06676 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 136 ====================================
-// Path 136: points 8 (of 9) area 0.0332209 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 137 ====================================
-// Path 137: points 8 (of 9) area 0.152695 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 138 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 139 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 140 ====================================
-// Path 140: points 8 (of 9) area 5.57572 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 141 ====================================
-// Path 141: points 6 (of 7) area 4.93455 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 142 ====================================
-// Path 142: points 6 (of 7) area 7.31609 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 143 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 144 ====================================
-// Path 144: points 6 (of 7) area 1.89253 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 145 ====================================
-// Path 145: points 6 (of 7) area 1.09734 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 146 ====================================
-// Path 146: points 6 (of 7) area 1.18053 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 147 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 148 ====================================
-// Path 148: points 6 (of 7) area 1.17453 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 149 ====================================
-// Path 149: points 6 (of 7) area 1.09565 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 150 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 151 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 152 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 153 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 154 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 155 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 156 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 157 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 158 ====================================
-// Path 158: points 6 (of 7) area 2.22184 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 159 ====================================
-// Path 159: points 6 (of 7) area 2.22434 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 160 ====================================
-// Path 160: points 6 (of 7) area 1.1132 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 161 ====================================
-// Path 161: points 6 (of 7) area 1.06708 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 162 ====================================
-// Path 162: points 6 (of 7) area 2.19145 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 163 ====================================
-// Path 163: points 6 (of 7) area 1.18849 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 164 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 165 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 166 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 167 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 168 ====================================
-// Path 168: points 4 (of 5) area 1.90611 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 169 ====================================
-// Path 169: points 4 (of 5) area 1.90431 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 170 ====================================
-// Path 170: points 4 (of 5) area 0.909569 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 171 ====================================
-// Path 171: points 4 (of 5) area 0.0223534 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 172 ====================================
-// Path 172: points 4 (of 5) area 0.909216 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 173 ====================================
-// Path 173: points 4 (of 5) area 0.119627 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 174 ====================================
-// Path 174: points 4 (of 5) area 0.120878 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 175 ====================================
-// Path 175: points 4 (of 5) area 0.0465798 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 176 ====================================
-// Path 176: points 4 (of 5) area 0.0467624 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 177 ====================================
-// Path 177: points 4 (of 5) area 0.0178674 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 178 ====================================
-// Path 178: points 4 (of 5) area 0.00869693 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 179 ====================================
-// Path 179: points 4 (of 5) area 0.00480625 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 180 ====================================
-// Path 180: points 4 (of 5) area 0.00563832 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 181 ====================================
-// Path 181: points 4 (of 5) area 0.00380825 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 182 ====================================
-// Path 182: points 4 (of 5) area 0.0068653 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 183 ====================================
-// Path 183: points 4 (of 5) area 0.00533485 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 184 ====================================
-// Path 184: points 4 (of 5) area 0.0031377 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 185 ====================================
-// Path 185: points 4 (of 5) area 0.00355497 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 186 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 187 ====================================
-// Path 187: points 4 (of 5) area 0.0547389 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 188 ====================================
-// Path 188: points 4 (of 5) area 0.0591814 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 189 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 190 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 191 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 192 ====================================
-// Path 192: points 4 (of 5) area 1.98661 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 193 ====================================
-// Path 193: points 4 (of 5) area 1.9062 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 194 ====================================
-// Path 194: points 4 (of 5) area 0.0527075 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 195 ====================================
-// Path 195: points 4 (of 5) area 0.0456243 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 196 ====================================
-// Path 196: points 4 (of 5) area 0.0468743 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 197 ====================================
-// Path 197: points 4 (of 5) area 0.0457632 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 198 ====================================
-// Path 198: points 4 (of 5) area 0.0242357 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 199 ====================================
-// Path 199: points 4 (of 5) area 0.0209025 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 200 ====================================
-// Path 200: points 4 (of 5) area 0.0172914 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 201 ====================================
-// Path 201: points 4 (of 5) area 0.0107637 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 202 ====================================
-// Path 202: points 4 (of 5) area 0.00493052 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 203 ====================================
-// Path 203: points 4 (of 5) area 0.0045138 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 204 ====================================
-// Path 204: points 4 (of 5) area 6.94582e-05 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 205 ====================================
-// Path 205: points 4 (of 5) area 0.00576382 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 206 ====================================
-// Path 206: points 4 (of 5) area 0.00187496 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 207 ====================================
-// Path 207: points 4 (of 5) area 0.00215276 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 208 ====================================
-// Path 208: points 4 (of 5) area 0.00215273 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 209 ====================================
-// Path 209: points 4 (of 5) area 0.00506934 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 210 ====================================
-// Path 210: points 4 (of 5) area 0.0110415 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 211 ====================================
-// Path 211: points 4 (of 5) area 0.00923597 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 212 ====================================
-// Path 212: points 4 (of 5) area 0.00590271 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 213 ====================================
-// Path 213: points 4 (of 5) area 0.0200691 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 214 ====================================
-// Path 214: points 4 (of 5) area 0.0215969 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 215 ====================================
-// Path 215: points 4 (of 5) area 0.0210413 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 216 ====================================
-// Path 216: points 4 (of 5) area 0.048541 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 217 ====================================
-// Path 217: points 4 (of 5) area 0.0554852 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 218 ====================================
-// Path 218: points 4 (of 5) area 0.0431244 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 219 ====================================
-// Path 219: points 4 (of 5) area 0.0454854 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 220 ====================================
-// Path 220: points 4 (of 5) area 0.047291 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 221 ====================================
-// Path 221: points 4 (of 5) area 0.0465965 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 222 ====================================
-// Path 222: points 4 (of 5) area 0.0109026 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 223 ====================================
-// Path 223: points 4 (of 5) area 0.00645822 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 224 ====================================
-// Path 224: points 4 (of 5) area 0.00618048 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 225 ====================================
-// Path 225: points 4 (of 5) area 0.00590268 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 226 ====================================
-// Path 226: points 4 (of 5) area 0.00562494 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 227 ====================================
-// Path 227: points 4 (of 5) area 0.00534717 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 228 ====================================
-// Path 228: points 4 (of 5) area 0.00409718 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 229 ====================================
-// Path 229: points 4 (of 5) area 0.0065971 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 230 ====================================
-// Path 230: points 4 (of 5) area 0.00506937 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 231 ====================================
-// Path 231: points 4 (of 5) area 0.00104165 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 232 ====================================
-// Path 232: points 4 (of 5) area 0.00173611 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 233 ====================================
-// Path 233: points 4 (of 5) area 0.00284715 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 234 ====================================
-// Path 234: points 4 (of 5) area 0.00201388 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 235 ====================================
-// Path 235: points 4 (of 5) area 0.000347196 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 236 ====================================
-// Path 236: points 4 (of 5) area 0.000486112 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 237 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 238 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 239 ====================================
-// Path 239: points 4 (of 5) area 0.0307634 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 240 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 241 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 242 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 243 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 244 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 245 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 246 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 247 ====================================
-// Path 247: points 4 (of 5) area 0.0724294 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 248 ====================================
-// Path 248: points 4 (of 5) area 0.0500687 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 249 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 250 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 251 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 252 ====================================
-// Path 252: points 4 (of 5) area 0.00993038 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 253 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 254 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 255 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 256 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 257 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 258 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 259 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 260 ====================================
 //   Skipped (no points found in region)
-
-// == Ice-Land mass number 261 ====================================
-// Path 261: points 4 (of 5) area 1.90436 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 262 ====================================
-// Path 262: points 4 (of 5) area 0.00758007 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 263 ====================================
-// Path 263: points 4 (of 5) area 1.9038 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 264 ====================================
-// Path 264: points 4 (of 5) area 0.908673 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 265 ====================================
-// Path 265: points 4 (of 5) area 0.891176 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 266 ====================================
-// Path 266: points 4 (of 5) area 0.0110227 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 267 ====================================
-// Path 267: points 4 (of 5) area 0.0124117 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 268 ====================================
-// Path 268: points 4 (of 5) area 0.0058893 (required closing in 2 parts of the path)
-
-// == Ice-Land mass number 269 ====================================
 //   Skipped (no points found in region)
-// Paths found valid (renumbered order): 1, including 1
+// Paths found valid (renumbered order): 1, including 
+//   Component boundary representations identified:
+//     1: Antarctica_main_landicemass_brep (part 1 of 1) (components: 1)
 
-// == Ice-Land mass number 1 ======================================
+// == BRep component: Antarctica_main_landicemass_brep (part 1 of 1) 
 Point ( 2 ) = { 9.40253226, -0.00000000, 0.00000000 };
 Point ( 3 ) = { 9.40903991, -0.00136816, 0.00000000 };
 Point ( 4 ) = { 9.41555328, -0.00273820, 0.00000000 };
@@ -39457,7 +38749,7 @@ Line Loop( 0 ) = { 0 };
 
 
 // == Physical entities ===========================================
-// Boundary Coast (ID 3): 1
+// Boundary Coast (ID 3): 
 Physical Line( 3 ) = { 0 };
 Plane Surface( 10 ) = { 0 };
 Physical Surface( 10 ) = { 10 };

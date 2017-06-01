@@ -37,6 +37,7 @@ from Bounds import Bounds
 from Spud import specification
 from copy import deepcopy
 import numpy
+import os.path
 
 def merge_two_dicts(x, y):
     """Given two dicts, merge them into a new dict as a shallow copy."""
@@ -404,15 +405,23 @@ global field
 
     def _file(self):
         if self._fileobject is None:
-            self._fileobject = open(self.Filepath(),'w')
+            self._fileobject = open(self.Filepath(full=True),'w')
         return self._fileobject
 
-    def Filepath(self):
+    def Filepath(self, full=False):
         if self.output_filename is None:
-            name = self._surface_rep.Name() + '_' + self._OUTPUT_FILENAME_DEFAULT
+            filename = self._surface_rep.Name() + '_' + self._OUTPUT_FILENAME_DEFAULT
+            dirname = '.'
         else:
-            name = self.output_filename
-        return self._surface_rep.spatial_discretisation.PathRelative(name)
+            filename = os.path.basename(self.output_filename)
+            dirname  = os.path.dirname(self.output_filename)
+        if full:
+            #if dirname in ['', '.']:
+            #    name = filename
+            name = os.path.join(dirname, filename)
+            return self._surface_rep.spatial_discretisation.PathRelative(name)
+        else:
+            return filename
 
     def Finalise(self):
         self._fileobject.close()
@@ -436,7 +445,7 @@ Field[2].F = "0.1";
 Background Field = 1;
 
 ''' % {
-        'filename':self.Filepath(),
+        'filename': self.Filepath(full=True),
     }
         return string
 

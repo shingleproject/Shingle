@@ -260,7 +260,7 @@ class SurfaceGeoidDomainRepresentation(object):
         self.AddSection('Physical entities')
 
         def physical_line_definition(name, boundaryid, paths):
-            self.report('Boundary %s (ID %i): %s' % (name, boundaryid, list_to_space_separated(paths, add=1)), indent = 1)
+            self.report('Boundary %s (ID %i): %s' % (name, boundaryid, list_to_space_separated(paths, add=1, concatenate=True)), indent = 1)
             prefix = self.CounterPrefix('IL')
             self.AddContent( '''Physical Line( %(boundaryid)d ) = { %(loopnumbers)s };''' % { 'boundaryid':boundaryid, 'loopnumbers':list_to_comma_separated(paths, prefix = prefix ) } )
 

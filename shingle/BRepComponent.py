@@ -402,6 +402,13 @@ class BRepComponent(object):
                 n = p.components[-1].CopyOpenPart()
                 error('** BRep %(name)s to be glued to existing, unclosed brep (%(previous)s)' % {'name':p.Name(), 'previous':n.Name()}, warning=True)
 
+            #open_components = self.identifyOpen(components)
+            #if not open_components:
+            #    error("No open components available to close with an extension to parallel", fatal=True)
+            #p = open_components[-1] 
+            # FIXME for attaching
+
+
             self.AppendParameters()
             dataset = self.Dataset()
             dataset.AppendParameters()
@@ -834,7 +841,9 @@ class BRepComponent(object):
         numbers = []
         for p in pathvalid:
           numbers.append(p.reference_number)
-        self.report('Paths found valid (renumbered order): ' + str(len(pathvalid)) + ', including ' + ' '.join(map(str, numbers)), indent = 1)
+        #self.report('Paths found valid (renumbered order): ' + str(len(pathvalid)) + ', including ' + ' '.join(map(str, numbers)), indent = 1)
+        self.report('Paths found valid (renumbered order): ' + str(len(pathvalid)) + ', including ' + list_to_space_separated(numbers, concatenate=True), indent = 1)
+
         if (len(pathvalid) == 0):
             self.report('No valid paths found.', indent = 1)
             error("No valid paths found.")

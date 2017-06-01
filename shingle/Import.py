@@ -441,6 +441,10 @@ def ReadPaths(brep, dataset):
 
     if ext in ['png', 'tif', 'tiff']:
         r = ReadDataRaster(filename)
+        r.Load()
+        #region, field = Filter(dataset, brep, subregion)
+        region = r
+        field = r.field
         contour_required = True
     elif ext in ['shp']:
         paths = read_shape(filename) 

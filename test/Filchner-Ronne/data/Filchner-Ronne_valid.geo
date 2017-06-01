@@ -16,7 +16,7 @@
 // 
 // Project name: Filchner-Ronne
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/05/31 14:35:50 
+// Created at: 2017/06/01 13:48:53 
 // Project description:
 //   Use the RTopo dataset, 50S version (RTopo105b 50S.nc),
 //   selecting the Filchner-Ronne ice sheet ocean cavity region
@@ -174,25 +174,16 @@ Delete { Point{ 1 }; }
 // Open contours closed with a line formed by points spaced 0.1 degrees apart
 // Paths found: 20
 // Merged paths that cross the date line: 
-// Path 1: points 12317 (of 12317) area 1.71566e+07
-//   Skipped (no points found in region)
-// Path 3: points 2192 (of 2193) area 372732 (required closing in 2 parts of the path)
-//   Skipped (no points found in region)
-// Path 5: points 1204 (of 1205) area 85846.4 (required closing in 2 parts of the path)
-// Path 6: points 834 (of 835) area 16929.5 (required closing in 2 parts of the path)
-// Path 7: points 564 (of 565) area 23435.8 (required closing in 2 parts of the path)
 //   Skipped (no points found in region)
 //   Skipped (no points found in region)
 //   Skipped (no points found in region)
-// Path 11: points 350 (of 351) area 976.81 (required closing in 2 parts of the path)
-//   Skipped (no points found in region)
-// Path 13: points 148 (of 149) area 556.475 (required closing in 2 parts of the path)
 //   Skipped (no points found in region)
 //   Skipped (no points found in region)
 //   Skipped (no points found in region)
-// Path 17: points 92 (of 93) area 134.49 (required closing in 2 parts of the path)
 //   Skipped (no points found in region)
-// Path 19: points 68 (of 69) area 134.925 (required closing in 2 parts of the path)
+//   Skipped (no points found in region)
+//   Skipped (no points found in region)
+//   Skipped (no points found in region)
 //   Skipped (no points found in region)
 // Paths found valid (renumbered order): 9, including 1 3 5 6 7 11 13 17 19
 

@@ -16,7 +16,7 @@
 // 
 // Project name: Pine_Island_Glacier
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/05/15 17:39:37 
+// Created at: 2017/06/01 15:38:57 
 // Project description:
 //   Use the RTopo dataset, 50S version (RTopo105b 50S.nc),
 //   selecting the region
@@ -143,6 +143,19 @@
 // Output to Pine_Island_Glacier.geo
 // Projection type cartesian
 // Extending region to meet parallel on latitude -64.0
+
+// == Boundary Representation description =========================
+
+// == Header ======================================================
+Point ( 0 ) = { 0, 0, 0 };
+Point ( 1 ) = { 0, 0, 6.37101e+06 };
+PolarSphere ( 0 ) = { 0, 1 };
+
+Delete { Point{ 0 }; }
+Delete { Point{ 1 }; }
+
+
+// == BRep component pre-scan =====================================
 //   1. Amundsen_Sea_brep
 //       Path:           /geoid_surface_representation::Amundsen_Sea/brep_component::Amundsen_Sea_brep
 //       Form:           Raster
@@ -161,24 +174,16 @@
 // Region defined by ((longitude >= -103) and (longitude <= -99.0) and (latitude >= -75.5) and (latitude <= -73.9))
 // Open contours closed with a line formed by points spaced 0.1 degrees apart
 // Paths found: 1
-
-// == Boundary Representation description =========================
-
-// == Header ======================================================
-Point ( 0 ) = { 0, 0, 0 };
-Point ( 1 ) = { 0, 0, 6.37101e+06 };
-PolarSphere ( 0 ) = { 0, 1 };
-
-Delete { Point{ 0 }; }
-Delete { Point{ 1 }; }
-
 // Merged paths that cross the date line: 
+// Paths found valid (renumbered order): 1, including 
 
-// == Ice-Land mass number 1 ======================================
-// Path 1: points 627 (of 627) area 70344.1
-// Paths found valid (renumbered order): 1, including 1
+// == BRep component: ExtendTo64S =================================
+// Extending exterior boundary developed in Amundsen_Sea_brep (part 1 of 1) to meridian -105.0
+// Drawing parallel to end index 1 at -105.00, -73.92 (to match -102.74)
+//   Component boundary representations identified:
+//     1: Amundsen_Sea_brep (part 1 of 1) AND ExtendTo64S (components: 4)
 
-// == Ice-Land mass number 1 ======================================
+// == BRep component: Amundsen_Sea_brep (part 1 of 1) AND ExtendTo64S 
 Point ( 2 ) = { 1.56109580, 6.90371627, 0.00000000 };
 Point ( 3 ) = { 1.56091111, 6.90757053, 0.00000000 };
 Point ( 4 ) = { 1.55890220, 6.90802418, 0.00000000 };
@@ -808,11 +813,8 @@ Point ( 627 ) = { 1.71690805, 7.45653446, 0.00000000 };
 Point ( 628 ) = { 1.71907647, 7.45603484, 0.00000000 };
 BSpline ( 0 ) = { 2 : 628 };
 
-
-// == BRep component: ExtendTo64S =================================
-// Extending exterior boundary developed in Amundsen_Sea_brep to meridian -105.0
 // Closing path with parallels and meridians, from (-102.98332977, -75.10833359) to  (-102.74166489, -73.91666412)
-// Drawing parallel to longitude index 628 at -102.98, -75.11 (to match -105.00)
+// Drawing parallel to longitude index 1 at -102.98, -75.11 (to match -105.00)
 Point ( 629 ) = { 1.73208708, 7.45302313, 0.00000000 };
 Point ( 630 ) = { 1.74509241, 7.44998872, 0.00000000 };
 Point ( 631 ) = { 1.75809243, 7.44693161, 0.00000000 };
@@ -833,7 +835,9 @@ Point ( 645 ) = { 1.93951238, 7.40175460, 0.00000000 };
 Point ( 646 ) = { 1.95242792, 7.39835824, 0.00000000 };
 Point ( 647 ) = { 1.96533751, 7.39493934, 0.00000000 };
 Point ( 648 ) = { 1.98039159, 7.39092204, 0.00000000 };
-// Drawing meridian index 648 at -75.11 (to match -73.92), -105.00
+BSpline ( 1 ) = { 628 : 648 };
+
+// Drawing meridian index 1 at -75.11 (to match -73.92), -105.00
 Point ( 649 ) = { 1.96703123, 7.34106048, 0.00000000 };
 Point ( 650 ) = { 1.95384692, 7.29185596, 0.00000000 };
 Point ( 651 ) = { 1.94083518, 7.24329550, 0.00000000 };
@@ -846,7 +850,9 @@ Point ( 657 ) = { 1.86620523, 6.96477274, 0.00000000 };
 Point ( 658 ) = { 1.85431145, 6.92038455, 0.00000000 };
 Point ( 659 ) = { 1.84256547, 6.87654796, 0.00000000 };
 Point ( 660 ) = { 1.83192549, 6.83683900, 0.00000000 };
-// Drawing parallel to end index 660 at -105.00, -73.92 (to match -102.74)
+BSpline ( 2 ) = { 648 : 660 };
+
+// Closed path with parallels and meridians, from (-102.74166489, -73.91666412) to  (-102.74166489, -73.91666412)
 Point ( 661 ) = { 1.81999017, 6.84002590, 0.00000000 };
 Point ( 662 ) = { 1.80804931, 6.84319196, 0.00000000 };
 Point ( 663 ) = { 1.79610293, 6.84633717, 0.00000000 };
@@ -868,14 +874,14 @@ Point ( 678 ) = { 1.61627124, 6.89100760, 0.00000000 };
 Point ( 679 ) = { 1.60424171, 6.89381803, 0.00000000 };
 Point ( 680 ) = { 1.59220729, 6.89660746, 0.00000000 };
 Point ( 681 ) = { 1.58016802, 6.89937588, 0.00000000 };
-BSpline ( 1 ) = { 628 : 681, 2 };
-Line Loop( 0 ) = { 0, 1 };
+BSpline ( 3 ) = { 660 : 681, 2 };
+Line Loop( 0 ) = { 0, 1, 2, 3 };
 
 
 // == Physical entities ===========================================
-// Boundary OpenOcean (ID 4): 2
-Physical Line( 4 ) = { 1 };
-// Boundary Coast (ID 3): 1
+// Boundary OpenOcean (ID 4): 
+Physical Line( 4 ) = { 1, 2, 3 };
+// Boundary Coast (ID 3): 
 Physical Line( 3 ) = { 0 };
 Plane Surface( 10 ) = { 0 };
 Physical Surface( 10 ) = { 10 };

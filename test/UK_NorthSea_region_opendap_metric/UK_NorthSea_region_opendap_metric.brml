@@ -155,6 +155,22 @@ field += 0.1
   </geoid_mesh>
   <validation>
     <test file_name="data/UK_NorthSea_region_opendap_metric_valid.geo" name="BrepDescription"/>
+    <test name="ElementNumber">
+      <value>
+        <integer_value rank="0">36136</integer_value>
+        <tolerance>
+          <integer_value rank="0">500</integer_value>
+        </tolerance>
+      </value>
+    </test>
+    <test name="NodeNumber">
+      <value>
+        <integer_value rank="0">18068</integer_value>
+        <tolerance>
+          <integer_value rank="0">500</integer_value>
+        </tolerance>
+      </value>
+    </test>
     <tag name="UK"/>
     <tag name="NorthSea"/>
     <tag name="OPeNDAP"/>

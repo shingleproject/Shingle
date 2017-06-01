@@ -44,7 +44,31 @@ def list_to_comma_separated(numbers, prefix='', add=0):
         string += str(number + add)
     return string
 
-def list_to_space_separated(numbers, prefix='', add=0):
+def list_to_space_separated_concatenate(numbers, prefix='', add=0):
+    groups = []
+    group = []
+    group.append(numbers[0])
+    for number in numbers[1:]:
+        if len(group) == 0:
+            group.append(number)
+        elif number == group[-1] + 1:
+            group.append(number)
+        else:
+            groups.append(group)
+            group = []
+    string = []
+    for group in groups:
+        if len(group) > 1:
+            string.append(prefix + str(group[0] + add) + '-' + str(group[-1] + add))
+        else:
+            string.append(prefix + str(group[0] + add))
+
+    return ' '.join(string)
+
+def list_to_space_separated(numbers, prefix='', add=0, concatenate=False):
+    if concatenate:
+        return list_to_space_separated_concatenate(numbers, prefix=prefix, add=add)
+        
     requirespace = False
     string = ''
     for number in numbers:

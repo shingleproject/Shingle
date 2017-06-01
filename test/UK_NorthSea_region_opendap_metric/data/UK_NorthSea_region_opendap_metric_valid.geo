@@ -16,7 +16,7 @@
 // 
 // Project name: UK_NorthSea_region_opendap_metric
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/06/01 12:27:34 
+// Created at: 2017/06/01 13:37:13 
 // Project description:
 //   Example simulation domain around the UK and Ireland in the North Sea.
 //       In a latitude-longitude WGS84 projection.
@@ -179,6 +179,22 @@
 //   </geoid_mesh>
 //   <validation>
 //     <test file_name="data/UK_NorthSea_region_opendap_metric_valid.geo" name="BrepDescription"/>
+//     <test name="ElementNumber">
+//       <value>
+//         <integer_value rank="0">36136</integer_value>
+//         <tolerance>
+//           <integer_value rank="0">500</integer_value>
+//         </tolerance>
+//       </value>
+//     </test>
+//     <test name="NodeNumber">
+//       <value>
+//         <integer_value rank="0">18068</integer_value>
+//         <tolerance>
+//           <integer_value rank="0">500</integer_value>
+//         </tolerance>
+//       </value>
+//     </test>
 //     <tag name="UK"/>
 //     <tag name="NorthSea"/>
 //     <tag name="OPeNDAP"/>
@@ -3266,7 +3282,7 @@ Mesh.CharacteristicLengthExtendFromBoundary = 1;
 
 // External metric field definition
 Field[1] = Structured;
-Field[1].FileName = "metric.pos";
+Field[1].FileName = "/Users/acandy/src/Shingle/test/UK_NorthSea_region_opendap_metric/NorthSea_metric.pos";
 Field[1].TextFormat = 1;
 
 // constant edge length to use as initial mesh in testing

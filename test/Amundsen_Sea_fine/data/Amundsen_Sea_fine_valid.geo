@@ -16,7 +16,7 @@
 // 
 // Project name: Amundsen_Sea_fine
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/05/31 14:46:29 
+// Created at: 2017/06/01 13:52:24 
 // Project description:
 //   Use the RTopo dataset, 50S version (RTopo105b 50S.nc),
 //   selecting the region
@@ -173,21 +173,6 @@ Delete { Point{ 1 }; }
 // Open contours closed with a line formed by points spaced 0.1 degrees apart
 // Paths found: 15
 // Merged paths that cross the date line: 
-// Path 1: points 5160 (of 5160) area 3.82806e+06
-// Path 2: points 1274 (of 1275) area 25276.9 (required closing in 2 parts of the path)
-// Path 3: points 680 (of 681) area 58481.4 (required closing in 2 parts of the path)
-// Path 4: points 512 (of 513) area 8103.48 (required closing in 2 parts of the path)
-// Path 5: points 240 (of 241) area 2238.38 (required closing in 2 parts of the path)
-// Path 6: points 212 (of 213) area 1205.91 (required closing in 2 parts of the path)
-// Path 7: points 180 (of 181) area 1374.98 (required closing in 2 parts of the path)
-// Path 8: points 172 (of 173) area 1082.44 (required closing in 2 parts of the path)
-// Path 9: points 158 (of 159) area 2191.14 (required closing in 2 parts of the path)
-// Path 10: points 130 (of 131) area 913.168 (required closing in 2 parts of the path)
-// Path 11: points 104 (of 105) area 800.669 (required closing in 2 parts of the path)
-// Path 12: points 108 (of 109) area 538.654 (required closing in 2 parts of the path)
-// Path 13: points 60 (of 61) area 225.112 (required closing in 2 parts of the path)
-// Path 14: points 60 (of 61) area 65.104 (required closing in 2 parts of the path)
-// Path 15: points 18 (of 19) area 5.40939 (required closing in 2 parts of the path)
 // Paths found valid (renumbered order): 15, including 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
 
 // == BRep component: ExtendTo64S =================================
