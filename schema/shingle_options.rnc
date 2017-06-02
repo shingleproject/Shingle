@@ -1320,6 +1320,12 @@ tags =
         attribute name { 'RTopo' },
         comment
       }|
+      ## Cases containing boundary representations that are
+      ## (at least partly) defined by shapefile descriptions.
+      element tag {
+        attribute name { 'Shapefile' },
+        comment
+      }|
       ## Tests executed in the open, online continuous verification suite
       element tag {
         attribute name { 'continuous' },

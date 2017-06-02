@@ -838,10 +838,10 @@ class BRepComponent(object):
         ends = zeros([len(enriched_paths),4])
         for num in range(len(enriched_paths)):
             ends[num,:] = [
-                enriched_paths[num].vertices[0][0], 
-                enriched_paths[num].vertices[0][1],
-                enriched_paths[num].vertices[-1][0],
-                enriched_paths[num].vertices[-1][1]] 
+                enriched_paths[num]._vertices[0][0], 
+                enriched_paths[num]._vertices[0][1],
+                enriched_paths[num]._vertices[-1][0],
+                enriched_paths[num]._vertices[-1][1]] 
 
         dateline=[]
         for num in range(len(enriched_paths)):
@@ -880,14 +880,14 @@ class BRepComponent(object):
                 orientation = matches[0][1]
                 report('  match %d - %d (%s)' % (num + 1, match + 1, str(orientation)), debug=True)
                 if orientation:
-                    enriched_paths[num].vertices = concatenate((
-                        enriched_paths[num].vertices[:-2,:],
-                        enriched_paths[match].vertices[::-1]), axis=0) 
+                    enriched_paths[num]._vertices = concatenate((
+                        enriched_paths[num]._vertices[:-2,:],
+                        enriched_paths[match]._vertices[::-1]), axis=0) 
                 else:
-                    enriched_paths[num].vertices = concatenate((
-                        enriched_paths[num].vertices[:-2,:],
-                        enriched_paths[match].vertices), axis=0) 
-                enriched_paths[num] = EnrichedPolyline(self, vertices=enriched_paths[num].vertices, reference_number=enriched_paths[num].reference_number, initialise_only=True)
+                    enriched_paths[num]._vertices = concatenate((
+                        enriched_paths[num]._vertices[:-2,:],
+                        enriched_paths[match]._vertices), axis=0) 
+                enriched_paths[num] = EnrichedPolyline(self, vertices=enriched_paths[num]._vertices, reference_number=enriched_paths[num].reference_number, initialise_only=True)
                 enriched_paths[match] = None
                 matched.append(match)
                 appended.append(num)
@@ -898,7 +898,7 @@ class BRepComponent(object):
         enriched_paths = sorted(enriched_paths, reverse=True)
 
         for number in range(len(enriched_paths)):
-            enriched_paths[number] = EnrichedPolyline(self, vertices=enriched_paths[number].vertices, reference_number=number+1)
+            enriched_paths[number] = EnrichedPolyline(self, vertices=enriched_paths[number]._vertices, reference_number=number+1)
 
         paths = self.Boundary()
 
@@ -934,14 +934,14 @@ class BRepComponent(object):
         #  for num in pathvalid:
         #    if (self._pathall[num-1] == None):
         #      continue
-        #    xy=self._pathall[num-1].vertices
+        #    xy=self._pathall[num-1]._vertices
         #    origlen=len(xy)
         #    x = smoothGaussian(xy[:,0], degree=universe.smooth_degree)
         #    y = smoothGaussian(xy[:,1], degree=universe.smooth_degree)
         #    xy = zeros([len(x),2])
         #    xy[:,0] = x
         #    xy[:,1] = y
-        #    self._pathall[num-1].vertices = xy
+        #    self._pathall[num-1]._vertices = xy
         #    self.report('Smoothed path %d, nodes %d from %d' % (num, len(xy), origlen))
         self._valid_paths = pathvalid
         self._pathall_enriched = enriched_paths

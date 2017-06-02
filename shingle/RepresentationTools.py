@@ -304,7 +304,7 @@ class EnrichedPolyline(object):
     _FORM_POLYGON = 'Polygon'
 
     def __init__(self, rep=None, contour=None, vertices=None, shape=None, reference_number=-1, is_exterior=False, initialise_only = False, comment=[]):
-        self.vertices = []
+        self._vertices = []
         self.type = self._TYPE_UNDFINED
         self.shape = None
         self._valid = False
@@ -338,20 +338,23 @@ class EnrichedPolyline(object):
         self._is_exterior = is_exterior
         if reference_number:
             self.reference_number = reference_number
+
         if shape is not None:
             self.shape = shape
         elif vertices is not None:
-            self.vertices = vertices
+            self._vertices = vertices
         elif contour:
             # To reverse order:
-            #self.vertices = contour.vertices[::-1]
-            self.vertices = contour.vertices
+            #self._vertices = contour.vertices[::-1]
+            self._vertices = contour.vertices
             #self.shape = LineString(self.vertices)
         else:
             #error('oh dear', fatal=True)
             return
 
 
+        #self.setSourceMaxSpacing()
+        #print self._source_spacing
 
         self._valid_vertices = [False]*self.PointNumber()
 
@@ -364,11 +367,11 @@ class EnrichedPolyline(object):
         if shape is None:
             if self.close_last:
                 #print self.reference_number, 'linear ring'
-                self.shape = LinearRing(self.vertices)
+                self.shape = LinearRing(self._vertices)
                 #self.shape = Polygon(self.vertices)
             else:
                 #print self.reference_number, 'line string'
-                self.shape = LineString(self.vertices)
+                self.shape = LineString(self._vertices)
 
         if initialise_only:
             return
@@ -636,7 +639,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
         try:
             return asarray(self.shape.coords[number][:2])
         except:
-            return self.vertices[number,:]
+            return self._vertices[number,:]
             
 
     def PointNumber(self):
@@ -644,7 +647,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
         try:
             return len(self.shape.coords)
         except:
-            return len(self.vertices[:,0])
+            return len(self._vertices[:,0])
 
     def SetPointInvalid(self, point):
         if self._valid_vertices[point] is True:
@@ -726,6 +729,14 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
         #self.CheckPathEndToBeClosed()
         self.GetValidLocations()
         #return coords
+
+    #def getVertices(self):
+    #    if self.shape:
+    #        return self.shape.coords[:]
+    #    elif self.vertices:
+
+    def setSourceMaxSpacing(self):
+        self._source_spacing = max([abs(x[0] - y[0]), abs(x[1] - y[1])] for (x, y) in zip(self.shape.coords[1:], self.shape.coords[:-1]))
 
     def ConstrainPoints(self):
         self.ValidPointNumber(refresh=True)

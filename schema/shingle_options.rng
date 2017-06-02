@@ -1531,6 +1531,14 @@ Please consider adding tags to the schema</a:documentation>
         <ref name="comment"/>
       </element>
       <element name="tag">
+        <a:documentation>Cases containing boundary representations that are
+(at least partly) defined by shapefile descriptions.</a:documentation>
+        <attribute name="name">
+          <value>Shapefile</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="tag">
         <a:documentation>Tests executed in the open, online continuous verification suite</a:documentation>
         <attribute name="name">
           <value>continuous</value>

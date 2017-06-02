@@ -91,7 +91,7 @@
   </geoid_mesh>
   <validation>
     <test file_name="data/Portland_Bill_shape_valid.geo" name="BrepDescription"/>
-    <tag name="development"/>
     <tag name="UK"/>
+    <tag name="Shapefile"/>
   </validation>
 </boundary_representation>
