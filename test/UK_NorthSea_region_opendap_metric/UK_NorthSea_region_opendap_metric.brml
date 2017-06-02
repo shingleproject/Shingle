@@ -64,7 +64,7 @@
         <boundary>1</boundary>
       </form>
       <identification name="Coast"/>
-      <representation_type name="BSplines"/>
+      <representation_type name="BSpline"/>
     </brep_component>
     <brep_component name="OpenBoundary">
       <form name="BoundingBox">
@@ -88,7 +88,7 @@
         </region>
       </form>
       <identification name="OpenOcean"/>
-      <representation_type name="BSplines"/>
+      <representation_type name="BSpline"/>
     </brep_component>
     <boundary name="Coast">
       <identification_number>

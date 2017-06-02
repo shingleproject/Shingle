@@ -481,7 +481,16 @@ geoid_surface_representation_brep =
         ##
         ## Legacy: compound
         element representation_type {
-          attribute name { "BSplines" },
+          attribute name { "Polyline" },
+          comment
+        }|
+        ## Representation type for the component brep
+        ##
+        ## Default: BSplines
+        ##
+        ## Legacy: compound
+        element representation_type {
+          attribute name { "BSpline" },
           comment
         }|
 

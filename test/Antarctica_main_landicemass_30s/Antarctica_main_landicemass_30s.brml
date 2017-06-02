@@ -54,7 +54,7 @@ Supplement to: Timmermann, R et al. (2010): A consistent dataset of Antarctic ic
             <id>
                 <integer_value rank="0">3</integer_value>
             </id>
-            <representation_type name="BSplines"></representation_type>
+            <representation_type name="BSpline"></representation_type>
             <spacing>
                 <real_value rank="0">10</real_value>
             </spacing>
@@ -69,7 +69,7 @@ Supplement to: Timmermann, R et al. (2010): A consistent dataset of Antarctic ic
             <id>
                 <integer_value rank="0">3</integer_value>
             </id>
-            <representation_type name="BSplines"></representation_type>
+            <representation_type name="BSpline"></representation_type>
             <spacing>
                 <real_value rank="0">10</real_value>
             </spacing>

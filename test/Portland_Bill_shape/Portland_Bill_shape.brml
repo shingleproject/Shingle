@@ -48,7 +48,7 @@
         <contourtype field_level="10.0" field_name="amask" name="iceshelfcavity"/>
       </form>
       <identification name="Coast"/>
-      <representation_type name="BSplines"/>
+      <representation_type name="BSpline"/>
     </brep_component>
     <brep_component name="OpenOcean">
       <form name="Raster">
@@ -56,7 +56,7 @@
         <contourtype field_level="10.0" field_name="amask" name="iceshelfcavity"/>
       </form>
       <identification name="OpenOcean"/>
-      <representation_type name="BSplines"/>
+      <representation_type name="Polyline"/>
     </brep_component>
     <boundary name="Coast">
       <identification_number>
@@ -73,16 +73,16 @@
     <form name="Proximity">
       <boundary name="Coast"/>
       <edge_length_minimum>
-        <real_value rank="0">0.01</real_value>
+        <real_value rank="0">1.0E1</real_value>
       </edge_length_minimum>
       <edge_length_maximum>
-        <real_value rank="0">2</real_value>
+        <real_value rank="0">4.0E4</real_value>
       </edge_length_maximum>
       <proximity_minimum>
-        <real_value rank="0">0.05</real_value>
+        <real_value rank="0">3.0E1</real_value>
       </proximity_minimum>
       <proximity_maximum>
-        <real_value rank="0">5</real_value>
+        <real_value rank="0">1.0E5</real_value>
       </proximity_maximum>
     </form>
   </geoid_metric>

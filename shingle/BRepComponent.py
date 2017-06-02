@@ -40,6 +40,7 @@ from Projection import project
 from Spud import specification
 from Plot import PlotContours
 from Bounds import Bounds
+from Projection import compare_points
 
 from shapely.geometry.polygon import LinearRing
 from shapely.geometry.polygon import LineString
@@ -122,6 +123,9 @@ class BRepComponent(object):
         if self._surface_rep is not None:
             self.index = self._surface_rep.index
         self._pathall = pathall
+
+    def __str__(self):
+        return self.__class__.__name__ + ': ' + self.Name()
 
     def Reproduce(self, components=None, total=None):
         # Improve to limit copy of attributes intelligently
@@ -242,6 +246,12 @@ class BRepComponent(object):
 
     def isCompound(self):
         return self.RepresentationType() == 'CompoundBSplines'
+
+    def isBSpline(self):
+        return self.RepresentationType() == 'BSpline'
+
+    def isPolyline(self):
+        return self.RepresentationType() == 'Polyline'
 
     def FormType(self):
         if self._form_type is None:
@@ -389,6 +399,24 @@ class BRepComponent(object):
                 open_components.append(component)
         return open_components
 
+    
+    def isClosed(self):
+
+        from itertools import izip
+        def pairwise(t):
+            it = iter(t)
+            return izip(it,it)
+
+        if len(self.components) == 1:
+            return self.components[0].isClosed()
+
+        connected = []
+        for pair in pairwise(self.components):
+            connected.append(compare_points(pair[0].getEnds()[1], pair[1].getEnds()[0], self.Spacing()))
+
+        return all(connected)
+
+
     def Generate(self, components=[]):
         import os
         #self.AddSection('BRep component: ' + self.Name())
@@ -398,9 +426,9 @@ class BRepComponent(object):
             p = self.PreviousBRepComponent()
             
             # Pick up previous BRep component
-            if len(p.components) > 0:
-                n = p.components[-1].CopyOpenPart()
-                error('** BRep %(name)s to be glued to existing, unclosed brep (%(previous)s)' % {'name':p.Name(), 'previous':n.Name()}, warning=True)
+            #if len(p.components) > 0:
+            #    n = p.components[-1].CopyOpenPart()
+            #    error('** BRep %(name)s to be glued to existing, unclosed brep (%(previous)s)' % {'name':p.Name(), 'previous':n.Name()}, warning=True)
 
             #open_components = self.identifyOpen(components)
             #if not open_components:
@@ -426,6 +454,9 @@ class BRepComponent(object):
                 self.PlotFoundPaths()
 
             for p in self._valid_paths:
+                #print p.shape.coords[:2]
+                #p.Interpolate(spacing=1000.0)
+
                 p.SetExterior(self.isExterior(p.reference_number, valid_paths = self._valid_paths))
                 if p.isValid():
                     if p.isExterior():
@@ -457,6 +488,8 @@ class BRepComponent(object):
                 #self.index = p.Generate(self.index)
                 self.components.append(p)
 
+            # Best to interpolate later at time of writing?, also need to process project properly
+            #components_new = [self.Reproduce(components=[p.Interpolate(spacing=1000.0)], total=len(self.components)) for p in self.components]
             components_new = [self.Reproduce(components=[p], total=len(self.components)) for p in self.components]
 
         elif self.isParallel():
@@ -654,10 +687,59 @@ class BRepComponent(object):
 
         # Run through all components and link children
 
+        components_new = self.Join(components + components_new)
 
-        return components + components_new
+        return components_new
+
+    #def getSingleComponent(self):
+    #    if len(self.components) > 1:
+    #        error('BRepComponent %(name)s has more than one pathline when only one expected' % {'name':self.Name() }, fatal=True)
+    #    return self.components[0]
+
+    def getEnds(self):
+        print self.Name(), len(self.components)
+        return self.components[0].getEnds()[0], self.components[-1].getEnds()[1]
+
+    def Join(self, components):
+        import itertools
+        open_components = self.identifyOpen(components)
+
+        pair = None
+
+        for first_i in range(len(open_components)):
+            first = open_components[first_i]
+
+            for other_i in range(len(open_components)):
+                if first_i == other_i:
+                    continue
+                other = open_components[other_i]
+                if not first.components or not other.components:
+                    continue
+
+                for i, j in itertools.product(range(2), range(2)):
+                    print i, j, first.getEnds()[i], other.getEnds()[j], compare_points(first.getEnds()[i], other.getEnds()[j], self.Spacing())
+                    if compare_points(first.getEnds()[i], other.getEnds()[j], self.Spacing()):
+                        pair = i, j
+                        break
+                if pair:
+                    print 'Merge', first, other
+                    print i, j, first.getEnds()[i], other.getEnds()[j]
+                    if (i, j) == (1, 0):
+                        first.components = first.components + other.components
+                    elif (i, j) == (0, 1):
+                        first.components = other.components + first.components
+                    elif (i, j) == (1, 1):
+                        error('Reversal needed, also for first possibly?  Not implemented', fatal=True)
+                        #first.components = other.components + reverse(first.components)
+                    elif (i, j) == (0, 0):
+                        error('Reversal needed, also for first possibly?  Not implemented', fatal=True)
+                        #first.components = first.components + reverse(other.components)
+                    other.components = []
 
 
+        components = [x for x in components if x.components]
+
+        return components
 
 
 

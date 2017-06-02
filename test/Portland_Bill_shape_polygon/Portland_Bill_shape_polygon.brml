@@ -42,7 +42,7 @@
         <contourtype field_level="10.0" field_name="amask" name="iceshelfcavity"/>
       </form>
       <identification name="Coast"/>
-      <representation_type name="BSplines"/>
+      <representation_type name="BSpline"/>
     </brep_component>
     <boundary name="Coast">
       <identification_number>

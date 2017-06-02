@@ -44,7 +44,7 @@
                 <contourtype name="ocean10m" field_level="-10.0" field_name="Automatic"></contourtype>
             </form>
             <identification name="Coast"></identification>
-            <representation_type name="BSplines"></representation_type>
+            <representation_type name="BSpline"></representation_type>
         </brep_component>
         <brep_component name="ExtendToMeridian">
             <form name="ExtendToMeridian">
@@ -53,7 +53,7 @@
                 </longitude>
             </form>
             <identification name="OpenOcean"></identification>
-            <representation_type name="BSplines"></representation_type>
+            <representation_type name="BSpline"></representation_type>
         </brep_component>
         <boundary name="Coast">
             <identification_number>

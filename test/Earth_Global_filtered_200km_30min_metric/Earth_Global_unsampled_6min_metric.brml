@@ -45,7 +45,7 @@ Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
                 <contourtype name="zmask" field_name="Automatic"></contourtype>
             </form>
             <identification name="Coastline"></identification>
-            <representation_type name="BSplines"></representation_type>
+            <representation_type name="BSpline"></representation_type>
             <spacing>
                 <real_value rank="0">10</real_value>
             </spacing>

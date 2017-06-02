@@ -58,7 +58,7 @@ Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
                 <boundary>1</boundary>
             </form>
             <identification name="Coast"></identification>
-            <representation_type name="BSplines"></representation_type>
+            <representation_type name="BSpline"></representation_type>
         </brep_component>
         <brep_component name="ExtendTo50W">
             <form name="ExtendToMeridian">
@@ -67,7 +67,7 @@ Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
                 </longitude>
             </form>
             <identification name="OpenOcean"></identification>
-            <representation_type name="BSplines"></representation_type>
+            <representation_type name="BSpline"></representation_type>
         </brep_component>
         <boundary name="Coast">
             <identification_number>

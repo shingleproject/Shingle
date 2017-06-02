@@ -50,7 +50,7 @@ Supplement to: Timmermann, R et al. (2010): A consistent dataset of Antarctic ic
             <id>
                 <integer_value rank="0">3</integer_value>
             </id>
-            <representation_type name="BSplines"></representation_type>
+            <representation_type name="BSpline"></representation_type>
         </brep_component>
         <brep_component name="ExtendTo64S">
             <form name="ExtendToParallel">
@@ -60,7 +60,7 @@ Supplement to: Timmermann, R et al. (2010): A consistent dataset of Antarctic ic
                 </latitude>
             </form>
             <identification name="OpenOcean"></identification>
-            <representation_type name="BSplines"></representation_type>
+            <representation_type name="BSpline"></representation_type>
         </brep_component>
         <closure>
             <no_open></no_open>

@@ -54,7 +54,7 @@
                 <boundary>1</boundary>
             </form>
             <identification name="Coast"></identification>
-            <representation_type name="BSplines"></representation_type>
+            <representation_type name="BSpline"></representation_type>
         </brep_component>
         <boundary name="Coast">
             <identification_number>

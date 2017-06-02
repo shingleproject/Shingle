@@ -44,7 +44,7 @@ Supplement to: Timmermann, R et al. (2010): A consistent dataset of Antarctic ic
                 </contourtype>
             </form>
             <identification name="Coastline"></identification>
-            <representation_type name="BSplines"></representation_type>
+            <representation_type name="BSpline"></representation_type>
         </brep_component>
         <boundary name="Coastline">
             <identification_number>

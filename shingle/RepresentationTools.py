@@ -494,6 +494,12 @@ class EnrichedPolyline(object):
     def AddContent(self, *args, **kwargs):
         return self._parent_brep_component.AddContent(*args, **kwargs)
 
+    def isPolyline(self, *args, **kwargs):
+        return self._parent_brep_component.isPolyline(*args, **kwargs)
+
+    def isBSpline(self, *args, **kwargs):
+        return self._parent_brep_component.isBSpline(*args, **kwargs)
+
     def isCompound(self, *args, **kwargs):
         return self._parent_brep_component.isCompound(*args, **kwargs)
 
@@ -562,19 +568,31 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
                 pointend = '%i' % (index.point)
 
             #print '****', first, last, prefix, suffix, pointstart, pointend
+    
+            if self.isPolyline():
+                #print self.point_index 
+                self.AddContent( '''Line ( %(prefix_line)s%(loopnumber)i ) = { %(prefix)s%(pointstart)s : %(prefix)s%(pointend)s };''' %
+                    {
+                        'pointstart': self.point_index[0],
+                        'pointend': self.point_index[-1],
+                        'loopnumber': index.path,
+                        'prefix': self.CounterPrefix('IP'),
+                        'prefix_line': self.CounterPrefix('IL')
+                    } )
 
+            elif self.isBSpline():
             #self.AddContent( '''BSpline ( %(prefix_line)s%(loopnumber)i ) = { %(prefix)s%(pointstart)s : %(prefix)s%(pointend)s%(loopstartpoint)s };''' %
-            self.AddContent( '''BSpline ( %(prefix_line)s%(loopnumber)i ) = { %(prefix)s%(pointstart)s : %(prefix)s%(pointend)s };''' %
-                {
-                    'pointstart': pointstart,
-                    'pointend': pointend,
-                    'loopnumber': index.path,
-                    'loopstartpoint': closure,
-                    'loopstartpoint': closure,
-                    'type': type,
-                    'prefix': self.CounterPrefix('IP'),
-                    'prefix_line': self.CounterPrefix('IL')
-                } )
+                self.AddContent( '''BSpline ( %(prefix_line)s%(loopnumber)i ) = { %(prefix)s%(pointstart)s : %(prefix)s%(pointend)s };''' %
+                    {
+                        'pointstart': pointstart,
+                        'pointend': pointend,
+                        'loopnumber': index.path,
+                        'loopstartpoint': closure,
+                        'loopstartpoint': closure,
+                        'type': type,
+                        'prefix': self.CounterPrefix('IP'),
+                        'prefix_line': self.CounterPrefix('IL')
+                    } )
 
         compoundpoints = False
         if (last):
@@ -744,7 +762,8 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
             self.close_last = True
 
     def getEnds(self):
-        return (self.Vertex(self.loopstart), self.Vertex(self.loopend))
+        return (self.valid_location[0], self.valid_location[-1])
+        #return (self.Vertex(self.loopstart), self.Vertex(self.loopend))
 
     def AreaEnclosed(self):
         # Use shapely

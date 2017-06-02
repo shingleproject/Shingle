@@ -62,7 +62,7 @@ Use 5% extra on boundaries?</comment>
                 <boundary>1</boundary>
             </form>
             <identification name="coast"></identification>
-            <representation_type name="BSplines"></representation_type>
+            <representation_type name="BSpline"></representation_type>
         </brep_component>
         <brep_component name="ExtendTo135W">
             <form name="ExtendToMeridian">
@@ -71,7 +71,7 @@ Use 5% extra on boundaries?</comment>
                 </longitude>
             </form>
             <identification name="ocean"></identification>
-            <representation_type name="BSplines"></representation_type>
+            <representation_type name="BSpline"></representation_type>
         </brep_component>
         <boundary name="coast">
             <identification_number>

@@ -315,6 +315,28 @@ Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'surface':self.Surface
     #        exterior = any([x.isExterior() for x in brep.components])
 
 
+
+    def ShowBRepComponents(self):
+        if len(self.getComponentsComplete()) > 0:
+            self.AddComment('Component boundary representations identified:', indent=1)
+            report('Component boundary representations identified:', indent=1)
+        for i, component in enumerate(self.getComponentsComplete()):
+            #if any([x.isExterior() for x in component.components]):
+            if component.isClosed():
+                state = 'closed'
+            else:
+                state = 'open'
+            c= ('%(number)d: %(name)s (components: %(components)s, %(state)s)' %
+                {
+                    'number': i + 1,
+                    'name': component.Name(),
+                    'components': len(component.components),
+                    'state': state
+                })
+            self.AddComment(c, indent=2)
+            report(c, indent=2)
+
+
     def Generate(self):
 
         #exterior = None
@@ -325,21 +347,7 @@ Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'surface':self.Surface
         # make global to class
         
             
-
-
-        if len(self.getComponentsComplete()) > 0:
-            self.AddComment('Component boundary representations identified:', indent=1)
-            report('Component boundary representations identified:', indent=1)
-        for i, component in enumerate(self.getComponentsComplete()):
-            c= ('%(number)d: %(name)s (components: %(components)s)' %
-                {
-                    'number': i + 1,
-                    'name': component.Name(),
-                    'components': len(component.components)
-                })
-            self.AddComment(c, indent=2)
-            report(c, indent=2)
-
+        self.ShowBRepComponents()
 
         for i, component in enumerate(self.getComponentsComplete()):
 

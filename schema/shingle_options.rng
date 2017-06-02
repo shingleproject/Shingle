@@ -587,7 +587,18 @@ Default: BSplines
 
 Legacy: compound</a:documentation>
           <attribute name="name">
-            <value>BSplines</value>
+            <value>Polyline</value>
+          </attribute>
+          <ref name="comment"/>
+        </element>
+        <element name="representation_type">
+          <a:documentation>Representation type for the component brep
+
+Default: BSplines
+
+Legacy: compound</a:documentation>
+          <attribute name="name">
+            <value>BSpline</value>
           </attribute>
           <ref name="comment"/>
         </element>
