@@ -304,7 +304,7 @@ class EnrichedPolyline(object):
     _FORM_POLYGON = 'Polygon'
 
     def __init__(self, rep=None, contour=None, vertices=None, shape=None, reference_number=-1, is_exterior=False, initialise_only = False, comment=[]):
-        self._vertices = []
+        self.vertices = []
         self.type = self._TYPE_UNDFINED
         self.shape = None
         self._valid = False
@@ -342,18 +342,18 @@ class EnrichedPolyline(object):
         if shape is not None:
             self.shape = shape
         elif vertices is not None:
-            self._vertices = vertices
+            self.vertices = vertices
         elif contour:
             # To reverse order:
-            #self._vertices = contour.vertices[::-1]
-            self._vertices = contour.vertices
+            #self.vertices = contour.vertices[::-1]
+            self.vertices = contour.vertices
             #self.shape = LineString(self.vertices)
         else:
             #error('oh dear', fatal=True)
             return
 
 
-        #self.setSourceMaxSpacing()
+        self.setSourceMaxSpacing()
         #print self._source_spacing
 
         self._valid_vertices = [False]*self.PointNumber()
@@ -367,11 +367,11 @@ class EnrichedPolyline(object):
         if shape is None:
             if self.close_last:
                 #print self.reference_number, 'linear ring'
-                self.shape = LinearRing(self._vertices)
+                self.shape = LinearRing(self.vertices)
                 #self.shape = Polygon(self.vertices)
             else:
                 #print self.reference_number, 'line string'
-                self.shape = LineString(self._vertices)
+                self.shape = LineString(self.vertices)
 
         if initialise_only:
             return
@@ -393,6 +393,17 @@ class EnrichedPolyline(object):
         if universe.debug:
             self.ReportClosingRequired()
         self._valid = True
+
+    @property
+    def vertices(self):
+        if self.shape:
+            return self.shape.coords[:]
+        else:
+            return self.__vertices
+
+    @vertices.setter
+    def vertices(self, vertices):
+        self.__vertices = vertices
 
     def __str__(self):
         return str(self.reference_number)
@@ -636,18 +647,20 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
         return index
 
     def Vertex(self, number):
-        try:
-            return asarray(self.shape.coords[number][:2])
-        except:
-            return self._vertices[number,:]
+        return self.vertices[number][:2]
+        #try:
+        #    return asarray(self.shape.coords[number][:2])
+        #except:
+        #    return self.vertices[number,:]
             
 
     def PointNumber(self):
+        return len(self.vertices)
         # Clean up
-        try:
-            return len(self.shape.coords)
-        except:
-            return len(self._vertices[:,0])
+        #try:
+        #    return len(self.shape.coords)
+        #except:
+        #    return len(self.vertices[:,0])
 
     def SetPointInvalid(self, point):
         if self._valid_vertices[point] is True:
@@ -735,8 +748,17 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
     #        return self.shape.coords[:]
     #    elif self.vertices:
 
+    #def vertices(self):
+    #    if shape:
+    #        return self.shape.coords[:]
+    #    else:
+    #        return self.vertices
+
+
+
+
     def setSourceMaxSpacing(self):
-        self._source_spacing = max([abs(x[0] - y[0]), abs(x[1] - y[1])] for (x, y) in zip(self.shape.coords[1:], self.shape.coords[:-1]))
+        self._source_spacing = max([abs(x[0] - y[0]), abs(x[1] - y[1])] for (x, y) in zip(self.vertices[1:], self.vertices[:-1]))
 
     def ConstrainPoints(self):
         self.ValidPointNumber(refresh=True)

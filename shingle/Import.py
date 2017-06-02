@@ -408,7 +408,7 @@ def read_shape(filename):
 
     #shape = shapes[shapes.keys()[0]]
     for shape in shapes:
-        print shape.type
+        #print shape.type
 
         if shape.type == 'Polygon':
             try:
