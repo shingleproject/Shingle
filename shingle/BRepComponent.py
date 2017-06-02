@@ -601,6 +601,7 @@ class BRepComponent(object):
             # Pick up previous BRep component
             n = EnrichedPolyline(self)
             n.CopyOpenPart(p.components[-1])
+
            
             #print project(n.valid_location[0], projection_type=self.Projection()) 
             #print project(n.valid_location[1], projection_type=self.Projection()) 
@@ -617,6 +618,7 @@ class BRepComponent(object):
 
             #print p.components
             for path in paths:
+                path.projection = 'longlat'
                 p.components.append(path)
             #print p.components
 
@@ -655,6 +657,7 @@ class BRepComponent(object):
             self.index, paths = n.ClosePathEndToStartLongitude(self.index, extend_to_longitude = longitude)
             
             for path in paths:
+                path.projection = 'longlat'
                 p.components.append(path)
 
 
@@ -802,6 +805,7 @@ class BRepComponent(object):
         else:
             output_location = loc
         self.AddContent(output_format % (index, output_location[0], output_location[1], z))
+        return output_location[0], output_location[1]
 
     def FormatPoint(self, index, loc, z, project_to_output_projection_type=True):
         #output_format = 'Point ( %(prefix)s%%i ) = { %%.%(dp)sf, %%.%(dp)sf, %%.%(dp)sf };' % { 'dp': universe.default.output_accuracy, 'prefix':self.CounterPrefix('IP') }

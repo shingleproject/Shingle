@@ -105,6 +105,76 @@ def p2(location):
         p[0] = p[0] + 360
     return p
 
+def get_pyproj_projection(string):
+    import pyproj
+    _translation = {
+        'longlat': 'epsg:4326',
+        'Automatic': 'longlat',
+    }
+
+    while string in _translation.keys():
+        string = _translation[string] 
+    try: 
+        p = pyproj.Proj(init=string)
+    except:
+        #error('Unable to define py.Proj with init string: ' + string, fatal=True)
+        p = None
+
+    return p
+
+def projection_function_cartesian(x, y, z=None):
+    from math import cos, sin, radians
+    longitude = x
+    latitude  = y
+    longitude_rad = radians(- longitude - 90)
+    latitude_rad  = radians(latitude)
+    # Changed sign in x formulae - need to check
+    if 1 + sin(latitude_rad) == 0:
+        x = None
+        y = None
+    else:
+        x = sin( longitude_rad ) * cos( latitude_rad ) / ( 1 + sin( latitude_rad ) );
+        y = cos( longitude_rad ) * cos( latitude_rad  ) / ( 1 + sin( latitude_rad ) );
+    if z:
+      return x, y, z
+    else:
+      return x, y
+
+def project_shape(shape, source, destination):
+    if not shape:
+        return None
+    import pyproj
+    from functools import partial
+    from shapely.ops import transform
+
+    #print source, destination
+
+    # Source coordinate system
+    s = get_pyproj_projection(source)
+    # Destination coordinate system
+    d = get_pyproj_projection(destination)
+   
+    if destination == 'cartesian':
+        projection = projection_function_cartesian
+
+    elif not s or not d:
+        for i, vertex in enumerate(shape.coords[:]):
+            shape.coord[i] = projec(vertex, projection_type=destination)
+        return shape
+
+    elif s.srs == d.srs:
+        return shape
+
+    else:
+        projection = partial(
+            pyproj.transform,
+            s,
+            d
+        )
+
+    # Appy the projection to the shapefile
+    return transform(projection, shape)
+
 
 def project(location, projection_type=None):
     from pyproj import Proj

@@ -31,7 +31,7 @@
 ##########################################################################
 
 from Universe import universe
-from Projection import compare_points, project
+from Projection import compare_points, project, project_shape
 from Mathematical import area_enclosed
 from Reporting import error
 from StringOperations import list_to_comma_separated
@@ -335,6 +335,7 @@ class EnrichedPolyline(object):
         self.spacing_source = None
         #[ 0.0, 0.0 ]
         self.__projected = None
+        self.__projection = None
 
         self._parent_brep_component = rep
         self._is_exterior = is_exterior
@@ -368,6 +369,8 @@ class EnrichedPolyline(object):
         #if shape is None:
         #    self.set_shape()
 
+        #self.projected
+
 
         if initialise_only:
             return
@@ -392,8 +395,8 @@ class EnrichedPolyline(object):
 
     def set_shape(self):
         self.shape = None
+        self.spacing_source = None
         if self.vertices is not None:
-            self.set_spacing_source()
             if self.close_last:
                 #print self.reference_number, 'linear ring'
                 self.shape = LinearRing(self.vertices)
@@ -457,6 +460,14 @@ class EnrichedPolyline(object):
         #print self.spacing_source, self.spacing()
         return max(self.spacing_source[0], self.spacing()), max(self.spacing_source[1], self.spacing()) 
 
+    @property
+    def projection(self):
+        if not self.__projection:
+            return self._parent_brep_component.Dataset().projection
+        return self.__projection
+    @projection.setter
+    def projection(self, projection):
+        self.__projection = projection
 
 
     def __str__(self):
@@ -782,25 +793,30 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
         #self.CheckPathEndToBeClosed()
         #self.GetValidLocations()
 
+    #@property
+    #def projection(self):
+    #    if not self.
+    #    self.Dataset().projection
+
+
     def get_projection(self):
         #coords = [ project(loc, projection_type=self.Projection()) for loc in vertices]
         projected = copy(self)
-        from functools import partial
-        import pyproj
-        from shapely.ops import transform
 
-        project = partial(
-            pyproj.transform,
-            # Source coordinate system
-            pyproj.Proj(init='epsg:4326'),
-            # Destination coordinate system
-            pyproj.Proj(init='epsg:26913')
-        )
+        #source=None
+        #source = self._parent_brep_component.Dataset().projection
+        source = self.projection
+        destination = self.Projection()
 
-        # Appy the projection to the shapefile
-        projected.shape = transform(project, self.shape)
+
+        projected.shape = project_shape(self.shape, source, destination)
+
+        #print source
+        #print destination
+        #import sys; sys.exit()
+
         # Make the following automatic?  No need to call here or elsewhere
-        projected.set_spacing_source()
+        projected.spacing_source = None
 
         self.__projected = projected
 
@@ -1027,10 +1043,15 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
             #elif self.atPathPartToBeClosed(point):
             #    index = self.ClosePathPart(point, index)
 
+            #self.projected
+
             #else:
             index.point += 1
             self.point_index.append(index.point)
-            self.AddFormattedPoint(index.point, vertex, 0)
+            #a=self.AddFormattedPoint(index.point, self.vertices[i], 0)
+            b=self.AddFormattedPoint(index.point, self.projected.vertices[i], 0, project_to_output_projection_type=False)
+
+            #print a, b
 
         index = self.AddLoop(index, self.loopstartpoint, last, first)
 

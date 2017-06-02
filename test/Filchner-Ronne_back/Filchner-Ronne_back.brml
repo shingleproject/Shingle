@@ -95,7 +95,7 @@ Supplement to: Timmermann, R et al. (2010): A consistent dataset of Antarctic ic
     <validation>
         <test name="NodeNumber">
             <value>
-                <integer_value rank="0">8102</integer_value>
+                <integer_value rank="0">8218</integer_value>
                 <tolerance>
                     <integer_value rank="0">2</integer_value>
                 </tolerance>
@@ -103,7 +103,7 @@ Supplement to: Timmermann, R et al. (2010): A consistent dataset of Antarctic ic
         </test>
         <test name="ElementNumber">
             <value>
-                <integer_value rank="0">16202</integer_value>
+                <integer_value rank="0">16434</integer_value>
                 <tolerance>
                     <integer_value rank="0">4</integer_value>
                 </tolerance>

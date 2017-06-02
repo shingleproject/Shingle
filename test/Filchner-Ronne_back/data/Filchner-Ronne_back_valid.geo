@@ -16,7 +16,7 @@
 // 
 // Project name: Filchner-Ronne_back
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/06/01 13:50:27 
+// Created at: 2017/06/03 00:17:43 
 // Project description:
 //   Use the RTopo dataset, 50S version (RTopo105b 50S.nc),
 //   selecting the very back of the Filchner-Ronne ice sheet ocean cavity bounded by part of the grounding line,
@@ -76,7 +76,7 @@
 //             <id>
 //                 <integer_value rank="0">3</integer_value>
 //             </id>
-//             <representation_type name="BSplines"></representation_type>
+//             <representation_type name="BSpline"></representation_type>
 //         </brep_component>
 //         <brep_component name="ExtendToParallel83S">
 //             <form name="ExtendToParallel">
@@ -85,7 +85,7 @@
 //                 </latitude>
 //             </form>
 //             <identification name="OpenOcean"></identification>
-//             <representation_type name="BSplines"></representation_type>
+//             <representation_type name="BSpline"></representation_type>
 //         </brep_component>
 //         <closure>
 //             <no_open></no_open>
@@ -121,7 +121,7 @@
 //     <validation>
 //         <test name="NodeNumber">
 //             <value>
-//                 <integer_value rank="0">8102</integer_value>
+//                 <integer_value rank="0">8218</integer_value>
 //                 <tolerance>
 //                     <integer_value rank="0">2</integer_value>
 //                 </tolerance>
@@ -129,7 +129,7 @@
 //         </test>
 //         <test name="ElementNumber">
 //             <value>
-//                 <integer_value rank="0">16202</integer_value>
+//                 <integer_value rank="0">16434</integer_value>
 //                 <tolerance>
 //                     <integer_value rank="0">4</integer_value>
 //                 </tolerance>
@@ -182,25 +182,6 @@ Delete { Point{ 1 }; }
 // Open contours closed with a line formed by points spaced 0.1 degrees apart
 // Paths found: 20
 // Merged paths that cross the date line: 
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
 // Paths found valid (renumbered order): 1, including 1
 
 // == BRep component: ExtendToParallel83S =========================
@@ -208,7 +189,7 @@ Delete { Point{ 1 }; }
 // Bounding by latitude: -83.0
 // Region of interest: latitude <= -83.0
 //   Component boundary representations identified:
-//     1: filchner_ronne_back_brep (part 1 of 1) AND ExtendToParallel83S (components: 2)
+//     1: filchner_ronne_back_brep (part 1 of 1) AND ExtendToParallel83S (components: 2, open)
 
 // == BRep component: filchner_ronne_back_brep (part 1 of 1) AND ExtendToParallel83S 
 Point ( 2 ) = { -8.69030439, 13.84905714, 0.00000000 };
@@ -527,41 +508,41 @@ Point ( 314 ) = { -7.97262462, 14.31907788, 0.00000000 };
 Point ( 315 ) = { -7.96101581, 14.30312331, 0.00000000 };
 Point ( 316 ) = { -7.95685588, 14.30543790, 0.00000000 };
 Point ( 317 ) = { -7.95269337, 14.30775235, 0.00000000 };
-// Keeping path 1 open to be closed by a later component
-BSpline ( 0 ) = { 2 : 317 };
+Point ( 318 ) = { -7.94112223, 14.29182815, 0.00000000 };
+BSpline ( 0 ) = { 2 : 318 };
 
 // Closing path with parallels and meridians, from (-60.94166565, -83.00000000) to  (-57.89166641, -83.00000000)
 // Drawing parallel index 1 at -60.94 (to match -57.89), -83.00
-Point ( 318 ) = { -7.96605406, 14.27794652, 0.00000000 };
-Point ( 319 ) = { -7.99096164, 14.26402139, 0.00000000 };
-Point ( 320 ) = { -8.01584487, 14.25005281, 0.00000000 };
-Point ( 321 ) = { -8.04070368, 14.23604083, 0.00000000 };
-Point ( 322 ) = { -8.06553800, 14.22198548, 0.00000000 };
-Point ( 323 ) = { -8.09034775, 14.20788680, 0.00000000 };
-Point ( 324 ) = { -8.11513285, 14.19374485, 0.00000000 };
-Point ( 325 ) = { -8.13989324, 14.17955966, 0.00000000 };
-Point ( 326 ) = { -8.16462883, 14.16533128, 0.00000000 };
-Point ( 327 ) = { -8.18933955, 14.15105974, 0.00000000 };
-Point ( 328 ) = { -8.21402532, 14.13674510, 0.00000000 };
-Point ( 329 ) = { -8.23868607, 14.12238740, 0.00000000 };
-Point ( 330 ) = { -8.26332173, 14.10798668, 0.00000000 };
-Point ( 331 ) = { -8.28793221, 14.09354298, 0.00000000 };
-Point ( 332 ) = { -8.31251745, 14.07905635, 0.00000000 };
-Point ( 333 ) = { -8.33707736, 14.06452684, 0.00000000 };
-Point ( 334 ) = { -8.36161188, 14.04995448, 0.00000000 };
-Point ( 335 ) = { -8.38612093, 14.03533932, 0.00000000 };
-Point ( 336 ) = { -8.41060444, 14.02068141, 0.00000000 };
-Point ( 337 ) = { -8.43506232, 14.00598079, 0.00000000 };
-Point ( 338 ) = { -8.45949451, 13.99123750, 0.00000000 };
-Point ( 339 ) = { -8.48390093, 13.97645159, 0.00000000 };
-Point ( 340 ) = { -8.50828150, 13.96162311, 0.00000000 };
-Point ( 341 ) = { -8.53263616, 13.94675210, 0.00000000 };
-Point ( 342 ) = { -8.55696483, 13.93183861, 0.00000000 };
-Point ( 343 ) = { -8.58126743, 13.91688268, 0.00000000 };
-Point ( 344 ) = { -8.60554389, 13.90188435, 0.00000000 };
-Point ( 345 ) = { -8.62979413, 13.88684368, 0.00000000 };
-Point ( 346 ) = { -8.65401809, 13.87176070, 0.00000000 };
-BSpline ( 1 ) = { 317 : 346, 2 };
+Point ( 319 ) = { -7.96605406, 14.27794652, 0.00000000 };
+Point ( 320 ) = { -7.99096164, 14.26402139, 0.00000000 };
+Point ( 321 ) = { -8.01584487, 14.25005281, 0.00000000 };
+Point ( 322 ) = { -8.04070368, 14.23604083, 0.00000000 };
+Point ( 323 ) = { -8.06553800, 14.22198548, 0.00000000 };
+Point ( 324 ) = { -8.09034775, 14.20788680, 0.00000000 };
+Point ( 325 ) = { -8.11513285, 14.19374485, 0.00000000 };
+Point ( 326 ) = { -8.13989324, 14.17955966, 0.00000000 };
+Point ( 327 ) = { -8.16462883, 14.16533128, 0.00000000 };
+Point ( 328 ) = { -8.18933955, 14.15105974, 0.00000000 };
+Point ( 329 ) = { -8.21402532, 14.13674510, 0.00000000 };
+Point ( 330 ) = { -8.23868607, 14.12238740, 0.00000000 };
+Point ( 331 ) = { -8.26332173, 14.10798668, 0.00000000 };
+Point ( 332 ) = { -8.28793221, 14.09354298, 0.00000000 };
+Point ( 333 ) = { -8.31251745, 14.07905635, 0.00000000 };
+Point ( 334 ) = { -8.33707736, 14.06452684, 0.00000000 };
+Point ( 335 ) = { -8.36161188, 14.04995448, 0.00000000 };
+Point ( 336 ) = { -8.38612093, 14.03533932, 0.00000000 };
+Point ( 337 ) = { -8.41060444, 14.02068141, 0.00000000 };
+Point ( 338 ) = { -8.43506232, 14.00598079, 0.00000000 };
+Point ( 339 ) = { -8.45949451, 13.99123750, 0.00000000 };
+Point ( 340 ) = { -8.48390093, 13.97645159, 0.00000000 };
+Point ( 341 ) = { -8.50828150, 13.96162311, 0.00000000 };
+Point ( 342 ) = { -8.53263616, 13.94675210, 0.00000000 };
+Point ( 343 ) = { -8.55696483, 13.93183861, 0.00000000 };
+Point ( 344 ) = { -8.58126743, 13.91688268, 0.00000000 };
+Point ( 345 ) = { -8.60554389, 13.90188435, 0.00000000 };
+Point ( 346 ) = { -8.62979413, 13.88684368, 0.00000000 };
+Point ( 347 ) = { -8.65401809, 13.87176070, 0.00000000 };
+BSpline ( 1 ) = { 318 : 347, 2 };
 Line Loop( 0 ) = { 0, 1 };
 
 
