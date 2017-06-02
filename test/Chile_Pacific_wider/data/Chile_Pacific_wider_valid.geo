@@ -16,7 +16,7 @@
 // 
 // Project name: Chile_Pacific_wider
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/06/01 22:04:34 
+// Created at: 2017/06/02 18:10:55 
 // Project description:
 //   South East Pacific ocean up to the Chilean coastline.
 //       Developed from GEBCO, on the subset region 128W to 70W, 40S to 20N.
@@ -87,7 +87,7 @@
 //                 <boundary>1</boundary>
 //             </form>
 //             <identification name="coast"></identification>
-//             <representation_type name="BSplines"></representation_type>
+//             <representation_type name="BSpline"></representation_type>
 //         </brep_component>
 //         <brep_component name="ExtendTo135W">
 //             <form name="ExtendToMeridian">
@@ -96,7 +96,7 @@
 //                 </longitude>
 //             </form>
 //             <identification name="ocean"></identification>
-//             <representation_type name="BSplines"></representation_type>
+//             <representation_type name="BSpline"></representation_type>
 //         </brep_component>
 //         <boundary name="coast">
 //             <identification_number>
@@ -175,7 +175,7 @@
 // Extending exterior boundary developed in SouthEastPacificOceanCoast (part 1 of 1) to meridian -135.0
 // Drawing parallel to end index 1 at -135.00, -40.00 (to match -73.71)
 //   Component boundary representations identified:
-//     1: SouthEastPacificOceanCoast (part 1 of 1) AND ExtendTo135W (components: 4)
+//     1: SouthEastPacificOceanCoast (part 1 of 1) AND ExtendTo135W (components: 4, open)
 
 // == BRep component: SouthEastPacificOceanCoast (part 1 of 1) AND ExtendTo135W 
 Point ( 2 ) = { -73.70833333, -39.99583333, 0.00000000 };
@@ -20429,7 +20429,7 @@ Point ( 20242 ) = { -135.00000000, -39.91250000, 0.00000000 };
 Point ( 20243 ) = { -135.00000000, -39.99583333, 0.00000000 };
 BSpline ( 2 ) = { 19643 : 20243 };
 
-// Closed path with parallels and meridians, from (-73.70833333, -39.99583333) to  (-73.70833333, -39.99583333)
+// Closed path with parallels and meridians, from (-105.50833333, 19.98750000) to  (-73.70833333, -39.99583333)
 Point ( 20244 ) = { -134.90000000, -39.99583333, 0.00000000 };
 Point ( 20245 ) = { -134.80000000, -39.99583333, 0.00000000 };
 Point ( 20246 ) = { -134.70000000, -39.99583333, 0.00000000 };

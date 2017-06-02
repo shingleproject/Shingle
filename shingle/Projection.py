@@ -72,25 +72,27 @@ def compare_latitude(a, b, dx):
     return abs(a - b) < tolerance
 
 def compare_points(a, b, dx, proj='longlat'):
-    tolerance = dx * 0.6
+    if isinstance(dx, float):
+        dx = [dx, dx]
+    tolerance = [0.6 * x for x in dx]
     if (proj == 'horizontal'):
         pa = project(a, projection_type='proj_cartesian')
         pb = project(b, projection_type='proj_cartesian')
         #print tolerance, pa, pb
-        if ( not (abs(pa[1] - pb[1]) < tolerance) ):
+        if ( not (abs(pa[1] - pb[1]) < tolerance[1]) ):
             return False
-        elif (abs(pa[0] - pb[0]) < tolerance):
+        elif (abs(pa[0] - pb[0]) < tolerance[0]):
             return True
         else:
             return False
     else: 
-        if ( not (abs(a[1] - b[1]) < tolerance) ):
+        if ( not (abs(a[1] - b[1]) < tolerance[1]) ):
             #AddComment('lat differ')
             return False
-        elif (abs(a[0] - b[0]) < tolerance):
+        elif (abs(a[0] - b[0]) < tolerance[0]):
             #AddComment('long same')
             return True
-        elif ((abs(abs(a[0]) - 180) < tolerance) and (abs(abs(b[0]) - 180) < tolerance)):
+        elif ((abs(abs(a[0]) - 180) < tolerance[0]) and (abs(abs(b[0]) - 180) < tolerance[0])):
             #AddComment('long +/-180')
             return True
         else:
@@ -166,7 +168,7 @@ def project(location, projection_type=None):
     elif (projection_type == 'longlat' ):
         return location
     else:
-        print 'Invalid projection type:', projection_type
+        error('Invalid projection type: ' + projection_type)
         sys.exit(1)
 
 

@@ -412,7 +412,7 @@ class BRepComponent(object):
 
         connected = []
         for pair in pairwise(self.components):
-            connected.append(compare_points(pair[0].getEnds()[1], pair[1].getEnds()[0], self.Spacing()))
+            connected.append(compare_points(pair[0].ends[1], pair[1].ends[0], self.Spacing()))
 
         return all(connected)
 
@@ -552,7 +552,7 @@ class BRepComponent(object):
                 #paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment))
                 p = EnrichedPolyline(self, shape=LineString(bound), initialise_only=True, is_exterior=True, comment=comment)
                 p.Interpolate()
-                p.Project()
+                #p.Project()
 
                 #print p.shape.coords[:]
 
@@ -698,7 +698,11 @@ class BRepComponent(object):
 
     def getEnds(self):
         #print self.Name(), len(self.components)
-        return self.components[0].getEnds()[0], self.components[-1].getEnds()[1]
+        return self.components[0].ends[0], self.components[-1].ends[1]
+
+    @property
+    def ends(self):
+        return self.components[0].loopstart, self.components[-1].loopend
 
     def Join(self, components):
         import itertools
@@ -717,13 +721,13 @@ class BRepComponent(object):
                     continue
 
                 for i, j in itertools.product(range(2), range(2)):
-                    #print i, j, first.getEnds()[i], other.getEnds()[j], compare_points(first.getEnds()[i], other.getEnds()[j], self.Spacing())
-                    if compare_points(first.getEnds()[i], other.getEnds()[j], self.Spacing()):
+                    #print i, j, first.ends[i], other.ends[j], compare_points(first.ends[i], other.ends[j], self.Spacing())
+                    if compare_points(first.ends[i], other.ends[j], self.Spacing()):
                         pair = i, j
                         break
                 if pair:
                     #print 'Merge', first, other
-                    #print i, j, first.getEnds()[i], other.getEnds()[j]
+                    #print i, j, first.ends[i], other.ends[j]
                     if (i, j) == (1, 0):
                         first.components = first.components + other.components
                     elif (i, j) == (0, 1):

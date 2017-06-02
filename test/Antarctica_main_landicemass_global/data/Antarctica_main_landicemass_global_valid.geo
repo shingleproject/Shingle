@@ -16,7 +16,7 @@
 // 
 // Project name: Antarctica_main_landicemass_global
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/06/01 22:03:45 
+// Created at: 2017/06/02 17:24:16 
 // Project description:
 //   Use the RTopo dataset (RTopo105b.nc),
 //   considering all land masses up to a latitude of 60S, within a global domain.
@@ -86,7 +86,7 @@
 //             <id>
 //                 <integer_value rank="0">3</integer_value>
 //             </id>
-//             <representation_type name="BSplines"></representation_type>
+//             <representation_type name="BSpline"></representation_type>
 //             <spacing>
 //                 <real_value rank="0">10</real_value>
 //             </spacing>
@@ -156,104 +156,9 @@ Delete { Point{ 1 }; }
 // Open contours closed with a line formed by points spaced 10 degrees apart
 // Paths found: 269
 // Merged paths that cross the date line: 
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
-//   Skipped (no points found in region)
 // Paths found valid (renumbered order): 1, including 1
 //   Component boundary representations identified:
-//     1: Antarctica_main_landicemass_brep (part 1 of 1) (components: 1)
+//     1: Antarctica_main_landicemass_brep (part 1 of 1) (components: 1, closed)
 
 // == BRep component: Antarctica_main_landicemass_brep (part 1 of 1) 
 Point ( 2 ) = { 9.40253226, -0.00000000, 0.00000000 };
@@ -38744,7 +38649,9 @@ Point ( 38486 ) = { 9.40252590, 0.01094017, 0.00000000 };
 Point ( 38487 ) = { 9.40252868, 0.00820576, 0.00000000 };
 Point ( 38488 ) = { 9.40253067, 0.00547134, 0.00000000 };
 Point ( 38489 ) = { 9.40253186, 0.00273442, 0.00000000 };
-BSpline ( 0 ) = { 2 : 38489, 2 };
+Point ( 38490 ) = { 9.40253226, 0.00000000, 0.00000000 };
+Point ( 38491 ) = { 9.40253226, -0.00000000, 0.00000000 };
+BSpline ( 0 ) = { 2 : 38491, 2 };
 Line Loop( 0 ) = { 0 };
 
 

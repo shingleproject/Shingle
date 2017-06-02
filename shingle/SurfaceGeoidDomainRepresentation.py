@@ -317,9 +317,10 @@ Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'surface':self.Surface
 
 
     def ShowBRepComponents(self):
-        if len(self.getComponentsComplete()) > 0:
-            self.AddComment('Component boundary representations identified:', indent=1)
-            report('Component boundary representations identified:', indent=1)
+        if len(self.getComponentsComplete()) == 0:
+            return
+        self.AddComment('Component boundary representations identified:', indent=1)
+        report('Component boundary representations identified:', indent=1)
         for i, component in enumerate(self.getComponentsComplete()):
             #if any([x.isExterior() for x in component.components]):
             if component.isClosed():

@@ -55,14 +55,17 @@ def check_point_required(region, location):
     globals['latitude']  = location[1]
     return eval(region, globals)
 
-def complete_with_bspline(index, loopstart):
-    index = rep.AddLoop(index, loopstart)
-    loopstart = index
-    return index, loopstart
+#def complete_with_bspline(index, loopstart):
+#    index = rep.AddLoop(index, loopstart)
+#    loopstart = index
+#    return index, loopstart
 
 
 def draw_parallel_explicit(rep, start, end, index, dx, to_parallel=None):
     from Projection import longitude_diff
+    if isinstance(dx, float):
+        dx = [dx, dx]
+    tolerance = [0.6 * x for x in dx]
     #print start, end, index.point
     # Note start is actually start - 1
 
@@ -86,8 +89,7 @@ def draw_parallel_explicit(rep, start, end, index, dx, to_parallel=None):
 
     #print start, end, up_to_parallel, to_parallel
 
-    current = start 
-    tolerance = dx * 0.6
+    current = list(start) 
     path = []
     paths = []
     comment = []
@@ -105,10 +107,10 @@ def draw_parallel_explicit(rep, start, end, index, dx, to_parallel=None):
         comment.append('Drawing meridian to latitude index %s at %.2f, %.2f (to match %.2f)' % (index.point, current[0], current[1], to_parallel))
     while (current[1] != to_parallel):
         if (current[1] < to_parallel):
-            current[1] = current[1] + dx
+            current[1] = current[1] + dx[1]
         else:
-            current[1] = current[1] - dx
-        if (abs(current[1] - to_parallel) < tolerance): current[1] = to_parallel
+            current[1] = current[1] - dx[1]
+        if (abs(current[1] - to_parallel) < tolerance[1]): current[1] = to_parallel
         if (compare_points(current, end, dx)):
             #print 'break 1'
             break
@@ -130,11 +132,11 @@ def draw_parallel_explicit(rep, start, end, index, dx, to_parallel=None):
         comment.append('Drawing parallel index %s at %.2f (to match %.2f), %.2f' % (index.point, current[0], end[0], current[1]))
     while (current[0] != end[0]):
         if (longitude_diff(current[0], end[0]) < 0):
-            current[0] = current[0] + dx
+            current[0] = current[0] + dx[0]
         else:
-            current[0] = current[0] - dx
+            current[0] = current[0] - dx[0]
         #if (abs(current[0] - end[0]) < tolerance): current[0] = end[0]
-        if (abs(longitude_diff(current[0], end[0])) < tolerance): current[0] = end[0]
+        if (abs(longitude_diff(current[0], end[0])) < tolerance[0]): current[0] = end[0]
         if (compare_points(current, end, dx)):
             #print 'break 2'
             break
@@ -156,10 +158,10 @@ def draw_parallel_explicit(rep, start, end, index, dx, to_parallel=None):
         comment.append('Drawing meridian to end index %s at %.2f, %.2f (to match %.2f)' % (index.point, current[0], current[1], end[1]))
     while (current[1] != end[1]):
         if (current[1] < end[1]):
-            current[1] = current[1] + dx
+            current[1] = current[1] + dx[1]
         else:
-            current[1] = current[1] - dx
-        if (abs(current[1] - end[1]) < tolerance): current[1] = end[1]
+            current[1] = current[1] - dx[1]
+        if (abs(current[1] - end[1]) < tolerance[1]): current[1] = end[1]
         if (compare_points(current, end, dx)):
             #print 'break 3'
             break
@@ -200,7 +202,7 @@ def draw_meridian_explicit(rep, start, end, index, dx, to_meridian=None):
         else:
             error('Extension of domain to meridian %(meridian)s failed: Merdian appears to be contained within the domain (start: %(start).2f, end: %(end).2f).' % {'meridian':to_meridian, 'start':start[0], 'end':end[0]}, fatal=True)
 
-    current = start 
+    current = list(start)
     tolerance = dx * 0.6
     path = []
     paths = []
@@ -311,13 +313,11 @@ class EnrichedPolyline(object):
         self.comment = comment
 
         self._valid_vertices = []
-        self.loopstart = None
-        self.loopend = None
         self.loopstartpoint = None
 
         self._valid_vertices_number = 0
 
-        self.close_last = False
+        #self.close_last = False
         self.valid_location = None
         self.close = None
         self.point = None
@@ -332,7 +332,9 @@ class EnrichedPolyline(object):
         self._parent_brep_component = None
 
         # Data spacing
-        self._source_spacing = [ 0.0, 0.0 ]
+        self.spacing_source = None
+        #[ 0.0, 0.0 ]
+        self.__projected = None
 
         self._parent_brep_component = rep
         self._is_exterior = is_exterior
@@ -352,26 +354,20 @@ class EnrichedPolyline(object):
             #error('oh dear', fatal=True)
             return
 
+        if shape is None:
+            self.set_shape()
 
-        self.setSourceMaxSpacing()
-        #print self._source_spacing
-
-        self._valid_vertices = [False]*self.PointNumber()
-
+        #self.set_spacing_source()
+        #self._valid_vertices = [False]*self.PointNumber()
         self.ConstrainPoints()
 
-        if (self.loopend is not None):
-            self.CheckPathEndToBeClosed()
-            self.GetValidLocations()
+        #if (self.loopend is not None):
+        #    self.CheckPathEndToBeClosed()
+        #    #self.GetValidLocations()
+        
+        #if shape is None:
+        #    self.set_shape()
 
-        if shape is None:
-            if self.close_last:
-                #print self.reference_number, 'linear ring'
-                self.shape = LinearRing(self.vertices)
-                #self.shape = Polygon(self.vertices)
-            else:
-                #print self.reference_number, 'line string'
-                self.shape = LineString(self.vertices)
 
         if initialise_only:
             return
@@ -394,6 +390,18 @@ class EnrichedPolyline(object):
             self.ReportClosingRequired()
         self._valid = True
 
+    def set_shape(self):
+        self.shape = None
+        if self.vertices is not None:
+            self.set_spacing_source()
+            if self.close_last:
+                #print self.reference_number, 'linear ring'
+                self.shape = LinearRing(self.vertices)
+                #self.shape = Polygon(self.vertices)
+            else:
+                #print self.reference_number, 'line string'
+                self.shape = LineString(self.vertices)
+
     @property
     def vertices(self):
         if self.shape:
@@ -404,6 +412,52 @@ class EnrichedPolyline(object):
     @vertices.setter
     def vertices(self, vertices):
         self.__vertices = vertices
+
+    @property
+    def loopstart(self):
+        if self.vertices is not None:
+            return self.vertices[0]
+        else:
+            return None
+
+    @property
+    def loopend(self):
+        if self.vertices is not None:
+            return self.vertices[-1]
+        else:
+            return None
+
+    @property
+    def ends(self):
+        return self.loopstart, self.loopend
+
+    @property
+    def close_last(self):
+        return compare_points(self.loopstart, self.loopend, self.spacing_tolerance)
+   
+
+    def set_spacing_source(self):
+        #self.__spacing_source = [ 0.0, 0.0 ]
+        self.spacing_source = max([abs(x[0] - y[0]), abs(x[1] - y[1])] for (x, y) in zip(self.vertices[1:], self.vertices[:-1]))
+        if not self.spacing_source:
+            self.spacing_source = [ 0.0, 0.0 ]
+
+    @property
+    def spacing_source(self):
+        if not self.__spacing_source:
+            self.set_spacing_source()
+        return self.__spacing_source
+
+    @spacing_source.setter
+    def spacing_source(self, spacing_source):
+        self.__spacing_source = spacing_source
+
+    @property
+    def spacing_tolerance(self):
+        #print self.spacing_source, self.spacing()
+        return max(self.spacing_source[0], self.spacing()), max(self.spacing_source[1], self.spacing()) 
+
+
 
     def __str__(self):
         return str(self.reference_number)
@@ -435,7 +489,8 @@ class EnrichedPolyline(object):
         self._is_exterior = source._is_exterior
         self.reference_number = source.reference_number
         self.loopstartpoint = source.loopstartpoint
-        self.valid_location = [ copy(source.valid_location[0]), copy(source.valid_location[-1]) ]
+        #self.valid_location = [ copy(source.valid_location[0]), copy(source.valid_location[-1]) ]
+        self.shape = LineString(copy(source.ends))
 
     def CopyOpenPart__(self):
         child = copy(self)                                                         
@@ -473,7 +528,7 @@ class EnrichedPolyline(object):
     def ExtendToLatitude(self, *args, **kwargs):
         return self._parent_brep_component.ExtendToLatitude(*args, **kwargs)
 
-    def Spacing(self, *args, **kwargs):
+    def spacing(self, *args, **kwargs):
         return self._parent_brep_component.Spacing(*args, **kwargs)
 
     def MinimumArea(self, *args, **kwargs):
@@ -662,10 +717,10 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
         #except:
         #    return len(self.vertices[:,0])
 
-    def SetPointInvalid(self, point):
-        if self._valid_vertices[point] is True:
-            self._valid_vertices[point] = False
-            self._valid_vertices_number -= 1
+    #def SetPointInvalid(self, point):
+    #    if self._valid_vertices[point] is True:
+    #        self._valid_vertices[point] = False
+    #        self._valid_vertices_number -= 1
 
     def SetPointValid(self, point):
         if not self._valid_vertices[point]:
@@ -684,7 +739,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
     def Interpolate(self, spacing=None):
         from math import ceil
         if not spacing:
-            spacing = self.Spacing()
+            spacing = self.spacing()
         coords = []
         #print self.shape.coords[:]
         for i, coord in enumerate(self.shape.coords[:]):
@@ -725,22 +780,48 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
         self._valid_vertices = [False]*self.PointNumber()
         self.ConstrainPoints()
         #self.CheckPathEndToBeClosed()
-        self.GetValidLocations()
+        #self.GetValidLocations()
 
-    def Project(self):
-        coords = [ project(loc, projection_type=self.Projection()) for loc in self.shape.coords[:]]
+    def get_projection(self):
+        #coords = [ project(loc, projection_type=self.Projection()) for loc in vertices]
+        projected = copy(self)
+        from functools import partial
+        import pyproj
+        from shapely.ops import transform
 
-        if self.isLine():
-            self.shape = LineString(coords)
-        if self.isRing():
-            self.shape = LinearRing(coords)
-        if self.isPolygon():
-            self.shape = Polygon(coords)
+        project = partial(
+            pyproj.transform,
+            # Source coordinate system
+            pyproj.Proj(init='epsg:4326'),
+            # Destination coordinate system
+            pyproj.Proj(init='epsg:26913')
+        )
 
-        self._valid_vertices = [False]*self.PointNumber()
-        self.ConstrainPoints()
+        # Appy the projection to the shapefile
+        projected.shape = transform(project, self.shape)
+        # Make the following automatic?  No need to call here or elsewhere
+        projected.set_spacing_source()
+
+        self.__projected = projected
+
+    @property
+    def projected(self):
+        if not self.__projected:
+            self.get_projection()
+        return self.__projected
+
+        #if self.isLine():
+        #    self.shape = LineString(coords)
+        #if self.isRing():
+        #    self.shape = LinearRing(coords)
+        #if self.isPolygon():
+        #    self.shape = Polygon(coords)
+
+        #self._valid_vertices = [False]*self.PointNumber()
+        #self.ConstrainPoints()
+        
         #self.CheckPathEndToBeClosed()
-        self.GetValidLocations()
+        #self.GetValidLocations()
         #return coords
 
     #def getVertices(self):
@@ -757,85 +838,101 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
 
 
 
-    def setSourceMaxSpacing(self):
-        self._source_spacing = max([abs(x[0] - y[0]), abs(x[1] - y[1])] for (x, y) in zip(self.vertices[1:], self.vertices[:-1]))
 
     def ConstrainPoints(self):
-        self.ValidPointNumber(refresh=True)
-        flag = 0
-        for point in range(self.PointNumber()):
-            position = self.Vertex(point)
-            if ( check_point_required(str(self.Region()), self.Vertex(point)) ):
-                if (self.ValidPointNumber() > 0):
-                    self._source_spacing[0] = max(abs(position[0] - position_previous[0]), self._source_spacing[0])
-                    self._source_spacing[1] = max(abs(position[1] - position_previous[1]), self._source_spacing[1])
-                position_previous = position
-                self.SetPointValid(point)
-                if (flag == 0):
-                    self.loopstart = point
-                    flag = 1
-                elif (flag == 1):
-                    self.loopend = point
+        vertices = [vertex for vertex in self.vertices if check_point_required(str(self.Region()), vertex)]
+        if len(self.vertices) != len(vertices):
+            #print len(self.vertices), '->', len(vertices)
+            if len(vertices) > 0:
+                self.vertices = vertices
+            else:
+                self.vertices = None
+            self.shape = None
+            self.set_shape()
+
+
+        #vertices = []
+        #for vertex in self.vertices:
+        #    #print i, vertex, check_point_required(str(self.Region()), vertex)
+        #    if check_point_required(str(self.Region()), vertex):
+        #        vertices.append(vertex)
+        #if len(self.vertices) != len(vertices):
+        #    print 'asc TODO', len(self.vertices), len(vertices), ' '*8, len(vertices) - len(self.vertices)
+#       #     print self.vertices
+        
+
+
+#            position = self.Vertex(point)
+#            if ( check_point_required(str(self.Region()), self.Vertex(point)) ):
+#                if (self.ValidPointNumber() > 0):
+#                    self.spacing_source[0] = max(abs(position[0] - position_previous[0]), self.spacing_source[0])
+#                    self.spacing_source[1] = max(abs(position[1] - position_previous[1]), self.spacing_source[1])
+#                position_previous = position
+#                self.SetPointValid(point)
+#                if (flag == 0):
+#                    self.loopstart = point
+#                    flag = 1
+#                elif (flag == 1):
+#                    self.loopend = point
 
     def isIncluded(self):
         return (self.loopend is not None)
 
     def isIslandCrossingMeridian(self):
-        if ( (abs(self.Vertex(self.loopstart)[0] - self.Vertex(self.loopend)[0]) < 2 * self._source_spacing[0]) and (abs(self.Vertex(self.loopstart)[1] - self.Vertex(self.loopend)[1]) > 2 * self._source_spacing[1]) ):
+        if ( (abs(self.loopstart[0] - self.loopend[0]) < 2 * self.spacing_source[0]) and (abs(self.loopstart[1] - self.loopend[1]) > 2 * self.spacing_source[1]) ):
             self.report('Path %i skipped (island crossing meridian - code needs modification to include)' % ( self.reference_number ), debug=True)
             self.AddComment('  Skipped (island crossing meridian - code needs modification to include)\n')
             # Temporary quiet
             #error('Skipped path. Found an island crossing a bounding meridian. Investigate if further treatment required.', warning=True)
 
-    def CheckPathEndToBeClosed(self):
-        if (compare_points(self.Vertex(self.loopstart), self.Vertex(self.loopend), self.Spacing())):
-            # Remove duplicate line at end
-            #self._valid_vertices[loopend] = False
-            self.SetPointInvalid(self.loopend)
-            self.close_last = True
-
-    def getEnds(self):
-        return (self.valid_location[0], self.valid_location[-1])
-        #return (self.Vertex(self.loopstart), self.Vertex(self.loopend))
+    #def CheckPathEndToBeClosed(self):
+    #    return
+        #if (compare_points(self.Vertex(self.loopstart), self.Vertex(self.loopend), self.spacing())):
+        #    # Remove duplicate line at end
+        #    #self._valid_vertices[loopend] = False
+        #    self.SetPointInvalid(self.loopend)
+        #    self.close_last = True
 
     def AreaEnclosed(self):
         # Use shapely
         if self.shape:
             if self.shape.type == 'Polygon':
                 return self.shape.area
-        if self.valid_location is not None:
-            return area_enclosed(self.valid_location)
+            #elif self.
+
+        if self.vertices is not None:
+            return area_enclosed(self.vertices)
         return 0.0
 
     def isValid(self):
         return self._valid
 
-    def GetValidLocations(self):
-        from numpy import zeros
-        self.valid_location = zeros( (self.ValidPointNumber(), 2) )
-        self.close = [False]*self.ValidPointNumber()
-        count = 0
-        closingrequired = False
-        for point in range(self.PointNumber()):
-            if (self._valid_vertices[point]):
-                self.valid_location[count,:] = self.Vertex(point)
-                if ((closingrequired) and (count > 0)):
-                    if (compare_points(self.valid_location[count-1,:], self.valid_location[count,:], self.Spacing())):
-                        closingrequired = False
-                self.close[count] = closingrequired
-                count += 1
-                closingrequired = False
-            else:
-                if (not closingrequired):
-                    closingrequired = True
-                    self.closingrequirednumber += 1
+    #def GetValidLocations(self):
+    #    from numpy import zeros
+    #    self.valid_location = zeros( (self.ValidPointNumber(), 2) )
+    #    self.close = [False]*self.ValidPointNumber()
+    #    count = 0
+    #    closingrequired = False
+    #    for point in range(self.PointNumber()):
+    #        if (self._valid_vertices[point]):
+    #            self.valid_location[count,:] = self.Vertex(point)
+    #            if ((closingrequired) and (count > 0)):
+    #                if (compare_points(self.valid_location[count-1,:], self.valid_location[count,:], self.spacing_tolerance)):
+    #                    closingrequired = False
+    #            self.close[count] = closingrequired
+    #            count += 1
+    #            closingrequired = False
+    #        else:
+    #            if (not closingrequired):
+    #                closingrequired = True
+    #                self.closingrequirednumber += 1
 
-        if (self.close_last):
-            self.close[-1] = True
-            self.closingrequirednumber += 1
+    #    if (self.close_last):
+    #        self.close[-1] = True
+    #        self.closingrequirednumber += 1
 
-        if (self.close[0]):
-            self.close[-1] = self.close[0]
+    #    if (self.close[0]):
+    #        self.close[-1] = self.close[0]
 
 
     def ReportClosingRequired(self):
@@ -845,15 +942,15 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
             closingtext = ' (required closing in %i part of the path)' % (self.closingrequirednumber)
         else:
             closingtext = ' (required closing in %i parts of the path)' % (self.closingrequirednumber)
-        self.report('Path %i: points %i (of %i) area %g%s' % ( self.reference_number, self.ValidPointNumber(), self.PointNumber(), area_enclosed(self.valid_location), closingtext ), indent = 2)
+        self.report('Path %i: points %i (of %i) area %g%s' % ( self.reference_number, self.ValidPointNumber(), self.PointNumber(), area_enclosed(self.vertices), closingtext ), indent = 2)
 
 
     def atEndOfValidPath(self, point):
-        return ((self.close[point]) and (point == self.ValidPointNumber() - 1) and (not (compare_points(self.valid_location[point], self.valid_location[0], self.Spacing()))))
+        return ((self.close[point]) and (point == self.ValidPointNumber() - 1) and (not (compare_points(self.vertices[point], self.loopstart, self.spacing_tolerance))))
 
 
     def atPathPartToBeClosed(self, point):
-        return ((self.close[point]) and (point > 0) and (not (compare_points(self.valid_location[point], self.valid_location[0], self.Spacing()))))
+        return ((self.close[point]) and (point > 0) and (not (compare_points(self.vertices[point], self.loopstart, self.spacing_tolerance))))
 
 
     def ClosePathEndToStartLongitude(self, index, extend_to_longitude = None):
@@ -867,7 +964,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
         #end_point = self.valid_location[0]
 
         #index = self.AddLoop(index, self.loopstartpoint)
-        index, paths = draw_meridian_explicit(self._parent_brep_component, self.valid_location[point], self.valid_location[0], index, self.Spacing(), longitude)
+        index, paths = draw_meridian_explicit(self._parent_brep_component, self.vertices[point], self.loopstart, index, self.spacing(), longitude)
         #index = self.AddLoop(index, self.loopstartpoint, last=True)
 
         return index, paths
@@ -885,7 +982,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
 
         #print index.point
         #index = self.AddLoop(index, self.loopstartpoint)
-        index, paths = draw_parallel_explicit(self._parent_brep_component, self.valid_location[point], self.valid_location[0], index, self.Spacing(), latitude)
+        index, paths = draw_parallel_explicit(self._parent_brep_component, self.loopend, self.loopstart, index, self.spacing(), latitude)
         #index = self.AddLoop(index, self.loopstartpoint, last=True)
         #print index.point
 
@@ -894,9 +991,9 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
 
     def ClosePathPart(self, point, index):
         self.AddComment('Close path part (not at the end of current path, but out of bounds): Start ' + str(point) + '/' + str(self.ValidPointNumber()-1) + str(self.close[point]))
-        self.AddComment(str(self.valid_location[point,:]) + str(self.valid_location[point,:]))
+        self.AddComment(str(self.vertices[point] + str(self.vertices[point])))
         index = self.AddLoop(index, self.loopstartpoint)
-        index, paths = draw_parallel_explicit(self._parent_brep_component, self.valid_location[point - 1], self.valid_location[point], index, self.Spacing(), self.ExtendToLatitude())
+        index, paths = draw_parallel_explicit(self._parent_brep_component, self.vertices[point - 1], self.vertices[point], index, self.spacing(), self.ExtendToLatitude())
         index = self.AddLoop(index, self.loopstartpoint)
         self.AddComment('Close path part (not at the end of current path, but out of bounds): End of loop section ' + str(point) + '/' + str(self.ValidPointNumber()-1) + str(self.close[point]))
         return index
@@ -914,26 +1011,26 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
         index.start = index.point + 1
         self.loopstartpoint = index.start
 
-        for point in range(self.ValidPointNumber()):
+        for i, vertex in enumerate(self.vertices):
             #print point, first
 
-            if not first and point == 0:
-                if (compare_points(self.valid_location[point,:], self.before.valid_location[-1,:], self.Spacing())):
+            if not first and i == 0:
+                if (compare_points(self.loopstart, self.before.loopend, self.spacing_tolerance)):
                     #print 'skipped', point, self.valid_location[point,:]
                     continue
 
-            self.point = point
+            self.point = i
 
-            if self.atEndOfValidPath(point):
-                self.AddComment('Keeping path %(number)d open to be closed by a later component' % {'number':self.reference_number})
+            #if self.atEndOfValidPath(point):
+            #    self.AddComment('Keeping path %(number)d open to be closed by a later component' % {'number':self.reference_number})
+#
+            #elif self.atPathPartToBeClosed(point):
+            #    index = self.ClosePathPart(point, index)
 
-            elif self.atPathPartToBeClosed(point):
-                index = self.ClosePathPart(point, index)
-
-            else:
-                index.point += 1
-                self.point_index.append(index.point)
-                self.AddFormattedPoint(index.point, self.valid_location[point,:], 0)
+            #else:
+            index.point += 1
+            self.point_index.append(index.point)
+            self.AddFormattedPoint(index.point, vertex, 0)
 
         index = self.AddLoop(index, self.loopstartpoint, last, first)
 
