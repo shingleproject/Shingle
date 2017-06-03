@@ -1027,6 +1027,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
         index.start = index.point + 1
         self.loopstartpoint = index.start
 
+        a = []
         for i, vertex in enumerate(self.vertices):
             #print point, first
 
@@ -1049,7 +1050,8 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
             index.point += 1
             self.point_index.append(index.point)
             #self.AddFormattedPoint(index.point, self.vertices[i], 0)
-            self.AddFormattedPoint(index.point, self.projected.vertices[i], 0, project_to_output_projection_type=False)
+            self.AddFormattedPoint(index.point, self.shape.coords[i], 0)
+            #print i
 
             #print a, b
 

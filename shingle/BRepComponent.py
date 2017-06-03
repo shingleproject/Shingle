@@ -797,6 +797,9 @@ class BRepComponent(object):
 #Delete { Point{ %(prefix)s1 }; }
 #''' % { 'prefix':self.CounterPrefix('IP') } )
 
+    def AddFormattedPointQuick(self, index, loc, z=0):
+        output_format = 'Point ( %(prefix)s%%i ) = { %%.%(dp)sf, %%.%(dp)sf, %%.%(dp)sf };' % { 'dp': universe.default.output_accuracy, 'prefix':'IP' }
+        self.AddContent(output_format % (index, output_location[0], output_location[1], z))
 
     def AddFormattedPoint(self, index, loc, z, project_to_output_projection_type=True):
         output_format = 'Point ( %(prefix)s%%i ) = { %%.%(dp)sf, %%.%(dp)sf, %%.%(dp)sf };' % { 'dp': universe.default.output_accuracy, 'prefix':self.CounterPrefix('IP') }
@@ -805,7 +808,7 @@ class BRepComponent(object):
         else:
             output_location = loc
         self.AddContent(output_format % (index, output_location[0], output_location[1], z))
-        return output_location[0], output_location[1]
+        #return output_location[0], output_location[1]
 
     def FormatPoint(self, index, loc, z, project_to_output_projection_type=True):
         #output_format = 'Point ( %(prefix)s%%i ) = { %%.%(dp)sf, %%.%(dp)sf, %%.%(dp)sf };' % { 'dp': universe.default.output_accuracy, 'prefix':self.CounterPrefix('IP') }
