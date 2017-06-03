@@ -811,19 +811,19 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
 
         projected.shape = project_shape(self.shape, source, destination)
 
-        #print source
+        #print source, destination, 'HERE'
         #print destination
         #import sys; sys.exit()
 
         # Make the following automatic?  No need to call here or elsewhere
         projected.spacing_source = None
 
-        self.__projected = projected
+        return projected
 
     @property
     def projected(self):
         if not self.__projected:
-            self.get_projection()
+            self.__projected = self.get_projection()
         return self.__projected
 
         #if self.isLine():
@@ -1048,8 +1048,8 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
             #else:
             index.point += 1
             self.point_index.append(index.point)
-            #a=self.AddFormattedPoint(index.point, self.vertices[i], 0)
-            b=self.AddFormattedPoint(index.point, self.projected.vertices[i], 0, project_to_output_projection_type=False)
+            #self.AddFormattedPoint(index.point, self.vertices[i], 0)
+            self.AddFormattedPoint(index.point, self.projected.vertices[i], 0, project_to_output_projection_type=False)
 
             #print a, b
 
