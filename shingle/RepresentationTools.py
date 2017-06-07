@@ -275,6 +275,9 @@ class EnrichedPolyline(object):
         tolerance = 0.6 * self.spacing()
         if self.projection in ['longlat', 'Automatic']:
             return distance_on_geoid(a, b) < tolerance
+        elif 'utm' in self.projection:
+            return ....
+            asc here
 
         # Below needs further checking following updates
         elif (proj == 'horizontal'):
@@ -329,6 +332,7 @@ class EnrichedPolyline(object):
     def isClosed(self, following=None):
         if following:
             # Enable use of dataset spacing
+            print self.loopend, following.loopstart, self.compare_points(self.loopend, following.loopstart)
             return self.compare_points(self.loopend, following.loopstart)
         else:
             #print self.shape.geom_type

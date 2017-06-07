@@ -408,20 +408,20 @@ class BRepComponent(object):
             it = iter(t)
             return izip(it,it)
 
+        if following:
+            print len(self.components), len(following.components)
+
+        if following:
+            return self.components[-1].isClosed(following=following.components[0])
+
         if len(self.components) == 1:
-            if following:
-                return self.components[0].isClosed(following=following.components[0])
-            else:
-                return self.components[0].isClosed()
+            return self.components[0].isClosed()
 
         connected = []
         #for pair in pairwise(self.components):
         for pair in zip(self.components, self.components[1:]):
             connected.append(pair[0].isClosed(pair[1]))
-        if following:
-            connected.append(self.components[-1].isClosed(following.components[0]))
-        else:
-            connected.append(self.components[-1].isClosed(self.components[0]))
+        connected.append(self.components[-1].isClosed(self.components[0]))
             
 
         return all(connected)
@@ -746,8 +746,9 @@ class BRepComponent(object):
 
                 for i, j in itertools.product(range(2), range(2)):
                     #print i, j, first.ends[i], other.ends[j], c1ompare_points(first.ends[i], other.ends[j], self.Spacing())
-                    #if c1ompare_points(first.ends[i], other.ends[j], self.Spacing()):
-                    if first.isClosed(other):
+                    print first.Name(), other.Name(), first.ends[i], other.ends[j]
+                    if first.components[0].compare_points(first.ends[i], other.ends[j]):
+                    #if first.isClosed(other):
                         pair = i, j
                         break
                 if pair:
