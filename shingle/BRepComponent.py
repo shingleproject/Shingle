@@ -409,7 +409,10 @@ class BRepComponent(object):
             return izip(it,it)
 
         if len(self.components) == 1:
-            return self.components[0].isClosed(following=following.components[0])
+            if following:
+                return self.components[0].isClosed(following=following.components[0])
+            else:
+                return self.components[0].isClosed()
 
         connected = []
         #for pair in pairwise(self.components):
