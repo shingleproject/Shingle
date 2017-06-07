@@ -60,7 +60,7 @@ ncks -v amask /d/dataset/rtopo/RTopo105b_aux.nc amask.nc&quot; ;</comment>
             </id>
             <representation_type name="BSpline"></representation_type>
             <spacing>
-                <real_value rank="0">10</real_value>
+                <real_value rank="0">1.0E6</real_value>
             </spacing>
         </brep_component>
         <boundary name="Coast">

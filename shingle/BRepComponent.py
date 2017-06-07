@@ -381,6 +381,7 @@ class BRepComponent(object):
     def Dataset(self):
         name = self.Source()
         if name not in self._surface_rep.spatial_discretisation.Dataset().keys():
+            raise Exception
             error("Component BRep '%(brep)s' requires the dataset '%(dataset)s', but this cannot be sourced." % {'brep':self.Name(), 'dataset':name}, fatal = True)
         return self._surface_rep.spatial_discretisation.Dataset()[name]
 
@@ -500,16 +501,19 @@ class BRepComponent(object):
             index.start = index.point + 1
             loopstartpoint = index.start
 
-            p = EnrichedPolyline(self, reference_number = None, is_exterior = True)
+            p = EnrichedPolyline(self, vertices=[ ( 179.99, self.BoundingLatitude()), (-0.01, self.BoundingLatitude())], is_exterior = True, initialise_only=True)
 
             #print '----'
             # Use p in draw_parallel_explicit, not just as a method
-            index, paths = p.draw_parallel_explicit(self, [   -0.01, self.BoundingLatitude()], [ 179.99, self.BoundingLatitude()], index, self.Spacing()/10.0, None)
+            paths = p.draw_parallel_explicit(None)
             #print 'A', paths
             for path in paths:
                 path.projection = 'longlat'
                 self.components.append(path)
-            index, paths = p.draw_parallel_explicit(self, [-179.99,  self.BoundingLatitude()], [   0.01, self.BoundingLatitude()], index, self.Spacing()/10.0, None)
+            
+            p = EnrichedPolyline(self, vertices=[ ( 0.01, self.BoundingLatitude()), (-179.99, self.BoundingLatitude())], is_exterior = True, initialise_only=True)
+            paths = p.draw_parallel_explicit(None)
+            #index, paths = p.draw_parallel_explicit(self, [-179.99,  self.BoundingLatitude()], [   0.01, self.BoundingLatitude()], index, self.Spacing()/10.0, None)
             #print 'B', paths
             for path in paths:
                 path.projection = 'longlat'
@@ -617,7 +621,7 @@ class BRepComponent(object):
             #print n.Identification()
 
             # Close BRep and complete
-            self.index, paths = n.ClosePathEndToStart(self.index, extend_to_latitude = latitude)
+            paths = n.draw_parallel_explicit(latitude)
 
             #print p.components
             for path in paths:
@@ -657,7 +661,7 @@ class BRepComponent(object):
             p._name = p.Name() + ' AND ' + self.Name()
 
             # Close BRep and complete
-            self.index, paths = n.ClosePathEndToStartLongitude(self.index, extend_to_longitude = longitude)
+            paths = n.draw_meridian_explicit(longitude)
             
             for path in paths:
                 path.projection = 'longlat'
@@ -855,80 +859,54 @@ class BRepComponent(object):
         for number, p in enumerate(enriched_paths):
           p.reference_number = number + 1
 
+
+        # Add as a property of BRep, and use below
         dateline=[]
-        for p in enriched_paths:
+        for i, p in enumerate(enriched_paths):
             if (abs(p.loopstart[0]) == 180) and (abs(p.loopend[0]) == 180):
                 if p.loopstart[1] != p.loopend[1]:
                     #print p.loopstart[1], p.loopend[1]
-                    dateline.append(p)
+                    dateline.append(i)
                 
-
-        print dateline
-
-        for i, p in enumerate(dateline):
-            merged = False
-            print "*", i, p.ends
-            for j, q in enumerate(dateline):
+        # Instead of merging add make multicomponent - easier to plot then also
+        merged = []
+        for i in dateline:
+            p = enriched_paths[i]
+            if not p:
+                continue
+            #print "*", i, p.ends
+            for j in dateline:
                 if i == j:
                     continue
+                q = enriched_paths[j]
                 if not q:
                     continue
-
-                if p.compare_points(p.loopend, q.loopstart) and p.compare_points(p.loopstart, q.loopend):
-                    asc HERE broken
-                    p = EnrichedPolyline(self, contour=p.shape.coords[:] + q.shape.coords[:], reference_number = num, initialise_only=True)
-                    q = None
-                    merged=True
+                #print i, j, p.loopend, q.loopstart, p.loopstart, q.loopend
+                if p.compare_points_source(p.loopend, q.loopstart) and p.compare_points_source(p.loopstart, q.loopend):
+                    #asc HERE broken
+                    enriched_paths[i] = EnrichedPolyline(self, vertices=p.shape.coords[:] + q.shape.coords[:], reference_number = num, initialise_only=True)
+                    enriched_paths[j] = None
+                    merged.append((i+1, j+1))
                     break
-            if merged:
-                break
+                elif p.compare_points_source(p.loopend, q.loopend) and p.compare_points_source(p.loopstart, q.loopstart):
+                    #asc HERE broken
+                    # need to reverse
+                    enriched_paths[i] = EnrichedPolyline(self, vertices=p.shape.coords[:] + reversed(q.shape.coords[:]), reference_number = num, initialise_only=True)
+                    enriched_paths[j] = None
+                    merged.append((i+1, -(j+1)))
+                    break
+           # if merged:
+           #     break
 
-        print dateline
+        #print 'TO'
+        #for i, d in enumerate(dateline):
+        #  if d:
+        #    print i+1, d.ends
 
-        matched = []
-        appended = []
-        for num in dateline:
-            if num in matched:
-                continue
-            matches = []
-            for i in dateline:
-                if (i == num):
-                    continue
-                if compare_latitude(ends[num,1], ends[i,1], self.SourceResolution()[1]) and compare_latitude(ends[num,3], ends[i,3], self.SourceResolution()[1]):
-                    # match found, opposite orientation
-                    matches.append((i, True))
-                if compare_latitude(ends[num,1], ends[i,3], self.SourceResolution()[1]) and compare_latitude(ends[num,3], ends[i,1], self.SourceResolution()[1]):
-                    # match found, same orientation
-                    matches.append((i, False))
-
-            report('Path %d crosses date line' % (num + 1), indent=1, debug=False)
-
-            if (len(matches) > 1):
-                error('Matches:')
-                print matches
-                error('More than one match found for path %d' % (num + 1), indent=2, fatal=True)
-                sys.exit(1)
-            elif (len(matches) == 0):
-                self.report('No match found for path %d' % (num + 1), indent=2)
-
-            if (len(matches) > 0):
-                match = matches[0][0]
-                orientation = matches[0][1]
-                report('  match %d - %d (%s)' % (num + 1, match + 1, str(orientation)), debug=True)
-                if orientation:
-                    enriched_paths[num].vertices = concatenate((
-                        enriched_paths[num].vertices[:-2,:],
-                        enriched_paths[match].vertices[::-1]), axis=0) 
-                else:
-                    enriched_paths[num].vertices = concatenate((
-                        enriched_paths[num].vertices[:-2,:],
-                        enriched_paths[match].vertices), axis=0) 
-                enriched_paths[num] = EnrichedPolyline(self, vertices=enriched_paths[num].vertices, reference_number=enriched_paths[num].reference_number, initialise_only=True)
-                enriched_paths[match] = None
-                matched.append(match)
-                appended.append(num)
-
-        self.report('Merged paths that cross the date line: ' + ' '.join(map(strplusone,appended)), indent = 1)
+        #self.report('Merged paths that cross the date line: ' + ' '.join(map(strplusone,appended)), indent = 1)
+        if merged:
+          self.report('Merged %d paths that cross the date line' % len(merged), indent = 1)
+          #self.report('  merged: ' + str(merged), indent = 1)
          
         enriched_paths = [x for x in enriched_paths if x is not None]
         enriched_paths = sorted(enriched_paths, reverse=True)

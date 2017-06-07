@@ -56,6 +56,13 @@ def check_point_required(region, location):
     globals['latitude']  = location[1]
     return eval(region, globals)
 
+def distance_on_geoid(a, b):
+    from pyproj import Geod
+    wgs84_geod = Geod(ellps='WGS84')
+    az12, az21, dist = wgs84_geod.inv(a[0], a[1], b[0], b[1])
+    return dist
+
+
 #def complete_with_bspline(index, loopstart):
 #    index = rep.AddLoop(index, loopstart)
 #    loopstart = index
@@ -170,7 +177,7 @@ class EnrichedPolyline(object):
         self.shape = None
         self.spacing_source = None
         if self.vertices is not None:
-            if self.close_last:
+            if self.compare_points_source(self.loopstart, self.loopend):
                 #print self.reference_number, 'linear ring'
                 #self.shape = Polygon(self.vertices)
                 self.shape = LinearRing(self.vertices)
@@ -209,8 +216,8 @@ class EnrichedPolyline(object):
         return self.loopstart, self.loopend
 
     @property
-    def close_last(self):
-        return self.compare_points_source(self.loopstart, self.loopend)
+    def closed(self):
+        return self.isClosed()
    
 
     def set_spacing_source(self):
@@ -238,7 +245,10 @@ class EnrichedPolyline(object):
     @property
     def projection(self):
         if not self.__projection:
-            return self._parent_brep_component.Dataset().projection
+            try:
+                return self._parent_brep_component.Dataset().projection
+            except:
+                return 'longlat'
         return self.__projection
     @projection.setter
     def projection(self, projection):
@@ -251,23 +261,20 @@ class EnrichedPolyline(object):
         tolerance = [0.6 * x for x in self.spacing_source]
         if self.projection in ['Automatic','longlat']:
             # Check latitude:
-            if ( not (abs(a[1] - b[1]) < tolerance[1]) ):
+            if ( not (abs(a[1] - b[1]) <= tolerance[1]) ):
                 return False
             if latitude_only:
                 return True
             # Assume longitude in -180, 180 (Grenwich-centred)
             # i.e. that longitude values are >=-180
-            return abs(( (a[0] + 360.0) % 360.0 ) - ( (b[0] + 360.0) % 360.0 ) ) < tolerance[0]
+            return abs(( (a[0] + 360.0) % 360.0 ) - ( (b[0] + 360.0) % 360.0 ) ) <= tolerance[0]
         else:
             error('Not implemented for projection type: ' + self.projection, fatal=True)
 
     def compare_points(self, a, b):
         tolerance = 0.6 * self.spacing()
         if self.projection in ['longlat', 'Automatic']:
-            from pyproj import Geod
-            wgs84_geod = Geod(ellps='WGS84')
-            az12,az21,dist = wgs84_geod.inv(a[0],a[1],a[0],a[1])
-            return dist < tolerance
+            return distance_on_geoid(a, b) < tolerance
 
         # Below needs further checking following updates
         elif (proj == 'horizontal'):
@@ -333,6 +340,7 @@ class EnrichedPolyline(object):
 
     def CopyOpenPart(self, source):
         self._is_exterior = source._is_exterior
+        self.projection = source.projection
         self.reference_number = source.reference_number
         self.loopstartpoint = source.loopstartpoint
         #self.valid_location = [ copy(source.valid_location[0]), copy(source.valid_location[-1]) ]
@@ -835,207 +843,146 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
     #    return (self.close[point]) and (point > 0) and (not (self.c1ompare_points(self.vertices[point], self.loopstart)))
 
 
-    def ClosePathEndToStartLongitude(self, index, extend_to_longitude = None):
-        longitude = extend_to_longitude
+    # def ClosePathEndToStartLongitude(self, index, extend_to_longitude = None):
+    #     longitude = extend_to_longitude
 
-        point = -1
-        self.loopstartpoint = 0
+    #     point = -1
+    #     self.loopstartpoint = 0
 
-        #loopstartpoint = self.loopstartpoint
-        #start_point = self.valid_location[point]
-        #end_point = self.valid_location[0]
+    #     #loopstartpoint = self.loopstartpoint
+    #     #start_point = self.valid_location[point]
+    #     #end_point = self.valid_location[0]
 
-        #index = self.AddLoop(index, self.loopstartpoint)
-        index, paths = self.draw_meridian_explicit(self._parent_brep_component, self.vertices[point], self.loopstart, index, self.spacing(), longitude)
-        #index = self.AddLoop(index, self.loopstartpoint, last=True)
+    #     #index = self.AddLoop(index, self.loopstartpoint)
+    #     index, paths = self.draw_meridian_explicit(self._parent_brep_component, self.vertices[point], self.loopstart, index, self.spacing(), longitude)
+    #     #index = self.AddLoop(index, self.loopstartpoint, last=True)
 
-        return index, paths
+    #     return index, paths
 
+    # def ClosePathPart(self, point, index):
+    #     self.AddComment('Close path part (not at the end of current path, but out of bounds): Start ' + str(point) + '/' + str(self.ValidPointNumber()-1) + str(self.close[point]))
+    #     self.AddComment(str(self.vertices[point] + str(self.vertices[point])))
+    #     index = self.AddLoop(index, self.loopstartpoint)
+    #     paths = self.draw_parallel_explicit(self.ExtendToLatitude())
+    #     index = self.AddLoop(index, self.loopstartpoint)
+    #     self.AddComment('Close path part (not at the end of current path, but out of bounds): End of loop section ' + str(point) + '/' + str(self.ValidPointNumber()-1) + str(self.close[point]))
+    #     return index
 
-    def ClosePathEndToStart(self, index, extend_to_latitude = None):
-        if extend_to_latitude is None:
-            latitude = self.ExtendToLatitude()
-        else:
-            latitude = extend_to_latitude
-
-        point = - 1
-        
-        self.loopstartpoint = 0
-
-        #print index.point
-        #index = self.AddLoop(index, self.loopstartpoint)
-        index, paths = self.draw_parallel_explicit(self._parent_brep_component, self.loopend, self.loopstart, index, self.spacing(), latitude)
-        #index = self.AddLoop(index, self.loopstartpoint, last=True)
-        #print index.point
-
-        return index, paths
-
-
-    def ClosePathPart(self, point, index):
-        self.AddComment('Close path part (not at the end of current path, but out of bounds): Start ' + str(point) + '/' + str(self.ValidPointNumber()-1) + str(self.close[point]))
-        self.AddComment(str(self.vertices[point] + str(self.vertices[point])))
-        index = self.AddLoop(index, self.loopstartpoint)
-        index, paths = self.draw_parallel_explicit(self._parent_brep_component, self.vertices[point - 1], self.vertices[point], index, self.spacing(), self.ExtendToLatitude())
-        index = self.AddLoop(index, self.loopstartpoint)
-        self.AddComment('Close path part (not at the end of current path, but out of bounds): End of loop section ' + str(point) + '/' + str(self.ValidPointNumber()-1) + str(self.close[point]))
-        return index
-
-    def draw_parallel_explicit(self, rep, start, end, index, dx, to_parallel=None):
-        from Projection import longitude_diff
-        if isinstance(dx, float):
-            dx = [dx, dx]
-        tolerance = [0.6 * x for x in dx]
-        #print start, end, index.point
-        # Note start is actually start - 1
-
-        #print rep, start, end, index, dx, to_parallel
-
-        # Replace below by shapely bounding box
-        if (to_parallel is None):
-            to_parallel = max(start[1], end[1])
-            up_to_parallel = None
-        else:
-            # Generalise:
-            # to_parallel = max(to_parallel, start[1], end[1])
-            if (to_parallel >= start[1]) and (to_parallel >= end[1]):
-                up_to_parallel = True
-                to_parallel = max(to_parallel, start[1], end[1])
-            elif (to_parallel <= start[1]) and (to_parallel <= end[1]):
-                up_to_parallel = False
-                to_parallel = min(to_parallel, start[1], end[1])
-            else:
-                error('Extension of domain to parallel %(parallel)s failed: Parallel appears to be contained within the domain (start: %(start).2f, end: %(end).2f).' % {'parallel':to_parallel, 'start':start[1], 'end':end[1]}, fatal=True)
-
-        #print start, end, up_to_parallel, to_parallel
-
-        current = list(start) 
+    def develop_orthodrome(self, current, destination):
+        from math import ceil
         path = []
+        if not self.compare_points(current, destination):
+            points_to_add = int(ceil(distance_on_geoid(current, destination) / self.spacing()))
+            diff = ( (destination[0] - current[0]) / points_to_add, (destination[1] - current[1]) / points_to_add)
+            for i in range(points_to_add + 1):
+                point = self.FormatPoint(0, (current[0] + i * diff[0], current[1] + i * diff[1]), 0.0, project_to_output_projection_type=False)
+                path.append(point)
+        return path
+
+    def draw_parallel_explicit(self, to_parallel=None):
+        start = self.loopend
+        end = self.loopstart
+        dx = self.spacing()
+        rep = self._parent_brep_component
+
+        if to_parallel is None:
+            to_parallel = self.ExtendToLatitude()
+
+        if (to_parallel is None):
+            # Potential to use shapely bounding box here - need to determine direction
+            to_parallel = max(start[1], end[1])
+
         paths = []
-        comment = []
+        comments = []
 
-        if (self.compare_points(current, end)):
-            comment.append('Points already close enough, no need to draw parallels and meridians after all')
-            return index
+        if (self.compare_points(start, end)):
+            comments.append('Points already close enough, no need to draw parallels and meridians after all')
+            return paths
         else:
-            comment.append('Closing path with parallels and meridians, from (%.8f, %.8f) to  (%.8f, %.8f)' % ( start[0], start[1], end[0], end[1] ) )
-
-        loopstart = index
+            comments.append('Closing path with parallels and meridians, from (%.8f, %.8f) to  (%.8f, %.8f)' % ( start[0], start[1], end[0], end[1] ) )
 
         # Extend to latitude
-        if (current[1] != to_parallel):
-            comment.append('Drawing meridian to latitude index %s at %.2f, %.2f (to match %.2f)' % (index.point, current[0], current[1], to_parallel))
-        while (current[1] != to_parallel):
-            if (current[1] < to_parallel):
-                current[1] = current[1] + dx[1]
-            else:
-                current[1] = current[1] - dx[1]
-            if (abs(current[1] - to_parallel) < tolerance[1]): current[1] = to_parallel
-            if (self.compare_points(current, end)):
-                #print 'break 1'
-                break
-                #return index
-            #index.point += 1
-            rep.report('Drawing meridian to latitude index %s at %.2f, %.2f (to match %.2f)' % (index.point, current[0], current[1], to_parallel), debug=True)
-            point = rep.FormatPoint(index.point, current, 0.0, project_to_output_projection_type=False)
-            path.append(point)
-
+        path = self.develop_orthodrome(start, (start[0], to_parallel))
         if path:
-            paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment, projection = 'longlat'))
-            path = []
-            comment = []
+            comment = 'Drawing meridian to latitude at %.2f, %.2f (to match %.2f)' % (start[0], start[1], to_parallel)
+            comments.append(comment)
+            rep.report(comment, debug=True)
+            paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comments, projection = 'longlat'))
+            comments = []
 
-        if rep.MoreBSplines():
-            index, loopstart = complete_as_bspline(index, loopstart)
-
-        if (current[0] != end[0]):
-            comment.append('Drawing parallel index %s at %.2f (to match %.2f), %.2f' % (index.point, current[0], end[0], current[1]))
-        while (current[0] != end[0]):
-            if (longitude_diff(current[0], end[0]) < 0):
-                current[0] = current[0] + dx[0]
-            else:
-                current[0] = current[0] - dx[0]
-            #if (abs(current[0] - end[0]) < tolerance): current[0] = end[0]
-            if (abs(longitude_diff(current[0], end[0])) < tolerance[0]): current[0] = end[0]
-            if (self.compare_points(current, end)):
-                #print 'break 2'
-                break
-                #return index
-            #index.point += 1
-            rep.report('Drawing parallel index %s at %.2f (to match %.2f), %.2f' % (index.point, current[0], end[0], current[1]), debug=True)
-            point = rep.FormatPoint(index.point, current, 0.0, project_to_output_projection_type=False)
-            path.append(point)
-
+        # Extend along parallel
+        path = self.develop_orthodrome((start[0], to_parallel), (end[0], to_parallel))
         if path:
-            paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment, projection = 'longlat'))
-            path = []
-            comment = []
+            comment = 'Drawing parallel at %.2f (to match %.2f), %.2f' % (start[0], end[0], to_parallel)
+            comments.append(comment)
+            rep.report(comment, debug=True)
+            paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comments, projection = 'longlat'))
+            comments = []
 
-        if rep.MoreBSplines():
-            index, loopstart = complete_as_bspline(index, loopstart)
+        # Extend back from parallel along a meridian
+        destination = end
+        path = self.develop_orthodrome((end[0], to_parallel), end)
+        if path:
+            comment = 'Drawing meridian to end at %.2f, %.2f (to match %.2f)' % (end[0], to_parallel, end[1])
+            comments.append(comment)
+            rep.report(comment, debug=True)
+            paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comments, projection = 'longlat'))
+            comments = []
 
-        if (current[1] != end[1]):
-            comment.append('Drawing meridian to end index %s at %.2f, %.2f (to match %.2f)' % (index.point, current[0], current[1], end[1]))
-        while (current[1] != end[1]):
-            if (current[1] < end[1]):
-                current[1] = current[1] + dx[1]
-            else:
-                current[1] = current[1] - dx[1]
-            if (abs(current[1] - end[1]) < tolerance[1]): current[1] = end[1]
-            if (self.compare_points(current, end)):
-                #print 'break 3'
-                break
-                #return index
-            #index.point += 1
-            rep.report('Drawing meridian to end index %s at %.2f, %.2f (to match %.2f)' % (index.point, current[0], current[1], end[1]), debug=True)
-            point = rep.FormatPoint(index.point, current, 0.0, project_to_output_projection_type=False)
-            path.append(point)
+        return paths
+
+
+
+    def draw_meridian_explicit(self, to_meridian=None):
+        start = self.loopend
+        end = self.loopstart
+        dx = self.spacing()
+        rep = self._parent_brep_component
         
-        comment.append('Closed path with parallels and meridians, from (%.8f, %.8f) to  (%.8f, %.8f)' % ( start[0], start[1], end[0], end[1] ) )
-        
-        if path:
-            paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment, projection = 'longlat'))
-            path = []
-            comment = []
-
-        # FIXME
-        #index = rep.AddLoop(index, loopstart, last=True)
-
-        return index, paths
-
-
-
-    def draw_meridian_explicit(self, rep, start, end, index, dx, to_meridian=None):
-        from Projection import longitude_diff
-        # Replace below by shapely bounding box
         if (to_meridian is None):
+            # Potential to use shapely bounding box here - need to determine direction
             to_meridian = max(start[0], end[0])
-        else:
-            # Generalise:
-            # to_meridian = max(to_meridian, start[1], end[1])
-            if (to_meridian >= start[0]) and (to_meridian >= end[0]):
-                up_to_meridian = True
-                to_meridian = max(to_meridian, start[0], end[0])
-            elif (to_meridian <= start[0]) and (to_meridian <= end[0]):
-                up_to_meridian = False
-                to_meridian = min(to_meridian, start[0], end[0])
-            else:
-                error('Extension of domain to meridian %(meridian)s failed: Merdian appears to be contained within the domain (start: %(start).2f, end: %(end).2f).' % {'meridian':to_meridian, 'start':start[0], 'end':end[0]}, fatal=True)
 
-        current = list(start)
-        tolerance = dx * 0.6
-        path = []
         paths = []
-        comment = []
+        comments = []
 
-        if (self.compare_points(current, end)):
-            comment.append('Points already close enough, no need to draw parallels and meridians after all')
-            return index
+        if (self.compare_points(start, end)):
+            comments.append('Points already close enough, no need to draw parallels and meridians after all')
+            return paths
         else:
-            comment.append('Closing path with parallels and meridians, from (%.8f, %.8f) to  (%.8f, %.8f)' % ( start[0], start[1], end[0], end[1] ) )
+            comments.append('Closing path with parallels and meridians, from (%.8f, %.8f) to  (%.8f, %.8f)' % ( start[0], start[1], end[0], end[1] ) )
 
-        loopstart = index
+        # Extend to latitude
+        path = self.develop_orthodrome(start, (to_meridian, start[1]))
+        if path:
+            comment = 'Drawing parallel to longitude at %.2f, %.2f (to match %.2f)' % (start[0], start[1], to_meridian)
+            comments.append(comment)
+            rep.report(comment, debug=True)
+            paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comments, projection = 'longlat'))
+            comments = []
 
-        # Extend to longitude
+        # Extend along meridian
+        path = self.develop_orthodrome((to_meridian, start[1]), (to_meridian, end[1]))
+        if path:
+            comment = 'Drawing along meridian at %.2f (to match %.2f), %.2f' % (start[1], end[1], to_meridian)
+            comments.append(comment)
+            rep.report(comment, debug=True)
+            paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comments, projection = 'longlat'))
+            comments = []
+
+        # Extend back from meridian along a parallel
+        destination = end
+        path = self.develop_orthodrome((to_meridian, end[1]), end)
+        if path:
+            comment = 'Drawing parallel back to end at %.2f, %.2f (to match %.2f)' % (to_meridian, end[1], end[0])
+            comments.append(comment)
+            rep.report(comment, debug=True)
+            paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comments, projection = 'longlat'))
+            comments = []
+
+        return paths
+
+
         if (current[0] != to_meridian):
             comment.append('Drawing parallel to longitude index %s at %.2f, %.2f (to match %.2f)' % (index.point, current[0], current[1], to_meridian))
         while (current[0] != to_meridian):

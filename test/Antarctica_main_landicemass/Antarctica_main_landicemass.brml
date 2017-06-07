@@ -56,7 +56,7 @@ Supplement to: Timmermann, R et al. (2010): A consistent dataset of Antarctic ic
             </id>
             <representation_type name="BSpline"></representation_type>
             <spacing>
-                <real_value rank="0">10</real_value>
+                <real_value rank="0">1.0E6</real_value>
             </spacing>
         </brep_component>
         <brep_component name="Parallel_60S">
@@ -71,7 +71,7 @@ Supplement to: Timmermann, R et al. (2010): A consistent dataset of Antarctic ic
             </id>
             <representation_type name="BSpline"></representation_type>
             <spacing>
-                <real_value rank="0">10</real_value>
+                <real_value rank="0">1.0E6</real_value>
             </spacing>
         </brep_component>
         <closure>
