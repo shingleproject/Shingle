@@ -32,7 +32,7 @@
 
 from Universe import universe
 from Reporting import report, error, addcolour
-from RepresentationTools import draw_parallel_explicit
+#from RepresentationTools import draw_parallel_explicit
 from Spud import specification
 from BRepComponent import BRepComponent
 from Boundary import Boundary
@@ -375,7 +375,7 @@ Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'surface':self.Surface
                 if i == (len(component.components) - 1):
                     # Need to connect to first
                     last = True
-
+                
                 self.index = p.Generate(self.index, first=first, last=last)
 
         #for a in components:

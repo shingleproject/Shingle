@@ -40,7 +40,7 @@ Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
 2 3 12 17 74 76 80 8 13 22 30 34 36 37 40 42 46 47 50 60 61 72 81 84 90 91 94 99 101</comment>
                 <source name="RTopo105b_data_filtered_200km_30min"></source>
                 <minimum_area>
-                    <real_value rank="0">5000</real_value>
+                    <real_value rank="0">1E11</real_value>
                 </minimum_area>
                 <contourtype name="zmask" field_name="Automatic"></contourtype>
             </form>

@@ -34,13 +34,13 @@ from Universe import universe
 from Reporting import report, error
 from Import import ReadPaths
 from StringOperations import expand_boxes, bound_by_latitude, list_to_comma_separated, list_to_space_separated
-from RepresentationTools import draw_parallel_explicit
+#from RepresentationTools import draw_parallel_explicit
 from RepresentationTools import EnrichedPolyline
 from Projection import project
 from Spud import specification
 from Plot import PlotContours
 from Bounds import Bounds
-from Projection import compare_points
+#from Projection import c1ompare_points
 
 from shapely.geometry.polygon import LinearRing
 from shapely.geometry.polygon import LineString
@@ -412,7 +412,7 @@ class BRepComponent(object):
 
         connected = []
         for pair in pairwise(self.components):
-            connected.append(compare_points(pair[0].ends[1], pair[1].ends[0], self.Spacing()))
+            connected.append(pair[0].isClosed(pair[1]))
 
         return all(connected)
 
@@ -500,22 +500,25 @@ class BRepComponent(object):
             index.start = index.point + 1
             loopstartpoint = index.start
 
-            #p = EnrichedPolyline(self, reference_number = None, is_exterior = True)
+            p = EnrichedPolyline(self, reference_number = None, is_exterior = True)
 
             #print '----'
-            index, paths = draw_parallel_explicit(self, [   -0.01, self.BoundingLatitude()], [ 179.99, self.BoundingLatitude()], index, self.Spacing()/10.0, None)
+            # Use p in draw_parallel_explicit, not just as a method
+            index, paths = p.draw_parallel_explicit(self, [   -0.01, self.BoundingLatitude()], [ 179.99, self.BoundingLatitude()], index, self.Spacing()/10.0, None)
             #print 'A', paths
             for path in paths:
+                path.projection = 'longlat'
                 self.components.append(path)
-            index, paths = draw_parallel_explicit(self, [-179.99,  self.BoundingLatitude()], [   0.01, self.BoundingLatitude()], index, self.Spacing()/10.0, None)
+            index, paths = p.draw_parallel_explicit(self, [-179.99,  self.BoundingLatitude()], [   0.01, self.BoundingLatitude()], index, self.Spacing()/10.0, None)
             #print 'B', paths
             for path in paths:
+                path.projection = 'longlat'
                 self.components.append(path)
             
             components_new = [self]
             #components_new = [self.Reproduce(components=self.components)]
 
-            #index, paths = draw_parallel_explicit(self, a, b, index, self.Spacing(), None)
+            #index, paths = d1raw_parallel_explicit(self, a, b, index, self.Spacing(), None)
             #for path in paths: p.components.append(path)
 
             #index = p.AddLoop(index, loopstartpoint, True)
@@ -570,13 +573,13 @@ class BRepComponent(object):
             #p = EnrichedPolyline(self, reference_number = None, is_exterior = True)
 
 
-            #index, paths = draw_parallel_explicit(self, a, b, index, self.Spacing(), None)
+            #index, paths = d1raw_parallel_explicit(self, a, b, index, self.Spacing(), None)
             #for path in paths: p.components.append(path)
-            #index, paths = draw_parallel_explicit(self, b, c, index, self.Spacing(), None)
+            #index, paths = d1raw_parallel_explicit(self, b, c, index, self.Spacing(), None)
             #for path in paths: p.components.append(path)
-            #index, paths = draw_parallel_explicit(self, c, d, index, self.Spacing(), None)
+            #index, paths = d1raw_parallel_explicit(self, c, d, index, self.Spacing(), None)
             #for path in paths: p.components.append(path)
-            #index, paths = draw_parallel_explicit(self, d, a, index, self.Spacing(), None)
+            #index, paths = d1raw_parallel_explicit(self, d, a, index, self.Spacing(), None)
             #for path in paths: p.components.append(path)
 
             #index = p.AddLoop(index, loopstartpoint, True)
@@ -690,6 +693,11 @@ class BRepComponent(object):
 
         # Run through all components and link children
 
+        for i, p in enumerate(self.components):
+            b= p.shape.bounds
+            if min(b) == -180 or max(b) == 180:
+                print i+1, b
+
         components_new = self.Join(components + components_new)
 
         return components_new
@@ -724,8 +732,9 @@ class BRepComponent(object):
                     continue
 
                 for i, j in itertools.product(range(2), range(2)):
-                    #print i, j, first.ends[i], other.ends[j], compare_points(first.ends[i], other.ends[j], self.Spacing())
-                    if compare_points(first.ends[i], other.ends[j], self.Spacing()):
+                    #print i, j, first.ends[i], other.ends[j], c1ompare_points(first.ends[i], other.ends[j], self.Spacing())
+                    #if c1ompare_points(first.ends[i], other.ends[j], self.Spacing()):
+                    if first.isClosed(other):
                         pair = i, j
                         break
                 if pair:
@@ -798,8 +807,8 @@ class BRepComponent(object):
 #''' % { 'prefix':self.CounterPrefix('IP') } )
 
     def AddFormattedPointQuick(self, index, loc, z=0):
-        output_format = 'Point ( %(prefix)s%%i ) = { %%.%(dp)sf, %%.%(dp)sf, %%.%(dp)sf };' % { 'dp': universe.default.output_accuracy, 'prefix':'IP' }
-        self.AddContent(output_format % (index, output_location[0], output_location[1], z))
+        output_format = 'Point ( %(prefix)s%%i ) = { %%.%(dp)sf, %%.%(dp)sf, %%.%(dp)sf };' % { 'dp': universe.default.output_accuracy, 'prefix':self.CounterPrefix('IP') }
+        self.AddContent(output_format % (index, loc[0], loc[1], z))
 
     def AddFormattedPoint(self, index, loc, z, project_to_output_projection_type=True):
         output_format = 'Point ( %(prefix)s%%i ) = { %%.%(dp)sf, %%.%(dp)sf, %%.%(dp)sf };' % { 'dp': universe.default.output_accuracy, 'prefix':self.CounterPrefix('IP') }
@@ -825,7 +834,7 @@ class BRepComponent(object):
         from numpy import zeros, concatenate
         from Mathematical import area_enclosed
         from StringOperations import strplusone
-        from Projection import compare_latitude
+        #from Projection import compare_latitude
 
         latitude_max = self.ExtendToLatitude()
 
@@ -846,19 +855,35 @@ class BRepComponent(object):
         for number, p in enumerate(enriched_paths):
           p.reference_number = number + 1
 
-        ends = zeros([len(enriched_paths),4])
-        for num in range(len(enriched_paths)):
-            ends[num,:] = [
-                enriched_paths[num].vertices[0][0], 
-                enriched_paths[num].vertices[0][1],
-                enriched_paths[num].vertices[-1][0],
-                enriched_paths[num].vertices[-1][1]] 
-
         dateline=[]
-        for num in range(len(enriched_paths)):
-            if (abs(ends[num,0]) == 180) and (abs(ends[num,2]) == 180):
-                if (ends[num,1] != ends[num,3]):
-                    dateline.append(num)
+        for p in enriched_paths:
+            if (abs(p.loopstart[0]) == 180) and (abs(p.loopend[0]) == 180):
+                if p.loopstart[1] != p.loopend[1]:
+                    #print p.loopstart[1], p.loopend[1]
+                    dateline.append(p)
+                
+
+        print dateline
+
+        for i, p in enumerate(dateline):
+            merged = False
+            print "*", i, p.ends
+            for j, q in enumerate(dateline):
+                if i == j:
+                    continue
+                if not q:
+                    continue
+
+                if p.compare_points(p.loopend, q.loopstart) and p.compare_points(p.loopstart, q.loopend):
+                    asc HERE broken
+                    p = EnrichedPolyline(self, contour=p.shape.coords[:] + q.shape.coords[:], reference_number = num, initialise_only=True)
+                    q = None
+                    merged=True
+                    break
+            if merged:
+                break
+
+        print dateline
 
         matched = []
         appended = []
@@ -968,20 +993,20 @@ class BRepComponent(object):
     
         
 
-    def output_open_boundaries(self):
-        
-        index = self.index
+    # def output_open_boundaries(self):
+    #     
+    #     index = self.index
 
-        index.start = index.point + 1
-        loopstartpoint = index.start
+    #     index.start = index.point + 1
+    #     loopstartpoint = index.start
 
 
-        p = EnrichedPolyline(self, reference_number = None, is_exterior = True)
+    #     p = EnrichedPolyline(self, reference_number = None, is_exterior = True)
 
-        index = draw_parallel_explicit(self, [   -1.0, self.BoundingLatitude()], [ 179.0, self.BoundingLatitude()], index, self.Spacing(), None)
-        index = draw_parallel_explicit(self, [-179.0,  self.BoundingLatitude()], [   1.0, self.BoundingLatitude()], index, self.Spacing(), None)
+    #     index = d1raw_parallel_explicit(self, [   -1.0, self.BoundingLatitude()], [ 179.0, self.BoundingLatitude()], index, self.Spacing(), None)
+    #     index = d1raw_parallel_explicit(self, [-179.0,  self.BoundingLatitude()], [   1.0, self.BoundingLatitude()], index, self.Spacing(), None)
 
-        index = p.AddLoop(index, loopstartpoint, True)
+    #     index = p.AddLoop(index, loopstartpoint, True)
 
 
 

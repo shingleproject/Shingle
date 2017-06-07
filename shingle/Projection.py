@@ -71,7 +71,7 @@ def compare_latitude(a, b, dx):
     #print abs(a - b), tolerance, abs(a - b) < tolerance
     return abs(a - b) < tolerance
 
-def compare_points(a, b, dx, proj='longlat'):
+def c1ompare_points_old(a, b, dx, proj='longlat'):
     if isinstance(dx, float):
         dx = [dx, dx]
     tolerance = [0.6 * x for x in dx]
@@ -86,6 +86,11 @@ def compare_points(a, b, dx, proj='longlat'):
         else:
             return False
     else: 
+        from pyproj import Geod
+        wgs84_geod = Geod(ellps='WGS84')
+        az12,az21,dist = wgs84_geod.inv(a[0],a[1],a[0],a[1])
+        return dist < tolerance[0] * 1e5
+
         if ( not (abs(a[1] - b[1]) < tolerance[1]) ):
             #AddComment('lat differ')
             return False
@@ -115,7 +120,10 @@ def get_pyproj_projection(string):
     while string in _translation.keys():
         string = _translation[string] 
     try: 
-        p = pyproj.Proj(init=string)
+        if string.startswith('+proj='):
+            p = pyproj.Proj(string)
+        else:
+            p = pyproj.Proj(init=string)
     except:
         #error('Unable to define py.Proj with init string: ' + string, fatal=True)
         p = None
@@ -153,13 +161,13 @@ def project_shape(shape, source, destination):
     s = get_pyproj_projection(source)
     # Destination coordinate system
     d = get_pyproj_projection(destination)
-   
+  
     if destination == 'cartesian':
         projection = projection_function_cartesian
 
     elif not s or not d:
         for i, vertex in enumerate(shape.coords[:]):
-            shape.coord[i] = projec(vertex, projection_type=destination)
+            shape.coord[i] = project(vertex, projection_type=destination)
         return shape
 
     elif s.srs == d.srs:
@@ -238,8 +246,7 @@ def project(location, projection_type=None):
     elif (projection_type == 'longlat' ):
         return location
     else:
-        error('Invalid projection type: ' + projection_type)
-        sys.exit(1)
+        error('Invalid projection type: ' + projection_type, fatal=True)
 
 
 
