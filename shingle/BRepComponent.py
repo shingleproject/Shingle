@@ -697,10 +697,10 @@ class BRepComponent(object):
 
         # Run through all components and link children
 
-        for i, p in enumerate(self.components):
-            b= p.shape.bounds
-            if min(b) == -180 or max(b) == 180:
-                print i+1, b
+        #for i, p in enumerate(self.components):
+        #    b= p.shape.bounds
+        #    if min(b) == -180 or max(b) == 180:
+        #        print i+1, b
 
         components_new = self.Join(components + components_new)
 
@@ -891,7 +891,8 @@ class BRepComponent(object):
                 elif p.compare_points_source(p.loopend, q.loopend) and p.compare_points_source(p.loopstart, q.loopstart):
                     #asc HERE broken
                     # need to reverse
-                    enriched_paths[i] = EnrichedPolyline(self, vertices=p.shape.coords[:] + reversed(q.shape.coords[:]), reference_number = num, initialise_only=True)
+                    #enriched_paths[i] = EnrichedPolyline(self, vertices=p.shape.coords[:] + reversed(q.shape.coords[:]), reference_number = num, initialise_only=True)
+                    enriched_paths[i] = EnrichedPolyline(self, vertices=p.shape.coords[:] + q.shape.coords[::-1], reference_number = num, initialise_only=True)
                     enriched_paths[j] = None
                     merged.append((i+1, -(j+1)))
                     break
