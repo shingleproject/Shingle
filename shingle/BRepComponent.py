@@ -401,7 +401,7 @@ class BRepComponent(object):
         return open_components
 
     
-    def isClosed(self):
+    def isClosed(self, following=None):
 
         from itertools import izip
         def pairwise(t):
@@ -409,11 +409,17 @@ class BRepComponent(object):
             return izip(it,it)
 
         if len(self.components) == 1:
-            return self.components[0].isClosed()
+            return self.components[0].isClosed(following=following.components[0])
 
         connected = []
-        for pair in pairwise(self.components):
+        #for pair in pairwise(self.components):
+        for pair in zip(self.components, self.components[1:]):
             connected.append(pair[0].isClosed(pair[1]))
+        if following:
+            connected.append(self.components[-1].isClosed(following.components[0]))
+        else:
+            connected.append(self.components[-1].isClosed(self.components[0]))
+            
 
         return all(connected)
 
