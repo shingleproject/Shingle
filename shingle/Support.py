@@ -169,6 +169,8 @@ def FilenameAddExtension(path, extension):
 def PathFull(path):
     if path.startswith('/'):
         return path
+    if path.startswith('~'):
+        return path
     return os.path.realpath(os.path.join(universe.root, path))
 
 def SourceTestFolder():

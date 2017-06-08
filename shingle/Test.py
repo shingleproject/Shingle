@@ -345,6 +345,8 @@ class VerificationTests(object):
                 return False
             if 'Mesh tool version: ' in string:
                 return False
+            if '.FileName = ' in string:
+                return False
             return True
 
         def ReadNextLines(filehandle, number):

@@ -160,13 +160,20 @@ class SpatialDiscretisation(object):
             comments.append('[None provided]')
         return linesep.join(comments)
 
-    def Root(self):
-        return os.path.realpath(os.path.dirname(self._filename))
+    def Root(self, abbreviate=False):
+        from re import sub
+        root = os.path.realpath(os.path.dirname(self._filename))
+        if abbreviate:
+            root = sub('^' + os.path.expanduser('~/'), '~/', root)
+        return root
 
-    def PathRelative(self, path):
+    def PathRelative(self, path, abbreviate=False):
         if path.startswith('/'):
             return path
-        return os.path.realpath(os.path.join(self.Root(), path))
+        if path.startswith('~'):
+            return os.path.expanduser(path)
+        #print path, self.Root(), os.path.join(self.Root(abbreviate=abbreviate), path)
+        return os.path.realpath(os.path.join(self.Root(abbreviate=abbreviate), path))
 
     def report(self, *args, **kwargs):
         report(*args, **kwargs)

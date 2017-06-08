@@ -431,6 +431,7 @@ global field
         self._file().write(string + '\n')
 
     def Import(self):
+        from re import sub
         string = '''
 // External metric field definition
 Field[1] = Structured;
@@ -446,6 +447,7 @@ Background Field = 1;
 
 ''' % {
         'filename': self.Filepath(full=True),
+        #'filename': sub('^' + os.path.expanduser('~/'), '~/', self.Filepath(full=True)),
     }
         return string
 
