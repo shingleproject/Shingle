@@ -398,7 +398,8 @@ def read_shape(filename):
     paths = []
     shapes = ReadShapefile(filename)
 
-    from matplotlib.path import Path
+    #from matplotlib.path import Path
+    from shapely.geometry.polygon import LineString
     #class PPath(object):
     #  def __init__(self, vertices):
     #    self.vertices = vertices
@@ -412,17 +413,17 @@ def read_shape(filename):
 
         if shape.type == 'Polygon':
             try:
-                p = Path(vertices=shape.exterior.coords[:])
+                p = LineString(shape.exterior.coords[:])
                 #print p.vertices
                 paths.append(p)
             except:
                 pass
             for interior in shape.interiors:
-                p = Path(vertices=interior.coords[:])
+                p = LineString(interior.coords[:])
                 #print p.vertices
                 paths.append(p)
         elif shape.type == 'LineString':
-                p = Path(vertices=shape.coords[:])
+                p = LineString(shape.coords[:])
                 #print p.vertices
                 paths.append(p)
         else:
@@ -430,6 +431,9 @@ def read_shape(filename):
 
     return paths
 
+def ReadShape(brep, dataset):
+    filename = dataset.LocationFull()
+    return read_shape(filename) 
 
 def ReadPaths(brep, dataset):
     filename = dataset.LocationFull()
@@ -448,6 +452,7 @@ def ReadPaths(brep, dataset):
         contour_required = True
     elif ext in ['shp']:
         paths = read_shape(filename) 
+        raise NotImplemented
     else: # NetCDF .nc files
       
         region, field = Filter(dataset, brep, subregion)

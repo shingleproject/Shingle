@@ -250,9 +250,6 @@ class BRepComponent(object):
     def isBSpline(self):
         return self.RepresentationType() == 'BSpline'
 
-    def isPolyline(self):
-        return self.RepresentationType() == 'Polyline'
-
     def FormType(self):
         if self._form_type is None:
             if specification.have_option(self._path + '/form[0]/name'):
@@ -260,14 +257,15 @@ class BRepComponent(object):
             else:
                 self._form_type = 'Raster'
         # Useful to catch this at the moment:
-        if self._form_type in 'Polyline':
-            raise NotImplementedError
-        if self._form_type not in ['Raster', 'Parallel', 'ExtendToParallel', 'ExtendToMeridian', 'BoundingBox']:
+        if self._form_type not in ['Raster', 'Polyline', 'Parallel', 'ExtendToParallel', 'ExtendToMeridian', 'BoundingBox']:
             raise NotImplementedError
         return self._form_type
 
     def isRaster(self):
         return self.FormType() == 'Raster'
+
+    def isPolyline(self):
+        return self.FormType() == 'Polyline'
 
     def isParallel(self):
         return self.FormType() == 'Parallel'
@@ -375,7 +373,7 @@ class BRepComponent(object):
             self.report('Boundaries restricted to paths: ' + list_to_comma_separated(self.Boundary()), indent=1)
         if str(self.Region()) is not 'True':
             self.report('Region defined by ' + str(self.Region()), indent=1)
-        self.report('Open contours closed with a line formed by points spaced %(dx)g degrees apart' % {'dx':self.Spacing()}, indent=1)
+        self.report('Open contours closed with a line formed by points spaced %(dx)gm apart' % {'dx':self.Spacing()}, indent=1)
         self.AddComment('')
 
     def Dataset(self):
@@ -385,12 +383,6 @@ class BRepComponent(object):
             error("Component BRep '%(brep)s' requires the dataset '%(dataset)s', but this cannot be sourced." % {'brep':self.Name(), 'dataset':name}, fatal = True)
         return self._surface_rep.spatial_discretisation.Dataset()[name]
 
-    def GenerateContour(self):
-        from Import import ReadPaths
-        dataset = self.Dataset()
-        self.report('Generating contours, from raster: ' + dataset.LocationFull(), include = False, indent = 1)
-        self._pathall = ReadPaths(self, dataset)
-            
     def identifyOpen(self, components):
         open_components = []
         for i, component in enumerate(components):
@@ -408,8 +400,8 @@ class BRepComponent(object):
             it = iter(t)
             return izip(it,it)
 
-        if following:
-            print len(self.components), len(following.components)
+        #if following:
+        #    print len(self.components), len(following.components)
 
         if following:
             return self.components[-1].isClosed(following=following.components[0])
@@ -430,10 +422,69 @@ class BRepComponent(object):
     def Generate(self, components=[]):
         import os
         #self.AddSection('BRep component: ' + self.Name())
+        #print 'Name', self.Name()
 
         components_new = []
+        if self.isPolyline():
+            self.AppendParameters()
+            dataset = self.Dataset()
+            dataset.AppendParameters()
+            dataset.CheckSource()
+        
+            from Import import ReadShape
+            self.report('Reading polylines, from shapefile: ' + dataset.LocationFull(), include = False, indent = 1)
+            p = ReadShape(self, dataset)
+            #print p
+            self._pathall = ReadShape(self, dataset)
+
+            self.report('Paths found: ' + str(len(self._pathall)), indent=1)
+            self.output_boundaries()
+            
+            if (universe.plotcontour):
+                self.PlotFoundPaths()
+
+            for p in self._valid_paths:
+                #print p.shape.coords[:2]
+                #p.Interpolate(spacing=1000.0)
+
+                p.SetExterior(self.isExterior(p.reference_number, valid_paths = self._valid_paths))
+                if p.isValid():
+                    if p.isExterior():
+                        self.exterior.append(p)
+                    else:
+                        if p.isClosed():
+                            self.interior.append(p)
+                        else:
+                            report('Interior path %(number)s skipped, not a complete island', var = {'number':p.reference_number}, indent=2)
+                            
+
+            report('Processing paths:', indent=1)
+            # Examine all EnrichedPathlines p
+            p = None
+            for p in self.interior:
+                if p.isClosed():
+                    area_string = '   area %(area)g' % {'area':p.AreaEnclosed()}
+                else:
+                    area_string = ''
+                report('Interior path %(number)s%(area)s', var = {'number':p.reference_number, 'area':area_string}, indent=2)
+                #self.index = p.Generate(self.index)
+                self.components.append(p)
+            for p in self.exterior:
+                if p.isClosed():
+                    area_string = '   area %(area)g' % {'area':p.AreaEnclosed()}
+                else:
+                    area_string = ''
+                report('Exterior path %(number)s%(area)s', var = {'number':p.reference_number, 'area':area_string}, indent=2)
+                #self.index = p.Generate(self.index)
+                self.components.append(p)
+
+            # Best to interpolate later at time of writing?, also need to process project properly
+            #components_new = [self.Reproduce(components=[p.Interpolate(spacing=1000.0)], total=len(self.components)) for p in self.components]
+            components_new = [self.Reproduce(components=[p], total=len(self.components)) for p in self.components]
+
+
         if self.isRaster():
-            p = self.PreviousBRepComponent()
+            #p = self.PreviousBRepComponent()
             
             # Pick up previous BRep component
             #if len(p.components) > 0:
@@ -454,7 +505,9 @@ class BRepComponent(object):
             if dataset.cache and os.path.exists(dataset.cachefile):
                 dataset.CacheLoad()
             else:
-                self.GenerateContour()
+                from Import import ReadPaths
+                self.report('Generating contours, from raster: ' + dataset.LocationFull(), include = False, indent = 1)
+                self._pathall = ReadPaths(self, dataset)
                 dataset.CacheSave()
 
             self.report('Paths found: ' + str(len(self._pathall)), indent=1)
@@ -564,13 +617,13 @@ class BRepComponent(object):
             for bound in zip(*[bounds[i:]+bounds[:i] for i in range(2)]):
                 comment = []
                 comment.append('Drawing bounding box line ' + str(bound))
-                #print '++++', bound
+                print '++++', bound
                 #paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment))
                 p = EnrichedPolyline(self, shape=LineString(bound), initialise_only=True, is_exterior=True, comment=comment)
                 p.Interpolate()
                 #p.Project()
 
-                #print p.shape.coords[:]
+                print p.shape.coords[:]
 
                 self.components.append(p)
 
@@ -676,6 +729,8 @@ class BRepComponent(object):
                 path.projection = 'longlat'
                 p.components.append(path)
 
+        #else:
+        #    error('BRepComponent ' + self.Name() + ' of type ' + self.FormType() + ' not processed' + str(self.isPolyline()))
 
         #print self.components
         #print
@@ -728,6 +783,19 @@ class BRepComponent(object):
     def ends(self):
         return self.components[0].loopstart, self.components[-1].loopend
 
+    @property
+    def components_reversed(self):
+        return [x.reversed() for x in reversed(self.components)]
+
+    def update_component_order(self):
+        for i, component in enumerate(self.components):
+            #print i, component
+            #print i
+            #print ' ', i, (i - 1) % len(brep.components)
+            component.before = self.components[(i - 1) % len(self.components)]
+            #print ' ', i, (i + 1) % len(brep.components)
+            component.after = self.components[(i + 1) % len(self.components)]
+            
     def Join(self, components):
         import itertools
         open_components = self.identifyOpen(components)
@@ -746,7 +814,7 @@ class BRepComponent(object):
 
                 for i, j in itertools.product(range(2), range(2)):
                     #print i, j, first.ends[i], other.ends[j], c1ompare_points(first.ends[i], other.ends[j], self.Spacing())
-                    print first.Name(), other.Name(), first.ends[i], other.ends[j]
+                    #print first.Name(), other.Name(), first.ends[i], other.ends[j]
                     if first.components[0].compare_points(first.ends[i], other.ends[j]):
                     #if first.isClosed(other):
                         pair = i, j
@@ -755,15 +823,22 @@ class BRepComponent(object):
                     #print 'Merge', first, other
                     #print i, j, first.ends[i], other.ends[j]
                     if (i, j) == (1, 0):
+                        first._name = first.Name() + ' AND ' + other.Name()
                         first.components = first.components + other.components
                     elif (i, j) == (0, 1):
+                        first._name = other.Name() + ' AND ' + first.Name()
                         first.components = other.components + first.components
                     elif (i, j) == (1, 1):
-                        error('Reversal needed, also for first possibly?  Not implemented', fatal=True)
-                        #first.components = other.components + reverse(first.components)
+                        #error('Reversal needed, also for first possibly?  Not implemented', fatal=True)
+                        error('Reversal needed, also for first possibly?  Not implemented')
+                        first._name = other.Name() + ' AND reversed ' + first.Name()
+                        first.components = other.components + first.components_reversed
                     elif (i, j) == (0, 0):
-                        error('Reversal needed, also for first possibly?  Not implemented', fatal=True)
-                        #first.components = first.components + reverse(other.components)
+                        #error('Reversal needed, also for first possibly?  Not implemented', fatal=True)
+                        error('Reversal needed, also for first possibly?  Not implemented 2 ')
+                        first._name = first.Name() + ' AND reversed ' + other.Name()
+                        first.components = first.components + other.components_reversed
+                    # Update_component_order needed?
                     other.components = []
 
 
@@ -852,16 +927,15 @@ class BRepComponent(object):
 
         latitude_max = self.ExtendToLatitude()
 
-        #self.AddHeader()
-        splinenumber = 0
-        indexbase = 1
-        self.index.point = indexbase
-
         enriched_paths = []
         for num in range(len(self._pathall)+1)[1:]:
             if (self._pathall[num-1] == None):
                 continue
-            p = EnrichedPolyline(self, contour=self._pathall[num-1], reference_number = num, initialise_only=True)
+                #print 'PPPP'
+            if self.isPolyline():
+                p = EnrichedPolyline(self, shape=self._pathall[num-1], reference_number = num, initialise_only=True)
+            else:
+                p = EnrichedPolyline(self, contour=self._pathall[num-1], reference_number = num, initialise_only=True)
             if p.shape is not None:
                 enriched_paths.append(p)
 

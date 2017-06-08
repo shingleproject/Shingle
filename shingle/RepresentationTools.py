@@ -124,6 +124,10 @@ class EnrichedPolyline(object):
 
         if shape is not None:
             self.shape = shape
+            #print 'XX', self.loopstart, self.loopend, self.compare_points(self.loopstart, self.loopend)
+            if self.compare_points(self.loopstart, self.loopend):
+                self.shape = LinearRing(self.vertices)
+            #self.vertices = shape.coords[:]
         elif vertices is not None:
             self.vertices = vertices
         elif contour:
@@ -177,6 +181,7 @@ class EnrichedPolyline(object):
         self.shape = None
         self.spacing_source = None
         if self.vertices is not None:
+            #print 'YY', self.loopstart, self.loopend, self.compare_points_source(self.loopstart, self.loopend)
             if self.compare_points_source(self.loopstart, self.loopend):
                 #print self.reference_number, 'linear ring'
                 #self.shape = Polygon(self.vertices)
@@ -268,6 +273,8 @@ class EnrichedPolyline(object):
             # Assume longitude in -180, 180 (Grenwich-centred)
             # i.e. that longitude values are >=-180
             return abs(( (a[0] + 360.0) % 360.0 ) - ( (b[0] + 360.0) % 360.0 ) ) <= tolerance[0]
+        elif 'utm' in self.projection or 'tmerc' in self.projection:
+            return Point(a).distance(Point(b))
         else:
             error('Not implemented for projection type: ' + self.projection, fatal=True)
 
@@ -275,9 +282,9 @@ class EnrichedPolyline(object):
         tolerance = 0.6 * self.spacing()
         if self.projection in ['longlat', 'Automatic']:
             return distance_on_geoid(a, b) < tolerance
-        elif 'utm' in self.projection:
-            return ....
-            asc here
+        # This to be the end catch all
+        elif 'utm' in self.projection or 'tmerc' in self.projection:
+            return Point(a).distance(Point(b))
 
         # Below needs further checking following updates
         elif (proj == 'horizontal'):
@@ -305,11 +312,10 @@ class EnrichedPolyline(object):
                 #AddComment('not same %g %g' % (abs(abs(a[0]) - 180), abs(abs(b[0]) - 180) ) )
                 return False
 
-
-
-
-
-
+    def reversed(self):
+        #if self.isRing():
+        self.shape.coords = list(self.shape.coords)[::-1]
+        return self
 
     def __str__(self):
         return str(self.reference_number)
@@ -332,7 +338,7 @@ class EnrichedPolyline(object):
     def isClosed(self, following=None):
         if following:
             # Enable use of dataset spacing
-            print self.loopend, following.loopstart, self.compare_points(self.loopend, following.loopstart)
+            #print self.loopend, following.loopstart, self.compare_points(self.loopend, following.loopstart)
             return self.compare_points(self.loopend, following.loopstart)
         else:
             #print self.shape.geom_type
@@ -610,8 +616,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
                 break
             heading = self.shape.coords[i+1]
 
-            d = Point(coord).distance(Point(heading))
-            points_to_add = int(ceil((d / spacing) - 1.0))
+            points_to_add = int(ceil(distance_on_geoid(coord, heading) / spacing) - 1.0)
             #dx =  LineString((heading[0] - coord[0], heading[1] - coord[0] ))
             s = (heading[0] - coord[0]) / (points_to_add + 1), (heading[1] - coord[1]) / (points_to_add + 1)
 

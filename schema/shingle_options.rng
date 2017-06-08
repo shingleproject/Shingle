@@ -297,32 +297,34 @@ from a URL over HTTP.</a:documentation>
     </choice>
   </define>
   <define name="dataset_polyline_options">
-    <element name="source">
-      <a:documentation>Source shapefile (.shp) containing polyline information
+    <choice>
+      <element name="source">
+        <a:documentation>Source shapefile (.shp) containing polyline information
 
 (change to define a folder within project for location?)</a:documentation>
-      <attribute name="name">
-        <value>Local_file</value>
-      </attribute>
-      <attribute name="file_name">
-        <data type="string"/>
-      </attribute>
-      <ref name="comment"/>
-    </element>
-    <element name="source">
-      <a:documentation>Source shapefile (.shp) containing polyline information
+        <attribute name="name">
+          <value>Local_file</value>
+        </attribute>
+        <attribute name="file_name">
+          <data type="string"/>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="source">
+        <a:documentation>Source shapefile (.shp) containing polyline information
 
 See: http://www.opendap.org
 
 See: http://opendap.deltares.nl
 
 See: http://www.esrl.noaa.gov/psd/data/gridded/using_dods.html</a:documentation>
-      <attribute name="name">
-        <value>OPeNDAP</value>
-      </attribute>
-      <data type="string"/>
-      <ref name="comment"/>
-    </element>
+        <attribute name="name">
+          <value>OPeNDAP</value>
+        </attribute>
+        <data type="string"/>
+        <ref name="comment"/>
+      </element>
+    </choice>
   </define>
   <define name="dataset_project_options">
     <element name="source">

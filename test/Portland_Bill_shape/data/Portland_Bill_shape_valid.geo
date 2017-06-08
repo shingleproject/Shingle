@@ -51,33 +51,31 @@
 //     <orientation name="LongLat"/>
 //   </output>
 //   <dataset name="SouthCoast">
-//     <form name="Raster">
+//     <form name="Polyline">
 //       <source file_name="data/SouthCoast.shp" name="Local_file"/>
 //     </form>
-//     <projection name="Automatic"/>
+//     <projection name="Proj4_string">+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.999601272 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs</projection>
 //   </dataset>
 //   <dataset name="OpenOcean">
-//     <form name="Raster">
+//     <form name="Polyline">
 //       <source file_name="data/OpenOcean.shp" name="Local_file"/>
 //     </form>
-//     <projection name="Automatic"/>
+//     <projection name="Proj4_string">+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.999601272 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs</projection>
 //   </dataset>
 //   <geoid_surface_representation name="PortlandBill">
 //     <id>
 //       <integer_value rank="0">9</integer_value>
 //     </id>
 //     <brep_component name="SouthCoast">
-//       <form name="Raster">
+//       <form name="Polyline">
 //         <source name="SouthCoast"/>
-//         <contourtype field_level="10.0" field_name="amask" name="iceshelfcavity"/>
 //       </form>
 //       <identification name="Coast"/>
 //       <representation_type name="BSpline"/>
 //     </brep_component>
 //     <brep_component name="OpenOcean">
-//       <form name="Raster">
+//       <form name="Polyline">
 //         <source name="OpenOcean"/>
-//         <contourtype field_level="10.0" field_name="amask" name="iceshelfcavity"/>
 //       </form>
 //       <identification name="OpenOcean"/>
 //       <representation_type name="Polyline"/>
@@ -131,25 +129,23 @@
 // == BRep component pre-scan =====================================
 //   1. SouthCoast
 //       Path:           /geoid_surface_representation::PortlandBill/brep_component::SouthCoast
-//       Form:           Raster
+//       Form:           Polyline
 //       Identification: Coast
 //   2. OpenOcean
 //       Path:           /geoid_surface_representation::PortlandBill/brep_component::OpenOcean
-//       Form:           Raster
+//       Form:           Polyline
 //       Identification: OpenOcean
 
 // == BRep component: SouthCoast ==================================
 // Reading boundary representation SouthCoast
-// Open contours closed with a line formed by points spaced 0.1 degrees apart
+// Open contours closed with a line formed by points spaced 10000m apart
 // Paths found: 9
-// Merged paths that cross the date line: 
 // Paths found valid (renumbered order): 9, including 1-9
 
 // == BRep component: OpenOcean ===================================
 // Reading boundary representation OpenOcean
-// Open contours closed with a line formed by points spaced 0.1 degrees apart
+// Open contours closed with a line formed by points spaced 10000m apart
 // Paths found: 1
-// Merged paths that cross the date line: 
 // Paths found valid (renumbered order): 1, including 1
 //   Component boundary representations identified:
 //     1: SouthCoast (part 1 of 9) (components: 1, closed)

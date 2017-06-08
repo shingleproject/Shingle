@@ -36,7 +36,7 @@ from Universe import universe
 from Support import SourceTestFolder
 from Reporting import report, error, Log
 from Spud import specification
-from Raster import Dataset, Raster
+from Raster import Dataset, Raster, Polyline
 
 
 class ReadMultipleInstance(object):
@@ -308,7 +308,7 @@ PolarSphere ( %(surface_prefix)s0 ) = { %(prefix)s0, %(prefix)s1 };
             if d.form == 'Raster':
                 d = Raster(spatial_discretisation=self, number=number)
             elif d.form == 'Polyline':
-                raise NotImplementedError
+                d = Polyline(spatial_discretisation=self, number=number)
             else:
                 raise NotImplementedError
             if d.isLocal() or d.isHttp():

@@ -299,14 +299,16 @@ Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'surface':self.Surface
                 #components = components + brep._valid_paths
            
             # Run through all components and link children
-            for brep in components:
+            for j, brep in enumerate(components):
                 if len(brep.components) > 1:
                     for i, component in enumerate(brep.components):
-                        #print i
+                        #print 'breps', j, i, type(brep), type(component)
                         #print ' ', i, (i - 1) % len(brep.components)
                         component.before = brep.components[(i - 1) % len(brep.components)]
                         #print ' ', i, (i + 1) % len(brep.components)
                         component.after = brep.components[(i + 1) % len(brep.components)]
+                ##if len(brep.components) > 1:
+                #brep.update_component_order()
 
             self._brep_components_complete = components
         return self._brep_components_complete
