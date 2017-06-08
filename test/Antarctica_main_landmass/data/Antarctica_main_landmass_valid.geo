@@ -16,7 +16,7 @@
 // 
 // Project name: Antarctica_main_landmass
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/06/08 16:24:18 
+// Created at: 2017/06/08 18:05:59 
 // Project description:
 //   Use the RTopo dataset (RTopo105b.nc),
 //   considering all land masses up to a latitude of 60S,
@@ -53,9 +53,7 @@
 //   </domain_type>
 //   <global_parameters/>
 //   <output>
-//     <projection>
-//       <string_value>cartesian</string_value>
-//     </projection>
+//     <projection name="Cartesian"/>
 //     <orientation name="SouthPole"/>
 //   </output>
 //   <dataset name="RTopo">
@@ -150,7 +148,7 @@
 
 // == Boundary Representation Specification Parameters ============
 // Output to Antarctica_main_landmass.geo
-// Projection type cartesian
+// Projection type Cartesian
 
 // == Boundary Representation description =========================
 

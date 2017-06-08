@@ -16,7 +16,7 @@
 // 
 // Project name: Portland_Bill_shape
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/06/08 15:59:13 
+// Created at: 2017/06/08 18:06:39 
 // Project description:
 //   Example simulation domain around Portland including the UK South Coast.
 //       In a latitude-longitude WGS84 projection.

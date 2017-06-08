@@ -16,147 +16,145 @@
 // 
 // Project name: UK_NorthSea_region_opendap
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/06/08 14:56:59 
+// Created at: 2017/06/08 18:06:53 
 // Project description:
 //   Example simulation domain around the UK and Ireland in the North Sea.
 //       In a latitude-longitude WGS84 projection.
 
 // == Source Shingle surface geoid boundnary representation =======
-// <?xml version="1.0" encoding="utf-8" ?>
+// <?xml version='1.0' encoding='utf-8'?>
 // <boundary_representation>
-//     <model_name>
-//         <string_value lines="1">UK_NorthSea_region_opendap</string_value>
-//         <comment>Example simulation domain around the UK and Ireland in the North Sea.
+//   <model_name>
+//     <string_value lines="1">UK_NorthSea_region_opendap</string_value>
+//     <comment>Example simulation domain around the UK and Ireland in the North Sea.
 //     In a latitude-longitude WGS84 projection.</comment>
-//     </model_name>
-//     <reference>
-//         <author name="ASCandy">
-//             <string_value lines="1">Adam S. Candy</string_value>
-//             <email_address>
-//                 <string_value lines="1">A.S.Candy@tudelft.nl</string_value>
-//             </email_address>
-//             <institution>
-//                 <string_value lines="1">Technische Universiteit Delft</string_value>
-//             </institution>
-//         </author>
-//     </reference>
-//     <domain_type>
-//         <string_value lines="1">oceans</string_value>
-//     </domain_type>
-//     <global_parameters></global_parameters>
-//     <output>
-//         <projection>
-//             <string_value>longlat</string_value>
-//         </projection>
-//         <orientation name="LongLat"></orientation>
-//     </output>
-//     <dataset name="ETOPO2">
-//         <form name="Raster">
-//             <source name="OPeNDAP" url="http://geoport.whoi.edu/thredds/dodsC/bathy/etopo2_v2c.nc"></source>
-//         </form>
-//         <projection name="Automatic"></projection>
-//     </dataset>
-//     <geoid_surface_representation name="NorthSea">
-//         <id>
-//             <integer_value rank="0">9</integer_value>
-//         </id>
-//         <brep_component name="NorthSea">
-//             <form name="Raster">
-//                 <source name="ETOPO2"></source>
-//                 <region name="MainRegionAroundUK">
-//                     <longitude>
-//                         <minimum>
-//                             <real_value rank="0">-14</real_value>
-//                         </minimum>
-//                         <maximum>
-//                             <real_value rank="0">6</real_value>
-//                         </maximum>
-//                     </longitude>
-//                     <latitude>
-//                         <minimum>
-//                             <real_value rank="0">46</real_value>
-//                         </minimum>
-//                         <maximum>
-//                             <real_value rank="0">64</real_value>
-//                         </maximum>
-//                     </latitude>
-//                 </region>
-//                 <minimum_area>
-//                     <real_value rank="0">0.1</real_value>
-//                 </minimum_area>
-//                 <contourtype name="gebco10m" field_level="-10.0" field_name="Automatic"></contourtype>
-//                 <boundary>1</boundary>
-//             </form>
-//             <identification name="Coast"></identification>
-//             <representation_type name="BSpline"></representation_type>
-//         </brep_component>
-//         <brep_component name="OpenBoundary">
-//             <form name="BoundingBox">
-//                 <region name="MainRegionAroundUK">
-//                     <longitude>
-//                         <minimum>
-//                             <real_value rank="0">-14</real_value>
-//                         </minimum>
-//                         <maximum>
-//                             <real_value rank="0">6</real_value>
-//                         </maximum>
-//                     </longitude>
-//                     <latitude>
-//                         <minimum>
-//                             <real_value rank="0">46</real_value>
-//                         </minimum>
-//                         <maximum>
-//                             <real_value rank="0">64</real_value>
-//                         </maximum>
-//                     </latitude>
-//                 </region>
-//             </form>
-//             <identification name="OpenOcean"></identification>
-//             <representation_type name="BSpline"></representation_type>
-//         </brep_component>
-//         <boundary name="Coast">
-//             <identification_number>
-//                 <integer_value rank="0">3</integer_value>
-//             </identification_number>
-//         </boundary>
-//         <boundary name="OpenOcean">
-//             <identification_number>
-//                 <integer_value rank="0">4</integer_value>
-//             </identification_number>
-//         </boundary>
-//     </geoid_surface_representation>
-//     <geoid_metric>
-//         <form name="Proximity">
-//             <boundary name="Coast"></boundary>
-//             <edge_length_minimum>
-//                 <real_value rank="0">0.01</real_value>
-//             </edge_length_minimum>
-//             <edge_length_maximum>
-//                 <real_value rank="0">2</real_value>
-//             </edge_length_maximum>
-//             <proximity_minimum>
-//                 <real_value rank="0">0.05</real_value>
-//             </proximity_minimum>
-//             <proximity_maximum>
-//                 <real_value rank="0">5</real_value>
-//             </proximity_maximum>
-//         </form>
-//     </geoid_metric>
-//     <geoid_mesh>
-//         <library name="Gmsh"></library>
-//     </geoid_mesh>
-//     <validation>
-//         <test name="BrepDescription" file_name="data/UK_NorthSea_region_opendap_valid.geo"></test>
-//         <tag name="UK"></tag>
-//         <tag name="NorthSea"></tag>
-//         <tag name="OPeNDAP"></tag>
-//         <tag name="continuous"></tag>
-//     </validation>
+//   </model_name>
+//   <reference>
+//     <author name="ASCandy">
+//       <string_value lines="1">Adam S. Candy</string_value>
+//       <email_address>
+//         <string_value lines="1">A.S.Candy@tudelft.nl</string_value>
+//       </email_address>
+//       <institution>
+//         <string_value lines="1">Technische Universiteit Delft</string_value>
+//       </institution>
+//     </author>
+//   </reference>
+//   <domain_type>
+//     <string_value lines="1">oceans</string_value>
+//   </domain_type>
+//   <global_parameters/>
+//   <output>
+//     <projection name="LongLat"/>
+//     <orientation name="LongLat"/>
+//   </output>
+//   <dataset name="ETOPO2">
+//     <form name="Raster">
+//       <source url="http://geoport.whoi.edu/thredds/dodsC/bathy/etopo2_v2c.nc" name="OPeNDAP"/>
+//     </form>
+//     <projection name="Automatic"/>
+//   </dataset>
+//   <geoid_surface_representation name="NorthSea">
+//     <id>
+//       <integer_value rank="0">9</integer_value>
+//     </id>
+//     <brep_component name="NorthSea">
+//       <form name="Raster">
+//         <source name="ETOPO2"/>
+//         <region name="MainRegionAroundUK">
+//           <longitude>
+//             <minimum>
+//               <real_value rank="0">-14</real_value>
+//             </minimum>
+//             <maximum>
+//               <real_value rank="0">6</real_value>
+//             </maximum>
+//           </longitude>
+//           <latitude>
+//             <minimum>
+//               <real_value rank="0">46</real_value>
+//             </minimum>
+//             <maximum>
+//               <real_value rank="0">64</real_value>
+//             </maximum>
+//           </latitude>
+//         </region>
+//         <minimum_area>
+//           <real_value rank="0">0.1</real_value>
+//         </minimum_area>
+//         <contourtype field_level="-10.0" field_name="Automatic" name="gebco10m"/>
+//         <boundary>1</boundary>
+//       </form>
+//       <identification name="Coast"/>
+//       <representation_type name="BSpline"/>
+//     </brep_component>
+//     <brep_component name="OpenBoundary">
+//       <form name="BoundingBox">
+//         <region name="MainRegionAroundUK">
+//           <longitude>
+//             <minimum>
+//               <real_value rank="0">-14</real_value>
+//             </minimum>
+//             <maximum>
+//               <real_value rank="0">6</real_value>
+//             </maximum>
+//           </longitude>
+//           <latitude>
+//             <minimum>
+//               <real_value rank="0">46</real_value>
+//             </minimum>
+//             <maximum>
+//               <real_value rank="0">64</real_value>
+//             </maximum>
+//           </latitude>
+//         </region>
+//       </form>
+//       <identification name="OpenOcean"/>
+//       <representation_type name="BSpline"/>
+//     </brep_component>
+//     <boundary name="Coast">
+//       <identification_number>
+//         <integer_value rank="0">3</integer_value>
+//       </identification_number>
+//     </boundary>
+//     <boundary name="OpenOcean">
+//       <identification_number>
+//         <integer_value rank="0">4</integer_value>
+//       </identification_number>
+//     </boundary>
+//   </geoid_surface_representation>
+//   <geoid_metric>
+//     <form name="Proximity">
+//       <boundary name="Coast"/>
+//       <edge_length_minimum>
+//         <real_value rank="0">0.01</real_value>
+//       </edge_length_minimum>
+//       <edge_length_maximum>
+//         <real_value rank="0">2</real_value>
+//       </edge_length_maximum>
+//       <proximity_minimum>
+//         <real_value rank="0">0.05</real_value>
+//       </proximity_minimum>
+//       <proximity_maximum>
+//         <real_value rank="0">5</real_value>
+//       </proximity_maximum>
+//     </form>
+//   </geoid_metric>
+//   <geoid_mesh>
+//     <library name="Gmsh"/>
+//   </geoid_mesh>
+//   <validation>
+//     <test file_name="data/UK_NorthSea_region_opendap_valid.geo" name="BrepDescription"/>
+//     <tag name="UK"/>
+//     <tag name="NorthSea"/>
+//     <tag name="OPeNDAP"/>
+//     <tag name="continuous"/>
+//   </validation>
 // </boundary_representation>
 
 // == Boundary Representation Specification Parameters ============
 // Output to UK_NorthSea_region_opendap.geo
-// Projection type longlat
+// Projection type LongLat
 
 // == Boundary Representation description =========================
 
@@ -177,7 +175,6 @@
 // Boundaries restricted to paths: 1
 // Open contours closed with a line formed by points spaced 10000m apart
 // Paths found: 127
-//   Skipped (island crossing meridian - code needs modification to include)
 // Paths found valid (renumbered order): 1, including 1
 
 // == BRep component: OpenBoundary ================================
@@ -3119,7 +3116,7 @@ Line Loop( 1 ) = { 1, 2, 3, 4 };
 Physical Line( 4 ) = { 1, 2, 3, 4 };
 // Boundary Coast (ID 3): 1
 Physical Line( 3 ) = { 0 };
-Plane Surface( 10 ) = { 1, 0 };
+Plane Surface( 10 ) = { 0, 1 };
 Physical Surface( 10 ) = { 10 };
 
 // == End of contour definitions ==================================

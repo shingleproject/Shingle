@@ -16,7 +16,7 @@
 // 
 // Project name: UK_NorthSea_region_opendap_utm
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/06/08 18:03:19 
+// Created at: 2017/06/08 18:07:49 
 // Project description:
 //   Example simulation domain around the UK and Ireland in the North Sea.
 //       In a latitude-longitude WGS84 projection.

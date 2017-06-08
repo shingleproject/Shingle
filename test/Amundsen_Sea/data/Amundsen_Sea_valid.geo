@@ -16,7 +16,7 @@
 // 
 // Project name: Amundsen_Sea
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/06/08 16:08:05 
+// Created at: 2017/06/08 18:05:36 
 // Project description:
 //   Use the RTopo dataset, 50S version (RTopo105b 50S.nc),
 //   selecting the region
@@ -51,9 +51,7 @@
 //   </domain_type>
 //   <global_parameters/>
 //   <output>
-//     <projection>
-//       <string_value>cartesian</string_value>
-//     </projection>
+//     <projection name="Cartesian"/>
 //     <orientation name="SouthPole"/>
 //   </output>
 //   <dataset name="RTopo">
@@ -144,7 +142,7 @@
 
 // == Boundary Representation Specification Parameters ============
 // Output to Amundsen_Sea.geo
-// Projection type cartesian
+// Projection type Cartesian
 // Extending region to meet parallel on latitude -64.0
 
 // == Boundary Representation description =========================

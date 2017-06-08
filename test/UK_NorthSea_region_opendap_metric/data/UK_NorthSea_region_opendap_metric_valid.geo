@@ -16,7 +16,7 @@
 // 
 // Project name: UK_NorthSea_region_opendap_metric
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/06/08 16:41:10 
+// Created at: 2017/06/08 18:06:57 
 // Project description:
 //   Example simulation domain around the UK and Ireland in the North Sea.
 //       In a latitude-longitude WGS84 projection.
@@ -45,9 +45,7 @@
 //   </domain_type>
 //   <global_parameters/>
 //   <output>
-//     <projection>
-//       <string_value>longlat</string_value>
-//     </projection>
+//     <projection name="LongLat"/>
 //     <orientation name="LongLat"/>
 //   </output>
 //   <dataset name="ETOPO2">
@@ -178,15 +176,6 @@
 //     <parse/>
 //   </geoid_mesh>
 //   <validation>
-//     <test file_name="data/UK_NorthSea_region_opendap_metric_valid.geo" name="BrepDescription"/>
-//     <test name="ElementNumber">
-//       <value>
-//         <integer_value rank="0">36136</integer_value>
-//         <tolerance>
-//           <integer_value rank="0">500</integer_value>
-//         </tolerance>
-//       </value>
-//     </test>
 //     <test name="NodeNumber">
 //       <value>
 //         <integer_value rank="0">18068</integer_value>
@@ -195,6 +184,15 @@
 //         </tolerance>
 //       </value>
 //     </test>
+//     <test name="ElementNumber">
+//       <value>
+//         <integer_value rank="0">36136</integer_value>
+//         <tolerance>
+//           <integer_value rank="0">500</integer_value>
+//         </tolerance>
+//       </value>
+//     </test>
+//     <test file_name="data/UK_NorthSea_region_opendap_metric_valid.geo" name="BrepDescription"/>
 //     <tag name="UK"/>
 //     <tag name="NorthSea"/>
 //     <tag name="OPeNDAP"/>
@@ -205,7 +203,7 @@
 
 // == Boundary Representation Specification Parameters ============
 // Output to UK_NorthSea_region_opendap_metric.geo
-// Projection type longlat
+// Projection type LongLat
 
 // == Boundary Representation description =========================
 

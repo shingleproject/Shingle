@@ -16,7 +16,7 @@
 // 
 // Project name: Earth_Global_filtered_200km_30min_metric
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/06/08 16:31:40 
+// Created at: 2017/06/08 18:06:35 
 // Project description:
 //   -n noshelf.nc -t noshelf -no -a 5000 -el 1.0E5 -mesh
 //   Previously named:
@@ -49,9 +49,7 @@
 //   </domain_type>
 //   <global_parameters/>
 //   <output>
-//     <projection>
-//       <string_value>cartesian</string_value>
-//     </projection>
+//     <projection name="Cartesian"/>
 //   </output>
 //   <dataset name="RTopo105b_data_filtered_200km_30min">
 //     <form name="Raster">
@@ -122,7 +120,7 @@
 
 // == Boundary Representation Specification Parameters ============
 // Output to Earth_Global_filtered_200km_30min_metric.geo
-// Projection type cartesian
+// Projection type Cartesian
 
 // == Boundary Representation description =========================
 
