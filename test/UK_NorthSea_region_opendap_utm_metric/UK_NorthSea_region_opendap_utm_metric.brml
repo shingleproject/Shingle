@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <boundary_representation>
   <model_name>
-    <string_value lines="1">UK_NorthSea_region_opendap</string_value>
+    <string_value lines="1">UK_NorthSea_region_opendap_utm_metric</string_value>
     <comment>Example simulation domain around the UK and Ireland in the North Sea.
     In a latitude-longitude WGS84 projection.</comment>
   </model_name>
@@ -21,7 +21,7 @@
   </domain_type>
   <global_parameters/>
   <output>
-    <projection name="LongLat"/>
+    <projection name="Proj4_string">+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs</projection>
     <orientation name="LongLat"/>
   </output>
   <dataset name="ETOPO2">
@@ -100,30 +100,82 @@
     </boundary>
   </geoid_surface_representation>
   <geoid_metric>
-    <form name="Proximity">
-      <boundary name="Coast"/>
-      <edge_length_minimum>
-        <real_value rank="0">0.01</real_value>
-      </edge_length_minimum>
-      <edge_length_maximum>
-        <real_value rank="0">2</real_value>
-      </edge_length_maximum>
-      <proximity_minimum>
-        <real_value rank="0">0.05</real_value>
-      </proximity_minimum>
-      <proximity_maximum>
-        <real_value rank="0">5</real_value>
-      </proximity_maximum>
+    <form name="FromRaster">
+      <source name="ETOPO2"/>
+      <function>
+        <string_value lines="20" type="code" language="python"># Change depth to distance to bottom
+field = - field
+# print '1', field.min(), field.max()
+# Remove influence of bathymetric values above zero datum
+field[field &lt; 0.0] = 0.0
+# print '2', field.min(), field.max()
+
+# Calculate sqrt(gh)
+field = sqrt(field * 9.81)
+# print '3', field.min(), field.max()
+
+# Scale to [0, 1]
+field *= 1.0 / field.max()
+# print '4', field.min(), field.max()
+
+# Scale to [0.1, 1.0]
+field *= (1.0 - 0.1)
+# print '5', field.min(), field.max()
+field += 0.1
+# print '6', field.min(), field.max()
+# Scale to metres (from degrees)
+field *= 1.0E5</string_value>
+      </function>
+      <region name="MainRegionAroundUK">
+        <longitude>
+          <minimum>
+            <real_value rank="0">-14</real_value>
+          </minimum>
+          <maximum>
+            <real_value rank="0">6</real_value>
+          </maximum>
+        </longitude>
+        <latitude>
+          <minimum>
+            <real_value rank="0">46</real_value>
+          </minimum>
+          <maximum>
+            <real_value rank="0">64</real_value>
+          </maximum>
+        </latitude>
+      </region>
     </form>
   </geoid_metric>
   <geoid_mesh>
-    <library name="Gmsh"/>
+    <library name="Gmsh">
+      <extend_metric_from_boundary/>
+    </library>
+    <generate/>
+    <parse/>
   </geoid_mesh>
   <validation>
-    <test file_name="data/UK_NorthSea_region_opendap_valid.geo" name="BrepDescription"/>
+    <test name="NodeNumber">
+      <value>
+        <integer_value rank="0">18068</integer_value>
+        <tolerance>
+          <integer_value rank="0">500</integer_value>
+        </tolerance>
+      </value>
+    </test>
+    <test name="ElementNumber">
+      <value>
+        <integer_value rank="0">36136</integer_value>
+        <tolerance>
+          <integer_value rank="0">500</integer_value>
+        </tolerance>
+      </value>
+    </test>
+    <test file_name="data/UK_NorthSea_region_opendap_utm_metric_valid.geo" name="BrepDescription"/>
     <tag name="UK"/>
     <tag name="NorthSea"/>
     <tag name="OPeNDAP"/>
     <tag name="continuous"/>
+    <tag name="MetricPython"/>
+    <tag name="development"/>
   </validation>
 </boundary_representation>

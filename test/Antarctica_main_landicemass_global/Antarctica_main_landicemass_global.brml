@@ -25,9 +25,7 @@ Minimum edge-length increased to 100km from 10km, minimum proximity to 400km fro
   </domain_type>
   <global_parameters/>
   <output>
-    <projection>
-      <string_value>cartesian</string_value>
-    </projection>
+    <projection name="Cartesian"/>
     <orientation name="SouthPole"/>
   </output>
   <dataset name="RTopo">

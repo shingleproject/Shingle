@@ -186,7 +186,10 @@ class SpatialDiscretisation(object):
 
     def Projection(self):
         if specification.have_option('/output/projection'):
-            return specification.get_option('/output/projection')
+            projection = specification.get_option('/output/projection[0]/name' )
+            if projection == 'Proj4_string':
+                projection = specification.get_option('/output/projection[0]' )
+            return projection
         else:
             return universe.default.projection
 

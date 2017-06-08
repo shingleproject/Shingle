@@ -1,71 +1,79 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version='1.0' encoding='utf-8'?>
 <boundary_representation>
-    <model_name>
-        <string_value lines="1">Earth_Global_unsampled_6min_metric</string_value>
-        <comment>-n noshelf.nc -t noshelf -no -a 5000 -el 1.0E5 -mesh</comment>
-    </model_name>
-    <reference>
-        <author name="ASCandy">
-            <string_value lines="1">Adam S. Candy</string_value>
-            <email_address>
-                <string_value lines="1">A.S.Candy@tudelft.nl</string_value>
-            </email_address>
-            <institution>
-                <string_value lines="1">Technische Universiteit Delft</string_value>
-            </institution>
-        </author>
-    </reference>
-    <domain_type>
-        <string_value lines="1">oceans</string_value>
-    </domain_type>
-    <global_parameters></global_parameters>
-    <dataset name="RTopoAux">
-        <form name="Raster">
-            <source name="HTTP" url="http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc">
-                <comment>RTopo105b_50S.nc
+  <model_name>
+    <string_value lines="1">Earth_Global_unsampled_6min_metric</string_value>
+    <comment>-n noshelf.nc -t noshelf -no -a 5000 -el 1.0E5 -mesh</comment>
+  </model_name>
+  <reference>
+    <author name="ASCandy">
+      <string_value lines="1">Adam S. Candy</string_value>
+      <email_address>
+        <string_value lines="1">A.S.Candy@tudelft.nl</string_value>
+      </email_address>
+      <institution>
+        <string_value lines="1">Technische Universiteit Delft</string_value>
+      </institution>
+    </author>
+  </reference>
+  <domain_type>
+    <string_value lines="1">oceans</string_value>
+  </domain_type>
+  <global_parameters/>
+  <output>
+    <projection name="Cartesian"/>
+  </output>
+  <dataset name="RTopoAux">
+    <form name="Raster">
+      <source url="http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc" name="HTTP">
+        <comment>RTopo105b_50S.nc
 Timmermann, Ralph; Le Brocq, Anne M; Deen, Tara J; Domack, Eugene W; Dutrieux, Pierre; Galton-Fenzi, Ben; Hellmer, Hartmut H; Humbert, Angelika; Jansen, Daniela; Jenkins, Adrian; Lambrecht, Astrid; Makinson, Keith; Niederjasper, Fred; Nitsche, Frank-Oliver; Nøst, Ole Anders; Smedsrud, Lars Henrik; Smith, Walter (2010): Antarctic ice sheet topography, cavity geometry, and global bathymetry (RTopo 1.0.5-beta). doi:10.1594/PANGAEA.741917,
 Supplement to: Timmermann, R et al. (2010): A consistent dataset of Antarctic ice sheet topography, cavity geometry, and global bathymetry. Earth System Science Data, 2(2), 261-273, doi:10.5194/essd-2-261-2010</comment>
-            </source>
-        </form>
-        <projection name="Automatic"></projection>
-    </dataset>
-    <geoid_surface_representation name="GlobalCoastlines">
-        <id>
-            <integer_value rank="0">9</integer_value>
-        </id>
-        <brep_component name="GlobalCoastlines">
-            <form name="Raster">
-                <source name="RTopoAux"></source>
-                <minimum_area>
-                    <real_value rank="0">5000</real_value>
-                </minimum_area>
-                <contourtype name="iceshelfcavity" field_level="10.0" field_name="amask">
-                    <exclude_iceshelf_ocean_cavities></exclude_iceshelf_ocean_cavities>
-                </contourtype>
-            </form>
-            <identification name="Coastline"></identification>
-            <representation_type name="BSpline"></representation_type>
-        </brep_component>
-        <boundary name="Coastline">
-            <identification_number>
-                <integer_value rank="0">3</integer_value>
-            </identification_number>
-        </boundary>
-    </geoid_surface_representation>
-    <geoid_metric>
-        <form name="Homogeneous">
-            <edge_length>
-                <real_value rank="0">100000</real_value>
-            </edge_length>
-        </form>
-    </geoid_metric>
-    <geoid_mesh>
-        <library name="Gmsh"></library>
-    </geoid_mesh>
-    <validation>
-        <tag name="Earth"></tag>
-        <tag name="RTopo"></tag>
-        <tag name="HTTP"></tag>
-        <tag name="development"></tag>
-    </validation>
+      </source>
+    </form>
+    <projection name="Automatic"/>
+  </dataset>
+  <geoid_surface_representation name="GlobalCoastlines">
+    <id>
+      <integer_value rank="0">9</integer_value>
+    </id>
+    <brep_component name="GlobalCoastlines">
+      <form name="Raster">
+        <source name="RTopoAux"/>
+        <minimum_area>
+          <real_value rank="0">5000</real_value>
+        </minimum_area>
+        <contourtype field_level="10.0" field_name="amask" name="iceshelfcavity">
+          <exclude_iceshelf_ocean_cavities/>
+        </contourtype>
+      </form>
+      <identification name="Coastline"/>
+      <representation_type name="BSpline"/>
+    </brep_component>
+    <boundary name="Coastline">
+      <identification_number>
+        <integer_value rank="0">3</integer_value>
+      </identification_number>
+    </boundary>
+  </geoid_surface_representation>
+  <geoid_metric>
+    <form name="Homogeneous">
+      <edge_length>
+        <real_value rank="0">100000</real_value>
+      </edge_length>
+    </form>
+  </geoid_metric>
+  <geoid_mesh>
+    <library name="Gmsh"/>
+  </geoid_mesh>
+  <validation>
+    <test name="NodeNumber">
+      <value>
+        <integer_value rank="0"/>
+      </value>
+    </test>
+    <tag name="Earth"/>
+    <tag name="RTopo"/>
+    <tag name="HTTP"/>
+    <tag name="development"/>
+  </validation>
 </boundary_representation>

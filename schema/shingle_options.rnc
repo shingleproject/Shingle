@@ -347,7 +347,7 @@ output =
         comment
       }?,
       comment,
-      projections,
+      projections?,
       (
         ## User defined viewing angle
         element orientation {

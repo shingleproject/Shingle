@@ -422,7 +422,9 @@ Default file_name: ./shorelines.geo</a:documentation>
         </element>
       </optional>
       <ref name="comment"/>
-      <ref name="projections"/>
+      <optional>
+        <ref name="projections"/>
+      </optional>
       <optional>
         <choice>
           <element name="orientation">

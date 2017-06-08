@@ -25,9 +25,7 @@ Spatial representation is specified along the open ocean boundary to ensure it i
   </domain_type>
   <global_parameters/>
   <output>
-    <projection>
-      <string_value>cartesian</string_value>
-    </projection>
+    <projection name="Cartesian"/>
     <orientation name="SouthPole"/>
   </output>
   <dataset name="RTopo">

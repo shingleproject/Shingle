@@ -21,9 +21,7 @@
   </domain_type>
   <global_parameters/>
   <output>
-    <projection>
-      <string_value>longlat</string_value>
-    </projection>
+    <projection name="LongLat"/>
     <orientation name="LongLat"/>
   </output>
   <dataset name="ETOPO2">
@@ -154,15 +152,6 @@ field += 0.1
     <parse/>
   </geoid_mesh>
   <validation>
-    <test file_name="data/UK_NorthSea_region_opendap_metric_valid.geo" name="BrepDescription"/>
-    <test name="ElementNumber">
-      <value>
-        <integer_value rank="0">36136</integer_value>
-        <tolerance>
-          <integer_value rank="0">500</integer_value>
-        </tolerance>
-      </value>
-    </test>
     <test name="NodeNumber">
       <value>
         <integer_value rank="0">18068</integer_value>
@@ -171,6 +160,15 @@ field += 0.1
         </tolerance>
       </value>
     </test>
+    <test name="ElementNumber">
+      <value>
+        <integer_value rank="0">36136</integer_value>
+        <tolerance>
+          <integer_value rank="0">500</integer_value>
+        </tolerance>
+      </value>
+    </test>
+    <test file_name="data/UK_NorthSea_region_opendap_metric_valid.geo" name="BrepDescription"/>
     <tag name="UK"/>
     <tag name="NorthSea"/>
     <tag name="OPeNDAP"/>

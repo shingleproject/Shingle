@@ -24,9 +24,7 @@ Ice shelf ocean cavities are included.</comment>
   </domain_type>
   <global_parameters/>
   <output>
-    <projection>
-      <string_value>cartesian</string_value>
-    </projection>
+    <projection name="Cartesian"/>
     <orientation name="SouthPole"/>
   </output>
   <dataset name="RTopo">

@@ -23,9 +23,7 @@ Earth_Global_unsampled_6min_metric.brml</comment>
   </domain_type>
   <global_parameters/>
   <output>
-    <projection>
-      <string_value>cartesian</string_value>
-    </projection>
+    <projection name="Cartesian"/>
   </output>
   <dataset name="RTopo105b_data_filtered_200km_30min">
     <form name="Raster">

@@ -1,122 +1,111 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version='1.0' encoding='utf-8'?>
 <boundary_representation>
-    <model_name>
-        <string_value lines="1">Chile_Pacific_wide_h2ocean_output</string_value>
-        <comment>232:290,-40:20
+  <model_name>
+    <string_value lines="1">Chile_Pacific_wide_h2ocean_output</string_value>
+    <comment>232:290,-40:20
 
 grdcut -R-128/-70/-40/-20 -fg ../gebco/gebco.nc -GChilePacificWide.nc
 
 Use 5% extra on boundaries?</comment>
-    </model_name>
-    <reference>
-        <author name="ASCandy">
-            <string_value lines="1">Adam S. Candy</string_value>
-            <email_address>
-                <string_value lines="1">A.S.Candy@tudelft.nl</string_value>
-            </email_address>
-            <institution>
-                <string_value lines="1">Technische Universiteit Delft</string_value>
-            </institution>
-        </author>
-    </reference>
-    <domain_type>
-        <string_value lines="1">geophysical</string_value>
-    </domain_type>
-    <global_parameters></global_parameters>
-    <output>
-        <projection>
-            <string_value>longlat</string_value>
-        </projection>
-        <orientation name="UserDefined" shape="3">
-            <real_value rank="1" shape="3">-180 180 180</real_value>
-        </orientation>
-    </output>
-    <dataset name="ChilePacificWide">
-        <form name="Raster">
-            <comment>232:290,-40:20
+  </model_name>
+  <reference>
+    <author name="ASCandy">
+      <string_value lines="1">Adam S. Candy</string_value>
+      <email_address>
+        <string_value lines="1">A.S.Candy@tudelft.nl</string_value>
+      </email_address>
+      <institution>
+        <string_value lines="1">Technische Universiteit Delft</string_value>
+      </institution>
+    </author>
+  </reference>
+  <domain_type>
+    <string_value lines="1">geophysical</string_value>
+  </domain_type>
+  <global_parameters/>
+  <output>
+    <projection name="LongLat"/>
+    <orientation shape="3" name="UserDefined">
+      <real_value shape="3" rank="1">-180 180 180</real_value>
+    </orientation>
+  </output>
+  <dataset name="ChilePacificWide">
+    <form name="Raster">
+      <comment>232:290,-40:20
 grdcut -R-128/-70/-40/-20 -fg ../gebco/gebco.nc -GChilePacificWide.nc
 Use 5% extra on boundaries?</comment>
-            <source name="HTTP" url="https://zenodo.org/record/399213/files/ChilePacificWide.nc">
-                <comment>ChilePacificWide.nc
+      <source url="https://zenodo.org/record/399213/files/ChilePacificWide.nc" name="HTTP">
+        <comment>ChilePacificWide.nc
 Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
-            </source>
-        </form>
-        <projection name="Automatic"></projection>
-    </dataset>
-    <geoid_surface_representation name="SouthEastPacificOcean">
-        <id>
-            <integer_value rank="0">9</integer_value>
-        </id>
-        <brep_component name="SouthEastPacificOceanCoast">
-            <form name="Raster">
-                <source name="ChilePacificWide"></source>
-                <box>-128.0:-70.0,-40.0:20.0
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    <comment>232:290,-40:20
--128:-70,-40:20</comment>
-                </box>
-                <contourtype name="ocean10m" field_level="-10.0" field_name="Automatic"></contourtype>
-                <boundary>1</boundary>
-            </form>
-            <identification name="coast"></identification>
-            <representation_type name="BSpline"></representation_type>
-        </brep_component>
-        <brep_component name="ExtendTo128W">
-            <form name="ExtendToMeridian">
-                <longitude>
-                    <real_value rank="0">-128</real_value>
-                </longitude>
-            </form>
-            <identification name="ocean"></identification>
-            <representation_type name="BSpline"></representation_type>
-        </brep_component>
-        <boundary name="coast">
-            <identification_number>
-                <integer_value rank="0">1</integer_value>
-            </identification_number>
-        </boundary>
-        <boundary name="ocean">
-            <identification_number>
-                <integer_value rank="0">3</integer_value>
-            </identification_number>
-        </boundary>
-    </geoid_surface_representation>
-    <geoid_metric>
-        <form name="Proximity">
-            <boundary name="coast"></boundary>
-            <edge_length_minimum>
-                <real_value rank="0">0.1</real_value>
-            </edge_length_minimum>
-            <edge_length_maximum>
-                <real_value rank="0">5</real_value>
-            </edge_length_maximum>
-            <proximity_minimum>
-                <real_value rank="0">1</real_value>
-            </proximity_minimum>
-            <proximity_maximum>
-                <real_value rank="0">60</real_value>
-            </proximity_maximum>
-        </form>
-    </geoid_metric>
-    <geoid_mesh>
-        <library name="Gmsh"></library>
-    </geoid_mesh>
-    <validation>
-        <test name="BrepDescription" file_name="data/Chile_Pacific_wide_h2ocean_output_valid.geo"></test>
-        <tag name="Chile"></tag>
-        <tag name="GEBCO"></tag>
-        <tag name="HTTP"></tag>
-        <tag name="development"></tag>
-    </validation>
-    <postprocess>
-        <format>
-            <h2ocean></h2ocean>
-        </format>
-    </postprocess>
+      </source>
+    </form>
+    <projection name="Automatic"/>
+  </dataset>
+  <geoid_surface_representation name="SouthEastPacificOcean">
+    <id>
+      <integer_value rank="0">9</integer_value>
+    </id>
+    <brep_component name="SouthEastPacificOceanCoast">
+      <form name="Raster">
+        <source name="ChilePacificWide"/>
+        <box>-128.0:-70.0,-40.0:20.0<comment>232:290,-40:20
+-128:-70,-40:20</comment></box>
+        <contourtype field_level="-10.0" field_name="Automatic" name="ocean10m"/>
+        <boundary>1</boundary>
+      </form>
+      <identification name="coast"/>
+      <representation_type name="BSpline"/>
+    </brep_component>
+    <brep_component name="ExtendTo128W">
+      <form name="ExtendToMeridian">
+        <longitude>
+          <real_value rank="0">-128</real_value>
+        </longitude>
+      </form>
+      <identification name="ocean"/>
+      <representation_type name="BSpline"/>
+    </brep_component>
+    <boundary name="coast">
+      <identification_number>
+        <integer_value rank="0">1</integer_value>
+      </identification_number>
+    </boundary>
+    <boundary name="ocean">
+      <identification_number>
+        <integer_value rank="0">3</integer_value>
+      </identification_number>
+    </boundary>
+  </geoid_surface_representation>
+  <geoid_metric>
+    <form name="Proximity">
+      <boundary name="coast"/>
+      <edge_length_minimum>
+        <real_value rank="0">0.1</real_value>
+      </edge_length_minimum>
+      <edge_length_maximum>
+        <real_value rank="0">5</real_value>
+      </edge_length_maximum>
+      <proximity_minimum>
+        <real_value rank="0">1</real_value>
+      </proximity_minimum>
+      <proximity_maximum>
+        <real_value rank="0">60</real_value>
+      </proximity_maximum>
+    </form>
+  </geoid_metric>
+  <geoid_mesh>
+    <library name="Gmsh"/>
+  </geoid_mesh>
+  <validation>
+    <test file_name="data/Chile_Pacific_wide_h2ocean_output_valid.geo" name="BrepDescription"/>
+    <tag name="Chile"/>
+    <tag name="GEBCO"/>
+    <tag name="HTTP"/>
+    <tag name="development"/>
+  </validation>
+  <postprocess>
+    <format>
+      <h2ocean/>
+    </format>
+  </postprocess>
 </boundary_representation>

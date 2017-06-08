@@ -20,9 +20,7 @@
   </domain_type>
   <global_parameters/>
   <output>
-    <projection>
-      <string_value>longlat</string_value>
-    </projection>
+    <projection name="LongLat"/>
     <orientation name="LongLat"/>
   </output>
   <dataset name="Caribbean">
