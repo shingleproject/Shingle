@@ -218,7 +218,7 @@ class SpatialDiscretisation(object):
 
     def RemoveProjectionPoints(self):
         #FIXME: Apply just in specific case?  - i.e. I need the opposite here
-        if self.Projection() == 'longlat':
+        if self.Projection() == 'LongLat':
             return
         self.AddContent( '''Delete { Point{ %(prefix)s0 }; }
 Delete { Point{ %(prefix)s1 }; }

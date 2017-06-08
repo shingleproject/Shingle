@@ -487,7 +487,7 @@ class BRepComponent(object):
             paths = p.draw_parallel_explicit(None)
             #print 'A', paths
             for path in paths:
-                path.projection = 'longlat'
+                path.projection = 'LongLat'
                 self.components.append(path)
             
             p = EnrichedPolyline(self, vertices=[ ( 0.01, self.BoundingLatitude()), (-179.99, self.BoundingLatitude())], is_exterior = True, initialise_only=True)
@@ -495,7 +495,7 @@ class BRepComponent(object):
             #index, paths = p.draw_parallel_explicit(self, [-179.99,  self.BoundingLatitude()], [   0.01, self.BoundingLatitude()], index, self.Spacing()/10.0, None)
             #print 'B', paths
             for path in paths:
-                path.projection = 'longlat'
+                path.projection = 'LongLat'
                 self.components.append(path)
             
             components_new = [self]
@@ -604,7 +604,7 @@ class BRepComponent(object):
 
             #print p.components
             for path in paths:
-                path.projection = 'longlat'
+                path.projection = 'LongLat'
                 p.components.append(path)
             #print p.components
 
@@ -643,7 +643,7 @@ class BRepComponent(object):
             paths = n.draw_meridian_explicit(longitude)
             
             for path in paths:
-                path.projection = 'longlat'
+                path.projection = 'LongLat'
                 p.components.append(path)
 
         #else:
@@ -795,7 +795,7 @@ class BRepComponent(object):
 #  ''' % { 'fileid':self.Fileid(), 'edgeindex':edgeindex }
 #            self.AddContent(header)
 #
-#        if (self.Projection() not in ['longlat','proj_cartesian'] ):
+#        if (self.Projection() not in ['LongLat','proj_cartesian'] ):
 #            header_polar = '''Point ( %(prefix)s0 ) = { 0, 0, 0 };
 #Point ( %(prefix)s1 ) = { 0, 0, %(planet_radius)g };
 #PolarSphere ( %(surface_prefix)s0 ) = { %(prefix)s0, %(prefix)s1 };
@@ -806,7 +806,7 @@ class BRepComponent(object):
 
 #    def RemoveProjectionPoints(self):
 #        #FIXME: Apply just in specific case?  - i.e. I need the opposite here
-#        if self.Projection() == 'longlat':
+#        if self.Projection() == 'LongLat':
 #            return
 #        self.AddContent( '''Delete { Point{ %(prefix)s0 }; }
 #Delete { Point{ %(prefix)s1 }; }

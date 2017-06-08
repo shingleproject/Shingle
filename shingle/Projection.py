@@ -71,7 +71,7 @@ def compare_latitude(a, b, dx):
     #print abs(a - b), tolerance, abs(a - b) < tolerance
     return abs(a - b) < tolerance
 
-def c1ompare_points_old(a, b, dx, proj='longlat'):
+def c1ompare_points_old(a, b, dx, proj='LongLat'):
     if isinstance(dx, float):
         dx = [dx, dx]
     tolerance = [0.6 * x for x in dx]
@@ -113,8 +113,8 @@ def p2(location):
 def get_pyproj_projection(string):
     import pyproj
     _translation = {
-        'longlat': 'epsg:4326',
-        'Automatic': 'longlat',
+        'LongLat': 'epsg:4326',
+        'Automatic': 'LongLat',
     }
 
     while string in _translation.keys():
@@ -204,7 +204,7 @@ def project(location, projection_type=None):
     if (projection_type is None):
         projection_type = universe.default.projection
         # FIXME - needs to pick this up from somewhere without breaking everything.  loglat is needed here for Shingle_text case - could highlight issues with other cases
-        projection_type = 'longlat'
+        projection_type = 'LongLat'
         #print projection_type, universe.default.projection
         # FIXME: Projection is not defined for some operations
         #error('Projection type not defined')
@@ -252,7 +252,7 @@ def project(location, projection_type=None):
         x = planet_radius * ( 2 * math.sqrt(2) * cos(latitude_rad) * sin(longitude_rad / 2.0) ) / m
         y = planet_radius * (     math.sqrt(2) * sin(latitude_rad) ) / m
         return array([ x, y ])
-    elif (projection_type == 'longlat' ):
+    elif (projection_type == 'LongLat' ):
         return location
     else:
         error('Invalid projection type: ' + projection_type, fatal=True)

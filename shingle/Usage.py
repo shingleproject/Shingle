@@ -75,7 +75,7 @@ def usage(unknown = None):
    -b box1 (box2)..            | Boxes with regions of interest
    -a minarea                  | Minimum area of islands
    -dx dist                    | Distance of steps when drawing parallels and meridians (currently in degrees - need to project)
-   -m projection               | Projection type (default 'cartesian', 'longlat')
+   -m projection               | Projection type (default 'cartesian', 'LongLat')
    -bounding_latitude latitude | Latitude of boundary to close the domain
    -bl latitude                | Short form of -bounding_latitude
    -t type                     | Contour type (default: iceshelfcavity) icesheet gsds

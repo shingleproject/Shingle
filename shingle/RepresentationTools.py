@@ -256,7 +256,7 @@ class EnrichedPolyline(object):
             try:
                 return self._parent_brep_component.Dataset().projection
             except:
-                return 'longlat'
+                return 'LongLat'
         return self.__projection
     @projection.setter
     def projection(self, projection):
@@ -267,7 +267,7 @@ class EnrichedPolyline(object):
 
     def compare_points_source(self, a, b, latitude_only=False):
         tolerance = [0.6 * x for x in self.spacing_source]
-        if self.projection in ['Automatic','longlat']:
+        if self.projection in ['Automatic','LongLat']:
             # Check latitude:
             if ( not (abs(a[1] - b[1]) <= tolerance[1]) ):
                 return False
@@ -283,7 +283,7 @@ class EnrichedPolyline(object):
 
     def compare_points(self, a, b):
         tolerance = 0.6 * self.spacing()
-        if self.projection in ['longlat', 'Automatic']:
+        if self.projection in ['LongLat', 'Automatic']:
             return distance_on_geoid(a, b) < tolerance
         # This to be the end catch all
         elif 'utm' in self.projection or 'tmerc' in self.projection:
@@ -925,7 +925,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
             comment = 'Drawing meridian to latitude at %.2f, %.2f (to match %.2f)' % (start[0], start[1], to_parallel)
             comments.append(comment)
             rep.report(comment, debug=True)
-            paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comments, projection = 'longlat'))
+            paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comments, projection = 'LongLat'))
             comments = []
 
         # Extend along parallel
@@ -934,7 +934,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
             comment = 'Drawing parallel at %.2f (to match %.2f), %.2f' % (start[0], end[0], to_parallel)
             comments.append(comment)
             rep.report(comment, debug=True)
-            paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comments, projection = 'longlat'))
+            paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comments, projection = 'LongLat'))
             comments = []
 
         # Extend back from parallel along a meridian
@@ -944,7 +944,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
             comment = 'Drawing meridian to end at %.2f, %.2f (to match %.2f)' % (end[0], to_parallel, end[1])
             comments.append(comment)
             rep.report(comment, debug=True)
-            paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comments, projection = 'longlat'))
+            paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comments, projection = 'LongLat'))
             comments = []
 
         return paths
@@ -976,7 +976,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
             comment = 'Drawing parallel to longitude at %.2f, %.2f (to match %.2f)' % (start[0], start[1], to_meridian)
             comments.append(comment)
             rep.report(comment, debug=True)
-            paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comments, projection = 'longlat'))
+            paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comments, projection = 'LongLat'))
             comments = []
 
         # Extend along meridian
@@ -985,7 +985,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
             comment = 'Drawing along meridian at %.2f (to match %.2f), %.2f' % (start[1], end[1], to_meridian)
             comments.append(comment)
             rep.report(comment, debug=True)
-            paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comments, projection = 'longlat'))
+            paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comments, projection = 'LongLat'))
             comments = []
 
         # Extend back from meridian along a parallel
@@ -995,7 +995,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
             comment = 'Drawing parallel back to end at %.2f, %.2f (to match %.2f)' % (to_meridian, end[1], end[0])
             comments.append(comment)
             rep.report(comment, debug=True)
-            paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comments, projection = 'longlat'))
+            paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comments, projection = 'LongLat'))
             comments = []
 
         return paths
@@ -1017,7 +1017,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
             point = rep.FormatPoint(index.point, current, 0.0, project_to_output_projection_type=False)
             path.append(point)
 
-        paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment, projection = 'longlat'))
+        paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment, projection = 'LongLat'))
         path = []
         comment = []
 
@@ -1042,7 +1042,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
             point = rep.FormatPoint(index.point, current, 0.0, project_to_output_projection_type=False)
             path.append(point)
 
-        paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment, projection = 'longlat'))
+        paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment, projection = 'LongLat'))
         path = []
         comment = []
 
@@ -1067,7 +1067,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
             path.append(point)
         
         comment.append('Closed path with parallels and meridians, from (%.8f, %.8f) to  (%.8f, %.8f)' % ( start[0], start[1], end[0], end[1] ) )
-        paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment, projection = 'longlat'))
+        paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment, projection = 'LongLat'))
         path = []
         comment = []
 
