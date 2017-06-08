@@ -260,7 +260,7 @@ Delete { Point{ %(prefix)s1 }; }
   ''' % { 'fileid':self.Fileid(), 'edgeindex':edgeindex }
             self.AddContent(header)
 
-        if (self.Projection() in ['cartesian'] ):
+        if (self.Projection() in ['Cartesian'] ):
             header_polar = '''Point ( %(prefix)s0 ) = { 0, 0, 0 };
 Point ( %(prefix)s1 ) = { 0, 0, %(planet_radius)g };
 PolarSphere ( %(surface_prefix)s0 ) = { %(prefix)s0, %(prefix)s1 };

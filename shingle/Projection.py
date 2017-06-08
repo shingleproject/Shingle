@@ -166,7 +166,7 @@ def project_shape(shape, source, destination):
     if destination == 'Automatic':
         return shape
         #projection = projection_function_xy_reverse
-    elif destination == 'cartesian':
+    elif destination == 'Cartesian':
         projection = projection_function_cartesian
     else:
         # Source coordinate system
@@ -208,7 +208,7 @@ def project(location, projection_type=None):
         #print projection_type, universe.default.projection
         # FIXME: Projection is not defined for some operations
         #error('Projection type not defined')
-    if (projection_type == 'cartesian' ):
+    if (projection_type == 'Cartesian' ):
         longitude = location[0]
         latitude  = location[1]
         cos = math.cos
