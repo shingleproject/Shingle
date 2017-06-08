@@ -118,16 +118,19 @@ class EnrichedPolyline(object):
         self.projection = projection
 
         self._parent_brep_component = rep
-        self._is_exterior = is_exterior
+        self.is_exterior = is_exterior
         if reference_number:
             self.reference_number = reference_number
 
         if shape is not None:
             self.shape = shape
+            #print self.shape.geom_type
             #print 'XX', self.loopstart, self.loopend, self.compare_points(self.loopstart, self.loopend)
             if self.compare_points(self.loopstart, self.loopend):
+                #print 'Changing'
                 self.shape = LinearRing(self.vertices)
             #self.vertices = shape.coords[:]
+            #print self.shape.geom_type
         elif vertices is not None:
             self.vertices = vertices
         elif contour:
@@ -284,7 +287,7 @@ class EnrichedPolyline(object):
             return distance_on_geoid(a, b) < tolerance
         # This to be the end catch all
         elif 'utm' in self.projection or 'tmerc' in self.projection:
-            return Point(a).distance(Point(b))
+            return Point(a).distance(Point(b)) < tolerance
 
         # Below needs further checking following updates
         elif (proj == 'horizontal'):
@@ -349,7 +352,7 @@ class EnrichedPolyline(object):
 
 
     def CopyOpenPart(self, source):
-        self._is_exterior = source._is_exterior
+        self.is_exterior = source.is_exterior
         self.projection = source.projection
         self.reference_number = source.reference_number
         self.loopstartpoint = source.loopstartpoint
@@ -358,7 +361,7 @@ class EnrichedPolyline(object):
 
     def CopyOpenPart__(self):
         child = copy(self)                                                         
-        child._is_exterior = self._is_exterior
+        child.is_exterior = self.is_exterior
         child.reference_number = self.reference_number
         child.loopstartpoint = self.loopstartpoint
         child.valid_location = [ self.valid_location[0], self.valid_location[-1] ]
@@ -367,11 +370,17 @@ class EnrichedPolyline(object):
     def Within(self, other):
         return other.shape.within(self.shape)
 
-    def isExterior(self):
-        return self._is_exterior
+    @property
+    def is_exterior(self):
+        return self.__is_exterior
 
-    def SetExterior(self, boolean=True):
-        self._is_exterior = boolean
+    @is_exterior.setter
+    def is_exterior(self, state):
+        self.__is_exterior = state
+
+
+    #def SetExterior(self, boolean=True):
+    #    self._is_exterior = boolean
 
     # Imports:
     def report(self, *args, **kwargs):
@@ -549,7 +558,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
             else:
                 self.AddContent( '''Line Loop( %(prefix_lineloop)s%(loop)i ) = { %(loopnumbers)s };''' % { 'loop':index.loop, 'prefix_lineloop':self.CounterPrefix('ILL'), 'loopnumbers':list_to_comma_separated(index.pathsinloop, prefix = self.CounterPrefix('IL')) } )
 
-            if self.isExterior():
+            if self.is_exterior:
                 index.exterior.append(index.loop)
             else:
                 index.interior.append(index.loop)

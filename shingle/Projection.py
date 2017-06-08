@@ -148,6 +148,12 @@ def projection_function_cartesian(x, y, z=None):
     else:
       return x, y
 
+def projection_function_xy_reverse(x, y, z=None):
+    if z:
+      return x, -y, z
+    else:
+      return x, -y
+
 def project_shape(shape, source, destination):
     if not shape:
         return None
@@ -156,29 +162,32 @@ def project_shape(shape, source, destination):
     from shapely.ops import transform
 
     #print source, destination
-
-    # Source coordinate system
-    s = get_pyproj_projection(source)
-    # Destination coordinate system
-    d = get_pyproj_projection(destination)
-  
-    if destination == 'cartesian':
+    # Pass thorugh
+    if destination == 'Automatic':
+        return shape
+        #projection = projection_function_xy_reverse
+    elif destination == 'cartesian':
         projection = projection_function_cartesian
-
-    elif not s or not d:
-        for i, vertex in enumerate(shape.coords[:]):
-            shape.coord[i] = project(vertex, projection_type=destination)
-        return shape
-
-    elif s.srs == d.srs:
-        return shape
-
     else:
-        projection = partial(
-            pyproj.transform,
-            s,
-            d
-        )
+        # Source coordinate system
+        s = get_pyproj_projection(source)
+        # Destination coordinate system
+        d = get_pyproj_projection(destination)
+  
+        if not s or not d:
+            for i, vertex in enumerate(shape.coords[:]):
+                shape.coord[i] = project(vertex, projection_type=destination)
+            return shape
+
+        elif s.srs == d.srs:
+            return shape
+
+        else:
+            projection = partial(
+                pyproj.transform,
+                s,
+                d
+            )
 
     # Appy the projection to the shapefile
     return transform(projection, shape)

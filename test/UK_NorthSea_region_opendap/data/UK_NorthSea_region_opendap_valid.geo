@@ -16,7 +16,7 @@
 // 
 // Project name: UK_NorthSea_region_opendap
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/06/08 14:18:39 
+// Created at: 2017/06/08 14:56:59 
 // Project description:
 //   Example simulation domain around the UK and Ireland in the North Sea.
 //       In a latitude-longitude WGS84 projection.
@@ -3119,7 +3119,7 @@ Line Loop( 1 ) = { 1, 2, 3, 4 };
 Physical Line( 4 ) = { 1, 2, 3, 4 };
 // Boundary Coast (ID 3): 1
 Physical Line( 3 ) = { 0 };
-Plane Surface( 10 ) = { 0, 1 };
+Plane Surface( 10 ) = { 1, 0 };
 Physical Surface( 10 ) = { 10 };
 
 // == End of contour definitions ==================================

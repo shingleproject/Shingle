@@ -246,7 +246,7 @@ class SurfaceGeoidDomainRepresentation(object):
         self.index.exterior = []
         self.index.interior = []
         for i, brep in enumerate(self.getComponentsComplete()):
-            if any([x.isExterior() for x in brep.components]):
+            if any([x.is_exterior for x in brep.components]):
                 self.index.exterior.append(i)
             else:
                 self.index.interior.append(i)

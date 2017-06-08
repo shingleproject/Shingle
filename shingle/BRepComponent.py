@@ -250,6 +250,9 @@ class BRepComponent(object):
     def isBSpline(self):
         return self.RepresentationType() == 'BSpline'
 
+    def isPolyline(self):
+        return self.RepresentationType() == 'Polyline'
+
     def FormType(self):
         if self._form_type is None:
             if specification.have_option(self._path + '/form[0]/name'):
@@ -264,7 +267,7 @@ class BRepComponent(object):
     def isRaster(self):
         return self.FormType() == 'Raster'
 
-    def isPolyline(self):
+    def isShapefile(self):
         return self.FormType() == 'Polyline'
 
     def isParallel(self):
@@ -425,79 +428,29 @@ class BRepComponent(object):
         #print 'Name', self.Name()
 
         components_new = []
-        if self.isPolyline():
+        if self.isShapefile():
             self.AppendParameters()
             dataset = self.Dataset()
             dataset.AppendParameters()
             dataset.CheckSource()
-        
+
             from Import import ReadShape
             self.report('Reading polylines, from shapefile: ' + dataset.LocationFull(), include = False, indent = 1)
             p = ReadShape(self, dataset)
             #print p
             self._pathall = ReadShape(self, dataset)
 
-            self.report('Paths found: ' + str(len(self._pathall)), indent=1)
             self.output_boundaries()
             
             if (universe.plotcontour):
                 self.PlotFoundPaths()
 
-            for p in self._valid_paths:
-                #print p.shape.coords[:2]
-                #p.Interpolate(spacing=1000.0)
-
-                p.SetExterior(self.isExterior(p.reference_number, valid_paths = self._valid_paths))
-                if p.isValid():
-                    if p.isExterior():
-                        self.exterior.append(p)
-                    else:
-                        if p.isClosed():
-                            self.interior.append(p)
-                        else:
-                            report('Interior path %(number)s skipped, not a complete island', var = {'number':p.reference_number}, indent=2)
-                            
-
-            report('Processing paths:', indent=1)
-            # Examine all EnrichedPathlines p
-            p = None
-            for p in self.interior:
-                if p.isClosed():
-                    area_string = '   area %(area)g' % {'area':p.AreaEnclosed()}
-                else:
-                    area_string = ''
-                report('Interior path %(number)s%(area)s', var = {'number':p.reference_number, 'area':area_string}, indent=2)
-                #self.index = p.Generate(self.index)
-                self.components.append(p)
-            for p in self.exterior:
-                if p.isClosed():
-                    area_string = '   area %(area)g' % {'area':p.AreaEnclosed()}
-                else:
-                    area_string = ''
-                report('Exterior path %(number)s%(area)s', var = {'number':p.reference_number, 'area':area_string}, indent=2)
-                #self.index = p.Generate(self.index)
-                self.components.append(p)
-
             # Best to interpolate later at time of writing?, also need to process project properly
             #components_new = [self.Reproduce(components=[p.Interpolate(spacing=1000.0)], total=len(self.components)) for p in self.components]
             components_new = [self.Reproduce(components=[p], total=len(self.components)) for p in self.components]
 
-
         if self.isRaster():
-            #p = self.PreviousBRepComponent()
             
-            # Pick up previous BRep component
-            #if len(p.components) > 0:
-            #    n = p.components[-1].CopyOpenPart()
-            #    error('** BRep %(name)s to be glued to existing, unclosed brep (%(previous)s)' % {'name':p.Name(), 'previous':n.Name()}, warning=True)
-
-            #open_components = self.identifyOpen(components)
-            #if not open_components:
-            #    error("No open components available to close with an extension to parallel", fatal=True)
-            #p = open_components[-1] 
-            # FIXME for attaching
-
-
             self.AppendParameters()
             dataset = self.Dataset()
             dataset.AppendParameters()
@@ -510,46 +463,10 @@ class BRepComponent(object):
                 self._pathall = ReadPaths(self, dataset)
                 dataset.CacheSave()
 
-            self.report('Paths found: ' + str(len(self._pathall)), indent=1)
             self.output_boundaries()
             
             if (universe.plotcontour):
                 self.PlotFoundPaths()
-
-            for p in self._valid_paths:
-                #print p.shape.coords[:2]
-                #p.Interpolate(spacing=1000.0)
-
-                p.SetExterior(self.isExterior(p.reference_number, valid_paths = self._valid_paths))
-                if p.isValid():
-                    if p.isExterior():
-                        self.exterior.append(p)
-                    else:
-                        if p.isClosed():
-                            self.interior.append(p)
-                        else:
-                            report('Interior path %(number)s skipped, not a complete island', var = {'number':p.reference_number}, indent=2)
-                            
-
-            report('Processing paths:', indent=1)
-            # Examine all EnrichedPathlines p
-            p = None
-            for p in self.interior:
-                if p.isClosed():
-                    area_string = '   area %(area)g' % {'area':p.AreaEnclosed()}
-                else:
-                    area_string = ''
-                report('Interior path %(number)s%(area)s', var = {'number':p.reference_number, 'area':area_string}, indent=2)
-                #self.index = p.Generate(self.index)
-                self.components.append(p)
-            for p in self.exterior:
-                if p.isClosed():
-                    area_string = '   area %(area)g' % {'area':p.AreaEnclosed()}
-                else:
-                    area_string = ''
-                report('Exterior path %(number)s%(area)s', var = {'number':p.reference_number, 'area':area_string}, indent=2)
-                #self.index = p.Generate(self.index)
-                self.components.append(p)
 
             # Best to interpolate later at time of writing?, also need to process project properly
             #components_new = [self.Reproduce(components=[p.Interpolate(spacing=1000.0)], total=len(self.components)) for p in self.components]
@@ -617,13 +534,13 @@ class BRepComponent(object):
             for bound in zip(*[bounds[i:]+bounds[:i] for i in range(2)]):
                 comment = []
                 comment.append('Drawing bounding box line ' + str(bound))
-                print '++++', bound
+                #print '++++', bound
                 #paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment))
                 p = EnrichedPolyline(self, shape=LineString(bound), initialise_only=True, is_exterior=True, comment=comment)
                 p.Interpolate()
                 #p.Project()
 
-                print p.shape.coords[:]
+                #print p.shape.coords[:]
 
                 self.components.append(p)
 
@@ -925,6 +842,8 @@ class BRepComponent(object):
         from StringOperations import strplusone
         #from Projection import compare_latitude
 
+        self.report('Paths found: ' + str(len(self._pathall)), indent=1)
+
         latitude_max = self.ExtendToLatitude()
 
         enriched_paths = []
@@ -932,8 +851,10 @@ class BRepComponent(object):
             if (self._pathall[num-1] == None):
                 continue
                 #print 'PPPP'
-            if self.isPolyline():
+            if self.isShapefile():
                 p = EnrichedPolyline(self, shape=self._pathall[num-1], reference_number = num, initialise_only=True)
+                #print p.shape.geom_type
+                #print p.isClosed()
             else:
                 p = EnrichedPolyline(self, contour=self._pathall[num-1], reference_number = num, initialise_only=True)
             if p.shape is not None:
@@ -997,7 +918,9 @@ class BRepComponent(object):
         enriched_paths = sorted(enriched_paths, reverse=True)
 
         for number in range(len(enriched_paths)):
-            enriched_paths[number] = EnrichedPolyline(self, vertices=enriched_paths[number].vertices, reference_number=number+1)
+            #enriched_paths[number] = EnrichedPolyline(self, vertices=enriched_paths[number].vertices, reference_number=number+1)
+            enriched_paths[number].reference_number = number+1
+            #print enriched_paths[number].isClosed()
 
         paths = self.Boundary()
 
@@ -1044,6 +967,38 @@ class BRepComponent(object):
         #    self.report('Smoothed path %d, nodes %d from %d' % (num, len(xy), origlen))
         self._valid_paths = pathvalid
         self._pathall_enriched = enriched_paths
+
+        for p in pathvalid:
+            p.is_exterior = self.isExterior(p.reference_number, valid_paths = pathvalid)
+            if p.is_exterior:
+                self.exterior.append(p)
+            else:
+                if p.isClosed():
+                    self.interior.append(p)
+                else:
+                    report('Interior path %(number)s skipped, not a complete island', var = {'number':p.reference_number}, indent=2)
+        
+        #report('Processing paths:', indent=1)
+        # Examine all EnrichedPathlines p
+        p = None
+        for p in self.interior:
+            if p.isClosed():
+                area_string = '   area %(area)g' % {'area':p.AreaEnclosed()}
+            else:
+                area_string = ''
+            report('Interior path %(number)s%(area)s', var = {'number':p.reference_number, 'area':area_string}, indent=2)
+            #self.index = p.Generate(self.index)
+            self.components.append(p)
+        for p in self.exterior:
+            if p.isClosed():
+                area_string = '   area %(area)g' % {'area':p.AreaEnclosed()}
+            else:
+                area_string = ''
+            report('Exterior path %(number)s%(area)s', var = {'number':p.reference_number, 'area':area_string}, indent=2)
+            #self.index = p.Generate(self.index)
+        
+        self.components = self.interior + self.exterior
+        return self._valid_paths
 
 
 
