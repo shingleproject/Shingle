@@ -166,6 +166,78 @@ The authors specified here maintain the cases.</a:documentation>
       </oneOrMore>
     </element>
   </define>
+  <define name="projections">
+    <choice>
+      <element name="projection">
+        <a:documentation>Projection of input data source:
+Automatic, read from source
+(as much as possible)</a:documentation>
+        <attribute name="name">
+          <value>Automatic</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="projection">
+        <a:documentation>Projection of input data source:
+Cartesian</a:documentation>
+        <attribute name="name">
+          <value>Cartesian</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="projection">
+        <a:documentation>Projection of input data source:
+Longitude - Latitude</a:documentation>
+        <attribute name="name">
+          <value>LongLat</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="projection">
+        <a:documentation>Projection of input data source:
+Stereographic
+
+Needs pole orientation?</a:documentation>
+        <attribute name="name">
+          <value>Stereographic</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="projection">
+        <a:documentation>Projection of input data source:
+Proj4 string</a:documentation>
+        <attribute name="name">
+          <value>Proj4_string</value>
+        </attribute>
+        <data type="string"/>
+        <ref name="comment"/>
+      </element>
+      <element name="projection">
+        <a:documentation>Projection of input data source:
+Legacy: proj_cartesian</a:documentation>
+        <attribute name="name">
+          <value>proj_cartesian</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="projection">
+        <a:documentation>Projection of input data source:
+Legacy: proj_cartesian_inverse</a:documentation>
+        <attribute name="name">
+          <value>proj_cartesian_inverse</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+      <element name="projection">
+        <a:documentation>Projection of input data source:
+Legacy: Hammer</a:documentation>
+        <attribute name="name">
+          <value>Hammer</value>
+        </attribute>
+        <ref name="comment"/>
+      </element>
+    </choice>
+  </define>
   <define name="datasets">
     <element name="dataset">
       <a:documentation>Boundary representation component</a:documentation>
@@ -177,44 +249,7 @@ The authors specified here maintain the cases.</a:documentation>
         <ref name="dataset_polyline"/>
         <ref name="dataset_gis_project"/>
       </choice>
-      <choice>
-        <element name="projection">
-          <a:documentation>Projection of input data source:
-Automatic, read from source
-(as much as possible)</a:documentation>
-          <attribute name="name">
-            <value>Automatic</value>
-          </attribute>
-          <ref name="comment"/>
-        </element>
-        <element name="projection">
-          <a:documentation>Projection of input data source:
-Cartesian</a:documentation>
-          <attribute name="name">
-            <value>Cartesian</value>
-          </attribute>
-          <ref name="comment"/>
-        </element>
-        <element name="projection">
-          <a:documentation>Projection of input data source:
-Stereographic
-
-Needs pole orientation?</a:documentation>
-          <attribute name="name">
-            <value>Stereographic</value>
-          </attribute>
-          <ref name="comment"/>
-        </element>
-        <element name="projection">
-          <a:documentation>Projection of input data source:
-Proj4 string</a:documentation>
-          <attribute name="name">
-            <value>Proj4_string</value>
-          </attribute>
-          <data type="string"/>
-          <ref name="comment"/>
-        </element>
-      </choice>
+      <ref name="projections"/>
     </element>
   </define>
   <define name="dataset_raster">
@@ -387,25 +422,7 @@ Default file_name: ./shorelines.geo</a:documentation>
         </element>
       </optional>
       <ref name="comment"/>
-      <optional>
-        <element name="projection">
-          <a:documentation> Output Projection type
-
-Default: cartesian
-
-Legacy: projection</a:documentation>
-          <element name="string_value">
-            <choice>
-              <value>cartesian</value>
-              <value>proj_cartesian</value>
-              <value>proj_cartesian_inverse</value>
-              <value>hammer</value>
-              <value>longlat</value>
-            </choice>
-          </element>
-          <ref name="comment"/>
-        </element>
-      </optional>
+      <ref name="projections"/>
       <optional>
         <choice>
           <element name="orientation">

@@ -22,6 +22,11 @@ Earth_Global_unsampled_6min_metric.brml</comment>
     <string_value lines="1">oceans</string_value>
   </domain_type>
   <global_parameters/>
+  <output>
+    <projection>
+      <string_value>cartesian</string_value>
+    </projection>
+  </output>
   <dataset name="RTopo105b_data_filtered_200km_30min">
     <form name="Raster">
       <source url="https://zenodo.org/record/399213/files/SouthernOcean_noshelf_30m_fg.nc" name="HTTP">

@@ -1,100 +1,102 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version='1.0' encoding='utf-8'?>
 <boundary_representation>
-    <model_name>
-        <string_value lines="1">Antarctica_main_landicemass_global</string_value>
-        <comment>Use the RTopo dataset (RTopo105b.nc),
+  <model_name>
+    <string_value lines="1">Antarctica_main_landicemass_global</string_value>
+    <comment>Use the RTopo dataset (RTopo105b.nc),
 considering all land masses up to a latitude of 60S, within a global domain.
 Only the main largest landmass is included.
 Ice shelf ocean cavities are excluded.
 Spatial representation is specified along the open ocean boundary to ensure it is well-represented.
 Minimum edge-length increased to 100km from 10km, minimum proximity to 400km from 40km, to reduce time for discretisation in verification test.</comment>
-    </model_name>
-    <reference>
-        <author name="ASCandy">
-            <string_value lines="1">Adam S. Candy</string_value>
-            <email_address>
-                <string_value lines="1">A.S.Candy@tudelft.nl</string_value>
-            </email_address>
-            <institution>
-                <string_value lines="1">Technische Universiteit Delft</string_value>
-            </institution>
-        </author>
-    </reference>
-    <domain_type>
-        <string_value lines="1">ocean_ice_shelf</string_value>
-    </domain_type>
-    <global_parameters></global_parameters>
-    <output>
-        <orientation name="SouthPole"></orientation>
-    </output>
-    <dataset name="RTopo">
-        <form name="Raster">
-            <source name="HTTP" url="http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc">
-                <comment>RTopo105b_50S.nc
+  </model_name>
+  <reference>
+    <author name="ASCandy">
+      <string_value lines="1">Adam S. Candy</string_value>
+      <email_address>
+        <string_value lines="1">A.S.Candy@tudelft.nl</string_value>
+      </email_address>
+      <institution>
+        <string_value lines="1">Technische Universiteit Delft</string_value>
+      </institution>
+    </author>
+  </reference>
+  <domain_type>
+    <string_value lines="1">ocean_ice_shelf</string_value>
+  </domain_type>
+  <global_parameters/>
+  <output>
+    <projection>
+      <string_value>cartesian</string_value>
+    </projection>
+    <orientation name="SouthPole"/>
+  </output>
+  <dataset name="RTopo">
+    <form name="Raster">
+      <source url="http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc" name="HTTP">
+        <comment>RTopo105b_50S.nc
 Timmermann, Ralph; Le Brocq, Anne M; Deen, Tara J; Domack, Eugene W; Dutrieux, Pierre; Galton-Fenzi, Ben; Hellmer, Hartmut H; Humbert, Angelika; Jansen, Daniela; Jenkins, Adrian; Lambrecht, Astrid; Makinson, Keith; Niederjasper, Fred; Nitsche, Frank-Oliver; Nøst, Ole Anders; Smedsrud, Lars Henrik; Smith, Walter (2010): Antarctic ice sheet topography, cavity geometry, and global bathymetry (RTopo 1.0.5-beta). doi:10.1594/PANGAEA.741917,
 Supplement to: Timmermann, R et al. (2010): A consistent dataset of Antarctic ice sheet topography, cavity geometry, and global bathymetry. Earth System Science Data, 2(2), 261-273, doi:10.5194/essd-2-261-2010
 grdsample -I30m -fg noshelf.nc -GSouthernOcean_noshelf_30m_fg.nc
 
 ncks -v noshelf amask2.nc noshelf.nc
-ncks -v amask /d/dataset/rtopo/RTopo105b_aux.nc amask.nc&quot; ;</comment>
-            </source>
-        </form>
-        <projection name="Automatic"></projection>
-    </dataset>
-    <geoid_surface_representation name="Antarctica_main_landicemass">
-        <id>
-            <integer_value rank="0">9</integer_value>
-        </id>
-        <brep_component name="Antarctica_main_landicemass_brep">
-            <form name="Raster">
-                <source name="RTopo"></source>
-                <region_description>latitude &lt;= -60.0</region_description>
-                <contourtype name="iceshelfcavity" field_level="10.0" field_name="amask">
-                    <exclude_iceshelf_ocean_cavities></exclude_iceshelf_ocean_cavities>
-                </contourtype>
-                <boundary>1</boundary>
-            </form>
-            <identification name="Coast"></identification>
-            <id>
-                <integer_value rank="0">3</integer_value>
-            </id>
-            <representation_type name="BSpline"></representation_type>
-            <spacing>
-                <real_value rank="0">1.0E6</real_value>
-            </spacing>
-        </brep_component>
-        <boundary name="Coast">
-            <identification_number>
-                <integer_value rank="0">3</integer_value>
-            </identification_number>
-        </boundary>
-    </geoid_surface_representation>
-    <geoid_metric>
-        <form name="Proximity">
-            <boundary name="Coast"></boundary>
-            <edge_length_minimum>
-                <real_value rank="0">100000</real_value>
-            </edge_length_minimum>
-            <edge_length_maximum>
-                <real_value rank="0">1000000</real_value>
-            </edge_length_maximum>
-            <proximity_minimum>
-                <real_value rank="0">400000</real_value>
-            </proximity_minimum>
-            <proximity_maximum>
-                <real_value rank="0">2000000</real_value>
-            </proximity_maximum>
-        </form>
-    </geoid_metric>
-    <geoid_mesh>
-        <library name="Gmsh"></library>
-    </geoid_mesh>
-    <validation>
-        <test name="BrepDescription" file_name="data/Antarctica_main_landicemass_global_valid.geo"></test>
-        <tag name="Antarctica"></tag>
-        <tag name="IceShelfOceanCavity"></tag>
-        <tag name="RTopo"></tag>
-        <tag name="HTTP"></tag>
-        <tag name="continuous"></tag>
-    </validation>
+ncks -v amask /d/dataset/rtopo/RTopo105b_aux.nc amask.nc" ;</comment>
+      </source>
+    </form>
+    <projection name="Automatic"/>
+  </dataset>
+  <geoid_surface_representation name="Antarctica_main_landicemass">
+    <id>
+      <integer_value rank="0">9</integer_value>
+    </id>
+    <brep_component name="Antarctica_main_landicemass_brep">
+      <form name="Raster">
+        <source name="RTopo"/>
+        <contourtype field_level="10.0" field_name="amask" name="iceshelfcavity">
+          <exclude_iceshelf_ocean_cavities/>
+        </contourtype>
+        <boundary>1</boundary>
+      </form>
+      <identification name="Coast"/>
+      <id>
+        <integer_value rank="0">3</integer_value>
+      </id>
+      <representation_type name="BSpline"/>
+      <spacing>
+        <real_value rank="0">1.0E6</real_value>
+      </spacing>
+    </brep_component>
+    <boundary name="Coast">
+      <identification_number>
+        <integer_value rank="0">3</integer_value>
+      </identification_number>
+    </boundary>
+  </geoid_surface_representation>
+  <geoid_metric>
+    <form name="Proximity">
+      <boundary name="Coast"/>
+      <edge_length_minimum>
+        <real_value rank="0">100000</real_value>
+      </edge_length_minimum>
+      <edge_length_maximum>
+        <real_value rank="0">1000000</real_value>
+      </edge_length_maximum>
+      <proximity_minimum>
+        <real_value rank="0">400000</real_value>
+      </proximity_minimum>
+      <proximity_maximum>
+        <real_value rank="0">2000000</real_value>
+      </proximity_maximum>
+    </form>
+  </geoid_metric>
+  <geoid_mesh>
+    <library name="Gmsh"/>
+  </geoid_mesh>
+  <validation>
+    <test file_name="data/Antarctica_main_landicemass_global_valid.geo" name="BrepDescription"/>
+    <tag name="Antarctica"/>
+    <tag name="IceShelfOceanCavity"/>
+    <tag name="RTopo"/>
+    <tag name="HTTP"/>
+    <tag name="continuous"/>
+  </validation>
 </boundary_representation>

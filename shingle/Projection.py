@@ -237,7 +237,7 @@ def project(location, projection_type=None):
         latitude  = location[1]
         return array(proj(longitude, latitude, inverse=True))
 
-    elif (projection_type == 'hammer' ):
+    elif (projection_type == 'Hammer' ):
         longitude = location[0]
         latitude  = location[1]
         cos = math.cos
