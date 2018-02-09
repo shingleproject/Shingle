@@ -87,7 +87,7 @@ class Mesh(object):
         if not self._loaded or force:
           from shingle.OutputFormatWriter.GmshData import GmshData
           d = GmshData()
-          d.read(self.filename)
+          d.Read(self.filename)
           self.nodes = d.nodes
           self.elements = d.elements
           self._loaded = True
