@@ -31,7 +31,7 @@ RUN apt-get update && apt-get install -y \
 #    pip install Pydap
 
 # RUN pip install Pydap
-# RUN pip install Pydap --allow-unverified
+RUN pip install Pydap --allow-unverified
 
 # Set build compiler environment 
 ENV CC=gcc
