@@ -2,19 +2,19 @@
 matrix:
   include:
   
-  # Ubuntu Trusty 14.04 Docker container build and test
-  - env:
-      - NAME=trusty-docker
-    services:
-      - docker
-    dist: trusty
-    language: cpp
-    install:
-      - docker build -t shingle .
-    script:
-      - docker run -a stdout -t shingle make unittest
-      - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
-
+#  # Ubuntu Trusty 14.04 Docker container build and test
+#  - env:
+#      - NAME=trusty-docker
+#    services:
+#      - docker
+#    dist: trusty
+#    language: cpp
+#    install:
+#      - docker build -t shingle .
+#    script:
+#      - docker run -a stdout -t shingle make unittest
+#      - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
+#
   # Ubuntu Precise 12.04 Docker container build and test
   - env:
       - NAME=precise-docker
@@ -28,176 +28,176 @@ matrix:
       - docker run -a stdout -t shingle make unittest
       - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
 
-  # Ubuntu Xenial 16.04 Docker container build and test
-  - env:
-      - NAME=xenial-docker
-    services:
-      - docker
-    dist: trusty
-    language: cpp
-    install:
-      - docker build -f Dockerfile_xenial -t shingle .
-    script:
-      - docker run -a stdout -t shingle make unittest
-      - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
-
-  # Ubuntu Trusty 14.04 Travis apt base packages build and test
-  - env:
-      - NAME=trusty-apt
-    dist: trusty
-    language: python
-    python: 2.7
-    sudo: required
-    compiler: gcc
-    addons:
-      apt:
-        packages:
-          # - git
-          # - gcc
-          # - g++
-          - build-essential
-          - python-setuptools
-          - python-dev
-          - python-pip
-          - python-scipy
-          - python-numpy
-          - python-netcdf
-          - python-scientific
-          - python-matplotlib 
-          - python-shapely
-          - python-pyproj
-          - python-pil
-          - gmsh
-          - python-pytest
-          - curl
-    virtualenv:
-      system_site_packages: true
-    install:
-      # Temporarily update all apt packages
-      - sudo apt-get update
-      - sudo apt-get install -y git gcc g++ build-essential python-setuptools python-dev python-pip python-scipy python-numpy python-netcdf python-scientific python-matplotlib python-shapely python-pyproj python-pil gmsh python-pytest
-      - pip install Pydap
-    before_script:
-      - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
-      - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
-      - export LD_LIBRARY_PATH="/usr/lib/python2.7/dist-packages/Scientific/:$LD_LIBRARY_PATH"
-      - export LIBRARY_PATH="/usr/lib/python2.7/dist-packages/Scientific/:$LIBRARY_PATH"
-      - export PYTHONPATH="/usr/lib/python2.7/dist-packages/Scientific/:$PYTHONPATH"
-    script:
-      - make
-      - make unittest
-      # Pre-download, to best work with Travis timeout
-      - curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
-      - make test
-
-  # Ubuntu Precise 12.04 Travis apt base packages build and test
-  - env:
-      - NAME=precise-apt
-    dist: precise
-    language: python
-    python: 2.7
-    sudo: required
-    compiler: gcc
-    addons:
-      apt:
-        packages:
-          # - git
-          # - gcc
-          # - g++
-          - build-essential
-          - python-setuptools
-          - python-dev
-          - python-pip
-          - python-scipy
-          - python-numpy
-          - python-scientific
-          - python-matplotlib 
-          - python-shapely
-          - python-pyproj
-          - python-imaging
-          - python-requests
-          - gmsh
-          - python-py
-          - curl
-    virtualenv:
-      system_site_packages: true
-    install:
-      # Temporarily update all apt packages
-      - sudo apt-get update
-      - sudo apt-get install -y git gcc g++ build-essential python-setuptools python-dev python-pip python-scipy python-numpy python-scientific python-matplotlib python-shapely python-pyproj python-imaging gmsh python-py
-      - pip install Pydap
-    before_script:
-      - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
-      - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
-    script:
-      - make
-      - make unittest
-      # Pre-download, to best work with Travis timeout
-      - curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
-      - make test
-
-  # Ubuntu Trusty 14.04 Travis pip base packages build and test
-  - env:
-      - NAME=trusty-pip
-    dist: trusty
-    language: python
-    python: 2.7
-    # Temporarily roll back to Precise
-    sudo: required
-    compiler: gcc
-    addons:
-      apt:
-        packages:
-          # Temporarily install apt Scientific
-          - python-netcdf
-          - python-scientific
-          - gmsh
-          - curl
-    virtualenv:
-      system_site_packages: true
-    install:
-      - pip install numpy matplotlib pyproj Pydap shapely Pillow pytest
-      #- pip install ScientificPython
-    before_script:
-      - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
-      - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
-    script:
-      - make
-      - make unittest
-      # Pre-download, to best work with Travis timeout
-      - curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
-      - make test
-
-  # Ubuntu Precise 12.04 Travis pip base packages build and test
-  - env:
-      - NAME=precise-pip
-    dist: precise
-    language: python
-    python: 2.7
-    # Temporarily roll back to Precise
-    sudo: required
-    compiler: gcc
-    addons:
-      apt:
-        packages:
-          # Temporarily install apt Scientific
-          - python-scientific
-          - gmsh
-          - curl
-    virtualenv:
-      system_site_packages: true
-    install:
-      - pip install numpy matplotlib pyproj Pydap shapely Pillow pytest requests
-      #- pip install ScientificPython
-    before_script:
-      - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
-      - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
-    script:
-      - make
-      - make unittest
-      # Pre-download, to best work with Travis timeout
-      - curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
-      - make test
+#  # Ubuntu Xenial 16.04 Docker container build and test
+#  - env:
+#      - NAME=xenial-docker
+#    services:
+#      - docker
+#    dist: trusty
+#    language: cpp
+#    install:
+#      - docker build -f Dockerfile_xenial -t shingle .
+#    script:
+#      - docker run -a stdout -t shingle make unittest
+#      - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
+#
+#  # Ubuntu Trusty 14.04 Travis apt base packages build and test
+#  - env:
+#      - NAME=trusty-apt
+#    dist: trusty
+#    language: python
+#    python: 2.7
+#    sudo: required
+#    compiler: gcc
+#    addons:
+#      apt:
+#        packages:
+#          # - git
+#          # - gcc
+#          # - g++
+#          - build-essential
+#          - python-setuptools
+#          - python-dev
+#          - python-pip
+#          - python-scipy
+#          - python-numpy
+#          - python-netcdf
+#          - python-scientific
+#          - python-matplotlib 
+#          - python-shapely
+#          - python-pyproj
+#          - python-pil
+#          - gmsh
+#          - python-pytest
+#          - curl
+#    virtualenv:
+#      system_site_packages: true
+#    install:
+#      # Temporarily update all apt packages
+#      - sudo apt-get update
+#      - sudo apt-get install -y git gcc g++ build-essential python-setuptools python-dev python-pip python-scipy python-numpy python-netcdf python-scientific python-matplotlib python-shapely python-pyproj python-pil gmsh python-pytest
+#      - pip install Pydap
+#    before_script:
+#      - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
+#      - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
+#      - export LD_LIBRARY_PATH="/usr/lib/python2.7/dist-packages/Scientific/:$LD_LIBRARY_PATH"
+#      - export LIBRARY_PATH="/usr/lib/python2.7/dist-packages/Scientific/:$LIBRARY_PATH"
+#      - export PYTHONPATH="/usr/lib/python2.7/dist-packages/Scientific/:$PYTHONPATH"
+#    script:
+#      - make
+#      - make unittest
+#      # Pre-download, to best work with Travis timeout
+#      - curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
+#      - make test
+#
+#  # Ubuntu Precise 12.04 Travis apt base packages build and test
+#  - env:
+#      - NAME=precise-apt
+#    dist: precise
+#    language: python
+#    python: 2.7
+#    sudo: required
+#    compiler: gcc
+#    addons:
+#      apt:
+#        packages:
+#          # - git
+#          # - gcc
+#          # - g++
+#          - build-essential
+#          - python-setuptools
+#          - python-dev
+#          - python-pip
+#          - python-scipy
+#          - python-numpy
+#          - python-scientific
+#          - python-matplotlib 
+#          - python-shapely
+#          - python-pyproj
+#          - python-imaging
+#          - python-requests
+#          - gmsh
+#          - python-py
+#          - curl
+#    virtualenv:
+#      system_site_packages: true
+#    install:
+#      # Temporarily update all apt packages
+#      - sudo apt-get update
+#      - sudo apt-get install -y git gcc g++ build-essential python-setuptools python-dev python-pip python-scipy python-numpy python-scientific python-matplotlib python-shapely python-pyproj python-imaging gmsh python-py
+#      - pip install Pydap
+#    before_script:
+#      - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
+#      - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
+#    script:
+#      - make
+#      - make unittest
+#      # Pre-download, to best work with Travis timeout
+#      - curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
+#      - make test
+#
+#  # Ubuntu Trusty 14.04 Travis pip base packages build and test
+#  - env:
+#      - NAME=trusty-pip
+#    dist: trusty
+#    language: python
+#    python: 2.7
+#    # Temporarily roll back to Precise
+#    sudo: required
+#    compiler: gcc
+#    addons:
+#      apt:
+#        packages:
+#          # Temporarily install apt Scientific
+#          - python-netcdf
+#          - python-scientific
+#          - gmsh
+#          - curl
+#    virtualenv:
+#      system_site_packages: true
+#    install:
+#      - pip install numpy matplotlib pyproj Pydap shapely Pillow pytest
+#      #- pip install ScientificPython
+#    before_script:
+#      - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
+#      - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
+#    script:
+#      - make
+#      - make unittest
+#      # Pre-download, to best work with Travis timeout
+#      - curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
+#      - make test
+#
+#  # Ubuntu Precise 12.04 Travis pip base packages build and test
+#  - env:
+#      - NAME=precise-pip
+#    dist: precise
+#    language: python
+#    python: 2.7
+#    # Temporarily roll back to Precise
+#    sudo: required
+#    compiler: gcc
+#    addons:
+#      apt:
+#        packages:
+#          # Temporarily install apt Scientific
+#          - python-scientific
+#          - gmsh
+#          - curl
+#    virtualenv:
+#      system_site_packages: true
+#    install:
+#      - pip install numpy matplotlib pyproj Pydap shapely Pillow pytest requests
+#      #- pip install ScientificPython
+#    before_script:
+#      - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
+#      - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
+#    script:
+#      - make
+#      - make unittest
+#      # Pre-download, to best work with Travis timeout
+#      - curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
+#      - make test
 
 notifications:
   slack:
