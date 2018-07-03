@@ -234,7 +234,6 @@ def Filter(dataset, brep, subregion):
         region = dataset.Load(subregion, name_field=name_field)
         field = deepcopy(region.Data())
    
-    test error
     print type(field)
     field = array(field)
     print type(field)
