@@ -55,7 +55,7 @@ ENV PATH /home/shingle/Shingle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr
 #RUN pip install numpy matplotlib pyproj Pydap shapely Pillow
 
 # Pre-download, to best work with Travis timeout
-RUN curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
+#RUN curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
 
 RUN make
 #RUN make unittest

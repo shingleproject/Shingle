@@ -28,18 +28,18 @@ matrix:
       - docker run -a stdout -t shingle make unittest
       - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
 
-#  # Ubuntu Xenial 16.04 Docker container build and test
-#  - env:
-#      - NAME=xenial-docker
-#    services:
-#      - docker
-#    dist: trusty
-#    language: cpp
-#    install:
-#      - docker build -f Dockerfile_xenial -t shingle .
-#    script:
-#      - docker run -a stdout -t shingle make unittest
-#      - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
+  # Ubuntu Xenial 16.04 Docker container build and test
+  - env:
+      - NAME=xenial-docker
+    services:
+      - docker
+    dist: trusty
+    language: cpp
+    install:
+      - docker build -f Dockerfile_xenial -t shingle .
+    script:
+      - docker run -a stdout -t shingle make unittest
+      - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
 #
 #  # Ubuntu Trusty 14.04 Travis apt base packages build and test
 #  - env:
