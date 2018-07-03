@@ -186,7 +186,7 @@ matrix:
     virtualenv:
       system_site_packages: true
     install:
-      - pip install numpy matplotlib pyproj Pydap shapely Pillow pytest
+      - pip install numpy matplotlib pyproj Pydap shapely Pillow pytest requests
       #- pip install ScientificPython
     before_script:
       - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
