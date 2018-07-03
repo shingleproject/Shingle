@@ -27,6 +27,7 @@ RUN apt-get update && apt-get install -y \
         curl
 
 RUN pip install Pydap
+RUN pip install Shapely
 
 # Set build compiler environment 
 ENV CC=gcc
