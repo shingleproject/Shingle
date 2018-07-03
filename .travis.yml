@@ -115,6 +115,7 @@ matrix:
           - python-shapely
           - python-pyproj
           - python-imaging
+          python-requests
           - gmsh
           - python-py
           - curl
