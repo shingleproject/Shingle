@@ -207,6 +207,7 @@ class ReadDataNetCDF():
         return self.data
 
 def Filter(dataset, brep, subregion):
+    from numpy import array
 
     if specification.have_option(brep.FormPath() + 'contourtype[0]'):
         contour_type = specification.get_option(brep.FormPath() + 'contourtype[0]/name')
@@ -232,6 +233,14 @@ def Filter(dataset, brep, subregion):
     else:
         region = dataset.Load(subregion, name_field=name_field)
         field = deepcopy(region.Data())
+    
+    print type(field)
+    field = array(field)
+    print type(field)
+    print field.ndim
+    field[field>0.001]=1
+
+
     
     if (contour_type=='iceshelfcavity'):
         #            % 2
