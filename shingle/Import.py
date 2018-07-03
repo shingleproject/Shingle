@@ -266,6 +266,7 @@ def Filter(dataset, brep, subregion):
         field[field<=-10.0]=1
 
     elif (contour_type=='gebco10m'):
+        print field.ndim
         field[field<=-10.0]=-10.0
         field[field>-10.0]=0
         field[field<=-10.0]=1
