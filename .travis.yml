@@ -199,6 +199,36 @@ matrix:
 #      - curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
 #      - make test
 
+
+
+
+#  # macOS 10.13 High Sierra pip base packages build and test
+#  - os: osx
+#  - osx_image: xcode9.4
+#  - env:
+#      - NAME=highsierra-pip
+#    dist: highsierra
+#    language: python
+#    python: 2.7
+#    sudo: required
+#    compiler: gcc
+#    virtualenv:
+#      system_site_packages: true
+#    install:
+#      - pip install numpy matplotlib pyproj Pydap shapely Pillow pytest
+#      - brew install gmsh
+#    before_script:
+#      - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
+#      - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
+#    script:
+#      - make
+#      - make unittest
+#      # Pre-download, to best work with Travis timeout
+#      - curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
+#      - make test
+
+
+
 notifications:
   slack:
     secure: RRdmxLqjwm5LVcHmeoLs+WAB8FhYEMb+riZMvAoVxt4/7FuSIvyil/oeL8KI7P7g/EPnN8hQlf7duyGwAaih/gWKd47vDnmhir7VbO6fe3zBVvX9TVa/kuqejGSnJlOPw6dFDMLoCqnJ08dwUWzvvAmCHr7wod16PfI557pqvAE=
