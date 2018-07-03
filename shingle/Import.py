@@ -233,7 +233,8 @@ def Filter(dataset, brep, subregion):
     else:
         region = dataset.Load(subregion, name_field=name_field)
         field = deepcopy(region.Data())
-   
+  
+    print 'Temporary debugging output'
     print type(field)
     field = array(field)
     print type(field)
