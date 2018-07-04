@@ -357,6 +357,32 @@ class VerificationTests(object):
                 lines.append(line)
             return lines
 
+        def FilterPointFloats(cached):
+            additions = {}
+            removals = {}
+            # Matches point number, x, y, z
+            point_pattern = re.compile('^[-+] Point \( (\d+) \) = { (\d+.*\d+), (\d+.*\d+), (\d+.*\d+) }; *$')
+            for i, line in enumerate(cached):
+                if line.startswith '+ Point '
+                    found = point_pattern.match(line)
+                    if not found:
+                        return cached
+                    additions[a.group(1)] = a.group(2,3,4)
+                elif line.startswith '- Point '
+                    found = point_pattern.match(line)
+                    if not found:
+                        return cached
+                    removals[a.group(1)] = a.group(2,3,4)
+                else 
+                    return cached
+            
+            # to finish ....
+            # asc
+            # Compare point routine somewhere in Support?
+
+
+
+
         def SystemDiff(a, b):
             from Support import Execute
             #cmd = ['diff', '-u', '--suppress-common-lines', fullvalid, fullpath ]
@@ -462,6 +488,14 @@ class VerificationTests(object):
 
                 if total > 4000:
                     break
+
+        if compare_floating_values:
+            if use_system_diff:
+                cached = FilterPointFloats(cached)
+                total = len(cached)
+            else:
+                error('If using custom diff, can not currently ensure all chnanges are compared since the routines are limited to a number of lines dus to time required.')
+                raise NotImplementedError
 
         if total > total_toshow:
             toshow = total_toshow - 10
