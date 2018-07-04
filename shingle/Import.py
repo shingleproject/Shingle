@@ -236,10 +236,10 @@ def Filter(dataset, brep, subregion):
   
     print 'Temporary debugging output'
     print type(field)
-    field = array(field)
+    #field = array(field)
     print type(field)
     print field.ndim
-    field[field>0.001]=1
+    #field[field>0.001]=1
 
 
     
