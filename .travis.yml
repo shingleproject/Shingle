@@ -162,6 +162,7 @@ matrix:
       - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
       - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
     script:
+      - pip freeze | grep Pydap
       - make
       - make unittest
       # Pre-download, to best work with Travis timeout
