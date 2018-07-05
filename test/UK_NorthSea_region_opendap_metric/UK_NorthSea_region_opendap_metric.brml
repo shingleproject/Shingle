@@ -21,9 +21,7 @@
   </domain_type>
   <global_parameters/>
   <output>
-    <projection>
-      <string_value>longlat</string_value>
-    </projection>
+    <projection name="LongLat"/>
     <orientation name="LongLat"/>
   </output>
   <dataset name="ETOPO2">
@@ -64,7 +62,7 @@
         <boundary>1</boundary>
       </form>
       <identification name="Coast"/>
-      <representation_type name="BSplines"/>
+      <representation_type name="BSpline"/>
     </brep_component>
     <brep_component name="OpenBoundary">
       <form name="BoundingBox">
@@ -88,7 +86,7 @@
         </region>
       </form>
       <identification name="OpenOcean"/>
-      <representation_type name="BSplines"/>
+      <representation_type name="BSpline"/>
     </brep_component>
     <boundary name="Coast">
       <identification_number>
@@ -154,6 +152,22 @@ field += 0.1
     <parse/>
   </geoid_mesh>
   <validation>
+    <test name="NodeNumber">
+      <value>
+        <integer_value rank="0">18068</integer_value>
+        <tolerance>
+          <integer_value rank="0">500</integer_value>
+        </tolerance>
+      </value>
+    </test>
+    <test name="ElementNumber">
+      <value>
+        <integer_value rank="0">36136</integer_value>
+        <tolerance>
+          <integer_value rank="0">500</integer_value>
+        </tolerance>
+      </value>
+    </test>
     <test file_name="data/UK_NorthSea_region_opendap_metric_valid.geo" name="BrepDescription"/>
     <tag name="UK"/>
     <tag name="NorthSea"/>

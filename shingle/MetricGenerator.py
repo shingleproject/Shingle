@@ -37,6 +37,7 @@ from Bounds import Bounds
 from Spud import specification
 from copy import deepcopy
 import numpy
+import os.path
 
 def merge_two_dicts(x, y):
     """Given two dicts, merge them into a new dict as a shallow copy."""
@@ -371,7 +372,7 @@ General.RotationZ = %(z).0f;
         else:
             function = None
 
-        m = Metric()
+        m = Metric(surface_rep=self._surface_rep)
         m.Generate(field_region, function=function)
 
         self.AddContent(m.Import())
@@ -390,10 +391,10 @@ class Metric(object):
 global field
 '''
 
-    def __init__(self, output_filename = None):
-        if output_filename is None:
-            self.output_filename = self._OUTPUT_FILENAME_DEFAULT
+    def __init__(self, surface_rep=None, output_filename = None):
+        self.output_filename = output_filename
         self.output_format = self._OUTPUT_FORMAT_TYPE_STRUCT
+        self._surface_rep = surface_rep
 
         self.minimumdepth = 10.0
 
@@ -404,8 +405,23 @@ global field
 
     def _file(self):
         if self._fileobject is None:
-            self._fileobject = open(self.output_filename,'w')
+            self._fileobject = open(self.Filepath(full=True),'w')
         return self._fileobject
+
+    def Filepath(self, full=False):
+        if self.output_filename is None:
+            filename = self._surface_rep.Name() + '_' + self._OUTPUT_FILENAME_DEFAULT
+            dirname = '.'
+        else:
+            filename = os.path.basename(self.output_filename)
+            dirname  = os.path.dirname(self.output_filename)
+        if full:
+            #if dirname in ['', '.']:
+            #    name = filename
+            name = os.path.join(dirname, filename)
+            return self._surface_rep.spatial_discretisation.PathRelative(name)
+        else:
+            return filename
 
     def Finalise(self):
         self._fileobject.close()
@@ -415,6 +431,7 @@ global field
         self._file().write(string + '\n')
 
     def Import(self):
+        from re import sub
         string = '''
 // External metric field definition
 Field[1] = Structured;
@@ -429,7 +446,8 @@ Field[2].F = "0.1";
 Background Field = 1;
 
 ''' % {
-        'filename':self.output_filename,
+        'filename': self.Filepath(full=True),
+        #'filename': sub('^' + os.path.expanduser('~/'), '~/', self.Filepath(full=True)),
     }
         return string
 

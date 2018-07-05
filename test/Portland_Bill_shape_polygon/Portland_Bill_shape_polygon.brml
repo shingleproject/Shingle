@@ -21,9 +21,7 @@
   </domain_type>
   <global_parameters/>
   <output>
-    <projection>
-      <string_value>longlat</string_value>
-    </projection>
+    <projection name="LongLat"/>
     <orientation name="LongLat"/>
   </output>
   <dataset name="SouthCoast">
@@ -42,7 +40,7 @@
         <contourtype field_level="10.0" field_name="amask" name="iceshelfcavity"/>
       </form>
       <identification name="Coast"/>
-      <representation_type name="BSplines"/>
+      <representation_type name="BSpline"/>
     </brep_component>
     <boundary name="Coast">
       <identification_number>

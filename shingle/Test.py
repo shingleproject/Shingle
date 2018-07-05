@@ -345,6 +345,8 @@ class VerificationTests(object):
                 return False
             if 'Mesh tool version: ' in string:
                 return False
+            if '.FileName = ' in string:
+                return False
             return True
 
         def ReadNextLines(filehandle, number):
@@ -354,6 +356,54 @@ class VerificationTests(object):
                 if not line: return lines
                 lines.append(line)
             return lines
+
+        def FilterPointFloats(cached):
+            import re
+            def isSameLocation(a, b, tolerance=1E-5):
+                #print [ abs(float(a[0]) - float(b[0])), abs(float(a[1]) - float(b[1])), abs(float(a[2]) - float(b[2])) ]
+                return [ abs(float(a[0]) - float(b[0])), abs(float(a[1]) - float(b[1])), abs(float(a[2]) - float(b[2])) ] < [tolerance] * 3
+        
+            additions = {}
+            removals = {}
+            # Matches point number, x, y, z
+            point_pattern = re.compile('^[-+] Point \( (\d+) \) = { (-*\d+.*\d+), (-*\d+.*\d+), (-*\d+.*\d+) }; *$')
+            for i, line in enumerate(cached):
+                #print i, line
+                if line.startswith('+ Point '):
+                    found = point_pattern.match(line)
+                    if not found:
+                        return cached
+                    additions[found.group(1)] = found.group(2,3,4)
+                elif line.startswith('- Point '):
+                    found = point_pattern.match(line)
+                    if not found:
+                        return cached
+                    removals[found.group(1)] = found.group(2,3,4)
+                #else 
+                #    return cached
+        
+            #print 'Removals: ', removals.keys()
+            #print 'Additions:', additions.keys()
+            same = []
+            for identification in removals.keys():
+                if identification not in additions.keys():
+                    continue
+                #    return cached
+                if isSameLocation(removals[identification], additions[identification]):
+                    same.append(identification)
+        
+            if len(same) == 0:
+                return cached
+            
+            #print 'Same:', same
+            new = []
+            for line in cached:
+                if line.startswith('+ Point ') or line.startswith('- Point '):
+                    found = point_pattern.match(line)
+                    if found.group(1) in same:
+                        continue
+                        new.append(line)
+            return new
 
         def SystemDiff(a, b):
             from Support import Execute
@@ -371,6 +421,7 @@ class VerificationTests(object):
             return diff.stdout
 
         use_system_diff = True
+        compare_floating_values = True
 
         name = 'BrepDescription'
         path = '/validation/test::%(name)s' % {'name':name}
@@ -460,6 +511,14 @@ class VerificationTests(object):
 
                 if total > 4000:
                     break
+
+        if compare_floating_values:
+            if use_system_diff:
+                cached = FilterPointFloats(cached)
+                total = len(cached)
+            else:
+                error('If using custom diff, can not currently ensure all chnanges are compared since the routines are limited to a number of lines dus to time required.')
+                raise NotImplementedError
 
         if total > total_toshow:
             toshow = total_toshow - 10
@@ -561,9 +620,4 @@ def ResultToString(result, total=None, show_failures=False, failures=None):
     else:
         string = '  %(brightred)sFAIL%(end)s' + failreport
     return string
-
-
-
-
-
 

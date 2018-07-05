@@ -207,6 +207,7 @@ class ReadDataNetCDF():
         return self.data
 
 def Filter(dataset, brep, subregion):
+    from numpy import array
 
     if specification.have_option(brep.FormPath() + 'contourtype[0]'):
         contour_type = specification.get_option(brep.FormPath() + 'contourtype[0]/name')
@@ -232,7 +233,7 @@ def Filter(dataset, brep, subregion):
     else:
         region = dataset.Load(subregion, name_field=name_field)
         field = deepcopy(region.Data())
-    
+  
     if (contour_type=='iceshelfcavity'):
         #            % 2
         # 0 ocean    1
@@ -398,7 +399,8 @@ def read_shape(filename):
     paths = []
     shapes = ReadShapefile(filename)
 
-    from matplotlib.path import Path
+    #from matplotlib.path import Path
+    from shapely.geometry.polygon import LineString
     #class PPath(object):
     #  def __init__(self, vertices):
     #    self.vertices = vertices
@@ -408,21 +410,21 @@ def read_shape(filename):
 
     #shape = shapes[shapes.keys()[0]]
     for shape in shapes:
-        print shape.type
+        #print shape.type
 
         if shape.type == 'Polygon':
             try:
-                p = Path(vertices=shape.exterior.coords[:])
+                p = LineString(shape.exterior.coords[:])
                 #print p.vertices
                 paths.append(p)
             except:
                 pass
             for interior in shape.interiors:
-                p = Path(vertices=interior.coords[:])
+                p = LineString(interior.coords[:])
                 #print p.vertices
                 paths.append(p)
         elif shape.type == 'LineString':
-                p = Path(vertices=shape.coords[:])
+                p = LineString(shape.coords[:])
                 #print p.vertices
                 paths.append(p)
         else:
@@ -430,6 +432,9 @@ def read_shape(filename):
 
     return paths
 
+def ReadShape(brep, dataset):
+    filename = dataset.LocationFull()
+    return read_shape(filename) 
 
 def ReadPaths(brep, dataset):
     filename = dataset.LocationFull()
@@ -441,9 +446,14 @@ def ReadPaths(brep, dataset):
 
     if ext in ['png', 'tif', 'tiff']:
         r = ReadDataRaster(filename)
+        r.Load()
+        #region, field = Filter(dataset, brep, subregion)
+        region = r
+        field = r.field
         contour_required = True
     elif ext in ['shp']:
         paths = read_shape(filename) 
+        raise NotImplemented
     else: # NetCDF .nc files
       
         region, field = Filter(dataset, brep, subregion)
@@ -466,7 +476,12 @@ def ReadPaths(brep, dataset):
             universe.plot_backend = matplotlib.get_backend()
             matplotlib.use('Agg')
             from pylab import contour
-            report("Found raster, sizes: lat %(lat)d, lon %(lon)d, shape %(shape)s", var = {'lon':len(region.lon), 'lat':len(region.lat), 'shape':str(region.Data().shape)}, indent = 2 )
+            try:
+                shape = ", shape %(shape)s" % {'shape':str(region.Data().shape)}
+            except:
+                shape = ""
+                pass
+            report("Found raster, sizes: lat %(lat)d, lon %(lon)d%(shape)s", var = {'lon':len(region.lon), 'lat':len(region.lat), 'shape':shape}, indent = 2 )
             paths = contour(region.lon,region.lat,field,levels=[0.5]).collections[0].get_paths()
 
     return paths

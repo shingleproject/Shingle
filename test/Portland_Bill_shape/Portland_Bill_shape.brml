@@ -20,43 +20,36 @@
     <string_value lines="1">oceans</string_value>
   </domain_type>
   <global_parameters/>
-  <output>
-    <projection>
-      <string_value>longlat</string_value>
-    </projection>
-    <orientation name="LongLat"/>
-  </output>
+  <output/>
   <dataset name="SouthCoast">
-    <form name="Raster">
+    <form name="Polyline">
       <source file_name="data/SouthCoast.shp" name="Local_file"/>
     </form>
-    <projection name="Automatic"/>
+    <projection name="Proj4_string">+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.999601272 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs</projection>
   </dataset>
   <dataset name="OpenOcean">
-    <form name="Raster">
+    <form name="Polyline">
       <source file_name="data/OpenOcean.shp" name="Local_file"/>
     </form>
-    <projection name="Automatic"/>
+    <projection name="Proj4_string">+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.999601272 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs</projection>
   </dataset>
   <geoid_surface_representation name="PortlandBill">
     <id>
       <integer_value rank="0">9</integer_value>
     </id>
     <brep_component name="SouthCoast">
-      <form name="Raster">
+      <form name="Polyline">
         <source name="SouthCoast"/>
-        <contourtype field_level="10.0" field_name="amask" name="iceshelfcavity"/>
       </form>
       <identification name="Coast"/>
-      <representation_type name="BSplines"/>
+      <representation_type name="BSpline"/>
     </brep_component>
     <brep_component name="OpenOcean">
-      <form name="Raster">
+      <form name="Polyline">
         <source name="OpenOcean"/>
-        <contourtype field_level="10.0" field_name="amask" name="iceshelfcavity"/>
       </form>
       <identification name="OpenOcean"/>
-      <representation_type name="BSplines"/>
+      <representation_type name="Polyline"/>
     </brep_component>
     <boundary name="Coast">
       <identification_number>
@@ -73,16 +66,16 @@
     <form name="Proximity">
       <boundary name="Coast"/>
       <edge_length_minimum>
-        <real_value rank="0">0.01</real_value>
+        <real_value rank="0">1.0E1</real_value>
       </edge_length_minimum>
       <edge_length_maximum>
-        <real_value rank="0">2</real_value>
+        <real_value rank="0">4.0E4</real_value>
       </edge_length_maximum>
       <proximity_minimum>
-        <real_value rank="0">0.05</real_value>
+        <real_value rank="0">3.0E1</real_value>
       </proximity_minimum>
       <proximity_maximum>
-        <real_value rank="0">5</real_value>
+        <real_value rank="0">1.0E5</real_value>
       </proximity_maximum>
     </form>
   </geoid_metric>
@@ -91,7 +84,7 @@
   </geoid_mesh>
   <validation>
     <test file_name="data/Portland_Bill_shape_valid.geo" name="BrepDescription"/>
-    <tag name="development"/>
     <tag name="UK"/>
+    <tag name="Shapefile"/>
   </validation>
 </boundary_representation>

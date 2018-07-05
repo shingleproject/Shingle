@@ -36,7 +36,7 @@ from Universe import universe
 from Support import SourceTestFolder
 from Reporting import report, error, Log
 from Spud import specification
-from Raster import Dataset, Raster
+from Raster import Dataset, Raster, Polyline
 
 
 class ReadMultipleInstance(object):
@@ -160,13 +160,20 @@ class SpatialDiscretisation(object):
             comments.append('[None provided]')
         return linesep.join(comments)
 
-    def Root(self):
-        return os.path.realpath(os.path.dirname(self._filename))
+    def Root(self, abbreviate=False):
+        from re import sub
+        root = os.path.realpath(os.path.dirname(self._filename))
+        if abbreviate:
+            root = sub('^' + os.path.expanduser('~/'), '~/', root)
+        return root
 
-    def PathRelative(self, path):
+    def PathRelative(self, path, abbreviate=False):
         if path.startswith('/'):
             return path
-        return os.path.realpath(os.path.join(self.Root(), path))
+        if path.startswith('~'):
+            return os.path.expanduser(path)
+        #print path, self.Root(), os.path.join(self.Root(abbreviate=abbreviate), path)
+        return os.path.realpath(os.path.join(self.Root(abbreviate=abbreviate), path))
 
     def report(self, *args, **kwargs):
         report(*args, **kwargs)
@@ -186,7 +193,10 @@ class SpatialDiscretisation(object):
 
     def Projection(self):
         if specification.have_option('/output/projection'):
-            return specification.get_option('/output/projection')
+            projection = specification.get_option('/output/projection[0]/name' )
+            if projection == 'Proj4_string':
+                projection = specification.get_option('/output/projection[0]' )
+            return projection
         else:
             return universe.default.projection
 
@@ -215,6 +225,60 @@ class SpatialDiscretisation(object):
         specification.clear_options()
         specification.load_options(self._filename)
         self._loaded = True
+
+    def RemoveProjectionPoints(self):
+        #FIXME: Apply just in specific case?  - i.e. I need the opposite here
+        if self.Projection() == 'LongLat':
+            return
+        self.AddContent( '''Delete { Point{ %(prefix)s0 }; }
+Delete { Point{ %(prefix)s1 }; }
+''' % { 'prefix':self.CounterPrefix('IP') } )
+
+    def CounterPrefix(self, prefix):
+        if universe.use_counter_prefix:
+            return '%(prefix)s%(fileid)s + ' % { 'prefix':prefix, 'fileid':self.Fileid() }
+        else:
+            return ''
+
+    def isCompound(self):
+        return False
+
+    def AddHeader(self):
+        self.AddSection('Boundary Representation description')
+        self.AddSection('Header')
+        if self.isCompound():
+            edgeindex = ' + 1000000'
+        else:
+            edgeindex = ''
+        # TODO: Only include if using CounterPrefix
+        if universe.use_counter_prefix:
+            if not self.isCompound():
+                header = '''\
+  IP%(fileid)s = newp;
+  IL%(fileid)s = newl;
+  ILL%(fileid)s = newll;
+  IS%(fileid)s = news;
+  IFI%(fileid)s = newf;
+  ''' % { 'fileid':self.Fileid(), 'edgeindex':edgeindex }
+            else:
+                header = '''\
+  IP%(fileid)s = 0;
+  IL%(fileid)s = 0%(edgeindex)s;
+  ILL%(fileid)s = 0;
+  IS%(fileid)s = news;
+  IFI%(fileid)s = newf;
+  ''' % { 'fileid':self.Fileid(), 'edgeindex':edgeindex }
+            self.AddContent(header)
+
+        if (self.Projection() in ['Cartesian'] ):
+            header_polar = '''Point ( %(prefix)s0 ) = { 0, 0, 0 };
+Point ( %(prefix)s1 ) = { 0, 0, %(planet_radius)g };
+PolarSphere ( %(surface_prefix)s0 ) = { %(prefix)s0, %(prefix)s1 };
+''' % { 'planet_radius': self.PlanetRadius(), 'prefix': self.CounterPrefix('IP'), 'surface_prefix':self.CounterPrefix('IS') }
+            self.AddContent(header_polar)
+
+        self.RemoveProjectionPoints()
+
 
     def PlanetRadius(self):
         if self._loaded and specification.have_option('/global_parameters/planetary_radius'):
@@ -254,7 +318,7 @@ class SpatialDiscretisation(object):
             if d.form == 'Raster':
                 d = Raster(spatial_discretisation=self, number=number)
             elif d.form == 'Polyline':
-                raise NotImplementedError
+                d = Polyline(spatial_discretisation=self, number=number)
             else:
                 raise NotImplementedError
             if d.isLocal() or d.isHttp():
@@ -419,11 +483,14 @@ Created at: %(timestamp)s
 
 
         self.AppendHeader()
-
+        
         # For now limit to the first surface geoid representation
         name = self.SurfaceGeoidRepFirstName()
 
         rep = SurfaceGeoidDomainRepresentation(spatial_discretisation=self, name=name)
+        self.AddHeader()
+        rep.Generate()
+
 
         f = Field(surface_representation = rep )
         

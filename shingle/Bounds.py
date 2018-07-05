@@ -125,7 +125,8 @@ class Bounds():
         if bounding_latitude is not None:
             self.AddComment('Bounding by latitude: ' + str(bounding_latitude))
             region = bound_by_latitude(region, bounding_latitude)
-
-        self.AddComment('Region of interest: ' + region)
+        
+        if region != 'True':
+            self.AddComment('Region of interest: ' + region)
         self._expression = region
 

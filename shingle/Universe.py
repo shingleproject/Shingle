@@ -103,9 +103,9 @@ class universe():
         boundariestoexclude = []
         region = 'True'
         minarea = 0
-        dx = 0.1
+        dx = 1.0E4
         exclude_iceshelf_ocean_cavities = False
-        projection = 'cartesian'
+        projection = 'Automatic'
         contourtype = 'iceshelfcavity'
         compound = False
 

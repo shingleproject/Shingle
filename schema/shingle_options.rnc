@@ -122,6 +122,62 @@ reference_options =
     }
   )
 
+projections =
+  (
+    ## Projection of input data source:
+    ## Automatic, read from source
+    ## (as much as possible)
+    element projection {
+      attribute name { "Automatic" },
+      comment
+    }|
+    ## Projection of input data source:
+    ## Cartesian
+    element projection {
+      attribute name { "Cartesian" },
+      comment
+    }|
+    ## Projection of input data source:
+    ## Longitude - Latitude
+    element projection {
+      attribute name { "LongLat" },
+      comment
+    }|
+    ## Projection of input data source:
+    ## Stereographic
+    ##
+    ## Needs pole orientation?
+    element projection {
+      attribute name { "Stereographic" },
+      comment
+    }|
+    ## Projection of input data source:
+    ## Proj4 string
+    element projection {
+      attribute name { "Proj4_string" },
+      string,
+      comment
+    }|
+    ## Projection of input data source:
+    ## Legacy: proj_cartesian
+    element projection {
+      attribute name { "proj_cartesian" },
+      comment
+    }|
+    ## Projection of input data source:
+    ## Legacy: proj_cartesian_inverse
+    element projection {
+      attribute name { "proj_cartesian_inverse" },
+      comment
+    }|
+    ## Projection of input data source:
+    ## Legacy: Hammer
+    element projection {
+      attribute name { "Hammer" },
+      comment
+    }
+  )
+
 datasets =
   (
     ## Boundary representation component
@@ -132,36 +188,7 @@ datasets =
       |dataset_polyline
       |dataset_gis_project
       ),
-      (
-        ## Projection of input data source:
-        ## Automatic, read from source
-        ## (as much as possible)
-        element projection {
-          attribute name { "Automatic" },
-          comment
-        }|
-        ## Projection of input data source:
-        ## Cartesian
-        element projection {
-          attribute name { "Cartesian" },
-          comment
-        }|
-        ## Projection of input data source:
-        ## Stereographic
-        ##
-        ## Needs pole orientation?
-        element projection {
-          attribute name { "Stereographic" },
-          comment
-        }|
-        ## Projection of input data source:
-        ## Proj4 string
-        element projection {
-          attribute name { "Proj4_string" },
-          string,
-          comment
-        }
-      )
+      projections
     }
   )
 
@@ -244,7 +271,7 @@ dataset_polyline_options =
       attribute name { "Local_file" },
       attribute file_name { string },
       comment
-    },
+    }|
     ## Source shapefile (.shp) containing polyline information
     ##
     ## See: http://www.opendap.org
@@ -320,17 +347,7 @@ output =
         comment
       }?,
       comment,
-      ## Output Projection type
-      ##
-      ## Default: cartesian
-      ##
-      ## Legacy: projection
-      element projection {
-        element string_value {
-          "cartesian" | "proj_cartesian" | "proj_cartesian_inverse" | "hammer" | "longlat"
-        },
-        comment
-      }?,
+      projections?,
       (
         ## User defined viewing angle
         element orientation {
@@ -481,7 +498,16 @@ geoid_surface_representation_brep =
         ##
         ## Legacy: compound
         element representation_type {
-          attribute name { "BSplines" },
+          attribute name { "Polyline" },
+          comment
+        }|
+        ## Representation type for the component brep
+        ##
+        ## Default: BSplines
+        ##
+        ## Legacy: compound
+        element representation_type {
+          attribute name { "BSpline" },
           comment
         }|
 
@@ -1309,6 +1335,12 @@ tags =
       ## Cases using the RTopo dataset
       element tag {
         attribute name { 'RTopo' },
+        comment
+      }|
+      ## Cases containing boundary representations that are
+      ## (at least partly) defined by shapefile descriptions.
+      element tag {
+        attribute name { 'Shapefile' },
         comment
       }|
       ## Tests executed in the open, online continuous verification suite

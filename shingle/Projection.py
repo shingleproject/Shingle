@@ -71,26 +71,33 @@ def compare_latitude(a, b, dx):
     #print abs(a - b), tolerance, abs(a - b) < tolerance
     return abs(a - b) < tolerance
 
-def compare_points(a, b, dx, proj='longlat'):
-    tolerance = dx * 0.6
+def c1ompare_points_old(a, b, dx, proj='LongLat'):
+    if isinstance(dx, float):
+        dx = [dx, dx]
+    tolerance = [0.6 * x for x in dx]
     if (proj == 'horizontal'):
         pa = project(a, projection_type='proj_cartesian')
         pb = project(b, projection_type='proj_cartesian')
         #print tolerance, pa, pb
-        if ( not (abs(pa[1] - pb[1]) < tolerance) ):
+        if ( not (abs(pa[1] - pb[1]) < tolerance[1]) ):
             return False
-        elif (abs(pa[0] - pb[0]) < tolerance):
+        elif (abs(pa[0] - pb[0]) < tolerance[0]):
             return True
         else:
             return False
     else: 
-        if ( not (abs(a[1] - b[1]) < tolerance) ):
+        from pyproj import Geod
+        wgs84_geod = Geod(ellps='WGS84')
+        az12,az21,dist = wgs84_geod.inv(a[0],a[1],a[0],a[1])
+        return dist < tolerance[0] * 1e5
+
+        if ( not (abs(a[1] - b[1]) < tolerance[1]) ):
             #AddComment('lat differ')
             return False
-        elif (abs(a[0] - b[0]) < tolerance):
+        elif (abs(a[0] - b[0]) < tolerance[0]):
             #AddComment('long same')
             return True
-        elif ((abs(abs(a[0]) - 180) < tolerance) and (abs(abs(b[0]) - 180) < tolerance)):
+        elif ((abs(abs(a[0]) - 180) < tolerance[0]) and (abs(abs(b[0]) - 180) < tolerance[0])):
             #AddComment('long +/-180')
             return True
         else:
@@ -102,6 +109,88 @@ def p2(location):
     if (p[0] < 0.0):
         p[0] = p[0] + 360
     return p
+
+def get_pyproj_projection(string):
+    import pyproj
+    _translation = {
+        'LongLat': 'epsg:4326',
+        'Automatic': 'LongLat',
+    }
+
+    while string in _translation.keys():
+        string = _translation[string] 
+    try: 
+        if string.startswith('+proj='):
+            p = pyproj.Proj(string)
+        else:
+            p = pyproj.Proj(init=string)
+    except:
+        #error('Unable to define py.Proj with init string: ' + string, fatal=True)
+        p = None
+
+    return p
+
+def projection_function_cartesian(x, y, z=None):
+    from math import cos, sin, radians
+    longitude = x
+    latitude  = y
+    longitude_rad = radians(- longitude - 90)
+    latitude_rad  = radians(latitude)
+    # Changed sign in x formulae - need to check
+    if 1 + sin(latitude_rad) == 0:
+        x = None
+        y = None
+    else:
+        x = sin( longitude_rad ) * cos( latitude_rad ) / ( 1 + sin( latitude_rad ) );
+        y = cos( longitude_rad ) * cos( latitude_rad  ) / ( 1 + sin( latitude_rad ) );
+    if z:
+      return x, y, z
+    else:
+      return x, y
+
+def projection_function_xy_reverse(x, y, z=None):
+    if z:
+      return x, -y, z
+    else:
+      return x, -y
+
+def project_shape(shape, source, destination):
+    if not shape:
+        return None
+    import pyproj
+    from functools import partial
+    from shapely.ops import transform
+
+    #print source, destination
+    # Pass thorugh
+    if destination == 'Automatic':
+        return shape
+        #projection = projection_function_xy_reverse
+    elif destination == 'Cartesian':
+        projection = projection_function_cartesian
+    else:
+        # Source coordinate system
+        s = get_pyproj_projection(source)
+        # Destination coordinate system
+        d = get_pyproj_projection(destination)
+  
+        if not s or not d:
+            for i, vertex in enumerate(shape.coords[:]):
+                shape.coord[i] = project(vertex, projection_type=destination)
+            return shape
+
+        elif s.srs == d.srs:
+            return shape
+
+        else:
+            projection = partial(
+                pyproj.transform,
+                s,
+                d
+            )
+
+    # Appy the projection to the shapefile
+    return transform(projection, shape)
 
 
 def project(location, projection_type=None):
@@ -115,11 +204,11 @@ def project(location, projection_type=None):
     if (projection_type is None):
         projection_type = universe.default.projection
         # FIXME - needs to pick this up from somewhere without breaking everything.  loglat is needed here for Shingle_text case - could highlight issues with other cases
-        projection_type = 'longlat'
+        projection_type = 'LongLat'
         #print projection_type, universe.default.projection
         # FIXME: Projection is not defined for some operations
         #error('Projection type not defined')
-    if (projection_type == 'cartesian' ):
+    if (projection_type == 'Cartesian' ):
         longitude = location[0]
         latitude  = location[1]
         cos = math.cos
@@ -148,7 +237,7 @@ def project(location, projection_type=None):
         latitude  = location[1]
         return array(proj(longitude, latitude, inverse=True))
 
-    elif (projection_type == 'hammer' ):
+    elif (projection_type == 'Hammer' ):
         longitude = location[0]
         latitude  = location[1]
         cos = math.cos
@@ -163,11 +252,10 @@ def project(location, projection_type=None):
         x = planet_radius * ( 2 * math.sqrt(2) * cos(latitude_rad) * sin(longitude_rad / 2.0) ) / m
         y = planet_radius * (     math.sqrt(2) * sin(latitude_rad) ) / m
         return array([ x, y ])
-    elif (projection_type == 'longlat' ):
+    elif (projection_type == 'LongLat' ):
         return location
     else:
-        print 'Invalid projection type:', projection_type
-        sys.exit(1)
+        error('Invalid projection type: ' + projection_type, fatal=True)
 
 
 

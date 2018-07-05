@@ -1,112 +1,103 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version='1.0' encoding='utf-8'?>
 <boundary_representation>
-    <model_name>
-        <string_value lines="1">Caribbean_main_coastline</string_value>
-        <comment>Domain of the Caribbean Sea ocean basin, extended out to the 40W meridian.
+  <model_name>
+    <string_value lines="1">Caribbean_main_coastline</string_value>
+    <comment>Domain of the Caribbean Sea ocean basin, extended out to the 40W meridian.
     Developed from GEBCO.
     Contains only the main largest coastline.</comment>
-    </model_name>
-    <reference>
-        <author name="ASCandy">
-            <string_value lines="1">Adam S. Candy</string_value>
-            <email_address>
-                <string_value lines="1">A.S.Candy@tudelft.nl</string_value>
-            </email_address>
-            <institution>
-                <string_value lines="1">Technische Universiteit Delft</string_value>
-            </institution>
-        </author>
-    </reference>
-    <domain_type>
-        <string_value lines="1">oceans</string_value>
-    </domain_type>
-    <global_parameters></global_parameters>
-    <output>
-        <projection>
-            <string_value>longlat</string_value>
-        </projection>
-        <orientation name="LongLat"></orientation>
-    </output>
-    <dataset name="Caribbean">
-        <form name="Raster">
-            <source name="HTTP" url="https://zenodo.org/record/399213/files/Caribbean.nc">
-                <comment>Caribbean.nc
+  </model_name>
+  <reference>
+    <author name="ASCandy">
+      <string_value lines="1">Adam S. Candy</string_value>
+      <email_address>
+        <string_value lines="1">A.S.Candy@tudelft.nl</string_value>
+      </email_address>
+      <institution>
+        <string_value lines="1">Technische Universiteit Delft</string_value>
+      </institution>
+    </author>
+  </reference>
+  <domain_type>
+    <string_value lines="1">oceans</string_value>
+  </domain_type>
+  <global_parameters/>
+  <output>
+    <projection name="LongLat"/>
+    <orientation name="LongLat"/>
+  </output>
+  <dataset name="Caribbean">
+    <form name="Raster">
+      <source url="https://zenodo.org/record/399213/files/Caribbean.nc" name="HTTP">
+        <comment>Caribbean.nc
 Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
-            </source>
-        </form>
-        <projection name="Automatic"></projection>
-    </dataset>
-    <geoid_surface_representation name="CaribbeanOcean">
-        <id>
-            <integer_value rank="0">9</integer_value>
-        </id>
-        <brep_component name="CaribbeanOceanCoast">
-            <form name="Raster">
-                <source name="Caribbean"></source>
-                <box>-98.0:-66.0,5.04:45.8
-                    
-                    
-                    
-                    
-                    
-                    <comment>-98.0:-50.8,5.04:45.8</comment>
-                </box>
-                <minimum_area>
-                    <real_value rank="0">0.1</real_value>
-                </minimum_area>
-                <contourtype name="gebco10m" field_level="-10.0" field_name="Automatic"></contourtype>
-                <boundary>1</boundary>
-            </form>
-            <identification name="Coast"></identification>
-            <representation_type name="BSplines"></representation_type>
-        </brep_component>
-        <brep_component name="ExtendTo50W">
-            <form name="ExtendToMeridian">
-                <longitude>
-                    <real_value rank="0">-50</real_value>
-                </longitude>
-            </form>
-            <identification name="OpenOcean"></identification>
-            <representation_type name="BSplines"></representation_type>
-        </brep_component>
-        <boundary name="Coast">
-            <identification_number>
-                <integer_value rank="0">3</integer_value>
-            </identification_number>
-        </boundary>
-        <boundary name="OpenOcean">
-            <identification_number>
-                <integer_value rank="0">4</integer_value>
-            </identification_number>
-        </boundary>
-    </geoid_surface_representation>
-    <geoid_metric>
-        <form name="Proximity">
-            <boundary name="Coast"></boundary>
-            <edge_length_minimum>
-                <real_value rank="0">0.1</real_value>
-            </edge_length_minimum>
-            <edge_length_maximum>
-                <real_value rank="0">100</real_value>
-            </edge_length_maximum>
-            <proximity_minimum>
-                <real_value rank="0">0.1</real_value>
-            </proximity_minimum>
-            <proximity_maximum>
-                <real_value rank="0">500</real_value>
-            </proximity_maximum>
-        </form>
-    </geoid_metric>
-    <geoid_mesh>
-        <library name="Gmsh"></library>
-    </geoid_mesh>
-    <validation>
-        <test name="BrepDescription" file_name="data/Caribbean_main_coastline_valid.geo.bz2">
-            <compressed></compressed>
-        </test>
-        <tag name="Caribbean"></tag>
-        <tag name="GEBCO"></tag>
-        <tag name="HTTP"></tag>
-        <tag name="continuous"></tag>
-    </validation>
+      </source>
+    </form>
+    <projection name="Automatic"/>
+  </dataset>
+  <geoid_surface_representation name="CaribbeanOcean">
+    <id>
+      <integer_value rank="0">9</integer_value>
+    </id>
+    <brep_component name="CaribbeanOceanCoast">
+      <form name="Raster">
+        <source name="Caribbean"/>
+        <box>-98.0:-66.0,5.04:45.8<comment>-98.0:-50.8,5.04:45.8</comment></box>
+        <minimum_area>
+          <real_value rank="0">0.1</real_value>
+        </minimum_area>
+        <contourtype field_level="-10.0" field_name="Automatic" name="gebco10m"/>
+        <boundary>1</boundary>
+      </form>
+      <identification name="Coast"/>
+      <representation_type name="BSpline"/>
+    </brep_component>
+    <brep_component name="ExtendTo50W">
+      <form name="ExtendToMeridian">
+        <longitude>
+          <real_value rank="0">-50</real_value>
+        </longitude>
+      </form>
+      <identification name="OpenOcean"/>
+      <representation_type name="BSpline"/>
+    </brep_component>
+    <boundary name="Coast">
+      <identification_number>
+        <integer_value rank="0">3</integer_value>
+      </identification_number>
+    </boundary>
+    <boundary name="OpenOcean">
+      <identification_number>
+        <integer_value rank="0">4</integer_value>
+      </identification_number>
+    </boundary>
+  </geoid_surface_representation>
+  <geoid_metric>
+    <form name="Proximity">
+      <boundary name="Coast"/>
+      <edge_length_minimum>
+        <real_value rank="0">0.1</real_value>
+      </edge_length_minimum>
+      <edge_length_maximum>
+        <real_value rank="0">100</real_value>
+      </edge_length_maximum>
+      <proximity_minimum>
+        <real_value rank="0">0.1</real_value>
+      </proximity_minimum>
+      <proximity_maximum>
+        <real_value rank="0">500</real_value>
+      </proximity_maximum>
+    </form>
+  </geoid_metric>
+  <geoid_mesh>
+    <library name="Gmsh"/>
+  </geoid_mesh>
+  <validation>
+    <test file_name="data/Caribbean_main_coastline_valid.geo.bz2" name="BrepDescription">
+      <compressed/>
+    </test>
+    <tag name="Caribbean"/>
+    <tag name="GEBCO"/>
+    <tag name="HTTP"/>
+    <tag name="continuous"/>
+  </validation>
 </boundary_representation>

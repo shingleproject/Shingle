@@ -32,7 +32,7 @@
 
 from Universe import universe
 from Reporting import report, error, addcolour
-from RepresentationTools import draw_parallel_explicit
+#from RepresentationTools import draw_parallel_explicit
 from Spud import specification
 from BRepComponent import BRepComponent
 from Boundary import Boundary
@@ -67,6 +67,7 @@ class SurfaceGeoidDomainRepresentation(object):
     def __init__(self, spatial_discretisation=None, name='SurfaceGeoidDomainRepresentation'):
         self._brep_components = None
         self._brep_components_order = None
+        self._brep_components_complete = None
         self._boundary = None
         self._boundary_order = []
         self._path = None
@@ -80,8 +81,11 @@ class SurfaceGeoidDomainRepresentation(object):
 
         self.AppendParameters()
         self.Boundary()
-        if not self.spatial_discretisation.isGenerated():
-            self.Generate()
+        #if not self.spatial_discretisation.isGenerated():
+        #    self.Generate()
+
+    def Name(self):
+        return self.name
 
     def SurfaceId(self):
         if specification.have_option(self._path + '/id'):
@@ -238,6 +242,15 @@ class SurfaceGeoidDomainRepresentation(object):
         self.AddComment('')
 
     def GetComponentCompleteBoundaries(self):
+        # Regenerate, since using component brep merging
+        self.index.exterior = []
+        self.index.interior = []
+        for i, brep in enumerate(self.getComponentsComplete()):
+            if any([x.is_exterior for x in brep.components]):
+                self.index.exterior.append(i)
+            else:
+                self.index.interior.append(i)
+        #print 'AA',  self.index.exterior, self.index.interior 
         return self.index.exterior + self.index.interior 
 
 
@@ -247,7 +260,7 @@ class SurfaceGeoidDomainRepresentation(object):
         self.AddSection('Physical entities')
 
         def physical_line_definition(name, boundaryid, paths):
-            self.report('Boundary %s (ID %i): %s' % (name, boundaryid, list_to_space_separated(paths, add=1)), indent = 1)
+            self.report('Boundary %s (ID %i): %s' % (name, boundaryid, list_to_space_separated(paths, add=1, concatenate=True)), indent = 1)
             prefix = self.CounterPrefix('IL')
             self.AddContent( '''Physical Line( %(boundaryid)d ) = { %(loopnumbers)s };''' % { 'boundaryid':boundaryid, 'loopnumbers':list_to_comma_separated(paths, prefix = prefix ) } )
 
@@ -268,11 +281,111 @@ Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'surface':self.Surface
 
         self.AddSection('End of contour definitions')
 
+    def getComponentsComplete(self):
+        if not self._brep_components_complete:
+            components = []
+
+            self.AddSection('BRep component pre-scan')
+            for brep in self.BRepComponentsOrder():
+                
+                self.AddSection('BRep component: ' + brep.Name())
+                
+                # Generates children BRepComponent objects, one for each distinct physical object
+                # e.g. pathline, closed or open  -- to later be merged, interior/exterior determination
+                components = brep.Generate(components=components)
+
+                # carry list generated so far, complete and incomplete
+                # mark 
+                #components = components + brep._valid_paths
+           
+            # Run through all components and link children
+            for j, brep in enumerate(components):
+                if len(brep.components) > 1:
+                    for i, component in enumerate(brep.components):
+                        #print 'breps', j, i, type(brep), type(component)
+                        #print ' ', i, (i - 1) % len(brep.components)
+                        component.before = brep.components[(i - 1) % len(brep.components)]
+                        #print ' ', i, (i + 1) % len(brep.components)
+                        component.after = brep.components[(i + 1) % len(brep.components)]
+                ##if len(brep.components) > 1:
+                #brep.update_component_order()
+
+            self._brep_components_complete = components
+        return self._brep_components_complete
+
+    #def getExterior(self):
+    #        exterior = any([x.isExterior() for x in brep.components])
+
+
+
+    def ShowBRepComponents(self):
+        if len(self.getComponentsComplete()) == 0:
+            return
+        self.AddComment('Component boundary representations identified:', indent=1)
+        report('Component boundary representations identified:', indent=1)
+        for i, component in enumerate(self.getComponentsComplete()):
+            #if any([x.isExterior() for x in component.components]):
+            if component.isClosed():
+                state = 'closed'
+            else:
+                state = 'open'
+            c= ('%(number)d: %(name)s (components: %(components)s, %(state)s)' %
+                {
+                    'number': i + 1,
+                    'name': component.Name(),
+                    'components': len(component.components),
+                    'state': state
+                })
+            self.AddComment(c, indent=2)
+            report(c, indent=2)
+
 
     def Generate(self):
+
+        #exterior = None
+        #interior = []
+
+        # incomplete?
+
+        # make global to class
         
-        for brep in self.BRepComponentsOrder():
-            brep.Generate()
+            
+        self.ShowBRepComponents()
+
+        for i, component in enumerate(self.getComponentsComplete()):
+
+            #component.AddHeader()
+            self.AddSection('BRep component: ' + component.Name())
+            for comment in component.comment:
+                self.AddComment(comment)
+
+            # component.components are enriched lines, need to link
+            #  here?  or in BRepComponent.Generate
+            
+
+            for i, p in enumerate(component.components):
+                #print component, component.components
+                for comment in p.comment:
+                    self.AddComment(comment)
+                # if multiple, need to connect
+                # Better to link child breps and handle in Generate
+                first = True
+                last = False
+                if i > 0:
+                    # Need to connect to previous
+                    first = False
+                if i == (len(component.components) - 1):
+                    # Need to connect to first
+                    last = True
+                
+                self.index = p.Generate(self.index, first=first, last=last)
+
+        #for a in components:
+        #    print a
+        #    print a.components
+        #    print len(a.components)
+        #    print len(a.components[0].valid_location)
+        #    #print p.valid_location
 
         self.output_surfaces()
 

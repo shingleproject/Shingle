@@ -79,6 +79,8 @@ class Dataset(object):
             self.SetContourSource(self._spatial_discretisation.PathRelative(os.path.join(os.path.join(*self._DATA_DOWNLOAD_FOLDER), self.name + '.nc')))
             self.DownloadData()
         self.projection = specification.get_option(self._path + '/projection[0]/name' )
+        if self.projection == 'Proj4_string':
+            self.projection = specification.get_option(self._path + '/projection[0]' )
 
     def isLocal(self):
         return self.source == self._SOURCE_TYPE_LOCAL
@@ -125,25 +127,6 @@ class Dataset(object):
         report('      %(blue)sLocation:   %(end)s%(location)s', var = {'location':self.location} )
         report('      %(blue)sProjection: %(end)s%(projection)s', var = {'projection':self.projection} )
 
-class Raster(Dataset):
-
-    _cacheFiletype = '.shc'
-
-    def __init__(self, name='Raster', location=None, cache=False, number=None, spatial_discretisation=None):
-        # Input parameters
-        self.contoursource = None
-        self.cache = None
-        # Internal variables
-        self.cachefile = None 
-        self.pathall = None
-        self.path = None
-        # Log of object events
-        self.log = ''
-        if location is not None:
-            self.location = location
-        Dataset.__init__(self, spatial_discretisation=spatial_discretisation, number=number)
-        self.cache = cache
-
     def report(self, *args, **kwargs):
         return self._spatial_discretisation.report(*args, **kwargs)
 
@@ -157,20 +140,13 @@ class Raster(Dataset):
         from os.path import isfile
         if self.isLocal() or self.isHttp():
             if not self.SourceExists(): 
-                error('Source NetCDF ' + self.LocationFull() + ' not found!', fatal=True, indent = 1)
-    
-    def AppendParameters(self):
-        self.report('Source NetCDF located at ' + self.location, indent = 1)
+                error('Source ' + self._dataset_type + ' ' + self.LocationFull() + ' not found!', fatal=True, indent = 1)
 
-    def Load(self, subregion=None, name_field=None, name_x=None, name_y=None):
-      
-        request = ReadDataNetCDF(self, subregion, name_field, name_x, name_y)
-        for stored in self.store:
-            if request == stored:
-                return stored
-        request.Load()
-        self.store.append(request)
-        return request
+    def AppendParameters(self):
+        self.report('Source ' + self._dataset_type + ' located at ' + self.location, indent = 1)
+
+
+    # Cache operations
 
     def GetCacheLocation(self):
         if self.cachefile is None:
@@ -215,6 +191,63 @@ class Raster(Dataset):
             error('Cannot save cache to file: ', fatal=False)
             pass
         return False
+
+
+class Raster(Dataset):
+
+    _cacheFiletype = '.shc'
+    _dataset_type = 'raster'
+
+    def __init__(self, name='Raster', location=None, cache=False, number=None, spatial_discretisation=None):
+        # Input parameters
+        self.contoursource = None
+        self.cache = None
+        # Internal variables
+        self.cachefile = None 
+        self.pathall = None
+        self.path = None
+        # Log of object events
+        self.log = ''
+        if location is not None:
+            self.location = location
+        Dataset.__init__(self, spatial_discretisation=spatial_discretisation, number=number)
+        self.cache = cache
+
+    
+    def Load(self, subregion=None, name_field=None, name_x=None, name_y=None):
+      
+        request = ReadDataNetCDF(self, subregion, name_field, name_x, name_y)
+        for stored in self.store:
+            if request == stored:
+                return stored
+        request.Load()
+        self.store.append(request)
+        return request
+
+class Polyline(Dataset):
+
+    _cacheFiletype = '.shc'
+    _dataset_type = 'polyline'
+
+    def __init__(self, name='Polyline', location=None, cache=False, number=None, spatial_discretisation=None):
+        # Input parameters
+        self.contoursource = None
+        self.cache = None
+        # Internal variables
+        self.cachefile = None 
+        self.pathall = None
+        self.path = None
+        # Log of object events
+        self.log = ''
+        if location is not None:
+            self.location = location
+        Dataset.__init__(self, spatial_discretisation=spatial_discretisation, number=number)
+        self.cache = cache
+
+    def Load(self):
+        return None 
+
+
 
 
 #  def GenerateContour(self):

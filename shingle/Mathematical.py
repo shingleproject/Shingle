@@ -61,7 +61,7 @@ def area_enclosed(p):
         pp = zeros([size(p), 2], float)
         for i in range(size(p,0)):
             # FIXME
-            pp[i] = project(p[i], 'hammer')
+            pp[i] = project(p[i], 'Hammer')
             print i, p[i], pp[i]
     else:
         pp = p
