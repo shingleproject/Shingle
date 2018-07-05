@@ -366,7 +366,7 @@ class VerificationTests(object):
             additions = {}
             removals = {}
             # Matches point number, x, y, z
-            point_pattern = re.compile('^[-+] Point \( (\d+) \) = { (\d+.*\d+), (\d+.*\d+), (\d+.*\d+) }; *$')
+            point_pattern = re.compile('^[-+] Point \( (\d+) \) = { (-*\d+.*\d+), (-*\d+.*\d+), (-*\d+.*\d+) }; *$')
             for i, line in enumerate(cached):
                 #print i, line
                 if line.startswith('+ Point '):
@@ -382,8 +382,8 @@ class VerificationTests(object):
                 #else 
                 #    return cached
         
-            print 'Removals: ', removals.keys()
-            print 'Additions:', additions.keys()
+            #print 'Removals: ', removals.keys()
+            #print 'Additions:', additions.keys()
             same = []
             for identification in removals.keys():
                 if identification not in additions.keys():
@@ -395,7 +395,7 @@ class VerificationTests(object):
             if len(same) == 0:
                 return cached
             
-            print 'Same:', same
+            #print 'Same:', same
             new = []
             for line in cached:
                 if line.startswith('+ Point ') or line.startswith('- Point '):
