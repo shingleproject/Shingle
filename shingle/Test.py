@@ -358,6 +358,7 @@ class VerificationTests(object):
             return lines
 
         def FilterPointFloats(cached):
+            import re
             def isSameLocation(a, b, tolerance=1E-5):
                 #print [ abs(float(a[0]) - float(b[0])), abs(float(a[1]) - float(b[1])), abs(float(a[2]) - float(b[2])) ]
                 return [ abs(float(a[0]) - float(b[0])), abs(float(a[1]) - float(b[1])), abs(float(a[2]) - float(b[2])) ] < [tolerance] * 3
