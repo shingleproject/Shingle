@@ -168,8 +168,8 @@ matrix:
       - make
       - make unittest
       # Pre-download, to best work with Travis timeout
-      - curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
-      - travis_wait make test
+      - curl https://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
+      - make test
 #
 #  # Ubuntu Precise 12.04 Travis pip base packages build and test
 #  - env:
