@@ -382,8 +382,8 @@ class VerificationTests(object):
                 #else 
                 #    return cached
         
-            #print removals.keys()
-            #print additions.keys()
+            print 'Removals: ', removals.keys()
+            print 'Additions:', additions.keys()
             same = []
             for identification in removals.keys():
                 if identification not in additions.keys():
@@ -395,6 +395,7 @@ class VerificationTests(object):
             if len(same) == 0:
                 return cached
             
+            print 'Same:', same
             new = []
             for line in cached:
                 if line.startswith('+ Point ') or line.startswith('- Point '):
