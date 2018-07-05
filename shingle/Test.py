@@ -419,6 +419,7 @@ class VerificationTests(object):
             return diff.stdout
 
         use_system_diff = True
+        compare_floating_values = True
 
         name = 'BrepDescription'
         path = '/validation/test::%(name)s' % {'name':name}
