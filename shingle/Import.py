@@ -234,15 +234,6 @@ def Filter(dataset, brep, subregion):
         region = dataset.Load(subregion, name_field=name_field)
         field = deepcopy(region.Data())
   
-    print 'Temporary debugging output'
-    print type(field)
-    #field = array(field)
-    print type(field)
-    print field.ndim
-    #field[field>0.001]=1
-
-
-    
     if (contour_type=='iceshelfcavity'):
         #            % 2
         # 0 ocean    1

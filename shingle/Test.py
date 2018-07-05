@@ -358,30 +358,50 @@ class VerificationTests(object):
             return lines
 
         def FilterPointFloats(cached):
+            def isSameLocation(a, b, tolerance=1E-5):
+                #print [ abs(float(a[0]) - float(b[0])), abs(float(a[1]) - float(b[1])), abs(float(a[2]) - float(b[2])) ]
+                return [ abs(float(a[0]) - float(b[0])), abs(float(a[1]) - float(b[1])), abs(float(a[2]) - float(b[2])) ] < [tolerance] * 3
+        
             additions = {}
             removals = {}
             # Matches point number, x, y, z
             point_pattern = re.compile('^[-+] Point \( (\d+) \) = { (\d+.*\d+), (\d+.*\d+), (\d+.*\d+) }; *$')
             for i, line in enumerate(cached):
-                if line.startswith '+ Point '
+                #print i, line
+                if line.startswith('+ Point '):
                     found = point_pattern.match(line)
                     if not found:
                         return cached
-                    additions[a.group(1)] = a.group(2,3,4)
-                elif line.startswith '- Point '
+                    additions[found.group(1)] = found.group(2,3,4)
+                elif line.startswith('- Point '):
                     found = point_pattern.match(line)
                     if not found:
                         return cached
-                    removals[a.group(1)] = a.group(2,3,4)
-                else 
-                    return cached
+                    removals[found.group(1)] = found.group(2,3,4)
+                #else 
+                #    return cached
+        
+            #print removals.keys()
+            #print additions.keys()
+            same = []
+            for identification in removals.keys():
+                if identification not in additions.keys():
+                    continue
+                #    return cached
+                if isSameLocation(removals[identification], additions[identification]):
+                    same.append(identification)
+        
+            if len(same) == 0:
+                return cached
             
-            # to finish ....
-            # asc
-            # Compare point routine somewhere in Support?
-
-
-
+            new = []
+            for line in cached:
+                if line.startswith('+ Point ') or line.startswith('- Point '):
+                    found = point_pattern.match(line)
+                    if found.group(1) in same:
+                        continue
+                        new.append(line)
+            return new
 
         def SystemDiff(a, b):
             from Support import Execute
