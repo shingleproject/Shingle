@@ -127,7 +127,7 @@ matrix:
           - python-pyproj
           - python-pil
           - python-py
-          - python-netcdf4
+          - python-netcdf5
           - libgeos-c1v5
           - libgeos-3.6.2
           - libgeos-dev
@@ -137,11 +137,13 @@ matrix:
       system_site_packages: true
     install:
       - sudo apt-get update
-      - sudo apt-get install -y git gcc g++ build-essential python-setuptools python-dev python-pip python-scipy python-numpy libnetcdf-dev netcdf-bin python-netcdf4 python-matplotlib python-shapely python-pyproj python-pil gmsh python-py libgeos-c1v5 libgeos-3.6.2 libgeos-dev wget
+      - sudo apt-get install -y git gcc g++ build-essential python-setuptools python-dev python-pip python-scipy python-numpy libnetcdf-dev netcdf-bin python-matplotlib python-shapely python-pyproj gmsh python-py libgeos-dev wget
       # Temporarily pdate dap and shapely with recent versions
       - pip install -U pip setuptools
       - pip install Pydap==3.2.1
       - pip install Shapely==1.5.9
+      # Install ScientificPython
+      - pip install --force-reinstall --ignore-installed --no-binary --no-cache-dir --no-binary :all: ScientificPython
     before_script:
       - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
       - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
@@ -199,6 +201,8 @@ matrix:
       - pip install -U pip setuptools
       - pip install Pydap==3.2.1
       - pip install Shapely==1.5.9
+      # Install ScientificPython
+      - pip install --force-reinstall --ignore-installed --no-binary --no-cache-dir --no-binary :all: ScientificPython
     before_script:
       - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
       - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
