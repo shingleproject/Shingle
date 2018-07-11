@@ -191,7 +191,13 @@ dataset/RTopo105b_50S.nc:
 	@echo Downloading $@
 	@mkdir -p dataset
 	@curl -s 'http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc' -o ./dataset/RTopo105b_50S.nc
+	
+test/Amundsen_Sea/data/RTopo.nc:
+	@wget --progress=dot:giga http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -O test/Amundsen_Sea/data/RTopo.nc
 
+pre_download_large_datasets: test/Amundsen_Sea/data/RTopo.nc
+
+.PHONY: pre_download_large_datasets test/Amundsen_Sea/data/RTopo.nc
 
 
 

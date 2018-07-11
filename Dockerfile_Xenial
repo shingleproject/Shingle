@@ -1,7 +1,7 @@
 # DockerFile for a Shingle development container
 
 # Use a Xenial base image
-FROM ubuntu:precise
+FROM ubuntu:xenial
 
 # This DockerFile is looked after by
 MAINTAINER Adam Candy <contact@shingleproject.org>
@@ -12,36 +12,40 @@ RUN apt-get update && apt-get install -y \
         gcc \
         g++ \
         build-essential \
+        libnetcdf-dev \
+        netcdf-bin \
         python-setuptools \
         python-dev \
         python-pip \
         python-scipy \
         python-numpy \
-        python-scientific \
         python-matplotlib \
         python-shapely \
         python-pyproj \
+        python-gdal \
+        gdal-bin \
         python-imaging \
         gmsh \
         python-py \
-        python-dap \
-        curl
+        python-netcdf4 \
+        libgeos-c1v5 \
+        libgeos-3.5.0 \
+        libgeos-dev \
+        wget
 
-#RUN echo "nameserver 8.8.8.8" >> /etc/resolv.conf && \ 
-#    echo "nameserver 8.8.4.4" >> /etc/resolv.conf && \    
-#    pip install Pydap
+# Upgrade pip
+RUN pip install -i https://pypi.python.org/simple/ --upgrade pip setuptools
 
-# RUN pip install Pydap
+# Install ScientificPython
+RUN pip install --force-reinstall --ignore-installed --no-binary --no-cache-dir --no-binary :all: ScientificPython
 
-
-RUN pip install -i https://pypi.python.org/simple/ --upgrade pip
-
+# Update dap and shapely with recent versions
+RUN pip install Pydap==3.2.1
+RUN pip install -U geos
+RUN pip install --no-binary :all: Shapely==1.5.9
 
 # Set build compiler environment 
 ENV CC=gcc
-
-# Report Python version
-#RUN python --version
 
 # Add a user
 RUN adduser --disabled-password --gecos "" shingle
@@ -51,28 +55,10 @@ WORKDIR /home/shingle
 # Make a copy of the project Shingle
 RUN git clone https://github.com/adamcandy/Shingle.git
 WORKDIR /home/shingle/Shingle
-
-RUN git checkout metric
-
-#ARG SHINGLE_URL=unknown
+RUN git checkout master
 RUN git pull
 
 ENV PATH /home/shingle/Shingle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-#RUN ./configure
-
-#RUN pip install numpy matplotlib pyproj Pydap shapely Pillow
-
-# Pre-download, to best work with Travis timeout
-#RUN curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
-
 RUN make
-#RUN make unittest
-
-#WORKDIR /home/shingle/Shingle/shingle/unittest
-#RUN py.test
-
-#RUN python -vc 'import shapely.geometry' 1>&2 | grep shapely
-
-#RUN make test
 
