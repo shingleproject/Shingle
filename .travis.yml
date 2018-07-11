@@ -338,6 +338,8 @@ matrix:
     virtualenv:
       system_site_packages: true
     install:
+      - sudo apt-get update
+      - sudo apt-get install -y libnetcdf-dev netcdf-bin python-netcdf4
       - pip install -U pip setuptools
       - pip install numpy matplotlib pyproj shapely Pillow pytest
       - pip install Pydap==3.2.1
