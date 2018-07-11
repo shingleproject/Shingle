@@ -1,7 +1,7 @@
 # DockerFile for a Shingle development container
 
 # Use a Xenial base image
-FROM ubuntu:precise
+FROM ubuntu:xenial
 
 # This DockerFile is looked after by
 MAINTAINER Adam Candy <contact@shingleproject.org>
@@ -17,24 +17,41 @@ RUN apt-get update && apt-get install -y \
         python-pip \
         python-scipy \
         python-numpy \
-        python-scientific \
         python-matplotlib \
         python-shapely \
         python-pyproj \
+        python-gdal \
+        gdal-bin \
         python-imaging \
         gmsh \
         python-py \
-        python-dap \
-        curl
+        libgeos-c1v5 \
+        libgeos-3.5.0 \
+        libgeos-dev \
+        curl \
+        wget
+        
+        #python-scientific \
+        #python-dap \
 
 #RUN echo "nameserver 8.8.8.8" >> /etc/resolv.conf && \ 
 #    echo "nameserver 8.8.4.4" >> /etc/resolv.conf && \    
 #    pip install Pydap
 
+#RUN pip install -i https://pypi.python.org/simple -U pip distribute setuptools
+RUN pip install -i https://pypi.python.org/simple/ --upgrade pip setuptools
+RUN pip install ScientificPython --no-binary ScientificPython
 # RUN pip install Pydap
+RUN pip install Pydap==3.2.1
+#RUN pip install Shapely==1.4.3
+RUN pip freeze
+RUN pip install -U geos
+RUN pip freeze
+#RUN pip install Shapely==1.5.9
+RUN pip install Shapely==1.5.9 --no-binary Shapely==1.5.9
 
+RUN gmsh --version
 
-RUN pip install -i https://pypi.python.org/simple/ --upgrade pip
 
 
 # Set build compiler environment 
@@ -51,13 +68,16 @@ WORKDIR /home/shingle
 # Make a copy of the project Shingle
 RUN git clone https://github.com/adamcandy/Shingle.git
 WORKDIR /home/shingle/Shingle
-
-RUN git checkout metric
+RUN git checkout build-fixes
 
 #ARG SHINGLE_URL=unknown
 RUN git pull
 
 ENV PATH /home/shingle/Shingle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV LD_LIBRARY_PATH="/usr/local/lib/python2.7/dist-packages/Scientific/:$LD_LIBRARY_PATH"
+ENV LIBRARY_PATH="/usr/local/lib/python2.7/dist-packages/Scientific/:$LIBRARY_PATH"
+ENV PYTHONPATH="/usr/local/lib/python2.7/dist-packages/Scientific/:$PYTHONPATH"
+
 
 #RUN ./configure
 
@@ -65,6 +85,7 @@ ENV PATH /home/shingle/Shingle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr
 
 # Pre-download, to best work with Travis timeout
 #RUN curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
+RUN wget --progress=dot:giga http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -O test/Amundsen_Sea/data/RTopo.nc
 
 RUN make
 #RUN make unittest
