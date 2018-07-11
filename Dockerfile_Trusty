@@ -44,10 +44,11 @@ USER shingle
 WORKDIR /home/shingle
 
 # Make a copy of the project Shingle
-RUN git clone https://github.com/shingle/Shingle.git
+RUN git clone "https://github.com/${REPO}"
 WORKDIR /home/shingle/Shingle
-RUN git checkout master
+RUN git checkout "$BRANCH"
 RUN git pull
+
 
 ENV PATH /home/shingle/Shingle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
