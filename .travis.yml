@@ -54,7 +54,7 @@ matrix:
     dist: xenial
     language: cpp
     install:
-      - docker build -e REPO="$TRAVIS_REPO_SLUG" -e BRANCH="$TRAVIS_BRANCH" -f Dockerfile_Bionic -t shingle .
+      - docker build --build-arg repo="$TRAVIS_REPO_SLUG" --build-arg branch="$TRAVIS_BRANCH" -f Dockerfile_Bionic -t shingle .
     script:
       - docker run -a stdout -t shingle make unittest
       # Pre-download, to best work with Travis timeout
@@ -73,7 +73,7 @@ matrix:
     dist: xenial
     language: cpp
     install:
-      - docker build -e REPO="$TRAVIS_REPO_SLUG" -e BRANCH="$TRAVIS_BRANCH" -f Dockerfile_Xenial -t shingle .
+      - docker build --build-arg repo="$TRAVIS_REPO_SLUG" --build-arg branch="$TRAVIS_BRANCH" -f Dockerfile_Xenial -t shingle .
     script:
       - docker run -a stdout -t shingle make unittest
       # Pre-download, to best work with Travis timeout
@@ -92,7 +92,7 @@ matrix:
     dist: xenial
     language: cpp
     install:
-      - docker build -e REPO="$TRAVIS_REPO_SLUG" -e BRANCH="$TRAVIS_BRANCH" -f Dockerfile_Trusty -t shingle .
+      - docker build --build-arg repo="$TRAVIS_REPO_SLUG" --build-arg branch="$TRAVIS_BRANCH" -f Dockerfile_Trusty -t shingle .
     script:
       - docker run -a stdout -t shingle make unittest
       # Pre-download, to best work with Travis timeout

@@ -6,6 +6,10 @@ FROM ubuntu:bionic
 # This DockerFile is looked after by
 MAINTAINER Adam Candy <contact@shingleproject.org>
 
+# Repository variables from the parent environment
+ARG repo="shingleproject/Shingle"
+ARG branch="master"
+
 # Install required packages
 #   Fix for non-interactive tzdata install
 ENV DEBIAN_FRONTEND=noninteractive
@@ -55,9 +59,9 @@ USER shingle
 WORKDIR /home/shingle
 
 # Make a copy of the project Shingle
-RUN git clone "https://github.com/${REPO}"
+RUN git clone "https://github.com/${repo}"
 WORKDIR /home/shingle/Shingle
-RUN git checkout "$BRANCH"
+RUN git checkout "$branch"
 RUN git pull
 
 ENV PATH /home/shingle/Shingle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
