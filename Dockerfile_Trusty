@@ -6,6 +6,10 @@ FROM ubuntu:trusty
 # This DockerFile is looked after by
 MAINTAINER Adam Candy <contact@shingleproject.org>
 
+# Repository variables from the parent environment
+ARG repo="shingleproject/Shingle"
+ARG branch="master"
+
 # Install required packages
 RUN apt-get update && apt-get install -y \
         git \
@@ -44,9 +48,9 @@ USER shingle
 WORKDIR /home/shingle
 
 # Make a copy of the project Shingle
-RUN git clone "https://github.com/${REPO}"
+RUN git clone "https://github.com/${repo}"
 WORKDIR /home/shingle/Shingle
-RUN git checkout "$BRANCH"
+RUN git checkout "$branch"
 RUN git pull
 
 
