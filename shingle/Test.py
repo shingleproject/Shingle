@@ -279,7 +279,7 @@ class VerificationTests(object):
             if specification.have_option('%(path)s/value/tolerance' % {'path':path}):
                 tolerance = specification.get_option('%(path)s/value/tolerance' % {'path':path})
             if ( self.mesh.NodeNumber() > value + tolerance ) or ( self.mesh.NodeNumber() < value - tolerance ):
-                report('Node number %(number)d out of bounds of %(value)d with tolerance %(tolerance)d' % {'number':self.mesh.NodeNumber(), 'value':value, 'tolerance':tolerance}, indent=3)
+                report('Node number %(number)d out of bounds of %(value)d with tolerance %(tolerance)d' % {'number':self.mesh.NodeNumber(), 'value':value, 'tolerance':tolerance}, indent=3, force=True)
                 return False
             return True
 
@@ -308,7 +308,7 @@ class VerificationTests(object):
             if specification.have_option('%(path)s/value/tolerance' % {'path':path}):
                 tolerance = specification.get_option('%(path)s/value/tolerance' % {'path':path})
             if ( self.mesh.ElementNumber() > value + tolerance ) or ( self.mesh.ElementNumber() < value - tolerance ):
-                report('Element number %(number)d out of bounds of %(value)d with tolerance %(tolerance)d' % {'number':self.mesh.ElementNumber(), 'value':value, 'tolerance':tolerance}, indent=3)
+                report('Element number %(number)d out of bounds of %(value)d with tolerance %(tolerance)d' % {'number':self.mesh.ElementNumber(), 'value':value, 'tolerance':tolerance}, indent=3, force=True)
                 return False
             return True
 
