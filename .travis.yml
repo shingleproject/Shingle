@@ -102,64 +102,6 @@ matrix:
 
   # Build Environment #5
   #
-  # Ubuntu Bionic 18.04 apt base packages build and test
-  #
-  - env:
-      - NAME=Bionic-18.04-apt
-    dist: bionic
-    language: python
-    python: 2.7
-    sudo: required
-    compiler: gcc
-    addons:
-      apt:
-        packages:
-          - build-essential
-          - python-setuptools
-          - python-dev
-          - python-pip
-          - python-scipy
-          - python-numpy
-          - libnetcdf-dev
-          - netcdf-bin
-          - python-matplotlib 
-          - python-shapely
-          - python-pyproj
-          - python-pil
-          - python-py
-          - python-netcdf5
-          - libgeos-c1v5
-          - libgeos-3.6.2
-          - libgeos-dev
-          - gmsh
-          - wget
-    virtualenv:
-      system_site_packages: true
-    install:
-      - sudo apt-get update
-      - sudo apt-get install -y git gcc g++ build-essential python-setuptools python-dev python-pip python-scipy python-numpy libnetcdf-dev netcdf-bin python-matplotlib python-shapely python-pyproj gmsh python-py libgeos-dev wget
-      # Temporarily pdate dap and shapely with recent versions
-      - pip install -U pip setuptools
-      - pip install Pydap==3.2.1
-      - pip install Shapely==1.5.9
-      # Install ScientificPython
-      - pip install --force-reinstall --ignore-installed --no-cache-dir --no-binary ScientificPython ScientificPython
-    before_script:
-      - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
-      - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
-      - export LD_LIBRARY_PATH="/usr/lib/python2.7/dist-packages/Scientific/:$LD_LIBRARY_PATH"
-      - export LIBRARY_PATH="/usr/lib/python2.7/dist-packages/Scientific/:$LIBRARY_PATH"
-      - export PYTHONPATH="/usr/lib/python2.7/dist-packages/Scientific/:$PYTHONPATH"
-    script:
-      - make
-      - make unittest
-      # Pre-download, to best work with Travis timeout
-      - make pre_download_large_datasets
-      - make test
-
-
-  # Build Environment #6
-  #
   # Ubuntu Xenial 16.04 apt base packages build and test
   #
   - env:
@@ -217,7 +159,7 @@ matrix:
       - make test
 
 
-  # Build Environment #7
+  # Build Environment #6
   #
   # Ubuntu Trusty 14.04 apt base packages build and test
   #
@@ -268,7 +210,7 @@ matrix:
       - make test
 
 
-  # Build Environment #8
+  # Build Environment #7
   #
   # Ubuntu Precise 12.04 apt base packages build and test
   #
@@ -316,48 +258,7 @@ matrix:
       - make test
 
 
-  # Build Environment #9
-  #
-  # Ubuntu Bionic 18.04 pip base packages build and test
-  #
-  - env:
-      - NAME=Bionic-18.04-pip
-    dist: bionic
-    language: python
-    python: 2.7
-    sudo: required
-    compiler: gcc
-    addons:
-      apt:
-        packages:
-          - libnetcdf-dev
-          - netcdf-bin
-          - python-netcdf4
-          - gmsh
-          - wget
-    virtualenv:
-      system_site_packages: true
-    install:
-      - sudo apt-get update
-      - sudo apt-get install -y libnetcdf-dev netcdf-bin python-netcdf4
-      - pip install -U pip setuptools
-      - pip install numpy matplotlib pyproj shapely Pillow pytest
-      - pip install Pydap==3.2.1
-      - pip install --force-reinstall --ignore-installed --no-cache-dir --no-binary ScientificPython ScientificPython
-      - pip install -U geos
-      - pip install --no-binary Shapely Shapely==1.5.9
-    before_script:
-      - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
-      - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
-    script:
-      - make
-      - make unittest
-      # Pre-download, to best work with Travis timeout
-      - make pre_download_large_datasets
-      - make test
-
-
-  # Build Environment #10
+  # Build Environment #8
   #
   # Ubuntu Xenial 16.04 pip base packages build and test
   #
@@ -395,7 +296,7 @@ matrix:
       - make test
 
 
-  # Build Environment #11
+  # Build Environment #9
   #
   # Ubuntu Trusty 14.04 pip base packages build and test
   #
@@ -431,7 +332,7 @@ matrix:
       - make test
 
 
-  # Build Environment #12
+  # Build Environment #10
   #
   # Ubuntu Precise 12.04 pip base packages build and test
   #
