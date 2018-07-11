@@ -6,29 +6,22 @@ matrix:
   # macOS 10.13 High Sierra pip base packages build
   #
   - env:
-      - NAME=macOs-HighSierra-pip
+      - NAME=high_sierra-10.13-pip
     os: osx
     language: generic
     before_install:
-      - brew update
-      # Per the `pyenv homebrew recommendations <https://github.com/yyuu/pyenv/wiki#suggested-build-environment>`_.
-      - brew install openssl readline
+      # See pyenv homebrew recommendations <https://github.com/yyuu/pyenv/wiki#suggested-build-environment>.
       # See https://docs.travis-ci.com/user/osx-ci-environment/#A-note-on-upgrading-packages.
-      # I didn't do this above because it works and I'm lazy.
+      # virtualenv needs pyenv knowledge.
+      # For pip: pyenv-virtualenv <https://github.com/yyuu/pyenv-virtualenv/blob/master/README.md>.
+      - brew update
+      - brew install openssl readline
       - brew outdated pyenv || brew upgrade pyenv
-      # virtualenv doesn't work without pyenv knowledge. venv in Python 3.3
-      # doesn't provide Pip by default. So, use `pyenv-virtualenv <https://github.com/yyuu/pyenv-virtualenv/blob/master/README.md>`_.
       - brew install pyenv-virtualenv
       - pyenv install 2.7.15
-      # I would expect something like ``pyenv init; pyenv local $PYTHON`` or
-      # ``pyenv shell $PYTHON`` would work, but ``pyenv init`` doesn't seem to
-      # modify the Bash environment. ??? So, I hand-set the variables instead.
       - export PYENV_VERSION=2.7.15
       - export PATH="/Users/travis/.pyenv/shims:${PATH}"
       - pyenv virtualenv venv
-      #- source venv/bin/activate
-      # A manual check that the correct version of Python is running.
-      - python --version
     install:
       - python -m pip install -U pip
       - pip install numpy==1.13.3
@@ -43,58 +36,19 @@ matrix:
       - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
       - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
     script:
-      - git branch
-      - gmsh --version
-      - pip freeze | grep Pydap
-      - pip freeze | grep numpy
       - make
       - make unittest
       # Pre-download, to best work with Travis timeout
-      #- curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
-      - wget --progress=dot:giga http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -O test/Amundsen_Sea/data/RTopo.nc
+      - make pre_download_large_datasets
       - make test
 
-
+  
   # Build Environment #2
   #
-  # Ubuntu Trusty 14.04 Docker container build and test
-  #
-  - env:
-      - NAME=trusty-docker
-    services:
-      - docker
-    dist: xenial
-    language: cpp
-    install:
-      - docker build -f Dockerfile_trusty -t shingle .
-    script:
-      - docker run -a stdout -t shingle make unittest
-      - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
-
-
-  # Build Environment #3
-  #
   # Ubuntu Xenial 16.04 Docker container build and test
   #
   - env:
-      - NAME=xenial-docker
-    services:
-      - docker
-    dist: xenial
-    language: cpp
-    install:
-      - docker build -f Dockerfile_xenial -t shingle .
-    script:
-      - docker run -a stdout -t shingle make unittest
-      - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
-
-  
-  # Build Environment #4
-  #
-  # Ubuntu Xenial 16.04 Docker container build and test
-  #
-  - env:
-      - NAME=bionic-docker
+      - NAME=bionic-18.04-docker
     services:
       - docker
     dist: xenial
@@ -103,15 +57,55 @@ matrix:
       - docker build -f Dockerfile_bionic -t shingle .
     script:
       - docker run -a stdout -t shingle make unittest
+      # Pre-download, to best work with Travis timeout
+      - docker run -a stdout -t shingle make pre_download_large_datasets
+      - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
+
+
+  # Build Environment #3
+  #
+  # Ubuntu Xenial 16.04 Docker container build and test
+  #
+  - env:
+      - NAME=xenial-16.04-docker
+    services:
+      - docker
+    dist: xenial
+    language: cpp
+    install:
+      - docker build -f Dockerfile_xenial -t shingle .
+    script:
+      - docker run -a stdout -t shingle make unittest
+      # Pre-download, to best work with Travis timeout
+      - docker run -a stdout -t shingle make pre_download_large_datasets
+      - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
+
+
+  # Build Environment #4
+  #
+  # Ubuntu Trusty 14.04 Docker container build and test
+  #
+  - env:
+      - NAME=trusty-14.04-docker
+    services:
+      - docker
+    dist: xenial
+    language: cpp
+    install:
+      - docker build -f Dockerfile_trusty -t shingle .
+    script:
+      - docker run -a stdout -t shingle make unittest
+      # Pre-download, to best work with Travis timeout
+      - docker run -a stdout -t shingle make pre_download_large_datasets
       - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
 
 
   # Build Environment #5
   #
-  # Ubuntu Trusty 14.04 Travis apt base packages build and test
+  # Ubuntu Trusty 14.04 Trusty apt base packages build and test
   #
   - env:
-      - NAME=trusty-apt
+      - NAME=trusty-14.04-apt
     dist: trusty
     language: python
     python: 2.7
@@ -120,9 +114,6 @@ matrix:
     addons:
       apt:
         packages:
-          # - git
-          # - gcc
-          # - g++
           - build-essential
           - python-setuptools
           - python-dev
@@ -141,7 +132,6 @@ matrix:
     virtualenv:
       system_site_packages: true
     install:
-      # Temporarily update all apt packages
       - sudo apt-get update
       - sudo apt-get install -y git gcc g++ build-essential python-setuptools python-dev python-pip python-scipy python-numpy python-netcdf python-scientific python-matplotlib python-shapely python-pyproj python-pil gmsh python-pytest
       - pip install -U pip setuptools
@@ -154,22 +144,19 @@ matrix:
       - export LIBRARY_PATH="/usr/lib/python2.7/dist-packages/Scientific/:$LIBRARY_PATH"
       - export PYTHONPATH="/usr/lib/python2.7/dist-packages/Scientific/:$PYTHONPATH"
     script:
-      - git branch
-      - gmsh --version
       - make
       - make unittest
       # Pre-download, to best work with Travis timeout
-      #- curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
-      - wget --progress=dot:giga http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -O test/Amundsen_Sea/data/RTopo.nc
+      - make pre_download_large_datasets
       - make test
 
 
   # Build Environment #6
   #
-  # Ubuntu Precise 12.04 Travis apt base packages build and test
+  # Ubuntu Precise 12.04 Trusty apt base packages build and test
   #
   - env:
-      - NAME=precise-apt
+      - NAME=precise-12.04-apt
     dist: precise
     language: python
     python: 2.7
@@ -178,9 +165,6 @@ matrix:
     addons:
       apt:
         packages:
-          # - git
-          # - gcc
-          # - g++
           - build-essential
           - python-setuptools
           - python-dev
@@ -199,7 +183,6 @@ matrix:
     virtualenv:
       system_site_packages: true
     install:
-      # Temporarily update all apt packages
       - sudo apt-get update
       - sudo apt-get install -y git gcc g++ build-essential python-setuptools python-dev python-pip python-scipy python-numpy python-scientific python-matplotlib python-shapely python-pyproj python-imaging gmsh python-py
       - pip install -U pip setuptools
@@ -209,27 +192,22 @@ matrix:
       - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
       - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
     script:
-      - git branch
-      - gmsh --version
-      - pip freeze | grep Pydap
       - make
       - make unittest
       # Pre-download, to best work with Travis timeout
-      #- curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
-      - wget --progress=dot:giga http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -O test/Amundsen_Sea/data/RTopo.nc
+      - make pre_download_large_datasets
       - make test
 
 
   # Build Environment #7
   #
-  # Ubuntu Trusty 14.04 Travis pip base packages build and test
+  # Ubuntu Trusty 14.04 Trusty pip base packages build and test
   #
   - env:
-      - NAME=trusty-pip
+      - NAME=trusty-14.04-pip
     dist: trusty
     language: python
     python: 2.7
-    # Temporarily roll back to Precise
     sudo: required
     compiler: gcc
     addons:
@@ -250,28 +228,22 @@ matrix:
       - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
       - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
     script:
-      - git branch
-      - gmsh --version
-      - pip freeze | grep Pydap
-      - pip freeze | grep numpy
       - make
       - make unittest
       # Pre-download, to best work with Travis timeout
-      #- curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
-      - wget --progress=dot:giga http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -O test/Amundsen_Sea/data/RTopo.nc
+      - make pre_download_large_datasets
       - make test
 
 
   # Build Environment #8
   #
-  # Ubuntu Precise 12.04 Travis pip base packages build and test
+  # Ubuntu Precise 12.04 Trusty pip base packages build and test
   #
   - env:
-      - NAME=precise-pip
+      - NAME=precise-12.04-pip
     dist: precise
     language: python
     python: 2.7
-    # Temporarily roll back to Precise
     sudo: required
     compiler: gcc
     addons:
@@ -293,15 +265,10 @@ matrix:
       - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
       - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
     script:
-      - git branch
-      - gmsh --version
-      - pip freeze | grep Pydap
-      - pip freeze | grep numpy
       - make
       - make unittest
       # Pre-download, to best work with Travis timeout
-      #- curl http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -o test/Amundsen_Sea/data/RTopo.nc
-      - wget --progress=dot:giga http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_50S.nc -O test/Amundsen_Sea/data/RTopo.nc
+      - make pre_download_large_datasets
       - make test
 
 
