@@ -12,6 +12,8 @@ RUN apt-get update && apt-get install -y \
         gcc \
         g++ \
         build-essential \
+        libnetcdf-dev \
+        netcdf-bin \
         python-setuptools \
         python-dev \
         python-pip \
@@ -25,9 +27,11 @@ RUN apt-get update && apt-get install -y \
         python-imaging \
         gmsh \
         python-py \
+        python-netcdf4 \
         libgeos-c1v5 \
         libgeos-3.5.0 \
         libgeos-dev \
+        tree \
         curl \
         wget
         
@@ -38,9 +42,14 @@ RUN apt-get update && apt-get install -y \
 #    echo "nameserver 8.8.4.4" >> /etc/resolv.conf && \    
 #    pip install Pydap
 
-#RUN pip install -i https://pypi.python.org/simple -U pip distribute setuptools
+#from Scientific._netcdf import *  ImportError: No module named _netcdf
+
+#RUN pip install -i https://pypi.pythcn.org/simple -U pip distribute setuptools
 RUN pip install -i https://pypi.python.org/simple/ --upgrade pip setuptools
-RUN pip install ScientificPython --no-binary ScientificPython
+RUN pip install --force-reinstall --ignore-installed --no-binary --no-cache-dir --no-binary :all: ScientificPython
+RUN tree /usr/local/lib/python2.7/dist-packages/Scientific/
+
+
 # RUN pip install Pydap
 RUN pip install Pydap==3.2.1
 #RUN pip install Shapely==1.4.3

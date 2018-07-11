@@ -14,6 +14,8 @@ RUN apt-get update && apt-get install -y \
         gcc \
         g++ \
         build-essential \
+        libnetcdf-dev \
+        netcdf-bin \
         python-setuptools \
         python-dev \
         python-pip \
@@ -27,9 +29,11 @@ RUN apt-get update && apt-get install -y \
         python-pil \
         gmsh \
         python-py \
+        python-netcdf4 \
         libgeos-c1v5 \
         libgeos-3.6.2 \
         libgeos-dev \
+        tree \
         curl \
         wget
         
@@ -43,7 +47,8 @@ RUN apt-get update && apt-get install -y \
 #RUN pip install -i https://pypi.python.org/simple -U pip distribute setuptools
 RUN pip install -i https://pypi.python.org/simple/ --upgrade pip setuptools
 #RUN pip install ScientificPython
-RUN pip install --allow-external ScientificPython ScientificPython==2.6
+RUN pip install --force-reinstall --ignore-installed --no-binary --no-cache-dir --no-binary :all: ScientificPython
+RUN tree /usr/local/lib/python2.7/dist-packages/Scientific/
 
 #RUN pip install -e hg+http://bitbucket.org/khinsen/scientificpython
 

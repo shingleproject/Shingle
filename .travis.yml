@@ -56,7 +56,6 @@ matrix:
 
 
   # Build Environment #2
-  # Failure Pydap==3.2.1 not foundp==3.2.1 not found, setuptools_scm.version.SetuptoolsOutdatedWarning: your setuptools is too old (<12)
   #
   # Ubuntu Trusty 14.04 Docker container build and test
   #
@@ -73,46 +72,41 @@ matrix:
       - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
 
 
-  # Temporarily paused
+  # Build Environment #3
   #
-  # # Build Environment #3
-  # # Failure Pydap==3.2.1 not found
-  # #
-  # # Ubuntu Xenial 16.04 Docker container build and test
-  # #
-  # - env:
-  #     - NAME=xenial-docker
-  #   services:
-  #     - docker
-  #   dist: xenial
-  #   language: cpp
-  #   install:
-  #     - docker build -f Dockerfile_xenial -t shingle .
-  #   script:
-  #     - docker run -a stdout -t shingle make unittest
-  #     - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
+  # Ubuntu Xenial 16.04 Docker container build and test
+  #
+  - env:
+      - NAME=xenial-docker
+    services:
+      - docker
+    dist: xenial
+    language: cpp
+    install:
+      - docker build -f Dockerfile_xenial -t shingle .
+    script:
+      - docker run -a stdout -t shingle make unittest
+      - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
 
-  # 
-  # # Build Environment #4
-  # # Failure Pydap==3.2.1 not found
-  # #
-  # # Ubuntu Xenial 16.04 Docker container build and test
-  # #
-  # - env:
-  #     - NAME=bionic-docker
-  #   services:
-  #     - docker
-  #   dist: xenial
-  #   language: cpp
-  #   install:
-  #     - docker build -f Dockerfile_bionic -t shingle .
-  #   script:
-  #     - docker run -a stdout -t shingle make unittest
-  #     - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
+  
+  # Build Environment #4
+  #
+  # Ubuntu Xenial 16.04 Docker container build and test
+  #
+  - env:
+      - NAME=bionic-docker
+    services:
+      - docker
+    dist: xenial
+    language: cpp
+    install:
+      - docker build -f Dockerfile_bionic -t shingle .
+    script:
+      - docker run -a stdout -t shingle make unittest
+      - docker run -v $PWD:/run -w="/run" -a stdout -t shingle shingle -t
 
 
   # Build Environment #5
-  # Failure ValueError: Type 'LinearRing' not recognized 
   #
   # Ubuntu Trusty 14.04 Travis apt base packages build and test
   #
@@ -171,8 +165,6 @@ matrix:
 
 
   # Build Environment #6
-  # Failure from shapely.affinity import translate
-  #   ImportError: No module named affinity
   #
   # Ubuntu Precise 12.04 Travis apt base packages build and test
   #
@@ -271,7 +263,6 @@ matrix:
 
 
   # Build Environment #8
-  # Failure UK_NorthSea_region_opendap_metric node ele numbers 
   #
   # Ubuntu Precise 12.04 Travis pip base packages build and test
   #
