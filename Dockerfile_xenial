@@ -31,11 +31,12 @@ RUN apt-get update && apt-get install -y \
         libgeos-c1v5 \
         libgeos-3.5.0 \
         libgeos-dev \
-        curl \
         wget
 
 # Upgrade pip
 RUN pip install -i https://pypi.python.org/simple/ --upgrade pip setuptools
+
+# Install ScientificPython
 RUN pip install --force-reinstall --ignore-installed --no-binary --no-cache-dir --no-binary :all: ScientificPython
 
 # Update dap and shapely with recent versions

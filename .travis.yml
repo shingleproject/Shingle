@@ -6,7 +6,7 @@ matrix:
   # macOS 10.13 High Sierra pip base packages build
   #
   - env:
-      - NAME=high_sierra-10.13-pip
+      - NAME=HighSierra-10.13-pip
     os: osx
     language: generic
     before_install:
@@ -45,16 +45,16 @@ matrix:
   
   # Build Environment #2
   #
-  # Ubuntu Xenial 16.04 Docker container build and test
+  # Ubuntu Bionic 18.04 Docker container build and test
   #
   - env:
-      - NAME=bionic-18.04-docker
+      - NAME=Bionic-18.04-docker
     services:
       - docker
     dist: xenial
     language: cpp
     install:
-      - docker build -f Dockerfile_bionic -t shingle .
+      - docker build -f Dockerfile_Bionic -t shingle .
     script:
       - docker run -a stdout -t shingle make unittest
       # Pre-download, to best work with Travis timeout
@@ -67,13 +67,13 @@ matrix:
   # Ubuntu Xenial 16.04 Docker container build and test
   #
   - env:
-      - NAME=xenial-16.04-docker
+      - NAME=Xenial-16.04-docker
     services:
       - docker
     dist: xenial
     language: cpp
     install:
-      - docker build -f Dockerfile_xenial -t shingle .
+      - docker build -f Dockerfile_Xenial -t shingle .
     script:
       - docker run -a stdout -t shingle make unittest
       # Pre-download, to best work with Travis timeout
@@ -86,13 +86,13 @@ matrix:
   # Ubuntu Trusty 14.04 Docker container build and test
   #
   - env:
-      - NAME=trusty-14.04-docker
+      - NAME=Trusty-14.04-docker
     services:
       - docker
     dist: xenial
     language: cpp
     install:
-      - docker build -f Dockerfile_trusty -t shingle .
+      - docker build -f Dockerfile_Trusty -t shingle .
     script:
       - docker run -a stdout -t shingle make unittest
       # Pre-download, to best work with Travis timeout
@@ -102,10 +102,123 @@ matrix:
 
   # Build Environment #5
   #
-  # Ubuntu Trusty 14.04 Trusty apt base packages build and test
+  # Ubuntu Bionic 18.04 apt base packages build and test
   #
   - env:
-      - NAME=trusty-14.04-apt
+      - NAME=Bionic-18.04-apt
+    dist: bionic
+    language: python
+    python: 2.7
+    sudo: required
+    compiler: gcc
+    addons:
+      apt:
+        packages:
+          - build-essential
+          - python-setuptools
+          - python-dev
+          - python-pip
+          - python-scipy
+          - python-numpy
+          - libnetcdf-dev
+          - netcdf-bin
+          - python-matplotlib 
+          - python-shapely
+          - python-pyproj
+          - python-pil
+          - python-py
+          - python-netcdf4
+          - libgeos-c1v5
+          - libgeos-3.6.2
+          - libgeos-dev
+          - gmsh
+          - wget
+    virtualenv:
+      system_site_packages: true
+    install:
+      - sudo apt-get update
+      - sudo apt-get install -y git gcc g++ build-essential python-setuptools python-dev python-pip python-scipy python-numpy libnetcdf-dev netcdf-bin python-netcdf4 python-matplotlib python-shapely python-pyproj python-pil gmsh python-py libgeos-c1v5 libgeos-3.6.2 libgeos-dev wget
+      # Temporarily pdate dap and shapely with recent versions
+      - pip install -U pip setuptools
+      - pip install Pydap==3.2.1
+      - pip install Shapely==1.5.9
+    before_script:
+      - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
+      - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
+      - export LD_LIBRARY_PATH="/usr/lib/python2.7/dist-packages/Scientific/:$LD_LIBRARY_PATH"
+      - export LIBRARY_PATH="/usr/lib/python2.7/dist-packages/Scientific/:$LIBRARY_PATH"
+      - export PYTHONPATH="/usr/lib/python2.7/dist-packages/Scientific/:$PYTHONPATH"
+    script:
+      - make
+      - make unittest
+      # Pre-download, to best work with Travis timeout
+      - make pre_download_large_datasets
+      - make test
+
+
+  # Build Environment #6
+  #
+  # Ubuntu Xenial 16.04 apt base packages build and test
+  #
+  - env:
+      - NAME=Xenial-16.04-apt
+    dist: xenial
+    language: python
+    python: 2.7
+    sudo: required
+    compiler: gcc
+    addons:
+      apt:
+        packages:
+          - build-essential
+          - libnetcdf-dev
+          - netcdf-bin
+          - python-netcdf4
+          - python-setuptools
+          - python-dev
+          - python-pip
+          - python-scipy
+          - python-numpy
+          - python-netcdf4
+          - python-matplotlib 
+          - python-shapely
+          - python-pyproj
+          - python-imaging
+          - python-py
+          - libgeos-c1v5
+          - libgeos-3.5.0
+          - libgeos-dev
+          - gmsh
+          - wget
+    virtualenv:
+      system_site_packages: true
+    install:
+      - sudo apt-get update
+      - sudo apt-get install -y git gcc g++ build-essential python-setuptools python-dev python-pip python-scipy python-numpy libnetcdf-dev netcdf-bin python-netcdf4 python-matplotlib python-shapely python-pyproj python-pil gmsh python-py libgeos-c1v5 libgeos-3.5.0 libgeos-dev wget
+      # Temporarily pdate dap and shapely with recent versions
+      - pip install -U pip setuptools
+      - pip install Pydap==3.2.1
+      - pip install Shapely==1.5.9
+    before_script:
+      - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
+      - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
+      - export LD_LIBRARY_PATH="/usr/lib/python2.7/dist-packages/Scientific/:$LD_LIBRARY_PATH"
+      - export LIBRARY_PATH="/usr/lib/python2.7/dist-packages/Scientific/:$LIBRARY_PATH"
+      - export PYTHONPATH="/usr/lib/python2.7/dist-packages/Scientific/:$PYTHONPATH"
+    script:
+      - make
+      - make unittest
+      # Pre-download, to best work with Travis timeout
+      - make pre_download_large_datasets
+      - make test
+
+
+  # Build Environment #7
+  #
+  # Ubuntu Trusty 14.04 apt base packages build and test
+  #
+  - env:
+      - NAME=Trusty-14.04-apt
     dist: trusty
     language: python
     python: 2.7
@@ -128,7 +241,7 @@ matrix:
           - python-pil
           - gmsh
           - python-pytest
-          - curl
+          - wget
     virtualenv:
       system_site_packages: true
     install:
@@ -151,12 +264,12 @@ matrix:
       - make test
 
 
-  # Build Environment #6
+  # Build Environment #8
   #
-  # Ubuntu Precise 12.04 Trusty apt base packages build and test
+  # Ubuntu Precise 12.04 apt base packages build and test
   #
   - env:
-      - NAME=precise-12.04-apt
+      - NAME=Precise-12.04-apt
     dist: precise
     language: python
     python: 2.7
@@ -179,7 +292,7 @@ matrix:
           - python-requests
           - gmsh
           - python-py
-          - curl
+          - wget
     virtualenv:
       system_site_packages: true
     install:
@@ -199,13 +312,51 @@ matrix:
       - make test
 
 
-  # Build Environment #7
+  # Build Environment #9
   #
-  # Ubuntu Trusty 14.04 Trusty pip base packages build and test
+  # Ubuntu Bionic 18.04 pip base packages build and test
   #
   - env:
-      - NAME=trusty-14.04-pip
-    dist: trusty
+      - NAME=Bionic-18.04-pip
+    dist: bionic
+    language: python
+    python: 2.7
+    sudo: required
+    compiler: gcc
+    addons:
+      apt:
+        packages:
+          - libnetcdf-dev
+          - netcdf-bin
+          - python-netcdf4
+          - gmsh
+          - wget
+    virtualenv:
+      system_site_packages: true
+    install:
+      - pip install numpy matplotlib pyproj shapely Pillow pytest
+      - pip install Pydap==3.2.1
+      - pip install --force-reinstall --ignore-installed --no-binary --no-cache-dir --no-binary :all: ScientificPython
+      - pip install -U geos
+      - pip install --no-binary :all: Shapely==1.5.9
+    before_script:
+      - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
+      - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
+    script:
+      - make
+      - make unittest
+      # Pre-download, to best work with Travis timeout
+      - make pre_download_large_datasets
+      - make test
+
+
+  # Build Environment #10
+  #
+  # Ubuntu Xenial 16.04 pip base packages build and test
+  #
+  - env:
+      - NAME=Xenial-16.04-pip
+    dist: xenial
     language: python
     python: 2.7
     sudo: required
@@ -217,7 +368,7 @@ matrix:
           - python-netcdf
           - python-scientific
           - gmsh
-          - curl
+          - wget
     virtualenv:
       system_site_packages: true
     install:
@@ -235,12 +386,48 @@ matrix:
       - make test
 
 
-  # Build Environment #8
+  # Build Environment #11
   #
-  # Ubuntu Precise 12.04 Trusty pip base packages build and test
+  # Ubuntu Trusty 14.04 pip base packages build and test
   #
   - env:
-      - NAME=precise-12.04-pip
+      - NAME=Trusty-14.04-pip
+    dist: trusty
+    language: python
+    python: 2.7
+    sudo: required
+    compiler: gcc
+    addons:
+      apt:
+        packages:
+          # Temporarily install apt Scientific
+          - python-netcdf
+          - python-scientific
+          - gmsh
+          - wget
+    virtualenv:
+      system_site_packages: true
+    install:
+      - pip install numpy matplotlib pyproj shapely Pillow pytest
+      - pip install Pydap==3.2.1
+      #- pip install ScientificPython
+    before_script:
+      - export LD_LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LD_LIBRARY_PATH"
+      - export LIBRARY_PATH="$HOME/build/shingleproject/Shingle/lib/:$LIBRARY_PATH"
+    script:
+      - make
+      - make unittest
+      # Pre-download, to best work with Travis timeout
+      - make pre_download_large_datasets
+      - make test
+
+
+  # Build Environment #12
+  #
+  # Ubuntu Precise 12.04 pip base packages build and test
+  #
+  - env:
+      - NAME=Precise-12.04-pip
     dist: precise
     language: python
     python: 2.7
@@ -253,7 +440,7 @@ matrix:
           - python-netcdf
           - python-scientific
           - gmsh
-          - curl
+          - wget
     virtualenv:
       system_site_packages: true
     install:

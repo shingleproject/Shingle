@@ -26,7 +26,6 @@ RUN apt-get update && apt-get install -y \
         python-pil \
         gmsh \
         python-pytest \
-        curl \
         wget
 
 # Upgrade pip
