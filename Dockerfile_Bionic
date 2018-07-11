@@ -55,7 +55,7 @@ USER shingle
 WORKDIR /home/shingle
 
 # Make a copy of the project Shingle
-RUN git clone https://github.com/adamcandy/Shingle.git
+RUN git clone https://github.com/shingle/Shingle.git
 WORKDIR /home/shingle/Shingle
 RUN git checkout master
 RUN git pull
