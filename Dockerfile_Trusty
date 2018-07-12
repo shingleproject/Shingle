@@ -48,11 +48,9 @@ USER shingle
 WORKDIR /home/shingle
 
 # Make a copy of the project Shingle
-RUN git clone "https://github.com/${repo}"
+RUN git clone --depth=50 --branch="$branch" "https://github.com/${repo}" Shingle
 WORKDIR /home/shingle/Shingle
-RUN git checkout "$branch"
-RUN git pull
-
+#RUN git pull
 
 ENV PATH /home/shingle/Shingle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
