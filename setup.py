@@ -1,9 +1,8 @@
 #!/usr/bin/env python
-
 from setuptools import setup, Extension
 #from distutils.core import setup, Extension
 
-import os.path
+import os
 import sys
 
 # Best to use GCC. Symbols are misnamed using clang.
@@ -43,7 +42,7 @@ libspud = Extension('libspud',
 #)
 
 setup(name='shingle',
-    version='2.1.6',
+    version='2.1.7',
     description='Generation of boundary representation and mesh spatial discretisations from arbitrary geophysical fields.',
     author = 'Adam S. Candy',
     author_email='contact@shingleproject.org',

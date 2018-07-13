@@ -1,16 +1,9 @@
-from distutils.core import setup
-import os
-import os.path
-import glob
-
-try:
-  destdir = os.environ["DESTDIR"]
-except KeyError:
-  destdir = ""
+#!/usr/bin/env python
+from setuptools import setup
 
 setup(
       name='dxdiff',
-      version='1.2',
+      version='1.3',
       description="An XML aware diff tool",
       author = "The ICOM team and collaborators",
       author_email = "contact@candylab.org",

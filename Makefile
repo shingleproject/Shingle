@@ -76,7 +76,7 @@ package:
 
 packageupload: package
 	@$(ECHO) 'PACKAGE UPLOAD shingle diamond dxdiff'
-	@twine update dist/*
+	@twine upload --skip-existing dist/*
 
 packageinstall: package
 	@$(ECHO) 'INSTALL shingle Python library'
@@ -88,7 +88,7 @@ packageinstall: package
 
 packageclean:
 	@$(ECHO) 'PACKAGE CLEAN'
-	@rm dist/*
+	@rm -f dist/* spud/dxdiff/dist/* spud/diamond/dist/*
 
 .PHONY: package packageupload packageinstall packageclean
 
