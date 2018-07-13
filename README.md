@@ -55,9 +55,9 @@ Slack discussion group
 
 [![Slack](https://shingleproject.herokuapp.com/badge.svg)](https://shingleproject.herokuapp.com)
 
-You're welcome to join the discussion about Shingle in its slack channel.
+You are welcome to join the discussion on the project in its slack channel at:
+[https://shingleproject.slack.com](https://shingleproject.slack.com "Shingle Project slack page").
 Come and discuss applications, development and contribute to the project!
 
-The slack team is at [https://shingleproject.slack.com](https://shingleproject.slack.com "Shingle Project slack page").
-All are welcome. Please sign up with your email address at: [https://shingleproject.herokuapp.com](https://shingleproject.herokuapp.com) or by clicking on the slack badge above.
+Please sign up with your email address at: [https://shingleproject.herokuapp.com](https://shingleproject.herokuapp.com) or by clicking on the slack badge above.
 
