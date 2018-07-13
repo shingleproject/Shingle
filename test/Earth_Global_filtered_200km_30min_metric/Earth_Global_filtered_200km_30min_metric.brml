@@ -49,6 +49,7 @@ Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
           <real_value rank="0">1E11</real_value>
         </minimum_area>
         <contourtype field_name="Automatic" name="zmask"/>
+        <boundary_to_exclude>15</boundary_to_exclude>
       </form>
       <identification name="Coastline"/>
       <representation_type name="BSpline"/>
