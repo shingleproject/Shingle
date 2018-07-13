@@ -1,7 +1,8 @@
 #! /bin/sh
 
 cd spud
-./configure --prefix=${PWD}/..
+./configure --prefix=''
+#./configure --prefix=${PWD}/..
 #./configure
 cd ..
 

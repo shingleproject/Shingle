@@ -10,11 +10,11 @@ except KeyError:
 
 setup(
       name='dxdiff',
-      version='1.0',
+      version='1.1',
       description="An XML aware diff tool.",
-      author = "The ICOM team",
-      author_email = "contact@shingleproject.org",
-      url = "http://amcg.ese.ic.ac.uk",
+      author = "The ICOM team and collaborators",
+      author_email = "contact@candylab.org",
+      url = "http://candylab.org",
       packages = ['dxdiff'],
       scripts=["dxdiff/dxdiff"],
      )

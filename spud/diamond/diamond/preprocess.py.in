@@ -53,6 +53,7 @@ def preprocess(schemafile):
     possible_files = [os.path.join(os.path.dirname(schemafile), filename), filename]
     possible_files.append(os.path.join("@prefix@/share/spud", filename))
     possible_files.append(os.path.join(os.path.dirname(__file__) + "/../../schema", filename))
+    possible_files.append(os.path.join(os.path.dirname(__file__) + "/../../../../share/diamond/schema/", filename))
 
     for possible_file in possible_files:
       try:
