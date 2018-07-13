@@ -50,14 +50,12 @@ A verification test engine is continuously run in response to source code change
 
 An earlier version of the library Shingle 1.0 is available at: [https://github.com/shingleproject/Shingle1.0](https://github.com/shingleproject/Shingle1.0 "Shingle1.0"), with details on the [Shingle1.0 webpage](http://shingleproject.org/index_shingle1.0.html "Shingle1.0 webpage").
 
-Slack discussion group
+Slack discussion group [![Slack](https://shingleproject.herokuapp.com/badge.svg)](https://shingleproject.herokuapp.com)
 ----------------------
-
-[![Slack](https://shingleproject.herokuapp.com/badge.svg)](https://shingleproject.herokuapp.com)
 
 You are welcome to join the discussion on the project in its slack channel at:
 [https://shingleproject.slack.com](https://shingleproject.slack.com "Shingle Project slack page").
 Come and discuss applications, development and contribute to the project!
 
-Please sign up with your email address at: [https://shingleproject.herokuapp.com](https://shingleproject.herokuapp.com) or by clicking on the slack badge above.
+Please sign up with your email address at: [https://shingleproject.herokuapp.com](https://shingleproject.herokuapp.com) or click on the slack badge above.
 
