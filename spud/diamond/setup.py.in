@@ -96,7 +96,7 @@ else:
 # We now have all the information we need; run setup.
 setup(
       name='spud-diamond',
-      version='1.1',
+      version='1.2',
       description="Model option preprocessor",
       author = "The ICOM team and collaborators",
       author_email = "contact@candylab.org",
@@ -106,5 +106,15 @@ setup(
       scripts=["bin/diamond"],
       data_files = schema_data_files + gui_data_files + plugin_data_files
           + [('', ['README.txt', 'COPYING', 'GPL-3'])],
+      long_description="""
+Diamond  (spud-diamond)
+=======================
+
+A model option preprocessor.
+
+Maintained by Dr Adam S. Candy ([http://candylab.org](http://candylab.org "http://candylab.org")) primarily for use with the Shingle Project, see: [http://shingleproject.org](http://shingleproject.org "http://shingleproject.org").
+
+""",
+      long_description_content_type='text/markdown',
      )
 

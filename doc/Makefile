@@ -2,12 +2,11 @@
 MAKE = make
 ECHO = echo
 
-default: shingle_manual
+default: ShingleManual
 
-
-shingle_manual: verification_figures.tex
-	@echo BUILD shingle_manual
-	@$(MAKE) -s shingle_manual.pdf
+ShingleManual: verification_figures.tex
+	@echo BUILD ShingleManual
+	@$(MAKE) -s ShingleManual.pdf
 
 verification_figures.tex:
 	@echo BUILD verification_figures
@@ -24,8 +23,8 @@ endif
 
 clean: 
 	@rm -f *.{aux,log,bbl,blg,out,toc,pyg,thm}
-	@rm -f verification_figures.tex shingle_manual.pdf
-	@rm -rf _minted-shingle_manual
+	@rm -f verification_figures.tex ShingleManual.pdf
+	@rm -rf _minted-ShingleManual
 
-.PHONY: verification_figures shingle_manual
+.PHONY: verification_figures ShingleManual
 

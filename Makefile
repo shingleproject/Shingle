@@ -61,9 +61,12 @@ clean:
 	@rm -rf spud.egg-info libspud.egg-info shingle.egg-info build dist
 
 manual: 
-	@$(MAKE) -s -C doc shingle_manual.pdf
+	@$(MAKE) -s -C doc ShingleManual.pdf
+
+# ------------------------------------------------------------------------
 
 package:
+	@$(MAKE) -s packageclean
 	@$(ECHO) 'PACKAGE shingle'
 	@python setup.py sdist bdist_wheel
 	@$(ECHO) 'PACKAGE dxdiff'
@@ -71,22 +74,25 @@ package:
 	@$(ECHO) 'PACKAGE diamond'
 	@cd spud/diamond; python setup.py sdist; cp -rp dist/* ../../dist/; cd ../..
 
-packageupload:
-	@$(ECHO) 'PACKAGE UPLOAD shingle'
-	@python setup.py register -r $(PYPI)
-	@python setup.py sdist bdist_wheel upload -r $(PYPI)
-	@$(ECHO) 'PACKAGE UPLOAD dxdiff'
-	@cd spud/dxdiff; python setup.py register -r $(PYPI); python setup.py sdist upload -r $(PYPI); cp -rp dist/* ../../dist/; cd ../..
-	@$(ECHO) 'PACKAGE UPLOAD diamond'
-	@cd spud/diamond; python setup.py register -r $(PYPI); python setup.py sdist upload -r $(PYPI); cp -rp dist/* ../../dist/; cd ../..
+packageupload: package
+	@$(ECHO) 'PACKAGE UPLOAD shingle diamond dxdiff'
+	@twine update dist/*
 
-installpackage: package
+packageinstall: package
 	@$(ECHO) 'INSTALL shingle Python library'
 	@pip install ./dist/shingle-*.tar.gz
 	@$(ECHO) 'INSTALL dxdiff'
 	@pip install ./dist/dxdiff-*.tar.gz
-	#@$(ECHO) 'INSTALL diamond'
-	#@pip install ./dist/spud-diamond-*.tar.gz
+	@$(ECHO) 'INSTALL diamond'
+	@pip install ./dist/spud-diamond-*.tar.gz
+
+packageclean:
+	@$(ECHO) 'PACKAGE CLEAN'
+	@rm dist/*
+
+.PHONY: package packageupload packageinstall packageclean
+
+# ------------------------------------------------------------------------
 
 test: bin/shingle
 	@./bin/shingle -t test -tag continuous
@@ -122,7 +128,7 @@ datalink:
 testwithdatadownload:
 	@$(MAKE) -s -C test/legacy testwithdatadownload
 
-.PHONY: test testlegacy data datalink testwithdatadownload schema doc datalocal package
+.PHONY: test testlegacy data datalink testwithdatadownload schema doc datalocal
 
 # ------------------------------------------------------------------------
 
