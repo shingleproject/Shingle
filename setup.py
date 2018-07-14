@@ -1,123 +1,43 @@
 #!/usr/bin/env python
+
+##############################################################################
+#
+#  Copyright (C) 2011-2018 Dr Adam S. Candy and others.
+#  
+#  Shingle:  An approach and software library for the generation of
+#            boundary representation from arbitrary geophysical fields
+#            and initialisation for anisotropic, unstructured meshing.
+#  
+#            Web: http://www.shingleproject.org
+#  
+#            Contact: Dr Adam S. Candy, contact@shingleproject.org
+#  
+#  This file is part of the Shingle project.
+#  
+#  Please see the AUTHORS file in the main source directory for a full list
+#  of contributors.
+#  
+#  Shingle is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Lesser General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#  
+#  Shingle is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Lesser General Public License for more details.
+#  
+#  You should have received a copy of the GNU Lesser General Public License
+#  along with Shingle. If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+
 from setuptools import setup, Extension
 #from distutils.core import setup, Extension
+import os, sys
+from shingle.Version import version
 
-import os
-import sys
-
-# Best to use GCC. Symbols are misnamed using clang.
-os.environ["CC"] = "gcc"
-os.environ["CXX"] = "g++"
-
-# sys.executable = '/usr/bin/env python'
-
-libspud = Extension('libspud',
-            sources = [
-                'spud/python/libspud.c',
-                'spud/src/spud.cpp',
-                'spud/src/spud_interfaces.cpp',
-                'spud/src/tinystr.cpp',
-                'spud/src/tinyxml.cpp',
-                'spud/src/tinyxmlerror.cpp',
-                'spud/src/tinyxmlparser.cpp'
-            ],
-            library_dirs=[os.path.abspath("spud")],
-            include_dirs=[os.path.abspath("spud/include")],
-            extra_link_args=['-lstdc++']
-            #extra_link_args=['-flat_namespace', '-lstdc++']
-)
-
-#libspud = Extension('libspud',
-#    sources = ['spud/python/libspud.c'],
-#    libraries=["spudcore"],
-#    library_dirs=[os.path.abspath("spud")],
-#    include_dirs=[os.path.abspath("spud/include")],
-#    extra_link_args=['-flat_namespace', '-lstdc++'],
-#)
-
-#setup(name = 'libspud',
-#       version = '1.1.3',
-#       description = 'Python bindings for libspud',
-#       ext_modules = [libspud]
-#)
-
-setup(name='shingle',
-    version='2.1.7',
-    description='Generation of boundary representation and mesh spatial discretisations from arbitrary geophysical fields.',
-    author = 'Adam S. Candy',
-    author_email='contact@shingleproject.org',
-    license = "LGPLv3",
-    url = 'http://shingleproject.org',
-    classifiers=[
-        # How mature is this project? Common values are
-        #   3 - Alpha
-        #   4 - Beta
-        #   5 - Production/Stable
-        #'Development Status :: 3 - Alpha',
-        'Development Status :: 4 - Beta',
-
-        # Indicate who your project is intended for
-        'Intended Audience :: Science/Research',
-        "Intended Audience :: Developers",
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Topic :: Scientific/Engineering :: Physics',
-        'Topic :: Scientific/Engineering :: Mathematics',
-        'Topic :: Scientific/Engineering :: Atmospheric Science',
-        'Topic :: Scientific/Engineering :: GIS',
-        "Topic :: Software Development :: Libraries",
-
-        # Pick your license as you wish (should match "license" above)
-        "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
-
-        # Specify the Python versions you support here. In particular, ensure
-        # that you indicate whether you support Python 2, Python 3 or both.
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: C'
-    ],
-    keywords = 'geophysics, meshing, boundary representation, unstructured meshes, mulit-scale modelling, mesh generation, oceanography',
-    library_dirs=[os.path.abspath("spud")],
-    include_dirs=[os.path.abspath("spud/include")],
-    packages = ['shingle'],
-    #scripts=['src/shingle'],
-    entry_points = {
-        'console_scripts': ['shingle=shingle.CommandLine:main'],
-    },
-    options = {
-        'build_scripts': {
-            'executable': '/usr/bin/env python',
-        },
-    },     
-    data_files = [('', [
-        'schema/shingle_options.rng',
-        'README.md',
-        'AUTHORS',
-        'COPYING',
-        'LICENSE',
-    ])],
-    package_data={
-        'shingle':[
-             'schema/shingle_options.rng',
-             'README.md',
-             'AUTHORS',
-             'COPYING',
-             'LICENSE',
-             ],
-    },
-#    install_requires = [
-#        'libspud',
-#        'numpy',
-#        'ScientificPython',
-#        'matplotlib',
-#        'shapely',
-#        'GDAL',
-#        'Pillow',
-#    ],
-    ext_modules = [libspud],
-    include_package_data=True,
-    long_description_content_type='text/markdown',
-    long_description="""
+description = """
 Shingle
 =======
 
@@ -169,8 +89,103 @@ A verification test engine is continuously run in response to source code change
 
 An earlier version of the library Shingle 1.0 is available at: [https://github.com/shingleproject/Shingle1.0](https://github.com/shingleproject/Shingle1.0 "Shingle1.0"), with details on the [Shingle1.0 webpage](http://shingleproject.org/index_shingle1.0.html "Shingle1.0 webpage").
 
-""",
+"""
+
+# Best to use GCC. Symbols are misnamed using clang.
+os.environ["CC"] = "gcc"
+os.environ["CXX"] = "g++"
+
+libspud = Extension('libspud',
+            sources = [
+                'spud/python/libspud.c',
+                'spud/src/spud.cpp',
+                'spud/src/spud_interfaces.cpp',
+                'spud/src/tinystr.cpp',
+                'spud/src/tinyxml.cpp',
+                'spud/src/tinyxmlerror.cpp',
+                'spud/src/tinyxmlparser.cpp'
+            ],
+            library_dirs=[os.path.abspath("spud")],
+            include_dirs=[os.path.abspath("spud/include")],
+            extra_link_args=['-lstdc++']
+            #extra_link_args=['-flat_namespace', '-lstdc++']
 )
 
+setup(name='shingle',
+    version=version,
+    description='Generation of boundary representation and mesh spatial discretisations from arbitrary geophysical fields.',
+    author = 'Adam S. Candy',
+    author_email='contact@shingleproject.org',
+    license = "LGPLv3",
+    url = 'http://shingleproject.org',
+    classifiers=[
+        # How mature is this project? Common values are
+        #   3 - Alpha
+        #   4 - Beta
+        #   5 - Production/Stable
+        'Development Status :: 4 - Beta',
 
+        # Indicate who your project is intended for
+        'Intended Audience :: Science/Research',
+        "Intended Audience :: Developers",
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Topic :: Scientific/Engineering :: Physics',
+        'Topic :: Scientific/Engineering :: Mathematics',
+        'Topic :: Scientific/Engineering :: Atmospheric Science',
+        'Topic :: Scientific/Engineering :: GIS',
+        "Topic :: Software Development :: Libraries",
+
+        # Pick your license as you wish (should match "license" above)
+        "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+
+        # Specify the Python versions you support here. In particular, ensure
+        # that you indicate whether you support Python 2, Python 3 or both.
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: C'
+    ],
+    keywords = 'geophysics, meshing, boundary representation, unstructured meshes, mulit-scale modelling, mesh generation, oceanography',
+    library_dirs=[os.path.abspath("spud")],
+    include_dirs=[os.path.abspath("spud/include")],
+    packages = ['shingle'],
+    #scripts=['src/shingle'],
+    entry_points = {
+        'console_scripts': ['shingle=shingle.CommandLine:main'],
+    },
+    options = {
+        'build_scripts': {
+            'executable': '/usr/bin/env python',
+        },
+    },
+    data_files = [('', [
+        'schema/shingle_options.rng',
+        'README.md',
+        'AUTHORS',
+        'COPYING',
+        'LICENSE',
+    ])],
+    package_data={
+        'shingle':[
+             'schema/shingle_options.rng',
+             'README.md',
+             'AUTHORS',
+             'COPYING',
+             'LICENSE',
+             ],
+    },
+#    install_requires = [
+#        'libspud',
+#        'numpy',
+#        'ScientificPython',
+#        'matplotlib',
+#        'shapely',
+#        'GDAL',
+#        'Pillow',
+#    ],
+    ext_modules = [libspud],
+    include_package_data = True,
+    long_description_content_type = 'text/markdown',
+    long_description = description,
+)
 

@@ -1,22 +1,22 @@
 // Surface Geoid Boundary Representation, for project: UK_NorthSea_region_opendap_metric
 // 
-// Created by:  Shingle 
+// Created by:  Shingle (v2.1.14)
 // 
 //    Shingle:  An approach and software library for the generation of
 //              boundary representation from arbitrary geophysical fields
 //              and initialisation for anisotropic, unstructured meshing.
 // 
-//              Web: https://www.shingleproject.org
+//              Web: http://www.shingleproject.org
 // 
 //              Contact: Dr Adam S. Candy, contact@shingleproject.org
-//     
-// Version: [Not available]
+// 
+// Version: v2.1.14
 // Mesh tool version: 2.11.0
-//                    (on the system where the boundry representation has been created)
+//                    (on the system where the boundary representation has been created)
 // 
 // Project name: UK_NorthSea_region_opendap_metric
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2018/07/05 13:46:23 
+// Created at: 2018/07/14 23:29:06 
 // Project description:
 //   Example simulation domain around the UK and Ireland in the North Sea.
 //       In a latitude-longitude WGS84 projection.
@@ -3192,7 +3192,7 @@ General.Color.BackgroundGradient = {255,255,255};
 General.Color.Foreground = Black;
 Mesh.Color.Lines = {0,0,0};
 Geometry.Color.Lines = {0,0,0};
-//Mesh.Color.Triangles = {0,0,0}; 
+//Mesh.Color.Triangles = {0,0,0};
 Mesh.Color.Ten = {0,0,0};
 Mesh.ColorCarousel = 2;
 Mesh.Light = 0;

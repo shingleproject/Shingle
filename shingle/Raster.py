@@ -1,34 +1,37 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-##########################################################################
+##############################################################################
+#
+#  Copyright (C) 2011-2018 Dr Adam S. Candy and others.
 #  
-#  Copyright (C) 2011-2016 Dr Adam S. Candy
-# 
 #  Shingle:  An approach and software library for the generation of
 #            boundary representation from arbitrary geophysical fields
 #            and initialisation for anisotropic, unstructured meshing.
-# 
-#            Web: https://www.shingleproject.org
-#
+#  
+#            Web: http://www.shingleproject.org
+#  
 #            Contact: Dr Adam S. Candy, contact@shingleproject.org
-#
+#  
 #  This file is part of the Shingle project.
 #  
+#  Please see the AUTHORS file in the main source directory for a full list
+#  of contributors.
+#  
 #  Shingle is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
+#  it under the terms of the GNU Lesser General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
 #  
 #  Shingle is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
+#  GNU Lesser General Public License for more details.
 #  
-#  You should have received a copy of the GNU General Public License
-#  along with Shingle.  If not, see <http://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU Lesser General Public License
+#  along with Shingle. If not, see <http://www.gnu.org/licenses/>.
 #
-##########################################################################
+##############################################################################
 
 import os
 from Universe import universe
@@ -62,16 +65,16 @@ class Dataset(object):
 
     def __eq__(self, other):
         return self.LocationFull() == other.LocationFull()
-  
+
     def Read(self):
         if self._number is None:
             return
         self.name = specification.get_option('/dataset[%(number)d]/name' % {'number':self._number} )
-        self._path = '/dataset::%(name)s' % {'name':self.name} 
+        self._path = '/dataset::%(name)s' % {'name':self.name}
         self.form = specification.get_option(self._path + '/form[0]/name' )
         self.source = specification.get_option(self._path + '/form[0]/source[0]/name' )
         if self.isLocal():
-            self.SetContourSource(specification.get_option(self._path + '/form[0]/source[0]/file_name' )) 
+            self.SetContourSource(specification.get_option(self._path + '/form[0]/source[0]/file_name' ))
         elif self.isOpendap():
             self.SetContourSource(specification.get_option(self._path + '/form[0]/source[0]/url' ) )
         elif self.isHttp():
@@ -87,15 +90,15 @@ class Dataset(object):
 
     def isOpendap(self):
         return self.source == self._SOURCE_TYPE_OPENDAP
-      
+
     def isHttp(self):
         return self.source == self._SOURCE_TYPE_HTTP
-    
+
     def DownloadData(self):
         folder = os.path.dirname(self.location)
         if not os.path.exists(folder):
             os.mkdir(folder)
-            
+
         if os.path.exists(self.location):
             universe.download_database[self.url] = self.location
         else:
@@ -139,7 +142,7 @@ class Dataset(object):
     def CheckSource(self):
         from os.path import isfile
         if self.isLocal() or self.isHttp():
-            if not self.SourceExists(): 
+            if not self.SourceExists():
                 error('Source ' + self._dataset_type + ' ' + self.LocationFull() + ' not found!', fatal=True, indent = 1)
 
     def AppendParameters(self):
@@ -203,7 +206,7 @@ class Raster(Dataset):
         self.contoursource = None
         self.cache = None
         # Internal variables
-        self.cachefile = None 
+        self.cachefile = None
         self.pathall = None
         self.path = None
         # Log of object events
@@ -213,9 +216,9 @@ class Raster(Dataset):
         Dataset.__init__(self, spatial_discretisation=spatial_discretisation, number=number)
         self.cache = cache
 
-    
+
     def Load(self, subregion=None, name_field=None, name_x=None, name_y=None):
-      
+
         request = ReadDataNetCDF(self, subregion, name_field, name_x, name_y)
         for stored in self.store:
             if request == stored:
@@ -234,7 +237,7 @@ class Polyline(Dataset):
         self.contoursource = None
         self.cache = None
         # Internal variables
-        self.cachefile = None 
+        self.cachefile = None
         self.pathall = None
         self.path = None
         # Log of object events
@@ -245,7 +248,7 @@ class Polyline(Dataset):
         self.cache = cache
 
     def Load(self):
-        return None 
+        return None
 
 
 

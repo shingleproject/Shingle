@@ -1,34 +1,37 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-##########################################################################
+##############################################################################
+#
+#  Copyright (C) 2011-2018 Dr Adam S. Candy and others.
 #  
-#  Copyright (C) 2011-2016 Dr Adam S. Candy
-# 
 #  Shingle:  An approach and software library for the generation of
 #            boundary representation from arbitrary geophysical fields
 #            and initialisation for anisotropic, unstructured meshing.
-# 
-#            Web: https://www.shingleproject.org
-#
+#  
+#            Web: http://www.shingleproject.org
+#  
 #            Contact: Dr Adam S. Candy, contact@shingleproject.org
-#
+#  
 #  This file is part of the Shingle project.
 #  
+#  Please see the AUTHORS file in the main source directory for a full list
+#  of contributors.
+#  
 #  Shingle is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
+#  it under the terms of the GNU Lesser General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
 #  
 #  Shingle is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
+#  GNU Lesser General Public License for more details.
 #  
-#  You should have received a copy of the GNU General Public License
-#  along with Shingle.  If not, see <http://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU Lesser General Public License
+#  along with Shingle. If not, see <http://www.gnu.org/licenses/>.
 #
-##########################################################################
+##############################################################################
 
 from Universe import universe
 from Reporting import report, error
@@ -49,44 +52,44 @@ from copy import copy, deepcopy
 # class BRepComponentGroup(object):
 #     """ Object for organising BRepComponents into complete boundary representations
 #         for use in SurfaceGeoidDomainRepresentation objects"""
-# 
-# 
+#
+#
 #     def __init__(self):
 #         # Ordered list of BRepComponent objects that contribute to an exterior boundary
 #         exterior = []
 #         # List of interior boundaries
 #         # The interior boundaries contain ordered lists of BRepComponent objects that contribute to an interior boundary
 #         interiors = []
-# 
+#
 #     def isComplete(self):
-# 
-# 
+#
+#
 #     def Add(self, components):
 #         # components is a list of EnrichedPolylines
 #         for component in components:
 #             if component.isExterior():
 #                 # add to exterior
-# 
+#
 #             else:
-# 
-# 
-# 
+#
+#
+#
 #     def Merge(self, other):
 
 
 # Split to form BRepComponentReader(BRepComponent):
 
 class BRepComponent(object):
-  
+
     _bounds = None
 
     def __init__(self,
             # Original
             surface_rep=None, number=None, pathall=None,
-            # New 
+            # New
             component=None
             ):
- 
+
         self._name = None
         self._path = None
         self._formpath = None
@@ -129,7 +132,7 @@ class BRepComponent(object):
 
     def Reproduce(self, components=None, total=None):
         # Improve to limit copy of attributes intelligently
-        #   use deepcopy if necessary                                         
+        #   use deepcopy if necessary
         child = copy(self)
         self.children.append(child)
         if total:
@@ -190,7 +193,7 @@ class BRepComponent(object):
     def CloseWithParallels(self, *args, **kwargs):
         return self._surface_rep.CloseWithParallels(*args, **kwargs)
 
-    # ---------------------------------------- 
+    # ----------------------------------------
 
     def PreviousBRepComponent(self):
         return self._surface_rep.BRepComponentsOrder()[self.number - 1]
@@ -218,7 +221,7 @@ class BRepComponent(object):
                 self._name = 'legacy'
         return self._name
 
-    def Identification(self): 
+    def Identification(self):
         if specification.have_option(self._path + '/identification'):
             return specification.get_option(self._path + '/identification/name')
         else:
@@ -297,7 +300,7 @@ class BRepComponent(object):
     #if form == 'Raster':
     def Region(self):
         if self._bounds is None:
-            self._bounds = Bounds(brep=self) 
+            self._bounds = Bounds(brep=self)
         return self._bounds
 
     def MinimumArea(self):
@@ -364,14 +367,14 @@ class BRepComponent(object):
             return specification.get_option(self.FormPath() + 'exterior_boundary')
         # If the list of valid paths contains paths, chose the first path in the list
         elif self.SelectedPaths(valid_paths=valid_paths):
-            return self.SelectedPaths(valid_paths = valid_paths)[0].reference_number 
+            return self.SelectedPaths(valid_paths = valid_paths)[0].reference_number
         # Add further choices?  Based on length of path, nodes in path, area encompased?
 
     def isExterior(self, number, valid_paths=None):
         return number == self.ExteriorBoundary(valid_paths=valid_paths)
 
     def AppendParameters(self):
-        self._surface_rep.report('Reading boundary representation %(name)s', var = {'name':self.Name()}, indent=1) 
+        self._surface_rep.report('Reading boundary representation %(name)s', var = {'name':self.Name()}, indent=1)
         if len(self.Boundary()) > 0:
             self.report('Boundaries restricted to paths: ' + list_to_comma_separated(self.Boundary()), indent=1)
         if str(self.Region()) is not 'True':
@@ -390,12 +393,12 @@ class BRepComponent(object):
         open_components = []
         for i, component in enumerate(components):
             #continue
-            #print i, len(component.components[0].valid_location), component.components[0].isClosed() 
+            #print i, len(component.components[0].valid_location), component.components[0].isClosed()
             if not component.components[0].isClosed():
                 open_components.append(component)
         return open_components
 
-    
+
     def isClosed(self, following=None):
 
         from itertools import izip
@@ -417,7 +420,7 @@ class BRepComponent(object):
         for pair in zip(self.components, self.components[1:]):
             connected.append(pair[0].isClosed(pair[1]))
         connected.append(self.components[-1].isClosed(self.components[0]))
-            
+
 
         return all(connected)
 
@@ -441,7 +444,7 @@ class BRepComponent(object):
             self._pathall = ReadShape(self, dataset)
 
             self.output_boundaries()
-            
+
             if (universe.plotcontour):
                 self.PlotFoundPaths()
 
@@ -450,7 +453,7 @@ class BRepComponent(object):
             components_new = [self.Reproduce(components=[p], total=len(self.components)) for p in self.components]
 
         if self.isRaster():
-            
+
             self.AppendParameters()
             dataset = self.Dataset()
             dataset.AppendParameters()
@@ -464,7 +467,7 @@ class BRepComponent(object):
                 dataset.CacheSave()
 
             self.output_boundaries()
-            
+
             if (universe.plotcontour):
                 self.PlotFoundPaths()
 
@@ -489,7 +492,7 @@ class BRepComponent(object):
             for path in paths:
                 path.projection = 'LongLat'
                 self.components.append(path)
-            
+
             p = EnrichedPolyline(self, vertices=[ ( 0.01, self.BoundingLatitude()), (-179.99, self.BoundingLatitude())], is_exterior = True, initialise_only=True)
             paths = p.draw_parallel_explicit(None)
             #index, paths = p.draw_parallel_explicit(self, [-179.99,  self.BoundingLatitude()], [   0.01, self.BoundingLatitude()], index, self.Spacing()/10.0, None)
@@ -497,7 +500,7 @@ class BRepComponent(object):
             for path in paths:
                 path.projection = 'LongLat'
                 self.components.append(path)
-            
+
             components_new = [self]
             #components_new = [self.Reproduce(components=self.components)]
 
@@ -513,14 +516,14 @@ class BRepComponent(object):
                 it = iter(t)
                 return izip(it,it)
 
-           
+
             bounds = Bounds(path=self.FormPath())
             bounds = bounds.GetMaxBounds()
 
             index = self.index
 
             comment.append('Creating a bounding box to enclose ' + str(bounds))
-            
+
             index.start = index.point + 1
             loopstartpoint = index.start
 
@@ -528,7 +531,7 @@ class BRepComponent(object):
             b = [ bounds[2], bounds[1] ]
             c = [ bounds[2], bounds[3] ]
             d = [ bounds[0], bounds[3] ]
-            
+
             bounds = (a, b, c, d)
 
             for bound in zip(*[bounds[i:]+bounds[:i] for i in range(2)]):
@@ -570,11 +573,11 @@ class BRepComponent(object):
 
         elif self.isExtendToParallel():
             latitude = specification.get_option(self.FormPath() + 'latitude')
-            
+
             open_components = self.identifyOpen(components)
             if not open_components:
                 error("No open components available to close with an extension to parallel", fatal=True)
-            p = open_components[-1] 
+            p = open_components[-1]
 
             #p = self.PreviousBRepComponent()
             self.comment.append('Extending exterior boundary developed in %(previous_brep)s to parallel %(parallel)s' % {'previous_brep':p.Name(), 'parallel':latitude})
@@ -588,14 +591,14 @@ class BRepComponent(object):
             n = EnrichedPolyline(self)
             n.CopyOpenPart(p.components[-1])
 
-           
-            #print project(n.valid_location[0], projection_type=self.Projection()) 
-            #print project(n.valid_location[1], projection_type=self.Projection()) 
+
+            #print project(n.valid_location[0], projection_type=self.Projection())
+            #print project(n.valid_location[1], projection_type=self.Projection())
 
             #print n.valid_location
 
             p._name = p.Name() + ' AND ' + self.Name()
-            
+
             #n = p.components[-1].CopyOpenPart()
             #print n.Identification()
 
@@ -610,13 +613,13 @@ class BRepComponent(object):
 
         elif self.isExtendToMeridian():
             longitude = specification.get_option(self.FormPath() + 'longitude')
-            
+
             #p = self.PreviousBRepComponent()
             open_components = self.identifyOpen(components)
             if not open_components:
                 error("No open components available to close with an extension to parallel", fatal=True)
-            p = open_components[-1] 
-            
+            p = open_components[-1]
+
             self.comment.append('Extending exterior boundary developed in %(previous_brep)s to meridian %(meridian)s' % {'previous_brep':p.Name(), 'meridian':longitude})
             self.report('Extending exterior boundary developed in %(previous_brep)s to meridian %(meridian)s', var = {'previous_brep':p.Name(), 'meridian':longitude}, include = True, indent = 1)
             # Check past BRep component is not complete
@@ -631,9 +634,9 @@ class BRepComponent(object):
             # Pick up previous BRep component
             n = EnrichedPolyline(self)
             n.CopyOpenPart(p.components[-1])
-           
-            #print project(n.valid_location[0], projection_type=self.Projection()) 
-            #print project(n.valid_location[1], projection_type=self.Projection()) 
+
+            #print project(n.valid_location[0], projection_type=self.Projection())
+            #print project(n.valid_location[1], projection_type=self.Projection())
 
             #print n.valid_location
 
@@ -641,7 +644,7 @@ class BRepComponent(object):
 
             # Close BRep and complete
             paths = n.draw_meridian_explicit(longitude)
-            
+
             for path in paths:
                 path.projection = 'LongLat'
                 p.components.append(path)
@@ -712,7 +715,7 @@ class BRepComponent(object):
             component.before = self.components[(i - 1) % len(self.components)]
             #print ' ', i, (i + 1) % len(brep.components)
             component.after = self.components[(i + 1) % len(self.components)]
-            
+
     def Join(self, components):
         import itertools
         open_components = self.identifyOpen(components)
@@ -872,7 +875,7 @@ class BRepComponent(object):
                 if p.loopstart[1] != p.loopend[1]:
                     #print p.loopstart[1], p.loopend[1]
                     dateline.append(i)
-                
+
         # Instead of merging add make multicomponent - easier to plot then also
         merged = []
         for i in dateline:
@@ -913,7 +916,7 @@ class BRepComponent(object):
         if merged:
           self.report('Merged %d paths that cross the date line' % len(merged), indent = 1)
           #self.report('  merged: ' + str(merged), indent = 1)
-         
+
         enriched_paths = [x for x in enriched_paths if x is not None]
         enriched_paths = sorted(enriched_paths, reverse=True)
 
@@ -926,12 +929,12 @@ class BRepComponent(object):
 
         pathvalid = []
         if ((paths is not None) and (len(paths) > 0)):
-            for p in enriched_paths: 
+            for p in enriched_paths:
                 if p.reference_number in paths:
                     pathvalid.append(p)
                     break
         else:
-            for p in enriched_paths: 
+            for p in enriched_paths:
                 if (p.AreaEnclosed() < self.MinimumArea()):
                     p._valid = False
                     continue
@@ -940,7 +943,7 @@ class BRepComponent(object):
                     continue
                 if p.isIncluded():
                     p._valid = True
-                    pathvalid.append(p)  
+                    pathvalid.append(p)
 
         numbers = []
         for p in pathvalid:
@@ -977,7 +980,7 @@ class BRepComponent(object):
                     self.interior.append(p)
                 else:
                     report('Interior path %(number)s skipped, not a complete island', var = {'number':p.reference_number}, indent=2)
-        
+
         #report('Processing paths:', indent=1)
         # Examine all EnrichedPathlines p
         p = None
@@ -996,7 +999,7 @@ class BRepComponent(object):
                 area_string = ''
             report('Exterior path %(number)s%(area)s', var = {'number':p.reference_number, 'area':area_string}, indent=2)
             #self.index = p.Generate(self.index)
-        
+
         self.components = self.interior + self.exterior
         return self._valid_paths
 
@@ -1008,11 +1011,11 @@ class BRepComponent(object):
             boxes = specification.get_option(self.FormPath() + 'box').split()
 
         PlotContours(self._pathall_enriched, boxes=boxes)
-    
-        
+
+
 
     # def output_open_boundaries(self):
-    #     
+    #
     #     index = self.index
 
     #     index.start = index.point + 1
@@ -1025,10 +1028,4 @@ class BRepComponent(object):
     #     index = d1raw_parallel_explicit(self, [-179.0,  self.BoundingLatitude()], [   1.0, self.BoundingLatitude()], index, self.Spacing(), None)
 
     #     index = p.AddLoop(index, loopstartpoint, True)
-
-
-
-
-
-
 

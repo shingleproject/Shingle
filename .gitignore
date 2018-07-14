@@ -10,6 +10,9 @@ ref
 bin
 shingle.log
 .DS_Store
+build/
+dist/
+shingle.egg-info/
 
 dataset
 test/Amundsen_Sea/Amundsen_Sea.geo

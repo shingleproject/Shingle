@@ -1,22 +1,22 @@
 // Surface Geoid Boundary Representation, for project: Chile_Talcahuano_http
 // 
-// Created by:  Shingle 
+// Created by:  Shingle (v2.1.14)
 // 
 //    Shingle:  An approach and software library for the generation of
 //              boundary representation from arbitrary geophysical fields
 //              and initialisation for anisotropic, unstructured meshing.
 // 
-//              Web: https://www.shingleproject.org
+//              Web: http://www.shingleproject.org
 // 
 //              Contact: Dr Adam S. Candy, contact@shingleproject.org
-//     
-// Version: [Not available]
+// 
+// Version: v2.1.14
 // Mesh tool version: 2.11.0
-//                    (on the system where the boundry representation has been created)
+//                    (on the system where the boundary representation has been created)
 // 
 // Project name: Chile_Talcahuano_http
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/06/08 18:06:35 
+// Created at: 2018/07/14 23:25:55 
 // Project description:
 //   Example simulation domain for modelling ocean wave propagation and
 //       tsunami inundation in the 2010 Chile M8.8 earthquake, centred at 35.9S 72.7W,
@@ -164,7 +164,7 @@
 // == BRep component: SouthEastPacificOceanCoast (part 1 of 14) ===
 Point ( 1 ) = { -73.89583333, -38.45833333, 0.00000000 };
 Point ( 2 ) = { -73.90000000, -38.45416667, 0.00000000 };
-Point ( 3 ) = { -73.90416668, -38.45000000, 0.00000000 };
+Point ( 3 ) = { -73.90416667, -38.45000000, 0.00000000 };
 Point ( 4 ) = { -73.90833333, -38.44583333, 0.00000000 };
 Point ( 5 ) = { -73.91250000, -38.44166667, 0.00000000 };
 Point ( 6 ) = { -73.91666667, -38.43750000, 0.00000000 };
@@ -2365,7 +2365,7 @@ General.Color.BackgroundGradient = {255,255,255};
 General.Color.Foreground = Black;
 Mesh.Color.Lines = {0,0,0};
 Geometry.Color.Lines = {0,0,0};
-//Mesh.Color.Triangles = {0,0,0}; 
+//Mesh.Color.Triangles = {0,0,0};
 Mesh.Color.Ten = {0,0,0};
 Mesh.ColorCarousel = 2;
 Mesh.Light = 0;

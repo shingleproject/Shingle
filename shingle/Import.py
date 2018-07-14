@@ -1,34 +1,37 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-##########################################################################
+##############################################################################
+#
+#  Copyright (C) 2011-2018 Dr Adam S. Candy and others.
 #  
-#  Copyright (C) 2011-2016 Dr Adam S. Candy
-# 
 #  Shingle:  An approach and software library for the generation of
 #            boundary representation from arbitrary geophysical fields
 #            and initialisation for anisotropic, unstructured meshing.
-# 
-#            Web: https://www.shingleproject.org
-#
+#  
+#            Web: http://www.shingleproject.org
+#  
 #            Contact: Dr Adam S. Candy, contact@shingleproject.org
-#
+#  
 #  This file is part of the Shingle project.
 #  
+#  Please see the AUTHORS file in the main source directory for a full list
+#  of contributors.
+#  
 #  Shingle is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
+#  it under the terms of the GNU Lesser General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
 #  
 #  Shingle is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
+#  GNU Lesser General Public License for more details.
 #  
-#  You should have received a copy of the GNU General Public License
-#  along with Shingle.  If not, see <http://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU Lesser General Public License
+#  along with Shingle. If not, see <http://www.gnu.org/licenses/>.
 #
-##########################################################################
+##############################################################################
 
 import os
 from copy import deepcopy
@@ -50,7 +53,7 @@ class ReadDataNetCDF():
 
     def __init__(self, dataset, subregion=None, name_field=None, name_x=None, name_y=None):
 
-        # Store 
+        # Store
         self.dataset = dataset
         self.subregion = subregion
         self.name_field = name_field
@@ -66,14 +69,14 @@ class ReadDataNetCDF():
 
         ## Automatically load the whole or subregion of a dataset on initialisation
         #self.Load()
-        
+
     def __eq__(self, other):
         return ((self.dataset == other.dataset) and
             (self.subregion == other.subregion) and
             (self.name_field == other.name_field) and
             (self.name_x == other.name_x) and
             (self.name_y == other.name_y))
-        
+
     def _file(self):
         if self._fileobject is None:
             if self.dataset.isLocal() or self.dataset.isHttp():
@@ -85,7 +88,7 @@ class ReadDataNetCDF():
         return self._fileobject
 
     def _determine_variable_names(self):
-        
+
         # Determine x name
         if self.name_x is None:
             names = []
@@ -103,7 +106,7 @@ class ReadDataNetCDF():
         # Determine y name
         if self.name_y is None:
               names = []
-              for name in self._NAMES_Y: 
+              for name in self._NAMES_Y:
                   if name in self.VariablesAvailable():
                       names.append(name)
               if len(names) == 0:
@@ -118,7 +121,7 @@ class ReadDataNetCDF():
             self.name_field = None
         if self.name_field is None:
             names = []
-            for name in self._NAMES_FIELD: 
+            for name in self._NAMES_FIELD:
                 if name in self.VariablesAvailable():
                     names.append(name)
             if len(names) == 0:
@@ -146,9 +149,9 @@ class ReadDataNetCDF():
         subregion = self.subregion
 
         # Determine bounding box
-        if subregion is not None: 
-            if len(subregion) > 0: 
-                x_range, y_range = (subregion[0], subregion[2]), (subregion[1], subregion[3]) 
+        if subregion is not None:
+            if len(subregion) > 0:
+                x_range, y_range = (subregion[0], subregion[2]), (subregion[1], subregion[3])
 
                 if x_range[0] is not None:
                     for i, x in enumerate(self.lon):
@@ -175,8 +178,8 @@ class ReadDataNetCDF():
         # Indexes saved in: self._x_irange, self._y_irange
 
         # Update spatial coordinate fields
-        self.lon = self.Variables()[self.name_x][self._x_irange[0]:self._x_irange[1]] 
-        self.lat = self.Variables()[self.name_y][self._y_irange[0]:self._y_irange[1]] 
+        self.lon = self.Variables()[self.name_x][self._x_irange[0]:self._x_irange[1]]
+        self.lat = self.Variables()[self.name_y][self._y_irange[0]:self._y_irange[1]]
 
     def LoadField(self, name = None):
         if name is None:
@@ -185,17 +188,17 @@ class ReadDataNetCDF():
             field = self.Variables()[name].array
         else:
             field = self.Variables()[name]
-        self.data = deepcopy(field[self._y_irange[0]:self._y_irange[1], self._x_irange[0]:self._x_irange[1]]) 
+        self.data = deepcopy(field[self._y_irange[0]:self._y_irange[1], self._x_irange[0]:self._x_irange[1]])
         return self.data
-        
+
     def Load(self):
         # Take a look at the available variables within the NetCDF file
         self._determine_variable_names()
-        
+
         # Attempt to load spatial coordinate variables from source NetCDF
         try:
-            self.lon = self.Variables()[self.name_x][:] 
-            self.lat = self.Variables()[self.name_y][:] 
+            self.lon = self.Variables()[self.name_x][:]
+            self.lat = self.Variables()[self.name_y][:]
         except:
             error('Warning: Problem reading spatial coordinate variables from source NetCDF: ' + self.dataset.LocationFull())
 
@@ -233,7 +236,7 @@ def Filter(dataset, brep, subregion):
     else:
         region = dataset.Load(subregion, name_field=name_field)
         field = deepcopy(region.Data())
-  
+
     if (contour_type=='iceshelfcavity'):
         #            % 2
         # 0 ocean    1
@@ -249,13 +252,13 @@ def Filter(dataset, brep, subregion):
 
         if exclude_ice_cavities:
             #self.dataset.report('Excluding iceshelf ocean cavities', indent = 2)
-            field[field>0.5]=1 
+            field[field>0.5]=1
         else:
             #self.dataset.report('Including iceshelf ocean cavities', indent = 2)
             field = field % 2
 
     elif (contour_type=='icesheet'):
-        field[field>0.001]=1 
+        field[field>0.001]=1
 
     elif (contour_type=='z'):
         field[field<10.0]=0
@@ -270,7 +273,7 @@ def Filter(dataset, brep, subregion):
         field[field<=-10.0]=-10.0
         field[field>-10.0]=0
         field[field<=-10.0]=1
-        
+
     elif (contour_type=='gebco1m'):
         field[field<=-1.0]=-1.0
         field[field>-1.0]=0
@@ -292,17 +295,17 @@ def Filter(dataset, brep, subregion):
 
     # Greenland Standard Data Set
     elif (contour_type=='gsds'):
-        field[field>0.001]=1 
+        field[field>0.001]=1
 
     # Greenland Standard Data Set, to zero ice thickness
     elif (contour_type=='gsdsz'):
-        #height  = self.Variables()['usrf'][0,:, :] 
-        #bedrock = self.Variables()['topg'][0,:, :] 
+        #height  = self.Variables()['usrf'][0,:, :]
+        #bedrock = self.Variables()['topg'][0,:, :]
         #field = abs(height - bedrock)
 
         field[field<10.0]=0
         field[field>=10.0]=1
-        #field[field>0.001]=1 
+        #field[field>0.001]=1
 
     elif (contour_type=='gebco'):
         # Currently non-functional - needs 2d z array
@@ -313,8 +316,8 @@ def Filter(dataset, brep, subregion):
 
         field[field<10.0]=0
         field[field>=10.0]=1
-        #field[field<0.001]=0 
-        #field[field>=0.001]=1 
+        #field[field<0.001]=0
+        #field[field>=0.001]=1
 
     elif (contour_type=='zmask'):
         field = field
@@ -364,7 +367,7 @@ def read_shape(filename):
             error('Unable to open shapefile: ' + filename, fatal=True)
 
         layer = data.GetLayer()
-    
+
         #features = [GetFieldPolygon(element) for element in layer]
 
         features = []
@@ -373,14 +376,14 @@ def read_shape(filename):
             #print p
             if p is not None:
                 features.append(p)
-            
+
 
         #feature = layer.GetNextFeature()
         #while feature:
         #    p = GetFieldPolygon(feature)
         #    if p is not None:
         #        features.append(p)
-            
+
         #return dict(features)
         return features
 
@@ -428,13 +431,13 @@ def read_shape(filename):
                 #print p.vertices
                 paths.append(p)
         else:
-            error("Unable to process a %(type)s feature contained in shapefile: %(filename)s" % {'type': shape.type, 'filename': filename}, fatal=True) 
+            error("Unable to process a %(type)s feature contained in shapefile: %(filename)s" % {'type': shape.type, 'filename': filename}, fatal=True)
 
     return paths
 
 def ReadShape(brep, dataset):
     filename = dataset.LocationFull()
-    return read_shape(filename) 
+    return read_shape(filename)
 
 def ReadPaths(brep, dataset):
     filename = dataset.LocationFull()
@@ -452,10 +455,10 @@ def ReadPaths(brep, dataset):
         field = r.field
         contour_required = True
     elif ext in ['shp']:
-        paths = read_shape(filename) 
+        paths = read_shape(filename)
         raise NotImplemented
     else: # NetCDF .nc files
-      
+
         region, field = Filter(dataset, brep, subregion)
 
         #r = ReadDataNetCDF(dataset, subregion = subregion)
@@ -485,3 +488,4 @@ def ReadPaths(brep, dataset):
             paths = contour(region.lon,region.lat,field,levels=[0.5]).collections[0].get_paths()
 
     return paths
+

@@ -1,34 +1,37 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-##########################################################################
+##############################################################################
+#
+#  Copyright (C) 2011-2018 Dr Adam S. Candy and others.
 #  
-#  Copyright (C) 2011-2016 Dr Adam S. Candy
-# 
 #  Shingle:  An approach and software library for the generation of
 #            boundary representation from arbitrary geophysical fields
 #            and initialisation for anisotropic, unstructured meshing.
-# 
-#            Web: https://www.shingleproject.org
-#
+#  
+#            Web: http://www.shingleproject.org
+#  
 #            Contact: Dr Adam S. Candy, contact@shingleproject.org
-#
+#  
 #  This file is part of the Shingle project.
 #  
+#  Please see the AUTHORS file in the main source directory for a full list
+#  of contributors.
+#  
 #  Shingle is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
+#  it under the terms of the GNU Lesser General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
 #  
 #  Shingle is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
+#  GNU Lesser General Public License for more details.
 #  
-#  You should have received a copy of the GNU General Public License
-#  along with Shingle.  If not, see <http://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU Lesser General Public License
+#  along with Shingle. If not, see <http://www.gnu.org/licenses/>.
 #
-##########################################################################
+##############################################################################
 
 from Universe import universe
 from Reporting import report, error
@@ -49,7 +52,7 @@ def point_diff(a,b):
     diff = [longitude_diff(a[0],b[0]), (a[1] - b[1]) % 360]
     if (diff[1] > 180):
         diff[1] = diff[1] - 360
-    return diff 
+    return diff
 
 
 # FIXME: Check projection usage consistent throughout
@@ -85,7 +88,7 @@ def c1ompare_points_old(a, b, dx, proj='LongLat'):
             return True
         else:
             return False
-    else: 
+    else:
         from pyproj import Geod
         wgs84_geod = Geod(ellps='WGS84')
         az12,az21,dist = wgs84_geod.inv(a[0],a[1],a[0],a[1])
@@ -118,8 +121,8 @@ def get_pyproj_projection(string):
     }
 
     while string in _translation.keys():
-        string = _translation[string] 
-    try: 
+        string = _translation[string]
+    try:
         if string.startswith('+proj='):
             p = pyproj.Proj(string)
         else:
@@ -173,7 +176,7 @@ def project_shape(shape, source, destination):
         s = get_pyproj_projection(source)
         # Destination coordinate system
         d = get_pyproj_projection(destination)
-  
+
         if not s or not d:
             for i, vertex in enumerate(shape.coords[:]):
                 shape.coord[i] = project(vertex, projection_type=destination)
@@ -260,13 +263,14 @@ def project(location, projection_type=None):
 
 
 #def haversine(origin, point):
-#  
+#
 #  dLat = (lat2-lat1).toRad();
 #var dLon = (lon2-lon1).toRad();
 #var lat1 = lat1.toRad();
 #var lat2 = lat2.toRad();
 #
 #var a = math.sin(dLat/2) * Math.sin(dLat/2) +
-#        math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
-#var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+#        math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
+#var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 #var d = R * c;
+

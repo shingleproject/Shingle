@@ -1,34 +1,37 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-##########################################################################
+##############################################################################
+#
+#  Copyright (C) 2011-2018 Dr Adam S. Candy and others.
 #  
-#  Copyright (C) 2011-2016 Dr Adam S. Candy
-# 
 #  Shingle:  An approach and software library for the generation of
 #            boundary representation from arbitrary geophysical fields
 #            and initialisation for anisotropic, unstructured meshing.
-# 
-#            Web: https://www.shingleproject.org
-#
+#  
+#            Web: http://www.shingleproject.org
+#  
 #            Contact: Dr Adam S. Candy, contact@shingleproject.org
-#
+#  
 #  This file is part of the Shingle project.
 #  
+#  Please see the AUTHORS file in the main source directory for a full list
+#  of contributors.
+#  
 #  Shingle is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
+#  it under the terms of the GNU Lesser General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
 #  
 #  Shingle is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
+#  GNU Lesser General Public License for more details.
 #  
-#  You should have received a copy of the GNU General Public License
-#  along with Shingle.  If not, see <http://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU Lesser General Public License
+#  along with Shingle. If not, see <http://www.gnu.org/licenses/>.
 #
-##########################################################################
+##############################################################################
 
 from Universe import universe
 #from Projection import c1ompare_points, project, project_shape
@@ -152,7 +155,7 @@ class EnrichedPolyline(object):
         #if (self.loopend is not None):
         #    self.CheckPathEndToBeClosed()
         #    #self.GetValidLocations()
-        
+
         #if shape is None:
         #    self.set_shape()
 
@@ -226,7 +229,7 @@ class EnrichedPolyline(object):
     @property
     def closed(self):
         return self.isClosed()
-   
+
 
     def set_spacing_source(self):
         #self.__spacing_source = [ 0.0, 0.0 ]
@@ -247,8 +250,8 @@ class EnrichedPolyline(object):
     @property
     def spacing_tolerance(self):
         #print self.spacing_source, self.spacing()
-        return max(self.spacing_source[0], self.spacing()), max(self.spacing_source[1], self.spacing()) 
-        #return max(self.spacing_source[0], self.spacing()), max(self.spacing_source[1], self.spacing()) 
+        return max(self.spacing_source[0], self.spacing()), max(self.spacing_source[1], self.spacing())
+        #return max(self.spacing_source[0], self.spacing()), max(self.spacing_source[1], self.spacing())
 
     @property
     def projection(self):
@@ -300,7 +303,7 @@ class EnrichedPolyline(object):
                 return True
             else:
                 return False
-        else: 
+        else:
 
             if ( not (abs(a[1] - b[1]) < tolerance) ):
                 #AddComment('lat differ')
@@ -334,7 +337,7 @@ class EnrichedPolyline(object):
 
     def isRing(self):
         return self.shape.geom_type == self._FORM_RING
-    
+
     def isPolygon(self):
         return self.shape.geom_type == self._FORM_POLYGON
 
@@ -360,7 +363,7 @@ class EnrichedPolyline(object):
         self.shape = LineString(copy(source.ends))
 
     def CopyOpenPart__(self):
-        child = copy(self)                                                         
+        child = copy(self)
         child.is_exterior = self.is_exterior
         child.reference_number = self.reference_number
         child.loopstartpoint = self.loopstartpoint
@@ -454,7 +457,7 @@ class EnrichedPolyline(object):
     def SetNotComplete(self, *args, **kwargs):
         return self._parent_brep_component.SetNotComplete(*args, **kwargs)
 
-    # ---------------------------------------- 
+    # ----------------------------------------
 
 
     #def AddLoop(self, index, loopstartpoint, last=False, first=True, last=True):
@@ -513,9 +516,9 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
                 pointend = '%i' % (index.point)
 
             #print '****', first, last, prefix, suffix, pointstart, pointend
-    
+
             if self.isPolyline():
-                #print self.point_index 
+                #print self.point_index
                 self.AddContent( '''Line ( %(prefix_line)s%(loopnumber)i ) = { %(prefix)s%(pointstart)s : %(prefix)s%(pointend)s };''' %
                     {
                         'pointstart': self.point_index[0],
@@ -583,7 +586,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
         #    return asarray(self.shape.coords[number][:2])
         #except:
         #    return self.vertices[number,:]
-            
+
 
     def PointNumber(self):
         return len(self.vertices)
@@ -611,7 +614,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
     #def EnsureMinimumSpacing(self):
     #    for point in range(self.PointNumber()):
     #        position = self.vertices[point, :]
-        
+
     def Interpolate(self, spacing=None):
         from math import ceil
         if not spacing:
@@ -631,12 +634,12 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
 
             #s =  LineString((coord, heading ))
             #dx = s / points_to_add
-            
+
             #shapely.affinity.affine_transform
             #n = translate(d, xoff=s[0], yoff=s[1])
 
             #print coord, '->', heading, 'distance', d, 'points', points_to_add, 'vec', s
-            
+
             for j in range(points_to_add):
                 coord = (coord[0] + s[0], coord[1] + s[1])
                 coords.append(coord)
@@ -698,7 +701,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
 
         #self._valid_vertices = [False]*self.PointNumber()
         #self.ConstrainPoints()
-        
+
         #self.CheckPathEndToBeClosed()
         #self.GetValidLocations()
         #return coords
@@ -738,7 +741,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
         #if len(self.vertices) != len(vertices):
         #    print 'asc TODO', len(self.vertices), len(vertices), ' '*8, len(vertices) - len(self.vertices)
 #       #     print self.vertices
-        
+
 
 
 #            position = self.Vertex(point)
@@ -778,7 +781,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
             #projected = self.get_ea_projection()
 
             #projected = copy(self)
-        
+
 
             source = self.projection
             # Increase accuracy by centering on polygon centre (using shapely approximate centre)
@@ -844,9 +847,9 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
 
 
     def ReportClosingRequired(self):
-        if (self.closingrequirednumber == 0): 
+        if (self.closingrequirednumber == 0):
             closingtext = ''
-        elif (self.closingrequirednumber == 1): 
+        elif (self.closingrequirednumber == 1):
             closingtext = ' (required closing in %i part of the path)' % (self.closingrequirednumber)
         else:
             closingtext = ' (required closing in %i parts of the path)' % (self.closingrequirednumber)
@@ -956,7 +959,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
         end = self.loopstart
         dx = self.spacing()
         rep = self._parent_brep_component
-        
+
         if (to_meridian is None):
             # Potential to use shapely bounding box here - need to determine direction
             to_meridian = max(start[0], end[0])
@@ -1065,7 +1068,7 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
             #rep.FormatPoint(index.point, current, 0.0, project_to_output_projection_type=True)
             point = rep.FormatPoint(index.point, current, 0.0, project_to_output_projection_type=False)
             path.append(point)
-        
+
         comment.append('Closed path with parallels and meridians, from (%.8f, %.8f) to  (%.8f, %.8f)' % ( start[0], start[1], end[0], end[1] ) )
         paths.append(EnrichedPolyline(shape=LineString(path), rep=rep, initialise_only=True, comment=comment, projection = 'LongLat'))
         path = []
@@ -1124,6 +1127,4 @@ LoopEnd%(loopnumber)d = %(prefix)s%(pointend)d;''' % { 'pointstart':index.start,
         index = self.AddLoop(index, self.loopstartpoint, last, first)
 
         return index
-
-
 

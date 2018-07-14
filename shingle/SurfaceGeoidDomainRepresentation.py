@@ -1,34 +1,37 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-##########################################################################
+##############################################################################
+#
+#  Copyright (C) 2011-2018 Dr Adam S. Candy and others.
 #  
-#  Copyright (C) 2011-2016 Dr Adam S. Candy
-# 
 #  Shingle:  An approach and software library for the generation of
 #            boundary representation from arbitrary geophysical fields
 #            and initialisation for anisotropic, unstructured meshing.
-# 
-#            Web: https://www.shingleproject.org
-#
+#  
+#            Web: http://www.shingleproject.org
+#  
 #            Contact: Dr Adam S. Candy, contact@shingleproject.org
-#
+#  
 #  This file is part of the Shingle project.
 #  
+#  Please see the AUTHORS file in the main source directory for a full list
+#  of contributors.
+#  
 #  Shingle is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
+#  it under the terms of the GNU Lesser General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
 #  
 #  Shingle is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
+#  GNU Lesser General Public License for more details.
 #  
-#  You should have received a copy of the GNU General Public License
-#  along with Shingle.  If not, see <http://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU Lesser General Public License
+#  along with Shingle. If not, see <http://www.gnu.org/licenses/>.
 #
-##########################################################################
+##############################################################################
 
 from Universe import universe
 from Reporting import report, error, addcolour
@@ -105,7 +108,7 @@ class SurfaceGeoidDomainRepresentation(object):
         else:
             return universe.default.fileid
 
-    # ------------------------------------------------------------ 
+    # ------------------------------------------------------------
 
     def AddContent(self, *args, **kwargs):
         return self.spatial_discretisation.AddContent(*args, **kwargs)
@@ -125,7 +128,7 @@ class SurfaceGeoidDomainRepresentation(object):
     def isGenerated(self, *args, **kwargs):
         return self.spatial_discretisation.isGenerated(*args, **kwargs)
 
-    # ------------------------------------------------------------ 
+    # ------------------------------------------------------------
 
     def MoreBSplines(self):
         if specification.have_option(self._path):
@@ -250,8 +253,8 @@ class SurfaceGeoidDomainRepresentation(object):
                 self.index.exterior.append(i)
             else:
                 self.index.interior.append(i)
-        #print 'AA',  self.index.exterior, self.index.interior 
-        return self.index.exterior + self.index.interior 
+        #print 'AA',  self.index.exterior, self.index.interior
+        return self.index.exterior + self.index.interior
 
 
     def output_surfaces(self):
@@ -287,17 +290,17 @@ Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'surface':self.Surface
 
             self.AddSection('BRep component pre-scan')
             for brep in self.BRepComponentsOrder():
-                
+
                 self.AddSection('BRep component: ' + brep.Name())
-                
+
                 # Generates children BRepComponent objects, one for each distinct physical object
                 # e.g. pathline, closed or open  -- to later be merged, interior/exterior determination
                 components = brep.Generate(components=components)
 
                 # carry list generated so far, complete and incomplete
-                # mark 
+                # mark
                 #components = components + brep._valid_paths
-           
+
             # Run through all components and link children
             for j, brep in enumerate(components):
                 if len(brep.components) > 1:
@@ -348,8 +351,8 @@ Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'surface':self.Surface
         # incomplete?
 
         # make global to class
-        
-            
+
+
         self.ShowBRepComponents()
 
         for i, component in enumerate(self.getComponentsComplete()):
@@ -361,7 +364,7 @@ Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'surface':self.Surface
 
             # component.components are enriched lines, need to link
             #  here?  or in BRepComponent.Generate
-            
+
 
             for i, p in enumerate(component.components):
                 #print component, component.components
@@ -377,7 +380,7 @@ Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'surface':self.Surface
                 if i == (len(component.components) - 1):
                     # Need to connect to first
                     last = True
-                
+
                 self.index = p.Generate(self.index, first=first, last=last)
 
         #for a in components:
@@ -388,5 +391,4 @@ Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'surface':self.Surface
         #    #print p.valid_location
 
         self.output_surfaces()
-
 

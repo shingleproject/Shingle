@@ -1,34 +1,37 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-##########################################################################
+##############################################################################
+#
+#  Copyright (C) 2011-2018 Dr Adam S. Candy and others.
 #  
-#  Copyright (C) 2011-2016 Dr Adam S. Candy
-# 
 #  Shingle:  An approach and software library for the generation of
 #            boundary representation from arbitrary geophysical fields
 #            and initialisation for anisotropic, unstructured meshing.
-# 
-#            Web: https://www.shingleproject.org
-#
+#  
+#            Web: http://www.shingleproject.org
+#  
 #            Contact: Dr Adam S. Candy, contact@shingleproject.org
-#
+#  
 #  This file is part of the Shingle project.
 #  
+#  Please see the AUTHORS file in the main source directory for a full list
+#  of contributors.
+#  
 #  Shingle is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
+#  it under the terms of the GNU Lesser General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
 #  
 #  Shingle is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
+#  GNU Lesser General Public License for more details.
 #  
-#  You should have received a copy of the GNU General Public License
-#  along with Shingle.  If not, see <http://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU Lesser General Public License
+#  along with Shingle. If not, see <http://www.gnu.org/licenses/>.
 #
-##########################################################################
+##############################################################################
 
 from Universe import universe
 from Reporting import report
@@ -58,7 +61,7 @@ def PlotContours(pathvalid, boxes=None):
     #plt.show
     #plt.imshow(lon,lat,field)
 
-    p = [pathvalid[0].vertices, pathvalid[0].vertices] 
+    p = [pathvalid[0].vertices, pathvalid[0].vertices]
 
     #bol=patches.PathPatch(paths[0])
     ax = plt.subplot(111)
@@ -66,7 +69,7 @@ def PlotContours(pathvalid, boxes=None):
     pathcol_selected = []
     pathcol = []
     colors = []
-    for p in pathvalid: 
+    for p in pathvalid:
         if p._valid:
             pathcol_selected.append(p.vertices)
             colors.append('red')
@@ -99,7 +102,7 @@ def PlotContours(pathvalid, boxes=None):
     font = font_manager.FontProperties(family='sans-serif', weight='normal', size=8)
 
     n = 0
-    for p in pathvalid: 
+    for p in pathvalid:
         #ax.annotate(str(num), (paths[num-1].vertices[0][0], paths[num-1].vertices[0][1]),
         #              horizontalalignment='center', verticalalignment='center')
         n += 1
@@ -114,11 +117,11 @@ def PlotContours(pathvalid, boxes=None):
         ax.annotate(str(p.reference_number), (p.vertices[0][0], p.vertices[0][1]),
           xytext=(-20,20), textcoords='offset points', ha='center', va='bottom',
             bbox=dict(boxstyle='round,pad=0.2', fc=colour_label, alpha=0.8),
-            arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0.5', 
+            arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0.5',
           color=colour_arrow), fontproperties=font)
 
 
-    for p in pathvalid: 
+    for p in pathvalid:
         #ax.annotate(str(num), (paths[num-1].vertices[0][0], paths[num-1].vertices[0][1]),
         #              horizontalalignment='center', verticalalignment='center')
         n += 1
@@ -132,7 +135,7 @@ def PlotContours(pathvalid, boxes=None):
         ax.annotate(str(p.reference_number), (p.vertices[0][0], p.vertices[0][1]),
           xytext=(-20,20), textcoords='offset points', ha='center', va='bottom',
             bbox=dict(boxstyle='round,pad=0.2', fc=colour_label, alpha=0.8),
-            arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0.5', 
+            arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0.5',
           color=colour_arrow), fontproperties=font)
 
     ax.autoscale()

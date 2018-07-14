@@ -1,34 +1,37 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-##########################################################################
+##############################################################################
+#
+#  Copyright (C) 2011-2018 Dr Adam S. Candy and others.
 #  
-#  Copyright (C) 2011-2016 Dr Adam S. Candy
-# 
 #  Shingle:  An approach and software library for the generation of
 #            boundary representation from arbitrary geophysical fields
 #            and initialisation for anisotropic, unstructured meshing.
-# 
-#            Web: https://www.shingleproject.org
-#
+#  
+#            Web: http://www.shingleproject.org
+#  
 #            Contact: Dr Adam S. Candy, contact@shingleproject.org
-#
+#  
 #  This file is part of the Shingle project.
 #  
+#  Please see the AUTHORS file in the main source directory for a full list
+#  of contributors.
+#  
 #  Shingle is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
+#  it under the terms of the GNU Lesser General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
 #  
 #  Shingle is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
+#  GNU Lesser General Public License for more details.
 #  
-#  You should have received a copy of the GNU General Public License
-#  along with Shingle.  If not, see <http://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU Lesser General Public License
+#  along with Shingle. If not, see <http://www.gnu.org/licenses/>.
 #
-##########################################################################
+##############################################################################
 
 import os
 import sys
@@ -194,9 +197,9 @@ $Elements
             meshfile.readline()
             line = meshfile.readline().split()
             self.version_number = float(line[0])
-            self.file_type = int(line[1]) 
-            self.data_size = int(line[2]) 
-        
+            self.file_type = int(line[1])
+            self.data_size = int(line[2])
+
     def ReadBinary(self, filename = None):
         """Read a mesh file containing binary data"""
         import struct
@@ -206,7 +209,7 @@ $Elements
         if filename is None:
             error('Source mesh file not provided')
         meshfile = open(filename, 'r')
-        report('%(blue)sReading binary mesh file:%(end)s %(yellow)s%(filename)s%(end)s', var = {'filename': meshfile.name}, indent=1) 
+        report('%(blue)sReading binary mesh file:%(end)s %(yellow)s%(filename)s%(end)s', var = {'filename': meshfile.name}, indent=1)
 
         meshfile.readline()
         meshfile.readline()
@@ -231,19 +234,19 @@ $Elements
         while ele <= totalelements:
             polytope = struct.unpack('i', meshfile.read(4))[0]
             number_of_elements = struct.unpack('i', meshfile.read(4))[0]
-            number_of_tags = struct.unpack('i', meshfile.read(4))[0] 
+            number_of_tags = struct.unpack('i', meshfile.read(4))[0]
 
             for n in range(number_of_elements):
                 # Determine element identification number
-                identification  = struct.unpack('i', meshfile.read(4))[0] 
+                identification  = struct.unpack('i', meshfile.read(4))[0]
                 # Create element object
                 element = Element(identification, polytope)
                 # Initialise element tags
                 for i in range(number_of_tags):
-                    element.AddTag(struct.unpack('i', meshfile.read(4))[0]) 
+                    element.AddTag(struct.unpack('i', meshfile.read(4))[0])
                 # Initialise element connectivity
                 for i in range(element.GetVertexNumber()):
-                    element.AddVertex(struct.unpack('i', meshfile.read(4))[0]) 
+                    element.AddVertex(struct.unpack('i', meshfile.read(4))[0])
                 self.AddElement(element)
 
                 ele += 1
@@ -262,7 +265,7 @@ $Elements
         if filename is None:
             error('Source mesh file not provided')
         meshfile = open(filename, 'r')
-        report('%(blue)sReading plain mesh file:%(end)s %(yellow)s%(filename)s%(end)s', var = {'filename': meshfile.name}, indent=1) 
+        report('%(blue)sReading plain mesh file:%(end)s %(yellow)s%(filename)s%(end)s', var = {'filename': meshfile.name}, indent=1)
         self.SetNamelist()
         total_nodes = None
         total_elements = None
@@ -319,7 +322,7 @@ $Elements
                             self.AddElement(element)
 
         meshfile.close()
-        report('%(blue)sDiscretisation characteristics:%(end)s %(yellow)s%(nodes)d%(end)s %(blue)snodes,%(end)s %(yellow)s%(yellow)s%(elements)d%(end)s %(blue)selements%(end)s', var = {'nodes': len(self.nodes), 'elements': len(self.elements)}, indent=2) 
+        report('%(blue)sDiscretisation characteristics:%(end)s %(yellow)s%(nodes)d%(end)s %(blue)snodes,%(end)s %(yellow)s%(yellow)s%(elements)d%(end)s %(blue)selements%(end)s', var = {'nodes': len(self.nodes), 'elements': len(self.elements)}, indent=2)
         return error_count
 
     def Read(self, filename = None):
@@ -344,7 +347,7 @@ $Elements
         return len(self.GetElements())
 
     def __str__(self):
-        """Writes mesh information to in-memory stream using Gmsh .msh syntax, version 2.0.""" 
+        """Writes mesh information to in-memory stream using Gmsh .msh syntax, version 2.0."""
 
         import io
         output = io.StringIO()
@@ -355,7 +358,7 @@ $Elements
             output.write(unicode(str(self.GetNodes()[i+1])))
 
         output.write(unicode(self._mid % {'element_number': self.GetNumberOfElements()}))
-        
+
         for i in range(self.GetNumberOfElements()):
             output.write(unicode(str(self.GetElements()[i+1])))
 
@@ -363,7 +366,7 @@ $Elements
         return output.getvalue()
 
     def Write(self, filename):
-        """Writes mesh information to file 'filename' using Gmsh .msh syntax, version 2.0.""" 
+        """Writes mesh information to file 'filename' using Gmsh .msh syntax, version 2.0."""
 
         f = open (filename, 'w')
         f.write(self._header % {'node_number': self.GetNumberOfNodes()})
@@ -372,11 +375,10 @@ $Elements
             f.write(str(self.GetNodes()[i+1]))
 
         f.write(self._mid % {'element_number': self.GetNumberOfElements()})
-        
+
         for i in range(self.GetNumberOfElements()):
             f.write(str(self.GetElements()[i+1]))
 
         f.write(self._footer)
         f.close()
-
 

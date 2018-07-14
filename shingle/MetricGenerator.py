@@ -1,34 +1,37 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-##########################################################################
+##############################################################################
+#
+#  Copyright (C) 2011-2018 Dr Adam S. Candy and others.
 #  
-#  Copyright (C) 2011-2016 Dr Adam S. Candy
-# 
 #  Shingle:  An approach and software library for the generation of
 #            boundary representation from arbitrary geophysical fields
 #            and initialisation for anisotropic, unstructured meshing.
-# 
-#            Web: https://www.shingleproject.org
-#
+#  
+#            Web: http://www.shingleproject.org
+#  
 #            Contact: Dr Adam S. Candy, contact@shingleproject.org
-#
+#  
 #  This file is part of the Shingle project.
 #  
+#  Please see the AUTHORS file in the main source directory for a full list
+#  of contributors.
+#  
 #  Shingle is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
+#  it under the terms of the GNU Lesser General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
 #  
 #  Shingle is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
+#  GNU Lesser General Public License for more details.
 #  
-#  You should have received a copy of the GNU General Public License
-#  along with Shingle.  If not, see <http://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU Lesser General Public License
+#  along with Shingle. If not, see <http://www.gnu.org/licenses/>.
 #
-##########################################################################
+##############################################################################
 
 from Universe import universe
 from Reporting import error
@@ -50,7 +53,7 @@ class Field(object):
 
     def __init__(self, surface_representation = None):
         self._surface_rep = surface_representation
-        self.index = self._surface_rep.index    
+        self.index = self._surface_rep.index
         self._form = None
         self.Header()
         if not self._surface_rep.isGenerated():
@@ -107,7 +110,7 @@ class Field(object):
         elif self.Form() == 'FromRaster':
             self.FromRaster()
         else:
-            raise NotImplementedError 
+            raise NotImplementedError
 
     def Homogeneous(self):
         if specification.have_option('/geoid_metric/form::Homogeneous/edge_length'):
@@ -238,7 +241,7 @@ Printf("Assigning characteristic mesh sizes...");
 // Field[ IFI + 1] = Attractor;
 // Field[ IFI + 1].EdgesList = { 999999, %(boundary_list)s };
 // Field [ IFI + 1 ].NNodesByEdge = 5e4;
-// 
+//
 // Field[ IFI + 2] = Threshold;
 // Field[ IFI + 2].DistMax = 2e6;
 // Field[ IFI + 2].DistMin = 3e4;
@@ -263,7 +266,7 @@ Field[ %(prefix)s2 ].NNodesByEdge = 20000;
 // Field[ %(prefix)s3].IField = %(prefix)s2;
 // Field[ %(prefix)s3].LcMin = 5e4;
 // Field[ %(prefix)s3].LcMax = 2e5;
-// 
+//
 // // Filchner-Ronne:
 // Field[ %(prefix)s4] = Threshold;
 // Field[ %(prefix)s4].DistMax = 5e5;
@@ -271,8 +274,8 @@ Field[ %(prefix)s2 ].NNodesByEdge = 20000;
 // Field[ %(prefix)s4].IField = %(prefix)s2;
 // Field[ %(prefix)s4].LcMin = 2e4;
 // Field[ %(prefix)s4].LcMax = 5e5;
-// 
-// // Amundsen 
+//
+// // Amundsen
 // Field[ %(prefix)s5] = Threshold;
 // Field[ %(prefix)s5].DistMax = 5e5;
 // Field[ %(prefix)s5].DistMin = 8e4;
@@ -334,7 +337,7 @@ General.Color.BackgroundGradient = {255,255,255};
 General.Color.Foreground = Black;
 Mesh.Color.Lines = {0,0,0};
 Geometry.Color.Lines = {0,0,0};
-//Mesh.Color.Triangles = {0,0,0}; 
+//Mesh.Color.Triangles = {0,0,0};
 Mesh.Color.Ten = {0,0,0};
 Mesh.ColorCarousel = 2;
 Mesh.Light = 0;
@@ -352,7 +355,7 @@ General.RotationZ = %(z).0f;
 
 
     def FromRaster(self):
-        
+
 
         dataset_name = specification.get_option('/geoid_metric/form::FromRaster/source/name')
         field_name = None
@@ -376,7 +379,7 @@ General.RotationZ = %(z).0f;
         m.Generate(field_region, function=function)
 
         self.AddContent(m.Import())
-        
+
 
 class Metric(object):
 
@@ -384,9 +387,9 @@ class Metric(object):
 
     _OUTPUT_FORMAT_TYPE_POS = 1
     _OUTPUT_FORMAT_TYPE_STRUCT = 2
- 
+
     _OUTPUT_FILENAME_DEFAULT = 'metric.pos'
-    
+
     _function_python_header = '''
 global field
 '''
@@ -480,7 +483,7 @@ Background Field = 1;
         lon = user_space['lon']
         lat = user_space['lat']
         field = user_space['field']
-        
+
         #print user_space['field'].min(), user_space['field'].max()
 
         if self.globe:
@@ -491,7 +494,7 @@ Background Field = 1;
         if (self.output_format == self._OUTPUT_FORMAT_TYPE_POS):
             self.WriteLine('View "background_edgelength" {')
             for i in range(len(lon)):
-                for j in range(len(lat)):            
+                for j in range(len(lat)):
                     # FIXME: The needs to be sured up
                     p = project([lon[i],lat[j]], type=None)
                     if (p[0] == None or p[1] == None):
@@ -507,7 +510,7 @@ Background Field = 1;
 
                 self.WriteLine( str(x[0]) + ' ' + str(y[0]) + ' ' +  '0' )
                 self.WriteLine( str(float(x[-1] - x[0])/len(lon)) + " " + str(float(y[-1] - y[0])/len(lat)) + ' 1')
-            else: 
+            else:
                 if self.globallonglat:
                     self.WriteLine( str( lon[0] + 180 ) + ' ' + str( lat[0] + 90 ) + ' 0' )
                 else:
@@ -518,7 +521,7 @@ Background Field = 1;
             self.WriteLine( str(len(lon))+" "+str(len(lat))+" 1")
 
             for i in range(len(lon)):
-                for j in range(len(lat))[::-1]:         
+                for j in range(len(lat))[::-1]:
                     self.WriteLine(str(field[j][i]))
                     #self.WriteLine(str(lon[i]))
 

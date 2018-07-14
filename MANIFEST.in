@@ -2,10 +2,10 @@ include MANIFEST MANIFEST.in README.md AUTHORS COPYING LICENSE
 include setup.py
 include schema/shingle_options.rng
 recursive-include shingle/ *.py
-recursive-include shingle/ *.so
 
 recursive-include spud/include/ *.h
 include spud/include/*.h
+include spud/include/spud
 
 prune dataset
 recursive-exclude dataset/ *

@@ -1,34 +1,37 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-##########################################################################
+##############################################################################
+#
+#  Copyright (C) 2011-2018 Dr Adam S. Candy and others.
 #  
-#  Copyright (C) 2011-2016 Dr Adam S. Candy
-# 
 #  Shingle:  An approach and software library for the generation of
 #            boundary representation from arbitrary geophysical fields
 #            and initialisation for anisotropic, unstructured meshing.
-# 
-#            Web: https://www.shingleproject.org
-#
+#  
+#            Web: http://www.shingleproject.org
+#  
 #            Contact: Dr Adam S. Candy, contact@shingleproject.org
-#
+#  
 #  This file is part of the Shingle project.
 #  
+#  Please see the AUTHORS file in the main source directory for a full list
+#  of contributors.
+#  
 #  Shingle is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
+#  it under the terms of the GNU Lesser General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
 #  
 #  Shingle is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
+#  GNU Lesser General Public License for more details.
 #  
-#  You should have received a copy of the GNU General Public License
-#  along with Shingle.  If not, see <http://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU Lesser General Public License
+#  along with Shingle. If not, see <http://www.gnu.org/licenses/>.
 #
-##########################################################################
+##############################################################################
 
 from Universe import universe
 from Support import ExecuteStage
@@ -230,7 +233,7 @@ class MeshGenerator(object):
 
     def GenerateImage(self):
         if universe.pickup and self.OutputExists():
-            return  
+            return
 
         def remove_if_exists(filename):
             if os.path.exists(filename):
@@ -278,7 +281,7 @@ Exit;''' % {'mesh':mesh_image, 'image':image}
 
         self.representation.spatial_discretisation.WriteContent(filename=representation_image, footer=footer, force=True)
         if not os.path.exists(representation_image):
-            error('Source file not found') 
+            error('Source file not found')
         command_options = [representation_image]
         self.GenerateWithPoll(options = command_options)
 
@@ -351,7 +354,7 @@ Exit;''' % {'mesh':mesh_image, 'image':image}
 
     def Generate(self):
         if universe.pickup and self.OutputExists():
-            self._generated = True  
+            self._generated = True
         if self.isGenerated():
             return
         if not ExecuteStage('mesh'):
@@ -363,5 +366,4 @@ Exit;''' % {'mesh':mesh_image, 'image':image}
         self._generated = True
         report('%(blue)sMesh generation complete, produced:%(end)s %(yellow)s%(output)s%(end)s', var = {'output':self.Output()})
         #report('%(grey)s  note, might require parsing%(end)s')
-
 

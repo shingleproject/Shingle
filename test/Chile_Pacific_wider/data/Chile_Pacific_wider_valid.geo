@@ -1,22 +1,22 @@
 // Surface Geoid Boundary Representation, for project: Chile_Pacific_wider
 // 
-// Created by:  Shingle 
+// Created by:  Shingle (v2.1.14)
 // 
 //    Shingle:  An approach and software library for the generation of
 //              boundary representation from arbitrary geophysical fields
 //              and initialisation for anisotropic, unstructured meshing.
 // 
-//              Web: https://www.shingleproject.org
+//              Web: http://www.shingleproject.org
 // 
 //              Contact: Dr Adam S. Candy, contact@shingleproject.org
-//     
-// Version: [Not available]
+// 
+// Version: v2.1.14
 // Mesh tool version: 2.11.0
-//                    (on the system where the boundry representation has been created)
+//                    (on the system where the boundary representation has been created)
 // 
 // Project name: Chile_Pacific_wider
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2017/06/08 18:06:28 
+// Created at: 2018/07/14 23:26:20 
 // Project description:
 //   South East Pacific ocean up to the Chilean coastline.
 //       Developed from GEBCO, on the subset region 128W to 70W, 40S to 20N.
@@ -21046,7 +21046,7 @@ General.Color.BackgroundGradient = {255,255,255};
 General.Color.Foreground = Black;
 Mesh.Color.Lines = {0,0,0};
 Geometry.Color.Lines = {0,0,0};
-//Mesh.Color.Triangles = {0,0,0}; 
+//Mesh.Color.Triangles = {0,0,0};
 Mesh.Color.Ten = {0,0,0};
 Mesh.ColorCarousel = 2;
 Mesh.Light = 0;

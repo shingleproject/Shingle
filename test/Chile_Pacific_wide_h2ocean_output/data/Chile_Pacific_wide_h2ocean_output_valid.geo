@@ -6,13 +6,13 @@
 //              boundary representation from arbitrary geophysical fields
 //              and initialisation for anisotropic, unstructured meshing.
 // 
-//              Web: https://www.shingleproject.org
+//              Web: http://www.shingleproject.org
 // 
 //              Contact: Dr Adam S. Candy, contact@shingleproject.org
 //     
 // Version: v1.2-95-gfd82495
 // Mesh tool version: 2.11.0
-//                    (on the system where the boundry representation has been created)
+//                    (on the system where the boundary representation has been created)
 // 
 // Project name: Chile_Pacific_wide
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)

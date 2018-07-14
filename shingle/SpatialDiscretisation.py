@@ -1,34 +1,37 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-##########################################################################
+##############################################################################
+#
+#  Copyright (C) 2011-2018 Dr Adam S. Candy and others.
 #  
-#  Copyright (C) 2011-2016 Dr Adam S. Candy
-# 
 #  Shingle:  An approach and software library for the generation of
 #            boundary representation from arbitrary geophysical fields
 #            and initialisation for anisotropic, unstructured meshing.
-# 
-#            Web: https://www.shingleproject.org
-#
+#  
+#            Web: http://www.shingleproject.org
+#  
 #            Contact: Dr Adam S. Candy, contact@shingleproject.org
-#
+#  
 #  This file is part of the Shingle project.
 #  
+#  Please see the AUTHORS file in the main source directory for a full list
+#  of contributors.
+#  
 #  Shingle is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
+#  it under the terms of the GNU Lesser General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
 #  
 #  Shingle is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
+#  GNU Lesser General Public License for more details.
 #  
-#  You should have received a copy of the GNU General Public License
-#  along with Shingle.  If not, see <http://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU Lesser General Public License
+#  along with Shingle. If not, see <http://www.gnu.org/licenses/>.
 #
-##########################################################################
+##############################################################################
 
 import sys
 import os
@@ -54,7 +57,7 @@ class ReadMultipleInstance(object):
 
     def Read(self):
         self.name = specification.get_option('%(prefix)s[%(number)d]/name' % {'prefix':self._prefix, 'number':self._number} )
-        self._path = '%(prefix)s::%(name)s' % {'prefix':self._prefix, 'name':self.name} 
+        self._path = '%(prefix)s::%(name)s' % {'prefix':self._prefix, 'name':self.name}
 
     def Show(self):
         report('  %(blue)s%(number)s.%(end)s %(name)s', var = {'number':self._number + 1, 'name':self.name })
@@ -155,7 +158,7 @@ class SpatialDiscretisation(object):
                 new = specification.get_option('/model_name/comment').strip().splitlines()
                 if len(comments) > 0 and len(new) > 0:
                     comments = comments + ['----']
-                comments = comments + new 
+                comments = comments + new
         if len(comments) == 0:
             comments.append('[None provided]')
         return linesep.join(comments)
@@ -311,7 +314,7 @@ PolarSphere ( %(surface_prefix)s0 ) = { %(prefix)s0, %(prefix)s1 };
         return self._surface_geoid_rep
 
     def _ReadDataset(self):
-        self._dataset = {} 
+        self._dataset = {}
 
         for number in range(specification.option_count('/dataset')):
             d = Dataset(spatial_discretisation=self, number=number)
@@ -334,7 +337,7 @@ PolarSphere ( %(surface_prefix)s0 ) = { %(prefix)s0, %(prefix)s1 };
         self._dataset_read = True
 
     def _ReadSurfaceGeoidRep(self):
-        self._surface_geoid_rep = {} 
+        self._surface_geoid_rep = {}
 
         for number in range(specification.option_count('/geoid_surface_representation')):
             if len(self._surface_geoid_rep) > 0:
@@ -419,13 +422,13 @@ Created by:  Shingle %(version)s
              boundary representation from arbitrary geophysical fields
              and initialisation for anisotropic, unstructured meshing.
 
-             Web: https://www.shingleproject.org
+             Web: http://www.shingleproject.org
 
              Contact: Dr Adam S. Candy, contact@shingleproject.org
-    
+
 Version: %(version_full)s
 Mesh tool version: %(mesh_tool_version)s
-                   (on the system where the boundry representation has been created)
+                   (on the system where the boundary representation has been created)
 
 Project name: %(name)s
 Boundary Specification authors: %(author)s
@@ -458,7 +461,7 @@ Created at: %(timestamp)s
             return
         text = specification.get_option('/geoid_mesh/library::Gmsh/postprocess')
         self.AddContent('''
-    
+
 // Postprocessing instructions:''')
         self.AddContent(text % {'name':self.Name(), 'brepname':self.Output(), 'meshname':'As yet undefined'})
         report('%(blue)sAdded postprocess instructions%(end)s')
@@ -478,12 +481,12 @@ Created at: %(timestamp)s
 
         from OutputFormat import OutputFormat
 
-        if universe.pickup and self.OutputExists(): 
+        if universe.pickup and self.OutputExists():
             self._generated = True
 
 
         self.AppendHeader()
-        
+
         # For now limit to the first surface geoid representation
         name = self.SurfaceGeoidRepFirstName()
 
@@ -493,7 +496,7 @@ Created at: %(timestamp)s
 
 
         f = Field(surface_representation = rep )
-        
+
         self.Postprocess()
         self.WriteContent()
 
@@ -508,6 +511,4 @@ Created at: %(timestamp)s
         self.verification = VerificationTests(rep, mesh)
 
         OutputFormat(self, rep, g)
-
-
 

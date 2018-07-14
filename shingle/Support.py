@@ -1,35 +1,37 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-##########################################################################
+##############################################################################
+#
+#  Copyright (C) 2011-2018 Dr Adam S. Candy and others.
 #  
-#  Copyright (C) 2011-2016 Dr Adam S. Candy
-# 
 #  Shingle:  An approach and software library for the generation of
 #            boundary representation from arbitrary geophysical fields
 #            and initialisation for anisotropic, unstructured meshing.
-# 
-#            Web: https://www.shingleproject.org
-#
+#  
+#            Web: http://www.shingleproject.org
+#  
 #            Contact: Dr Adam S. Candy, contact@shingleproject.org
-#
+#  
 #  This file is part of the Shingle project.
 #  
+#  Please see the AUTHORS file in the main source directory for a full list
+#  of contributors.
+#  
 #  Shingle is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
+#  it under the terms of the GNU Lesser General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
 #  
 #  Shingle is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
+#  GNU Lesser General Public License for more details.
 #  
-#  You should have received a copy of the GNU General Public License
-#  along with Shingle.  If not, see <http://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU Lesser General Public License
+#  along with Shingle. If not, see <http://www.gnu.org/licenses/>.
 #
-##########################################################################
-
+##############################################################################
 
 import os
 from Universe import universe
@@ -78,6 +80,8 @@ class Execute(object):
             report('stdout: %(stdout)s', var={'stdout':self.stdout}, indent=1)
 
 def RepositoryVersion(full=False, parenthesis=False, not_available_note=True):
+    #from Version import version
+    import Version
     shingle_path = os.path.realpath(os.path.join(os.path.realpath(os.path.dirname(os.path.realpath(__file__))), os.path.pardir))
     if full:
         suffix = []
@@ -87,7 +91,8 @@ def RepositoryVersion(full=False, parenthesis=False, not_available_note=True):
     version = describe.stdout.strip()
     if describe.returncode != 0 or len(version) == 0:
         if not_available_note:
-            version = '[Not available]'
+            version = Version.version
+            #version = '[Not available]'
         else:
             version = ''
     if len(version) > 0 and parenthesis:
@@ -208,28 +213,28 @@ class ReadArguments(object):
             self.argument = self.NextArgument()
             if   (self.argument == '-h'): help_request = True
             elif (self.argument == '-v'): universe.verbose = True
-            elif (self.argument == '-vv'): universe.verbose = True; universe.debug = True; 
+            elif (self.argument == '--debug'): universe.verbose = True; universe.debug = True;
             elif (self.argument == '-q'): universe.verbose = False
             elif (self.argument == '-t'):
                 if ((len(self.arguments) > 0) and (self.arguments[0][0] != '-')):
                     universe.testfolder = self.NextArgument()
                 else:
-                    universe.testfolder = SourceTestFolder() 
+                    universe.testfolder = SourceTestFolder()
             elif (self.argument == '-l'):
                 universe.log_active = True
                 if ((len(self.arguments) > 0) and (self.arguments[0][0] != '-')):
                     universe.logfilename = self.NextArgument()
 
-            elif (self.argument == '-tag'): universe.tags.append(self.NextArgument())
+            elif (self.argument == '--tag'): universe.tags.append(self.NextArgument())
             elif (self.argument == '-c'): universe.cache = True
-            elif (self.argument == '-plot'): universe.plotcontour = True; universe.plotcontouronly = True
-            elif (self.argument == '-image'): universe.generate_mesh_image = True
-            elif (self.argument == '-update'): universe.verification_update = True
-            elif (self.argument == '-mesh'): universe.generate_mesh = True
-            elif (self.argument == '-pickup'): universe.pickup = True
-            elif (self.argument == '-stage'): self._stage = self.NextArgument()
+            elif (self.argument == '--plot'): universe.plotcontour = True; universe.plotcontouronly = True
+            elif (self.argument == '--image'): universe.generate_mesh_image = True
+            elif (self.argument == '--update'): universe.verification_update = True
+            elif (self.argument == '--mesh'): universe.generate_mesh = True
+            elif (self.argument == '--pickup'): universe.pickup = True
+            elif (self.argument == '--stage'): self._stage = self.NextArgument()
 
-            elif (self.argument == '-legacy'): self.legacy = True; universe.legacy.legacy = True; report('Including legacy command line options')
+            elif (self.argument == '--legacy'): self.legacy = True; universe.legacy.legacy = True; report('Including legacy command line options')
             elif self.legacy:
                 self.ReadLegacy()
             else:
@@ -241,7 +246,7 @@ class ReadArguments(object):
         if len(free_arguments) > 0:
             universe.optiontreesource = free_arguments[0]
         if len(free_arguments) > 1:
-           error('More than one source BRML specified, working on only the first.', warning=True) 
+           error('More than one source BRML specified, working on only the first.', warning=True)
 
         universe.default.region = expand_boxes(universe.default.region, self._box)
 
@@ -285,9 +290,4 @@ class ReadArguments(object):
         elif (self.argument == '-b'):
             while ((len(self.arguments) > 0) and ((self.arguments[0][0] != '-') or ( (self.arguments[0][0] == '-') and (self.arguments[0][1].isdigit()) ))):
                 self._box.append(self.NextArgument())
-
-
-
-
-
 

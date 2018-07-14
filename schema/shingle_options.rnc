@@ -1,5 +1,37 @@
-include "spud_base.rnc"
 
+##############################################################################
+#
+#  Copyright (C) 2011-2018 Dr Adam S. Candy and others.
+#  
+#  Shingle:  An approach and software library for the generation of
+#            boundary representation from arbitrary geophysical fields
+#            and initialisation for anisotropic, unstructured meshing.
+#  
+#            Web: http://www.shingleproject.org
+#  
+#            Contact: Dr Adam S. Candy, contact@shingleproject.org
+#  
+#  This file is part of the Shingle project.
+#  
+#  Please see the AUTHORS file in the main source directory for a full list
+#  of contributors.
+#  
+#  Shingle is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Lesser General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#  
+#  Shingle is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Lesser General Public License for more details.
+#  
+#  You should have received a copy of the GNU Lesser General Public License
+#  along with Shingle. If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+
+include "spud_base.rnc"
 include "mesh_options.rnc"
 
 start =
@@ -36,9 +68,9 @@ start =
          validation_tests,
          postprocess?
       }
-   )      
+   )
 
-postprocess = 
+postprocess =
   (
     ## Prepare initialisation files
     ## with additional data and for
@@ -281,7 +313,7 @@ dataset_polyline_options =
     ## See: http://www.esrl.noaa.gov/psd/data/gridded/using_dods.html
     element source {
       attribute name { "OPeNDAP" },
-      string, 
+      string,
       comment
     }
   )
@@ -336,7 +368,7 @@ general =
     }?
   )
 
-output = 
+output =
   (
     ## Output options
     ##
@@ -352,7 +384,7 @@ output =
         ## User defined viewing angle
         element orientation {
           attribute name { 'UserDefined' },
-          attribute shape { "3" }, 
+          attribute shape { "3" },
           real_vector,
           comment
         }|
@@ -420,7 +452,7 @@ geoid_surface_representation =
     }
   )
 
-boundary = 
+boundary =
   (
     ## Identification of this named boundary
     ##
@@ -667,7 +699,7 @@ region =
         },
         comment
       }
-    } 
+    }
   )
 
 geoid_surface_representation_raster_options =
@@ -685,12 +717,12 @@ geoid_surface_representation_raster_options =
     ##
     ## Default: 'True' (string)
     ##
-    ## Legacy: 
+    ## Legacy:
     ## region
     element region_expression {
-      string, 
+      string,
       comment
-    }?, 
+    }?,
     ## Bounding boxes containing regions of interest
     ##
     ## e.g. -85.0:-20.0,-89.0:-75.0 -64.0:-30.0,-89.0:-70.0 -30.0:-20.0,-89.0:-75.0
@@ -699,7 +731,7 @@ geoid_surface_representation_raster_options =
     ##
     ## Legacy: box
     element box {
-      string, 
+      string,
       comment
     }?,
     ## Minimum area of islands / holes in geoid surface
@@ -724,7 +756,7 @@ geoid_surface_representation_raster_options =
       comment
     }?,
     ## Boundaries to exclude
-    ## 
+    ##
     ## Specify paths to exclude
     ##
     ## Default: []
@@ -786,9 +818,9 @@ geoid_surface_representation_closure =
           real,
           comment
         }?,
-        ## Close with parallels 
+        ## Close with parallels
         ##
-        ## Default: False 
+        ## Default: False
         ##
         ## Legacy: closewithparallels
         element close_with_parallels {
@@ -824,7 +856,7 @@ geoid_surface_representation_closure =
 
 
 
-metric_options = 
+metric_options =
   (
     element geoid_metric {
       (
@@ -953,7 +985,7 @@ metric_options =
     }
   )
 
-mesh_options = 
+mesh_options =
   (
     ## Mesh generation options
     element geoid_mesh {
@@ -1087,7 +1119,7 @@ mesh_options =
 
 
 
-     
+
 metric =
   (
      element metric {
@@ -1191,7 +1223,7 @@ test_real =
     }|
     ## Range
     ##
-    ## Note one can use this option to specify a lower or upper 
+    ## Note one can use this option to specify a lower or upper
     ## bound, as well as specifying a complete range.
     element range {
       ## Minimum
@@ -1363,7 +1395,7 @@ tags =
         attribute name { 'long' },
         comment
       }
-    ) 
+    )
   )
 
 
@@ -1396,7 +1428,7 @@ validation_tests =
           test_real,
           comment
         }|
-        ## Minkowski fractal dimension of discretised 
+        ## Minkowski fractal dimension of discretised
         ## geoid surface boundary.
         element test {
           attribute name { "SurfaceGeoidMinkowskiFractalDimension" },
@@ -1435,7 +1467,7 @@ validation_tests =
 
 
 
-geometry = 
+geometry =
    (
       ## Options dealing with the specification of geometry
       element geometry {
@@ -1470,21 +1502,21 @@ geometry =
          ## Quadrature
          element quadrature {
             ## Quadrature degree
-            ## 
+            ##
             ## note: this specifies the degree of quadrature,
             ## not the number of gauss points
             element degree {
                integer
             },
             ## Surface quadrature degree
-            ## 
+            ##
             ## note: this specifies the degree of surface
             ## quadrature not the number of surface gauss points
             element surface_degree {
                integer
             }?,
             ## Sets the degree of quadrature on each quadrilateral
-            ## face of the control volume. 
+            ## face of the control volume.
             ##
             ## Defaults to 1 if
             ## unselected which is the same as pre-new options
@@ -1500,15 +1532,15 @@ geometry =
             ## 29 on simplicial meshes in arbitrary dimension.
             element quadrature_family {
                element string_value {
-                  ( "family_cools" | "family_grundmann_moeller" | "family_wandzura" ) 
+                  ( "family_cools" | "family_grundmann_moeller" | "family_wandzura" )
                }
             }?
          },
-         ## This causes the change of variables associated with each element in 
-         ## the mesh to be stored rather than calculated every time it is used. 
-         ## This should speed up computations at a cost of some memory. 
-         ## 
-         ## The cache is automatically regenerated after mesh movement or 
+         ## This causes the change of variables associated with each element in
+         ## the mesh to be stored rather than calculated every time it is used.
+         ## This should speed up computations at a cost of some memory.
+         ##
+         ## The cache is automatically regenerated after mesh movement or
          ## adaptivity and is automatically disabled for non-linear positions fields.
          element disable_geometric_data_cache {
             empty
@@ -1566,7 +1598,7 @@ geometry =
       }
    )
 
-contourtypesold = 
+contourtypesold =
   (
     # Define alternative here - breaking up the following
 
@@ -1590,12 +1622,12 @@ contourtypesold =
 #   ##     # Function code
 #   ##     return # Return value
 #   ##
-#   ## 
+#   ##
 #   element python {
 #     python_code
 #   }
 
-contourtypes = 
+contourtypes =
   (
     # Define alternative here - breaking up the following
     ## Contour type
