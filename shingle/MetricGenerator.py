@@ -317,6 +317,8 @@ Background Field = %(prefix)s1;
                 view_name = 'UserDefined'
             if view_name == 'SouthWest':
                 view = [0.0, 0.0, 180.0]
+            elif view_name == 'Global':
+                view = [270.0, 0.0, 270.0]
             elif view_name == 'LongLat':
                 view = [0.0, 0.0, 0.0]
             elif view_name == 'Caribbean':

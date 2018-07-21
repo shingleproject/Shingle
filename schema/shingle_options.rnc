@@ -403,6 +403,11 @@ output =
           attribute name { 'Caribbean' },
           comment
         }|
+        ## Sets default view to [270.0, 0.0, 270.0]
+        element orientation {
+          attribute name { 'Global' },
+          comment
+        }|
         ## Sets default view to [180.0, 0.0, 270.0]
         element orientation {
           attribute name { 'SouthPole' },

@@ -29,10 +29,14 @@ Earth_Global_unsampled_6min_metric.brml</comment>
   <global_parameters/>
   <output>
     <projection name="Cartesian"/>
+    <orientation name="Global"/>
   </output>
   <dataset name="RTopo105b_data_filtered_200km_30min">
     <form name="Raster">
-      <source file_name="data/RTopo105b_bathy_30m_fg.nc" name="Local_file"/>
+      <source url="https://zenodo.org/record/1318641/files/RTopo105b_bathy_30m_fg.nc" name="HTTP">
+        <comment>RTopo105b_bathy_30m_fg.nc
+Prepared from RTopo dataset.</comment>
+      </source>
     </form>
     <projection name="Automatic"/>
   </dataset>
@@ -50,7 +54,7 @@ Earth_Global_unsampled_6min_metric.brml</comment>
         <minimum_area>
           <real_value rank="0">1E11</real_value>
         </minimum_area>
-        <contourtype field_name="Automatic" name="gebco10m"/>
+        <contourtype field_level="-10.0" field_name="Automatic" name="gebco10m"/>
       </form>
       <identification name="Coastline"/>
       <representation_type name="BSpline"/>
@@ -85,7 +89,7 @@ Earth_Global_unsampled_6min_metric.brml</comment>
     <library name="Gmsh"/>
   </geoid_mesh>
   <validation>
-    <test file_name="data/Earth_Global_filtered_200km_30min_metric_bathy.geo" name="BrepDescription"/>
+    <test file_name="data/Earth_Global_filtered_200km_30min_metric_bathy-valid.geo" name="BrepDescription"/>
     <tag name="Earth"/>
     <tag name="GEBCO"/>
     <tag name="RTopo"/>

@@ -166,6 +166,7 @@ tool/spud-preprocess: lib/libspud.so
 	@cp spud/bin/spud-preprocess tool/
 	@chmod a+x ./tool/spud-preprocess
 	@sed -i 's/\.\.\/share\/spud/schema/' ./tool/spud-preprocess
+	@sed -i -e 's/^\(cp \)\/share\(\/spud\)/\1\.\2\/schema/' ./tool/spud-preprocess
 
 .FORCE:
 

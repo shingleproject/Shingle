@@ -1,6 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grammar xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="">
-  <include href="spud_base.rng"/>
+  <include href="spud_base.rng">
+    <a:documentation/>
+    <!--
+      
+       Copyright (C) 2011-2018 Dr Adam S. Candy and others.
+       
+       Shingle:  An approach and software library for the generation of
+                 boundary representation from arbitrary geophysical fields
+                 and initialisation for anisotropic, unstructured meshing.
+       
+                 Web: http://www.shingleproject.org
+       
+                 Contact: Dr Adam S. Candy, contact@shingleproject.org
+       
+       This file is part of the Shingle project.
+       
+       Please see the AUTHORS file in the main source directory for a full list
+       of contributors.
+       
+       Shingle is free software: you can redistribute it and/or modify
+       it under the terms of the GNU Lesser General Public License as published by
+       the Free Software Foundation, either version 3 of the License, or
+       (at your option) any later version.
+       
+       Shingle is distributed in the hope that it will be useful,
+       but WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+       GNU Lesser General Public License for more details.
+       
+       You should have received a copy of the GNU Lesser General Public License
+       along with Shingle. If not, see <http://www.gnu.org/licenses/>.
+      
+    -->
+    <a:documentation/>
+  </include>
   <include href="mesh_options.rng"/>
   <start>
     <element name="boundary_representation">
@@ -460,6 +494,13 @@ Default file_name: ./shorelines.geo</a:documentation>
             <ref name="comment"/>
           </element>
           <element name="orientation">
+            <a:documentation>Sets default view to [270.0, 0.0, 270.0]</a:documentation>
+            <attribute name="name">
+              <value>Global</value>
+            </attribute>
+            <ref name="comment"/>
+          </element>
+          <element name="orientation">
             <a:documentation>Sets default view to [180.0, 0.0, 270.0]</a:documentation>
             <attribute name="name">
               <value>SouthPole</value>
@@ -816,7 +857,7 @@ e.g. 'latitude &lt;= -60.0'
 
 Default: 'True' (string)
 
-Legacy: 
+Legacy:
 region</a:documentation>
         <data type="string"/>
         <ref name="comment"/>
@@ -933,9 +974,9 @@ Legacy: extendtolatitude</a:documentation>
       </optional>
       <optional>
         <element name="close_with_parallels">
-          <a:documentation>Close with parallels 
+          <a:documentation>Close with parallels
 
-Default: False 
+Default: False
 
 Legacy: closewithparallels</a:documentation>
           <ref name="comment"/>
@@ -1366,7 +1407,7 @@ the initialised field is used.</a:documentation>
       <element name="range">
         <a:documentation>Range
 
-Note one can use this option to specify a lower or upper 
+Note one can use this option to specify a lower or upper
 bound, as well as specifying a complete range.</a:documentation>
         <element name="minimum">
           <a:documentation>Minimum</a:documentation>
@@ -1628,7 +1669,7 @@ Please consider adding tags to the schema</a:documentation>
               <ref name="comment"/>
             </element>
             <element name="test">
-              <a:documentation>Minkowski fractal dimension of discretised 
+              <a:documentation>Minkowski fractal dimension of discretised
 geoid surface boundary.</a:documentation>
               <attribute name="name">
                 <value>SurfaceGeoidMinkowskiFractalDimension</value>
@@ -1756,7 +1797,7 @@ quadrature not the number of surface gauss points</a:documentation>
         <optional>
           <element name="controlvolume_surface_degree">
             <a:documentation>Sets the degree of quadrature on each quadrilateral
-face of the control volume. 
+face of the control volume.
 
 Defaults to 1 if
 unselected which is the same as pre-new options
@@ -1784,11 +1825,11 @@ family_grundmann_moeller allows for degree up to
       </element>
       <optional>
         <element name="disable_geometric_data_cache">
-          <a:documentation>This causes the change of variables associated with each element in 
-the mesh to be stored rather than calculated every time it is used. 
-This should speed up computations at a cost of some memory. 
+          <a:documentation>This causes the change of variables associated with each element in
+the mesh to be stored rather than calculated every time it is used.
+This should speed up computations at a cost of some memory.
 
-The cache is automatically regenerated after mesh movement or 
+The cache is automatically regenerated after mesh movement or
 adaptivity and is automatically disabled for non-linear positions fields.</a:documentation>
           <empty/>
         </element>
@@ -1897,7 +1938,7 @@ Legacy: contourtype</a:documentation>
       ##     # Function code
       ##     return # Return value
       ##
-      ## 
+      ##
       element python {
         python_code
       }
