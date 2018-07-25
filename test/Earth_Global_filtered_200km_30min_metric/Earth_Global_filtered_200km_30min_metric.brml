@@ -84,7 +84,7 @@ Prepared from The GEBCO_2014 Grid, version 20150318, www.gebco.net.</comment>
     <library name="Gmsh"/>
   </geoid_mesh>
   <validation>
-    <test file_name="data/Earth_Global_filtered_200km_30min_metric.geo" name="BrepDescription"/>
+    <test file_name="data/Earth_Global_filtered_200km_30min_metric_valid.geo" name="BrepDescription"/>
     <tag name="Earth"/>
     <tag name="GEBCO"/>
     <tag name="RTopo"/>
