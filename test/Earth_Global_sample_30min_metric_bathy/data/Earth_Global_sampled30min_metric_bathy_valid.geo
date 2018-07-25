@@ -1,4 +1,4 @@
-// Surface Geoid Boundary Representation, for project: Earth_Global_filtered_200km_30min_metric_bathy
+// Surface Geoid Boundary Representation, for project: Earth_Global_sampled30min_metric_bathy
 // 
 // Created by:  Shingle (v2.2.0)
 // 
@@ -10,13 +10,13 @@
 // 
 //              Contact: Dr Adam S. Candy, contact@shingleproject.org
 // 
-// Version: v2.2.0-4-g8cc2405
+// Version: v2.2.0-5-g203b6f8
 // Mesh tool version: 2.11.0
 //                    (on the system where the boundary representation has been created)
 // 
-// Project name: Earth_Global_filtered_200km_30min_metric_bathy
+// Project name: Earth_Global_sampled30min_metric_bathy
 // Boundary Specification authors: Adam S. Candy (A.S.Candy@tudelft.nl, Technische Universiteit Delft)
-// Created at: 2018/07/25 15:47:01 
+// Created at: 2018/07/25 16:05:07 
 // Project description:
 //   -n noshelf.nc -t noshelf -no -a 5000 -el 1.0E5 -mesh
 //   Processing:
@@ -32,7 +32,7 @@
 // <?xml version='1.0' encoding='utf-8'?>
 // <boundary_representation>
 //   <model_name>
-//     <string_value lines="1">Earth_Global_filtered_200km_30min_metric_bathy</string_value>
+//     <string_value lines="1">Earth_Global_sampled30min_metric_bathy</string_value>
 //     <comment>-n noshelf.nc -t noshelf -no -a 5000 -el 1.0E5 -mesh
 // Processing:
 // wget http://store.pangaea.de/Publications/TimmermannR_et_al_2010/RTopo105b_data.nc
@@ -121,7 +121,7 @@
 //     <library name="Gmsh"/>
 //   </geoid_mesh>
 //   <validation>
-//     <test file_name="data/Earth_Global_filtered_200km_30min_metric_bathy_valid.geo" name="BrepDescription"/>
+//     <test file_name="data/Earth_Global_sampled30min_metric_bathy_valid.geo" name="BrepDescription"/>
 //     <tag name="Earth"/>
 //     <tag name="GEBCO"/>
 //     <tag name="RTopo"/>
@@ -131,7 +131,7 @@
 // </boundary_representation>
 
 // == Boundary Representation Specification Parameters ============
-// Output to Earth_Global_filtered_200km_30min_metric_bathy.geo
+// Output to Earth_Global_sampled30min_metric_bathy.geo
 // Projection type Cartesian
 
 // == Boundary Representation description =========================
