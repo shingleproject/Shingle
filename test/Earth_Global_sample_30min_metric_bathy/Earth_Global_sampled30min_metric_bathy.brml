@@ -95,7 +95,7 @@ Prepared from RTopo dataset.</comment>
       <value>
         <integer_value rank="0">200661</integer_value>
         <tolerance>
-          <integer_value rank="0">2000</integer_value>
+          <integer_value rank="0">50000</integer_value>
         </tolerance>
       </value>
     </test>
@@ -103,7 +103,7 @@ Prepared from RTopo dataset.</comment>
       <value>
         <integer_value rank="0">401360</integer_value>
         <tolerance>
-          <integer_value rank="0">2000</integer_value>
+          <integer_value rank="0">100000</integer_value>
         </tolerance>
       </value>
     </test>
