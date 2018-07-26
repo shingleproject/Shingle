@@ -334,6 +334,41 @@ class VerificationTests(object):
             error('Verification test %(name)s is not configured correctly.' % {'name':name})
         return False
 
+    def EdgeNodeNumber(self):
+        name = 'EdgeNodeNumber'
+        path = '/validation/test::%(name)s' % {'name':name}
+        if specification.have_option('%(path)s/value' % {'path':path}):
+            value = specification.get_option('%(path)s/value' % {'path':path})
+            tolerance = 0
+            if specification.have_option('%(path)s/value/tolerance' % {'path':path}):
+                tolerance = specification.get_option('%(path)s/value/tolerance' % {'path':path})
+            if ( self.representation.EdgeNodeNumber() > value + tolerance ) or ( self.representation.EdgeNodeNumber() < value - tolerance ):
+                report('Node number %(number)d out of bounds of %(value)d with tolerance %(tolerance)d' % {'number':self.representation.EdgeNodeNumber(), 'value':value, 'tolerance':tolerance}, indent=3, force=True)
+                return False
+            return True
+
+        elif specification.have_option('%(path)s/range' % {'path':path}):
+            if specification.have_option('%(path)s/value/minimum' % {'path':path}):
+                minimum = specification.get_option('%(path)s/minimum' % {'path':path})
+                if self.representation.EdgeNodeNumber() < minimum:
+                    report('Node number %(number)d less than minimum %(minimum)d' % {'number':self.representation.EdgeNodeNumber(), 'minimum':minimum}, indent=3)
+                    return False
+            if specification.have_option('%(path)s/value/maximum' % {'path':path}):
+                minimum = specification.get_option('%(path)s/maximum' % {'path':path})
+                if self.representation.EdgeNodeNumber() > maximum:
+                    report('Node number %(number)d greater than maximum %(maximum)d' % {'number':self.representation.EdgeNodeNumber(), 'maximum':maximum}, indent=3)
+                    return False
+            return True
+        else:
+            error('Verification test %(name)s is not configured correctly.' % {'name':name})
+        return False
+
+
+
+
+
+
+
     def TestDiff(self):
         import difflib
         from filecmp import cmp as CompareFiles
@@ -589,6 +624,8 @@ class VerificationTests(object):
                 result = self.NodeNumber()
             elif name == 'ElementNumber':
                 result = self.ElementNumber()
+            elif name == 'EdgeNodeNumber':
+                result = self.EdgeNodeNumber()
             else:
                 continue
             if result:

@@ -88,9 +88,33 @@ Prepared from RTopo dataset.</comment>
   </geoid_metric>
   <geoid_mesh>
     <library name="Gmsh"/>
+    <generate/>
   </geoid_mesh>
   <validation>
-    <test file_name="data/Earth_Global_sampled30min_metric_bathy_valid.geo" name="BrepDescription"/>
+    <test name="NodeNumber">
+      <value>
+        <integer_value rank="0">200661</integer_value>
+        <tolerance>
+          <integer_value rank="0">2000</integer_value>
+        </tolerance>
+      </value>
+    </test>
+    <test name="ElementNumber">
+      <value>
+        <integer_value rank="0">401360</integer_value>
+        <tolerance>
+          <integer_value rank="0">2000</integer_value>
+        </tolerance>
+      </value>
+    </test>
+    <test name="EdgeNodeNumber">
+      <value>
+        <integer_value rank="0">10658</integer_value>
+      </value>
+      <comment>Note for some confiugurations 19 edge nodes are ordered differently, which results in the BrepDescription test failing.
+This notably occurs when using apt packages for dependencies on the older Ubuntu releases Trusty 14.04 and Recise 12.04.
+e.g. see: https://travis-ci.org/adamcandy/Shingle/builds/408079064 and in particular </comment>
+    </test>
     <tag name="Earth"/>
     <tag name="GEBCO"/>
     <tag name="RTopo"/>

@@ -93,6 +93,7 @@ class SpatialDiscretisation(object):
         self.content = ''
         self._generated = False
 
+        self.mesh_generated = False
         self.mesh_filename = None
         self.verification = None
 
@@ -499,6 +500,7 @@ Created at: %(timestamp)s
 
         self.Postprocess()
         self.WriteContent()
+        rep.setGenerated()
 
         g = MeshGenerator(rep)
         self.mesh_filename = g.Output()

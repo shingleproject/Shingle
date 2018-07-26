@@ -75,6 +75,7 @@ class SurfaceGeoidDomainRepresentation(object):
         self._boundary_order = []
         self._path = None
         self._pathall = None
+        self.setGenerated(state=False)
 
         self.name = name
         self.spatial_discretisation = spatial_discretisation
@@ -84,6 +85,7 @@ class SurfaceGeoidDomainRepresentation(object):
 
         self.AppendParameters()
         self.Boundary()
+        self._point_number = None
         #if not self.spatial_discretisation.isGenerated():
         #    self.Generate()
 
@@ -341,7 +343,22 @@ Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'surface':self.Surface
                 })
             self.AddComment(c, indent=2)
             report(c, indent=2)
+    
+    def isGenerated(self):
+        return self._generated
 
+    def setGenerated(self, state=True):
+        self._generated = state
+
+    def EdgeNodeNumber(self):
+        if not self.isGenerated():
+            return 0
+        if self._point_number is None:
+            self._point_number = 0
+            for line in self.spatial_discretisation.content.splitlines():
+                if line.startswith('Point ( '):
+                    self._point_number += 1
+        return self._point_number
 
     def Generate(self):
 
@@ -391,4 +408,5 @@ Physical Surface( %(surface)i ) = { %(surface)i };''' % { 'surface':self.Surface
         #    #print p.valid_location
 
         self.output_surfaces()
+        #self.setGenerated()
 
